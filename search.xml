@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ElasticSearch安装</title>
+    <url>/2020/10/11/ElasticSearch%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
     <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
     <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
@@ -18,50 +29,6 @@
       </categories>
       <tags>
         <tag>mysql错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch安装</title>
-    <url>/2020/10/11/ElasticSearch%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
-<a id="more"></a>
-
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
-
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4>]]></content>
-      <tags>
-        <tag>ElasticSearch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java集合</title>
-    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>集合</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -130,6 +97,36 @@
       </categories>
       <tags>
         <tag>Hadoop</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
+<a id="more"></a>
+
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
+</ul>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
+
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
+
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4>]]></content>
+      <categories>
+        <category>ElasticSearch集群</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
       </tags>
   </entry>
   <entry>
@@ -284,13 +281,15 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
+    <title>Java集合</title>
+    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>集合</category>
+      </categories>
       <tags>
-        <tag>SpringBoot</tag>
+        <tag>Java</tag>
+        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -333,10 +332,41 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>fatal: not a git repository (or any of the parent directories): .git</title>
-    <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
-    <content><![CDATA[<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot错误</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot启动时找不到或无法加载主类</title>
+    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
+    <content><![CDATA[<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
+<blockquote>
+<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
+</blockquote>
+<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中查看配置,最后在RunManager组件中发现问题所在，也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
+    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
+    <content><![CDATA[<p>git push的时候报错：</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
 ]]></content>
       <categories>
         <category>git常见错误</category>
@@ -385,11 +415,10 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git Could not read from remote repository</title>
-    <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
-    <content><![CDATA[<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
-<p>git remote -v</p>
-<p>git bash输出</p>
+    <title>fatal: not a git repository (or any of the parent directories): .git</title>
+    <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
+    <content><![CDATA[<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
 ]]></content>
       <categories>
         <category>git常见错误</category>
@@ -399,15 +428,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
-    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
-    <content><![CDATA[<p>git push的时候报错：</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+    <title>git Could not read from remote repository</title>
+    <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
+    <content><![CDATA[<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
+<p>git remote -v</p>
+<p>git bash输出</p>
 ]]></content>
       <categories>
         <category>git常见错误</category>
@@ -436,33 +461,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot启动时找不到或无法加载主类</title>
-    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
-    <content><![CDATA[<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
-<blockquote>
-<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
-</blockquote>
-<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中查看配置,最后在RunManager组件中发现问题所在，也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>多态是编译时行为还是运行时行为？</title>
     <url>/2020/08/01/%E5%A4%9A%E6%80%81%E6%98%AF%E7%BC%96%E8%AF%91%E6%97%B6%E8%A1%8C%E4%B8%BA%E8%BF%98%E6%98%AF%E8%BF%90%E8%A1%8C%E6%97%B6%E8%A1%8C%E4%B8%BA%EF%BC%9F/</url>
     <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>如何解决运行grunt命令时出现“Fatal error: Unable to find local grunt?</title>
-    <url>/2020/10/09/%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%BF%90%E8%A1%8Cgrunt%E5%91%BD%E4%BB%A4%E6%97%B6%E5%87%BA%E7%8E%B0%E2%80%9CFatal-error-Unable-to-find-local-grunt/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>浅析equals()和hashcode()方法</title>
-    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
-]]></content>
   </entry>
   <entry>
     <title>nginx安装及其配置</title>
@@ -785,6 +786,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>如何解决运行grunt命令时出现“Fatal error: Unable to find local grunt?</title>
+    <url>/2020/10/09/%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%BF%90%E8%A1%8Cgrunt%E5%91%BD%E4%BB%A4%E6%97%B6%E5%87%BA%E7%8E%B0%E2%80%9CFatal-error-Unable-to-find-local-grunt/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>浅析equals()和hashcode()方法</title>
+    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>解决idea不显示maven工具栏的问题</title>
     <url>/2020/08/11/%E8%A7%A3%E5%86%B3idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
@@ -797,27 +809,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>idea小技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
-    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
-<a id="more"></a>
-
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
-<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
-<p>2.进入RabbitMQ　　</p>
-<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
-<p>3.开启　</p>
-<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
-]]></content>
-      <categories>
-        <category>RabbitMQ</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>RabbitMQ</tag>
       </tags>
   </entry>
   <entry>
@@ -907,6 +898,27 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
+    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
+<a id="more"></a>
+
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
+<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
+<p>2.进入RabbitMQ　　</p>
+<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
+<p>3.开启　</p>
+<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
+]]></content>
+      <categories>
+        <category>RabbitMQ</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>RabbitMQ</tag>
       </tags>
   </entry>
   <entry>
