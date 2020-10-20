@@ -21,163 +21,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
-<a id="more"></a>
-
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
-
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
-<p><img src="/images/2020101102.png" alt="node1"></p>
-<p>node2:</p>
-<p><img src="/images/2020101103.png" alt="node2"></p>
-<p>node3:</p>
-<p><img src="/images/2020101104.png" alt="node3"></p>
-<p>总览：</p>
-<p><img src="/images/2020101105.png" alt="nodes"></p>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4>]]></content>
-      <categories>
-        <category>ElasticSearch集群</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java集合</title>
-    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>集合</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis集群搭建</title>
-    <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id="1、Redis集群方案比较"><a href="#1、Redis集群方案比较" class="headerlink" title="1、Redis集群方案比较"></a>1、Redis集群方案比较</h3><ul>
-<li><strong>哨兵模式</strong></li>
-</ul>
-<p><img src="/images/2020073001.jpg" alt="img"></p>
-<p>在redis3.0以前的版本要实现集群一般是借助哨兵sentinel工具来监控master节点的状态，如果master节点异常，则会做主从切换，将某一台slave作为master，哨兵的配置略微复杂，并且性能和高可用性等各方面表现一般，特别是在主从切换的瞬间存在访问瞬断的情况</p>
-<a id="more"></a>
-<ul>
-<li><strong>高可用集群模式</strong></li>
-</ul>
-<p><img src="/images/2020073002.png" alt="img"></p>
-<p>redis集群是一个由多个主从节点群组成的分布式服务器群，它具有复制、高可用和分片特性。Redis集群不需要sentinel哨兵也能完成节点移除和故障转移的功能。需要将每个节点设置成集群模式，这种集群模式没有中心节点，可水平扩展，据官方文档称可以线性扩展到1000节点。redis集群的性能和高可用性均优于之前版本的哨兵模式，且集群配置非常简单。</p>
-<h3 id="2、redis高可用集群搭建"><a href="#2、redis高可用集群搭建" class="headerlink" title="2、redis高可用集群搭建"></a>2、redis高可用集群搭建</h3><ul>
-<li><strong>redis安装</strong></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">下载地址：http:&#x2F;&#x2F;redis.io&#x2F;download</span><br><span class="line">安装步骤：</span><br><span class="line"># 安装gcc</span><br><span class="line">yum install gcc</span><br><span class="line"></span><br><span class="line"># 把下载好的redis-3.0.0-rc2.tar.gz放在&#x2F;usr&#x2F;local文件夹下，并解压</span><br><span class="line">tar -zxvf redis-3.0.0-rc2.tar.gz</span><br><span class="line"></span><br><span class="line"># 进入到解压好的redis-3.0.0目录下，进行编译</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"># 进入到redis-3.0.0&#x2F;src目录下进行安装，安装完成验证src目录下是否已经生成了redis-server 、redis-cil</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"># 建立俩个文件夹存放redis命令和配置文件</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 把redis-3.0.0下的redis.conf复制到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc下</span><br><span class="line">cp redis.conf &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;</span><br><span class="line"></span><br><span class="line"># 移动redis-3.0.0&#x2F;src里的几个文件到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin下</span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 启动并指定配置文件</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;redis.conf（注意要使用后台启动，所以修改redis.conf里的daemonize改为yes)</span><br><span class="line"></span><br><span class="line"># 验证启动是否成功</span><br><span class="line">ps -ef | grep redis </span><br><span class="line"></span><br><span class="line"># 查看是否有redis服务或者查看端口</span><br><span class="line">netstat -tunpl | grep 6379</span><br><span class="line"></span><br><span class="line"># 进入redis客户端 </span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli </span><br><span class="line"></span><br><span class="line"># 退出客户端</span><br><span class="line">quit</span><br><span class="line"></span><br><span class="line"># 退出redis服务： </span><br><span class="line">（1）pkill redis-server </span><br><span class="line">（2）kill 进程号                       </span><br><span class="line">（3）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli shutdown</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>redis集群搭建</strong></li>
-</ul>
-<p>redis集群需要至少要三个master节点，我们这里搭建三个master节点，并且给每个master再搭建一个slave节点，总共6个redis节点，由于节点数较多，这里采用在一台机器上创建6个redis实例，并将这6个redis实例配置成集群模式，所以这里搭建的是伪分布式集群模式，当然真正的分布式集群的配置方法几乎一样，搭建伪分布式集群的步骤如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一步：在&#x2F;usr&#x2F;local下创建文件夹redis-cluster，然后在其下面分别创建6个文件夾如下</span><br><span class="line">（1）mkdir -p &#x2F;usr&#x2F;local&#x2F;redis-cluster</span><br><span class="line">（2）mkdir 8001、 mkdir 8002、 mkdir 8003、 mkdir 8004、 mkdir 8005、 mkdir 8006</span><br><span class="line"></span><br><span class="line">第一步：把之前的redis.conf配置文件copy到8001下，修改如下内容：</span><br><span class="line">（1）daemonize yes</span><br><span class="line">（2）port 8001（分别对每个机器的端口号进行设置）</span><br><span class="line">（3）bind 192.168.0.61（必须要绑定当前机器的ip，这里方便redis集群定位机器，不绑定可能会出现循环查找集群节点机器的情况）</span><br><span class="line">（4）dir &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;8001&#x2F;（指定数据文件存放位置，必须要指定不同的目录位置，不然会丢失数据）</span><br><span class="line">（5）cluster-enabled yes（启动集群模式）</span><br><span class="line">（6）cluster-config-file nodes-8001.conf（这里800x最好和port对应上）</span><br><span class="line">（7）cluster-node-timeout 5000</span><br><span class="line">（8）appendonly yes</span><br><span class="line"></span><br><span class="line">第三步：把修改后的配置文件，分别 copy到各个文夹下，注意每个文件要修改第2、4、6项里的端口号</span><br><span class="line">快捷复制命令：%s&#x2F;原目标&#x2F;目标地址&#x2F;g    </span><br><span class="line">第四步：由于 redis集群需要使用 ruby命令，所以我们需要安装 ruby</span><br><span class="line">（1）yum install ruby</span><br><span class="line">（2）yum install rubygems</span><br><span class="line">（3）gem install redis --version 3.0.0（安装redis和 ruby的接囗）</span><br><span class="line"></span><br><span class="line">第五步：分别启动6个redis实例，然后检查是否启动成功</span><br><span class="line">（1）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;800*&#x2F;redis.conf</span><br><span class="line">（2）ps -ef | grep redis 查看是否启动成功</span><br><span class="line"></span><br><span class="line">第六步：在redis的安装目录下执行 redis-trib.rb命令</span><br><span class="line">（1）cd &#x2F;usr&#x2F;local&#x2F;redis-3.0.0&#x2F;src</span><br><span class="line">（2）.&#x2F;redis-trib.rb create --replicas 1 192.168.0.61:8001 192.168.0.61:8002 192.168.0.61:8003 192.168.0.61:8004 192.168.0.61:8005 192.168.0.61:8006</span><br><span class="line">新版本：redis-cli --cluster create 192.168.200.10:8001 192.168.200.10:8002  192.168.200.10:8003 192.168.200.10:8004 192.168.200.10:8005 192.168.200.10:8006  --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">第七步：验证集群：</span><br><span class="line">（1）连接任意一个客户端即可：.&#x2F;redis-cli -c -h -p (-c表示集群模式，指定ip地址和端口号）如：&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800*</span><br><span class="line">（2）进行验证： cluster info（查看集群信息）、cluster nodes（查看节点列表）</span><br><span class="line">（3）进行数据操作验证</span><br><span class="line">（4）关闭集群则需要逐个进行关闭，使用命令：</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800* shutdown</span><br><span class="line"></span><br><span class="line">PS：当出现集群无法启动时，删除redis的临时数据文件，再次重新启动每一个redis服务，然后重新构造集群环境。</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="3、Java操作redis集群"><a href="#3、Java操作redis集群" class="headerlink" title="3、Java操作redis集群"></a>3、Java操作redis集群</h3><p>借助redis的java客户端jedis可以操作以上集群，引用jedis版本的maven坐标如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;redis.clients&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jedis&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.9.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p>Java编写访问redis集群的代码非常简单，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">import redis.clients.jedis.HostAndPort;</span><br><span class="line">import redis.clients.jedis.JedisCluster;</span><br><span class="line">import redis.clients.jedis.JedisPoolConfig;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 访问redis集群</span><br><span class="line"> * @author aaron.rao</span><br><span class="line"> *</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class RedisCluster </span><br><span class="line">&#123;</span><br><span class="line">    public static void main(String[] args) throws IOException</span><br><span class="line">    &#123;</span><br><span class="line">        Set&lt;HostAndPort&gt; jedisClusterNode &#x3D; new HashSet&lt;HostAndPort&gt;();</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8001));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8002));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8003));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8004));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8005));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8006));</span><br><span class="line">        </span><br><span class="line">        JedisPoolConfig config &#x3D; new JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(100);</span><br><span class="line">        config.setMaxIdle(10);</span><br><span class="line">        config.setTestOnBorrow(true);</span><br><span class="line">        JedisCluster jedisCluster &#x3D; new JedisCluster(jedisClusterNode, 6000, 10, config);</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;student&quot;, &quot;aaron&quot;));</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;age&quot;, &quot;18&quot;));</span><br><span class="line">        </span><br><span class="line">        System.out.println(jedisCluster.get(&quot;student&quot;));</span><br><span class="line">        System.out.println(jedisCluster.get(&quot;age&quot;));</span><br><span class="line">        </span><br><span class="line">        jedisCluster.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">运行效果如下：</span><br><span class="line">OK</span><br><span class="line">OK</span><br><span class="line">aaron</span><br><span class="line">18</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Redis集群</category>
-      </categories>
-      <tags>
-        <tag>Redis集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hadoop运行环境搭建</title>
-    <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
-<a id="more"></a>
-<h3 id="系统环境："><a href="#系统环境：" class="headerlink" title="系统环境："></a>系统环境：</h3><p>Windows环境：Windows10<br>Linux环境：CentOS-6.10-x86_64-bin-DVD1<br>VMware：15.5.0 build-14665864</p>
-<h3 id="所需文件"><a href="#所需文件" class="headerlink" title="所需文件"></a>所需文件</h3><p><strong>链接：</strong> <a href="https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA" target="_blank" rel="noopener">https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA</a><br>提取码：dgmt<br><strong>资源失效记得留言</strong></p>
-<h3 id="检查是否开启虚拟机"><a href="#检查是否开启虚拟机" class="headerlink" title="检查是否开启虚拟机"></a>检查是否开启虚拟机</h3><p><img src="https://img-blog.csdnimg.cn/2020032710260212.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="安装Linux"><a href="#安装Linux" class="headerlink" title="安装Linux"></a>安装Linux</h3><p>1.选择自定义<br><img src="https://img-blog.csdnimg.cn/20200327103653439.png?x-oss-process=image" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/2020032710440027.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.稍后安装操作系统<br><img src="https://img-blog.csdnimg.cn/20200327104418203.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.选择Linux 版本为Centos6 64位<br><img src="https://img-blog.csdnimg.cn/20200327104437670.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.虚拟机命名为Hadoop001<br><img src="https://img-blog.csdnimg.cn/20200327104457220.png?x-oss-process=image" alt="在这里插入图片描述"><br>6.处理机配置，这里配置最好对应下图：<br><img src="https://img-blog.csdnimg.cn/2020032710451572.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意:</strong> 如果电脑配置不足，虚拟机会自动提示，这里根据自己电脑配置调整即可<br><img src="https://img-blog.csdnimg.cn/20200327110559495.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>7.网络类型选择NAT<br><img src="https://img-blog.csdnimg.cn/20200327104532614.png?x-oss-process=image" alt="在这里插入图片描述"><br>8.I/O控制器类型选择LSI Logic<br><img src="https://img-blog.csdnimg.cn/20200327104555764.png?x-oss-process=image" alt="在这里插入图片描述"><br>9.磁盘类型选择SCSI<br><img src="https://img-blog.csdnimg.cn/20200327104618841.png?x-oss-process=image" alt="在这里插入图片描述"><br>10.创建新虚拟磁盘<br><img src="https://img-blog.csdnimg.cn/20200327104635294.png?x-oss-process=image" alt="在这里插入图片描述"><br>11.磁盘大小分配50G，将虚拟磁盘拆分成多个文件<br><img src="https://img-blog.csdnimg.cn/20200327104652738.png?x-oss-process=image" alt="在这里插入图片描述"><br>12.指定磁盘文件<br><img src="https://img-blog.csdnimg.cn/20200327104707478.png?x-oss-process=image" alt="在这里插入图片描述"><br>13.创建完成<br><img src="https://img-blog.csdnimg.cn/2020032710473853.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>14.在虚拟机配置中选择下载好的镜像文件<br><img src="https://img-blog.csdnimg.cn/20200327104750966.png?x-oss-process=image" alt="在这里插入图片描述"><br>15.选择第一个<br> <img src="https://img-blog.csdnimg.cn/20200327105929634.png?x-oss-process=image" alt="在这里插入图片描述"><br>16.选择skip<br><img src="https://img-blog.csdnimg.cn/20200327105959950.png?x-oss-process=image" alt="在这里插入图片描述"><br>17.选择next<br><img src="https://img-blog.csdnimg.cn/20200327110029718.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>18.语言环境选择英文<br><img src="https://img-blog.csdnimg.cn/20200327110101712.png?x-oss-process=image" alt="在这里插入图片描述"><br>19.选择输入法<br><img src="https://img-blog.csdnimg.cn/20200327110230645.png?x-oss-process=image" alt="在这里插入图片描述"><br>20.选择Basic Storage Devices<br><img src="https://img-blog.csdnimg.cn/20200327110259402.png?x-oss-process=image" alt="在这里插入图片描述"><br>21.同意即可<br><img src="https://img-blog.csdnimg.cn/20200327110344102.png?x-oss-process=image" alt="在这里插入图片描述"><br>22.主机命名<br><img src="https://img-blog.csdnimg.cn/20200327110434306.png?x-oss-process=image" alt="在这里插入图片描述"><br>23.配置Configure Network<br><img src="https://img-blog.csdnimg.cn/20200327110518430.png?x-oss-process=image" alt="在这里插入图片描述"><br>24.勾选即可<br><img src="https://img-blog.csdnimg.cn/20200327110749262.png?x-oss-process=image" alt="在这里插入图片描述"><br>25.选择相应的时区<br><img src="https://img-blog.csdnimg.cn/20200327110908993.png?x-oss-process=image" alt="在这里插入图片描述"><br>26.密码设个123456就行了<br><img src="https://img-blog.csdnimg.cn/20200327110937171.png?x-oss-process=image" alt="在这里插入图片描述"><br>27.选择Use All Space<br><img src="https://img-blog.csdnimg.cn/20200327111016724.png?x-oss-process=image0" alt="在这里插入图片描述"><br>28.write changes to disk<br><img src="https://img-blog.csdnimg.cn/20200327111055987.png?x-oss-process=image" alt="在这里插入图片描述"><br>29.选择Basic<br><img src="https://img-blog.csdnimg.cn/20200327111132984.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>30.系统开始初始化<br><img src="https://img-blog.csdnimg.cn/20200327111233395.png?x-oss-process=image" alt="在这里插入图片描述"><br>31.可见系统已经安装成功，reboot重启即可<img src="https://img-blog.csdnimg.cn/20200327111308432.png?x-oss-process=image" alt="在这里插入图片描述"><br>32.进入系统界面<br><img src="https://img-blog.csdnimg.cn/20200327111408414.png?x-oss-process=image" alt="在这里插入图片描述"><br>因为hadoop实验需要3个服务器，另外两个可以使用克隆安装<br>33.选择下一步<img src="https://img-blog.csdnimg.cn/20200327111548739.png?x-oss-process=image" alt="在这里插入图片描述"><br>34.下一步<br><img src="https://img-blog.csdnimg.cn/20200327111614282.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>35.克隆类型选择链接克隆，尽量节省磁盘空间<br><img src="https://img-blog.csdnimg.cn/2020032711163713.png?x-oss-process=image" alt="在这里插入图片描述"><br>36.命名<br><img src="https://img-blog.csdnimg.cn/20200327111730702.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111810391.png?x-oss-process=image" alt="在这里插入图片描述"><br>37.可以看到安装完成之后的情形<br><img src="https://img-blog.csdnimg.cn/20200327111851452.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111909745.png" alt="在这里插入图片描述"></p>
-<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><h4 id="1-配置网卡"><a href="#1-配置网卡" class="headerlink" title="1.配置网卡"></a>1.配置网卡</h4><p><img src="https://img-blog.csdnimg.cn/20200327112637566.png" alt="在这里插入图片描述"><br>输入上面的命令可以查看hadoop01的网络环境：如下图所示<br><img src="https://img-blog.csdnimg.cn/20200327112644781.png" alt="在这里插入图片描述"><br>然后开始修改hadoop02，hadoop03的网络配置<br><img src="https://img-blog.csdnimg.cn/20200327112715134.png?x-oss-process=image" alt="在这里插入图片描述"><br>改动如下图所示：<br>也就是将上面的配置删除，下面的NAME=”eth1” 改成eth0<br><img src="https://img-blog.csdnimg.cn/20200327112733595.png" alt="在这里插入图片描述"><br>hadoop03的操作和hadoop02的一样</p>
-<p><strong>注意：</strong> 这里的MAC地址不能一样，如果一样，就需要自动生成一个<br><img src="https://img-blog.csdnimg.cn/20200327113128393.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="2-配置静态ip"><a href="#2-配置静态ip" class="headerlink" title="2.配置静态ip"></a>2.配置静态ip</h4><p>修改hadoop01，02，03的网络配置文件(ifcfg-eth0)<br><img src="https://img-blog.csdnimg.cn/20200327113449436.png" alt="在这里插入图片描述"><br>可以查看配置文件的内容如下图所示：<br><img src="https://img-blog.csdnimg.cn/20200327113458775.png" alt="在这里插入图片描述"><br>将网络配置改为下面的：<br><img src="https://img-blog.csdnimg.cn/20200327113507394.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>验证网络配置：<br><img src="https://img-blog.csdnimg.cn/20200327113527171.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里使用静态IP，ip地址分别是134 135 136<br>hadoop02和hadoop03的操作和hadoop01的一样，重复即可</p>
-<h4 id="3-配置虚拟机网络"><a href="#3-配置虚拟机网络" class="headerlink" title="3.配置虚拟机网络"></a>3.配置虚拟机网络</h4><p>首先需要检查是否开启了5个服务<br>在控制面板的服务里面可以看到是否开启<br><img src="https://img-blog.csdnimg.cn/20200327112000348.png" alt="在这里插入图片描述"><br>1.编辑-&gt;虚拟网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114410335.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2.配置网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114500515.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20200327114550386.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327114917915.png?x-oss-process=image" alt="在这里插入图片描述"><br>NAT设置如图所示：<br><img src="https://img-blog.csdnimg.cn/20200327114628469.png?x-oss-process=image" alt="在这里插入图片描述"><br>DHCP设置如图所示：<br><img src="https://img-blog.csdnimg.cn/2020032711470347.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改VMware network<br><img src="https://img-blog.csdnimg.cn/20200327114710335.png" alt="在这里插入图片描述"><br>将VMnet8的ipv4修改为下图所示<br><img src="https://img-blog.csdnimg.cn/20200327114717792.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="4-主机名映射配置"><a href="#4-主机名映射配置" class="headerlink" title="4.主机名映射配置"></a>4.主机名映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115555637.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115608830.png" alt="在这里插入图片描述"></p>
-<h4 id="5-IP映射配置"><a href="#5-IP映射配置" class="headerlink" title="5.IP映射配置"></a>5.IP映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115618260.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115627958.png" alt="在这里插入图片描述"></p>
-<h4 id="6-windows的hosts配置"><a href="#6-windows的hosts配置" class="headerlink" title="6.windows的hosts配置"></a>6.windows的hosts配置</h4><p>修改Windows下的hosts文件<br><img src="https://img-blog.csdnimg.cn/20200327115930695.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115937887.png" alt="在这里插入图片描述"></p>
-<p><strong>注意：</strong>网络配置完成记得重启网络服务<br><code>service network restart</code>或者重启服务器<code>reboot</code><br>完成以上步骤，网络配置就算完成</p>
-<h4 id="7-测试网络配置"><a href="#7-测试网络配置" class="headerlink" title="7.测试网络配置"></a>7.测试网络配置</h4><p>接下来测试网络配置是否完成<br><img src="https://img-blog.csdnimg.cn/20200327120013734.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>ifcfg-eth0 配置参数说明<br>1.TYPE：配置文件接口类型。在/etc/sysconfig/network-scripts/目录有多种网络配置文件，有Ethernet 、IPsec等类型，网络接口类型为Ethernet。<br>2.DEVICE：网络接口名称<br>3.BOOTPROTO：系统启动地址协议<br>4.none：不使用启动地址协议<br>5.bootp：BOOTP协议<br>6.dhcp：DHCP动态地址协议<br>7.static：静态地址协议<br>8.ONBOOT：系统启动时是否激活<br>            yes：系统启动时激活该网络接口<br>            no：系统启动时不激活该网络接口<br>9.IPADDR：IP地址<br>10.NETMASK：子网掩码<br>11.GATEWAY：网关地址<br>12.BROADCAST：广播地址<br>13.HWADDR/MACADDR：MAC地址。只需设置其中一个，同时设置时不能相互冲突。<br>14.PEERDNS：是否指定DNS。如果使用DHCP协议，默认为yes</p>
-</blockquote>
-<h3 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h3><p>输入<code>rpm -qa|grep ssh</code>查看ssh是否安装<br><img src="https://img-blog.csdnimg.cn/20200327121043104.png" alt="在这里插入图片描述"><br>如果没有安装：<code>yum install openssh-server</code></p>
-<h3 id="免密登陆"><a href="#免密登陆" class="headerlink" title="免密登陆"></a>免密登陆</h3><p>1.为什么要免密登录<br>Hadoop节点众多，所以一般在主节点启动从节点，这个时候就需要程序自动在主节点登录<br>到从节点中，如果不能免密就每次都要输入密码，非常麻烦<br>2. 免密SSH登录的原理<br>需要先在B节点配置A节点的公钥<br>A节点请求B节点要球登录<br>B节点使用A节点的公钥，加密一段随机文本<br>A节点使用私钥解密，并发回给B节点<br>B节点验证文本是否正确</p>
-<p><img src="https://img-blog.csdnimg.cn/20200327121318858.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>这里为了更方便的操作，使用secureCRT文件<br>打开secureCRT文件，new Session创建相应的session连接<br>1.new Session<img src="https://img-blog.csdnimg.cn/20200327122809177.png" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/20200327122947738.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.填写相应信息<br><img src="https://img-blog.csdnimg.cn/20200327123020515.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.SFTP协议<img src="https://img-blog.csdnimg.cn/20200327123105814.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.命名<br><img src="https://img-blog.csdnimg.cn/2020032712314534.png?x-oss-process=image" alt="在这里插入图片描述"><br>最后效果：<br> <img src="https://img-blog.csdnimg.cn/20200327123215433.png" alt="在这里插入图片描述"><br> 配置完成之后虚拟机就可以后台运行了<br><img src="https://img-blog.csdnimg.cn/20200327124339234.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里为了软件的美观，可以进行相应的设置<br>这里推荐一个配色方案：<br><a href="https://blog.51cto.com/sandshell/2109176" target="_blank" rel="noopener">SecureCRT优化调整、永久设置、保护眼睛和配色方案</a></p>
-<h4 id="配置免密登录"><a href="#配置免密登录" class="headerlink" title="配置免密登录"></a>配置免密登录</h4><p>1.在三台机器执行以下命令，生成公钥与私钥<br><code>ssh-keygen -t rsa</code><br>一直回车就行了<br><img src="https://img-blog.csdnimg.cn/20200327123828820.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>2.复制<code>ssh-copy-id hadoop01</code><br><img src="https://img-blog.csdnimg.cn/20200327123939763.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327123952454.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327124005151.png?x-oss-process=image" alt="在这里插入图片描述"><br>将第一台机器的公钥拷贝到其他机器<br><code>scp /root/.ssh/authorized_keys hadoop02:/root/.ssh</code><br><code>scp /root/.ssh/authorized_keys hadoop03:/root/.ssh</code><br><img src="https://img-blog.csdnimg.cn/20200327124148240.png" alt="在这里插入图片描述"><br>如果3台机器可以相互访问，说明配置成功<br><img src="https://img-blog.csdnimg.cn/20200327124153657.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="hadoop安装"><a href="#hadoop安装" class="headerlink" title="hadoop安装"></a>hadoop安装</h3><blockquote>
-<p>Hadoop集群部署模式 </p>
-<ol>
-<li>在独立模式下，所有程序都在单个VM上执行，调试Hadoop集群的MapReduce程序也非常方便。一般情况下，该模式常用于学习或开发阶段进行调试程序。</li>
-<li>在伪分布式模式下，Hadoop程序的守护进程都运行在一台节点上，该模式主要用于调试Hadoop分布式程序的代码，以及程序执行是否正确。伪分布式模式是完全分布式模式的一个特例。</li>
-<li>在完全分布式模式下，Hadoop的守护进程分别运行在由多个主机措建的集群上，不同节点担任不同的角色，在实际工作应用开发中，通常使用该模式构建企业级Hadoop系统。</li>
-</ol>
-</blockquote>
-<blockquote>
-<p>从JDK版本7u71以后，JAVA将会在同一时间发布两个版本的JDK，其中： </p>
-<ol>
-<li>奇数版本为BUG修正并全部通过检验的版本，官方强烈推荐使用这个版本。</li>
-<li>偶数版本包含了奇数版本所有的内容，以及未被验证的BUG修复，Oracle官方表示：除非你深受BUG困扰，否则不推荐您使用这个版本。</li>
-</ol>
-</blockquote>
-<p><a href="http://hbase.apache.org/book.html#basic.prerequisites" target="_blank" rel="noopener">http://hbase.apache.org/book.html#basic.prerequisites</a><br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a><br><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a><br>根据官网推荐，使用如下软件配置<br><img src="https://img-blog.csdnimg.cn/202003271247571.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="1-上传文件并创建相应文件"><a href="#1-上传文件并创建相应文件" class="headerlink" title="1.上传文件并创建相应文件"></a>1.上传文件并创建相应文件</h4><p>1.创建文件：在根目录下创建下图文件<br><img src="https://img-blog.csdnimg.cn/2020032712490655.png" alt="在这里插入图片描述"></p>
-<p>2.通过命令将文件拖进software文件中<br>安装上传文件命令<code>yum install -y lrzsz</code><br>执行命令rz，上传文件<br>执行命令sz，下载文件<br><img src="https://img-blog.csdnimg.cn/20200327125021970.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="2-安装JDK"><a href="#2-安装JDK" class="headerlink" title="2.安装JDK"></a>2.安装JDK</h4><p>解压jdk文件到/export/servers/路径下<br><code>tar -zxvf jdk-8u201-linux-x64.tar.gz -C /export/servers/</code><br>将jdk文件移动到jdk路径下<br><code>mv jdk1.8.0_201 jdk</code></p>
-<p>4.添加环境变量<br><code>vim /etc/profile</code><br>添加下列代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;export&#x2F;servers&#x2F;jdk</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br></pre></td></tr></table></figure>
-<p>添加完成之后记得<code>source /etc/profile</code>使配置生效<br>测试：<br><code>java -version</code><br><img src="https://img-blog.csdnimg.cn/20200327125713207.png" alt="在这里插入图片描述"><br><code>which java</code><br><img src="https://img-blog.csdnimg.cn/20200327125729409.png" alt="在这里插入图片描述"></p>
-<h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop"></a>安装hadoop</h4><p>1.解压<br><code>tar -zxvf hadoop-2.7.7.tar.gz -C /export/servers/</code><br>2.编写<code>/etc/profile文件</code><br><code>vim /etc/profile</code><br>添加下列命令：<br><img src="https://img-blog.csdnimg.cn/20200327125936586.png" alt="在这里插入图片描述"><br>配置完成之后：<code>source /etc/profile</code><br> <img src="https://img-blog.csdnimg.cn/20200327125950742.png" alt="在这里插入图片描述"><br> 测试：<br> <code>hadoop version</code>查看是否配置完成<img src="https://img-blog.csdnimg.cn/2020032713000287.png" alt="在这里插入图片描述"></p>
-<h3 id="hadoop入门案例："><a href="#hadoop入门案例：" class="headerlink" title="hadoop入门案例："></a>hadoop入门案例：</h3><p><img src="https://img-blog.csdnimg.cn/20200327130134643.png" alt="在这里插入图片描述"><br>1.进入hadoop-2.7.7下面<br>2.创建一个input文件夹<br>3.将Hadoop的xml配置文件复制到input<br>xml配置文件是etc/hadoop/*.xml’</p>
-<p>4.执行share目录下的MapReduce程序<br><code>hadoop jar hadoop-mapreduce-examples-2.7.2.jar grep input output &#39;dfs[a-z.]+&#39;</code><br><img src="https://img-blog.csdnimg.cn/20200327130119673.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.在<strong>hadoop-2.7.7路径下</strong>查看输出结果<br><code>cat output/*</code></p>
-<p><strong>注意:</strong> hadoop jar 是命令，hadoop-mapreduce-examples-2.7.7.jar是自己写的mr代码，input 输入文件夹，output 输出文件夹</p>
-]]></content>
-      <categories>
-        <category>Hadoop集群</category>
-      </categories>
-      <tags>
-        <tag>Hadoop</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hadoop集群搭建</title>
     <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<blockquote>
@@ -267,71 +110,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot启动时找不到或无法加载主类</title>
-    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
-    <content><![CDATA[<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
-<blockquote>
-<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
-</blockquote>
-<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot错误</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot错误</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Spring源码的下载与编译</title>
-    <url>/2020/10/19/Spring%E6%BA%90%E7%A0%81%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%BC%96%E8%AF%91/</url>
-    <content><![CDATA[<p>Spring学了很久了，但是一直没有深入到源码，希望在接下来的源码学习中有所收获。。。</p>
-<a id="more"></a>
-
-<h3 id="一、环境安装"><a href="#一、环境安装" class="headerlink" title="一、环境安装"></a>一、环境安装</h3><p>安装Idea，JDK，maven并完成相应的配置<br><img src="/images/2020101901.png" alt="image-20201019191945647"></p>
-<p><strong>注意：</strong>当前官方Spring最新版本为5.3.0，文档要求JDK版本需要在 <code>JDK 8 update 262 or later</code>。</p>
-<p>因为JDK官网只能下载到1.8_261，所以我使用的Spring-5.2.9</p>
-<p><img src="/images/2020101902.png" alt="image-20201019192232952"></p>
-<h3 id="二、下载和编译"><a href="#二、下载和编译" class="headerlink" title="二、下载和编译"></a>二、下载和编译</h3><h4 id="2-1-下载并解压"><a href="#2-1-下载并解压" class="headerlink" title="2.1 下载并解压"></a>2.1 下载并解压</h4><p><img src="/images/2020101903.png" alt="image-20201019192816197"></p>
-<h4 id="2-2-修改build-gradle"><a href="#2-2-修改build-gradle" class="headerlink" title="2.2 修改build.gradle"></a>2.2 修改build.gradle</h4><p>在build.gradle添加阿里云的中央仓库地址，提高依赖文件的下载速度</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			mavenCentral()</span><br><span class="line">			maven &#123; url <span class="string">"https://repo.spring.io/libs-spring-framework-build"</span> &#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2020101904.png" alt="image-20201019195803623"></p>
-<p><strong>查看阿里云Maven中央仓库：</strong><a href="https://maven.aliyun.com/mvn/guide" target="_blank" rel="noopener">https://maven.aliyun.com/mvn/guide</a></p>
-<h4 id="2-3-安装官方文档进行配置"><a href="#2-3-安装官方文档进行配置" class="headerlink" title="2.3 安装官方文档进行配置"></a>2.3 安装官方文档进行配置</h4><p><img src="/images/2020101906.png" alt="image-20201019200051103"></p>
-<p>1.Precompile <code>spring-oxm</code> with <code>./gradlew :spring-oxm:compileTestJava</code></p>
-<p><img src="/images/2020101907.png" alt="image-20201019201845436"></p>
-<p>2.Import into IntelliJ (File -&gt; New -&gt; Project from Existing Sources -&gt; Navigate to directory -&gt; Select build.gradle)</p>
-<p>导入项目</p>
-<p><img src="/images/2020101908.png" alt="image-20201019211425497"></p>
-<p>3.When prompted exclude the <code>spring-aspects</code> module (or after the import via File-&gt; Project Structure -&gt; Modules)</p>
-<p>因为<code>spring-aspects</code>有自己的编译器(AJC)，AJC会影响JVM的加载，所以需要排除出去</p>
-<p>这里右键项目–》Load/Unload Modules–》选择spring-aspects–》unload–》重新加载即可</p>
-<p><img src="/images/2020101909.png" alt="image-20201019212036285"></p>
-<p>4.Code away</p>
-<p>到这里就完成Spring源码的下载与编译</p>
-<h3 id="三、通过一个小demo来测试一下"><a href="#三、通过一个小demo来测试一下" class="headerlink" title="三、通过一个小demo来测试一下"></a>三、通过一个小demo来测试一下</h3>]]></content>
-      <categories>
-        <category>Spring源码</category>
-      </categories>
-      <tags>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java多线程</title>
     <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
     <content><![CDATA[<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
@@ -394,6 +172,263 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
+<a id="more"></a>
+
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
+</ul>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
+
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
+
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
+<p><img src="/images/2020101102.png" alt="node1"></p>
+<p>node2:</p>
+<p><img src="/images/2020101103.png" alt="node2"></p>
+<p>node3:</p>
+<p><img src="/images/2020101104.png" alt="node3"></p>
+<p>总览：</p>
+<p><img src="/images/2020101105.png" alt="nodes"></p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4>]]></content>
+      <categories>
+        <category>ElasticSearch集群</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hadoop运行环境搭建</title>
+    <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
+<a id="more"></a>
+<h3 id="系统环境："><a href="#系统环境：" class="headerlink" title="系统环境："></a>系统环境：</h3><p>Windows环境：Windows10<br>Linux环境：CentOS-6.10-x86_64-bin-DVD1<br>VMware：15.5.0 build-14665864</p>
+<h3 id="所需文件"><a href="#所需文件" class="headerlink" title="所需文件"></a>所需文件</h3><p><strong>链接：</strong> <a href="https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA" target="_blank" rel="noopener">https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA</a><br>提取码：dgmt<br><strong>资源失效记得留言</strong></p>
+<h3 id="检查是否开启虚拟机"><a href="#检查是否开启虚拟机" class="headerlink" title="检查是否开启虚拟机"></a>检查是否开启虚拟机</h3><p><img src="https://img-blog.csdnimg.cn/2020032710260212.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="安装Linux"><a href="#安装Linux" class="headerlink" title="安装Linux"></a>安装Linux</h3><p>1.选择自定义<br><img src="https://img-blog.csdnimg.cn/20200327103653439.png?x-oss-process=image" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/2020032710440027.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.稍后安装操作系统<br><img src="https://img-blog.csdnimg.cn/20200327104418203.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.选择Linux 版本为Centos6 64位<br><img src="https://img-blog.csdnimg.cn/20200327104437670.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.虚拟机命名为Hadoop001<br><img src="https://img-blog.csdnimg.cn/20200327104457220.png?x-oss-process=image" alt="在这里插入图片描述"><br>6.处理机配置，这里配置最好对应下图：<br><img src="https://img-blog.csdnimg.cn/2020032710451572.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意:</strong> 如果电脑配置不足，虚拟机会自动提示，这里根据自己电脑配置调整即可<br><img src="https://img-blog.csdnimg.cn/20200327110559495.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>7.网络类型选择NAT<br><img src="https://img-blog.csdnimg.cn/20200327104532614.png?x-oss-process=image" alt="在这里插入图片描述"><br>8.I/O控制器类型选择LSI Logic<br><img src="https://img-blog.csdnimg.cn/20200327104555764.png?x-oss-process=image" alt="在这里插入图片描述"><br>9.磁盘类型选择SCSI<br><img src="https://img-blog.csdnimg.cn/20200327104618841.png?x-oss-process=image" alt="在这里插入图片描述"><br>10.创建新虚拟磁盘<br><img src="https://img-blog.csdnimg.cn/20200327104635294.png?x-oss-process=image" alt="在这里插入图片描述"><br>11.磁盘大小分配50G，将虚拟磁盘拆分成多个文件<br><img src="https://img-blog.csdnimg.cn/20200327104652738.png?x-oss-process=image" alt="在这里插入图片描述"><br>12.指定磁盘文件<br><img src="https://img-blog.csdnimg.cn/20200327104707478.png?x-oss-process=image" alt="在这里插入图片描述"><br>13.创建完成<br><img src="https://img-blog.csdnimg.cn/2020032710473853.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>14.在虚拟机配置中选择下载好的镜像文件<br><img src="https://img-blog.csdnimg.cn/20200327104750966.png?x-oss-process=image" alt="在这里插入图片描述"><br>15.选择第一个<br> <img src="https://img-blog.csdnimg.cn/20200327105929634.png?x-oss-process=image" alt="在这里插入图片描述"><br>16.选择skip<br><img src="https://img-blog.csdnimg.cn/20200327105959950.png?x-oss-process=image" alt="在这里插入图片描述"><br>17.选择next<br><img src="https://img-blog.csdnimg.cn/20200327110029718.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>18.语言环境选择英文<br><img src="https://img-blog.csdnimg.cn/20200327110101712.png?x-oss-process=image" alt="在这里插入图片描述"><br>19.选择输入法<br><img src="https://img-blog.csdnimg.cn/20200327110230645.png?x-oss-process=image" alt="在这里插入图片描述"><br>20.选择Basic Storage Devices<br><img src="https://img-blog.csdnimg.cn/20200327110259402.png?x-oss-process=image" alt="在这里插入图片描述"><br>21.同意即可<br><img src="https://img-blog.csdnimg.cn/20200327110344102.png?x-oss-process=image" alt="在这里插入图片描述"><br>22.主机命名<br><img src="https://img-blog.csdnimg.cn/20200327110434306.png?x-oss-process=image" alt="在这里插入图片描述"><br>23.配置Configure Network<br><img src="https://img-blog.csdnimg.cn/20200327110518430.png?x-oss-process=image" alt="在这里插入图片描述"><br>24.勾选即可<br><img src="https://img-blog.csdnimg.cn/20200327110749262.png?x-oss-process=image" alt="在这里插入图片描述"><br>25.选择相应的时区<br><img src="https://img-blog.csdnimg.cn/20200327110908993.png?x-oss-process=image" alt="在这里插入图片描述"><br>26.密码设个123456就行了<br><img src="https://img-blog.csdnimg.cn/20200327110937171.png?x-oss-process=image" alt="在这里插入图片描述"><br>27.选择Use All Space<br><img src="https://img-blog.csdnimg.cn/20200327111016724.png?x-oss-process=image0" alt="在这里插入图片描述"><br>28.write changes to disk<br><img src="https://img-blog.csdnimg.cn/20200327111055987.png?x-oss-process=image" alt="在这里插入图片描述"><br>29.选择Basic<br><img src="https://img-blog.csdnimg.cn/20200327111132984.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>30.系统开始初始化<br><img src="https://img-blog.csdnimg.cn/20200327111233395.png?x-oss-process=image" alt="在这里插入图片描述"><br>31.可见系统已经安装成功，reboot重启即可<img src="https://img-blog.csdnimg.cn/20200327111308432.png?x-oss-process=image" alt="在这里插入图片描述"><br>32.进入系统界面<br><img src="https://img-blog.csdnimg.cn/20200327111408414.png?x-oss-process=image" alt="在这里插入图片描述"><br>因为hadoop实验需要3个服务器，另外两个可以使用克隆安装<br>33.选择下一步<img src="https://img-blog.csdnimg.cn/20200327111548739.png?x-oss-process=image" alt="在这里插入图片描述"><br>34.下一步<br><img src="https://img-blog.csdnimg.cn/20200327111614282.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>35.克隆类型选择链接克隆，尽量节省磁盘空间<br><img src="https://img-blog.csdnimg.cn/2020032711163713.png?x-oss-process=image" alt="在这里插入图片描述"><br>36.命名<br><img src="https://img-blog.csdnimg.cn/20200327111730702.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111810391.png?x-oss-process=image" alt="在这里插入图片描述"><br>37.可以看到安装完成之后的情形<br><img src="https://img-blog.csdnimg.cn/20200327111851452.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111909745.png" alt="在这里插入图片描述"></p>
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><h4 id="1-配置网卡"><a href="#1-配置网卡" class="headerlink" title="1.配置网卡"></a>1.配置网卡</h4><p><img src="https://img-blog.csdnimg.cn/20200327112637566.png" alt="在这里插入图片描述"><br>输入上面的命令可以查看hadoop01的网络环境：如下图所示<br><img src="https://img-blog.csdnimg.cn/20200327112644781.png" alt="在这里插入图片描述"><br>然后开始修改hadoop02，hadoop03的网络配置<br><img src="https://img-blog.csdnimg.cn/20200327112715134.png?x-oss-process=image" alt="在这里插入图片描述"><br>改动如下图所示：<br>也就是将上面的配置删除，下面的NAME=”eth1” 改成eth0<br><img src="https://img-blog.csdnimg.cn/20200327112733595.png" alt="在这里插入图片描述"><br>hadoop03的操作和hadoop02的一样</p>
+<p><strong>注意：</strong> 这里的MAC地址不能一样，如果一样，就需要自动生成一个<br><img src="https://img-blog.csdnimg.cn/20200327113128393.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="2-配置静态ip"><a href="#2-配置静态ip" class="headerlink" title="2.配置静态ip"></a>2.配置静态ip</h4><p>修改hadoop01，02，03的网络配置文件(ifcfg-eth0)<br><img src="https://img-blog.csdnimg.cn/20200327113449436.png" alt="在这里插入图片描述"><br>可以查看配置文件的内容如下图所示：<br><img src="https://img-blog.csdnimg.cn/20200327113458775.png" alt="在这里插入图片描述"><br>将网络配置改为下面的：<br><img src="https://img-blog.csdnimg.cn/20200327113507394.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>验证网络配置：<br><img src="https://img-blog.csdnimg.cn/20200327113527171.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里使用静态IP，ip地址分别是134 135 136<br>hadoop02和hadoop03的操作和hadoop01的一样，重复即可</p>
+<h4 id="3-配置虚拟机网络"><a href="#3-配置虚拟机网络" class="headerlink" title="3.配置虚拟机网络"></a>3.配置虚拟机网络</h4><p>首先需要检查是否开启了5个服务<br>在控制面板的服务里面可以看到是否开启<br><img src="https://img-blog.csdnimg.cn/20200327112000348.png" alt="在这里插入图片描述"><br>1.编辑-&gt;虚拟网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114410335.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2.配置网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114500515.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200327114550386.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327114917915.png?x-oss-process=image" alt="在这里插入图片描述"><br>NAT设置如图所示：<br><img src="https://img-blog.csdnimg.cn/20200327114628469.png?x-oss-process=image" alt="在这里插入图片描述"><br>DHCP设置如图所示：<br><img src="https://img-blog.csdnimg.cn/2020032711470347.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改VMware network<br><img src="https://img-blog.csdnimg.cn/20200327114710335.png" alt="在这里插入图片描述"><br>将VMnet8的ipv4修改为下图所示<br><img src="https://img-blog.csdnimg.cn/20200327114717792.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="4-主机名映射配置"><a href="#4-主机名映射配置" class="headerlink" title="4.主机名映射配置"></a>4.主机名映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115555637.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115608830.png" alt="在这里插入图片描述"></p>
+<h4 id="5-IP映射配置"><a href="#5-IP映射配置" class="headerlink" title="5.IP映射配置"></a>5.IP映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115618260.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115627958.png" alt="在这里插入图片描述"></p>
+<h4 id="6-windows的hosts配置"><a href="#6-windows的hosts配置" class="headerlink" title="6.windows的hosts配置"></a>6.windows的hosts配置</h4><p>修改Windows下的hosts文件<br><img src="https://img-blog.csdnimg.cn/20200327115930695.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115937887.png" alt="在这里插入图片描述"></p>
+<p><strong>注意：</strong>网络配置完成记得重启网络服务<br><code>service network restart</code>或者重启服务器<code>reboot</code><br>完成以上步骤，网络配置就算完成</p>
+<h4 id="7-测试网络配置"><a href="#7-测试网络配置" class="headerlink" title="7.测试网络配置"></a>7.测试网络配置</h4><p>接下来测试网络配置是否完成<br><img src="https://img-blog.csdnimg.cn/20200327120013734.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>ifcfg-eth0 配置参数说明<br>1.TYPE：配置文件接口类型。在/etc/sysconfig/network-scripts/目录有多种网络配置文件，有Ethernet 、IPsec等类型，网络接口类型为Ethernet。<br>2.DEVICE：网络接口名称<br>3.BOOTPROTO：系统启动地址协议<br>4.none：不使用启动地址协议<br>5.bootp：BOOTP协议<br>6.dhcp：DHCP动态地址协议<br>7.static：静态地址协议<br>8.ONBOOT：系统启动时是否激活<br>            yes：系统启动时激活该网络接口<br>            no：系统启动时不激活该网络接口<br>9.IPADDR：IP地址<br>10.NETMASK：子网掩码<br>11.GATEWAY：网关地址<br>12.BROADCAST：广播地址<br>13.HWADDR/MACADDR：MAC地址。只需设置其中一个，同时设置时不能相互冲突。<br>14.PEERDNS：是否指定DNS。如果使用DHCP协议，默认为yes</p>
+</blockquote>
+<h3 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h3><p>输入<code>rpm -qa|grep ssh</code>查看ssh是否安装<br><img src="https://img-blog.csdnimg.cn/20200327121043104.png" alt="在这里插入图片描述"><br>如果没有安装：<code>yum install openssh-server</code></p>
+<h3 id="免密登陆"><a href="#免密登陆" class="headerlink" title="免密登陆"></a>免密登陆</h3><p>1.为什么要免密登录<br>Hadoop节点众多，所以一般在主节点启动从节点，这个时候就需要程序自动在主节点登录<br>到从节点中，如果不能免密就每次都要输入密码，非常麻烦<br>2. 免密SSH登录的原理<br>需要先在B节点配置A节点的公钥<br>A节点请求B节点要球登录<br>B节点使用A节点的公钥，加密一段随机文本<br>A节点使用私钥解密，并发回给B节点<br>B节点验证文本是否正确</p>
+<p><img src="https://img-blog.csdnimg.cn/20200327121318858.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>这里为了更方便的操作，使用secureCRT文件<br>打开secureCRT文件，new Session创建相应的session连接<br>1.new Session<img src="https://img-blog.csdnimg.cn/20200327122809177.png" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/20200327122947738.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.填写相应信息<br><img src="https://img-blog.csdnimg.cn/20200327123020515.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.SFTP协议<img src="https://img-blog.csdnimg.cn/20200327123105814.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.命名<br><img src="https://img-blog.csdnimg.cn/2020032712314534.png?x-oss-process=image" alt="在这里插入图片描述"><br>最后效果：<br> <img src="https://img-blog.csdnimg.cn/20200327123215433.png" alt="在这里插入图片描述"><br> 配置完成之后虚拟机就可以后台运行了<br><img src="https://img-blog.csdnimg.cn/20200327124339234.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里为了软件的美观，可以进行相应的设置<br>这里推荐一个配色方案：<br><a href="https://blog.51cto.com/sandshell/2109176" target="_blank" rel="noopener">SecureCRT优化调整、永久设置、保护眼睛和配色方案</a></p>
+<h4 id="配置免密登录"><a href="#配置免密登录" class="headerlink" title="配置免密登录"></a>配置免密登录</h4><p>1.在三台机器执行以下命令，生成公钥与私钥<br><code>ssh-keygen -t rsa</code><br>一直回车就行了<br><img src="https://img-blog.csdnimg.cn/20200327123828820.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>2.复制<code>ssh-copy-id hadoop01</code><br><img src="https://img-blog.csdnimg.cn/20200327123939763.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327123952454.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327124005151.png?x-oss-process=image" alt="在这里插入图片描述"><br>将第一台机器的公钥拷贝到其他机器<br><code>scp /root/.ssh/authorized_keys hadoop02:/root/.ssh</code><br><code>scp /root/.ssh/authorized_keys hadoop03:/root/.ssh</code><br><img src="https://img-blog.csdnimg.cn/20200327124148240.png" alt="在这里插入图片描述"><br>如果3台机器可以相互访问，说明配置成功<br><img src="https://img-blog.csdnimg.cn/20200327124153657.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="hadoop安装"><a href="#hadoop安装" class="headerlink" title="hadoop安装"></a>hadoop安装</h3><blockquote>
+<p>Hadoop集群部署模式 </p>
+<ol>
+<li>在独立模式下，所有程序都在单个VM上执行，调试Hadoop集群的MapReduce程序也非常方便。一般情况下，该模式常用于学习或开发阶段进行调试程序。</li>
+<li>在伪分布式模式下，Hadoop程序的守护进程都运行在一台节点上，该模式主要用于调试Hadoop分布式程序的代码，以及程序执行是否正确。伪分布式模式是完全分布式模式的一个特例。</li>
+<li>在完全分布式模式下，Hadoop的守护进程分别运行在由多个主机措建的集群上，不同节点担任不同的角色，在实际工作应用开发中，通常使用该模式构建企业级Hadoop系统。</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>从JDK版本7u71以后，JAVA将会在同一时间发布两个版本的JDK，其中： </p>
+<ol>
+<li>奇数版本为BUG修正并全部通过检验的版本，官方强烈推荐使用这个版本。</li>
+<li>偶数版本包含了奇数版本所有的内容，以及未被验证的BUG修复，Oracle官方表示：除非你深受BUG困扰，否则不推荐您使用这个版本。</li>
+</ol>
+</blockquote>
+<p><a href="http://hbase.apache.org/book.html#basic.prerequisites" target="_blank" rel="noopener">http://hbase.apache.org/book.html#basic.prerequisites</a><br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a><br><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a><br>根据官网推荐，使用如下软件配置<br><img src="https://img-blog.csdnimg.cn/202003271247571.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="1-上传文件并创建相应文件"><a href="#1-上传文件并创建相应文件" class="headerlink" title="1.上传文件并创建相应文件"></a>1.上传文件并创建相应文件</h4><p>1.创建文件：在根目录下创建下图文件<br><img src="https://img-blog.csdnimg.cn/2020032712490655.png" alt="在这里插入图片描述"></p>
+<p>2.通过命令将文件拖进software文件中<br>安装上传文件命令<code>yum install -y lrzsz</code><br>执行命令rz，上传文件<br>执行命令sz，下载文件<br><img src="https://img-blog.csdnimg.cn/20200327125021970.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="2-安装JDK"><a href="#2-安装JDK" class="headerlink" title="2.安装JDK"></a>2.安装JDK</h4><p>解压jdk文件到/export/servers/路径下<br><code>tar -zxvf jdk-8u201-linux-x64.tar.gz -C /export/servers/</code><br>将jdk文件移动到jdk路径下<br><code>mv jdk1.8.0_201 jdk</code></p>
+<p>4.添加环境变量<br><code>vim /etc/profile</code><br>添加下列代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;export&#x2F;servers&#x2F;jdk</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br></pre></td></tr></table></figure>
+<p>添加完成之后记得<code>source /etc/profile</code>使配置生效<br>测试：<br><code>java -version</code><br><img src="https://img-blog.csdnimg.cn/20200327125713207.png" alt="在这里插入图片描述"><br><code>which java</code><br><img src="https://img-blog.csdnimg.cn/20200327125729409.png" alt="在这里插入图片描述"></p>
+<h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop"></a>安装hadoop</h4><p>1.解压<br><code>tar -zxvf hadoop-2.7.7.tar.gz -C /export/servers/</code><br>2.编写<code>/etc/profile文件</code><br><code>vim /etc/profile</code><br>添加下列命令：<br><img src="https://img-blog.csdnimg.cn/20200327125936586.png" alt="在这里插入图片描述"><br>配置完成之后：<code>source /etc/profile</code><br> <img src="https://img-blog.csdnimg.cn/20200327125950742.png" alt="在这里插入图片描述"><br> 测试：<br> <code>hadoop version</code>查看是否配置完成<img src="https://img-blog.csdnimg.cn/2020032713000287.png" alt="在这里插入图片描述"></p>
+<h3 id="hadoop入门案例："><a href="#hadoop入门案例：" class="headerlink" title="hadoop入门案例："></a>hadoop入门案例：</h3><p><img src="https://img-blog.csdnimg.cn/20200327130134643.png" alt="在这里插入图片描述"><br>1.进入hadoop-2.7.7下面<br>2.创建一个input文件夹<br>3.将Hadoop的xml配置文件复制到input<br>xml配置文件是etc/hadoop/*.xml’</p>
+<p>4.执行share目录下的MapReduce程序<br><code>hadoop jar hadoop-mapreduce-examples-2.7.2.jar grep input output &#39;dfs[a-z.]+&#39;</code><br><img src="https://img-blog.csdnimg.cn/20200327130119673.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.在<strong>hadoop-2.7.7路径下</strong>查看输出结果<br><code>cat output/*</code></p>
+<p><strong>注意:</strong> hadoop jar 是命令，hadoop-mapreduce-examples-2.7.7.jar是自己写的mr代码，input 输入文件夹，output 输出文件夹</p>
+]]></content>
+      <categories>
+        <category>Hadoop集群</category>
+      </categories>
+      <tags>
+        <tag>Hadoop</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis集群搭建</title>
+    <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h3 id="1、Redis集群方案比较"><a href="#1、Redis集群方案比较" class="headerlink" title="1、Redis集群方案比较"></a>1、Redis集群方案比较</h3><ul>
+<li><strong>哨兵模式</strong></li>
+</ul>
+<p><img src="/images/2020073001.jpg" alt="img"></p>
+<p>在redis3.0以前的版本要实现集群一般是借助哨兵sentinel工具来监控master节点的状态，如果master节点异常，则会做主从切换，将某一台slave作为master，哨兵的配置略微复杂，并且性能和高可用性等各方面表现一般，特别是在主从切换的瞬间存在访问瞬断的情况</p>
+<a id="more"></a>
+<ul>
+<li><strong>高可用集群模式</strong></li>
+</ul>
+<p><img src="/images/2020073002.png" alt="img"></p>
+<p>redis集群是一个由多个主从节点群组成的分布式服务器群，它具有复制、高可用和分片特性。Redis集群不需要sentinel哨兵也能完成节点移除和故障转移的功能。需要将每个节点设置成集群模式，这种集群模式没有中心节点，可水平扩展，据官方文档称可以线性扩展到1000节点。redis集群的性能和高可用性均优于之前版本的哨兵模式，且集群配置非常简单。</p>
+<h3 id="2、redis高可用集群搭建"><a href="#2、redis高可用集群搭建" class="headerlink" title="2、redis高可用集群搭建"></a>2、redis高可用集群搭建</h3><ul>
+<li><strong>redis安装</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">下载地址：http:&#x2F;&#x2F;redis.io&#x2F;download</span><br><span class="line">安装步骤：</span><br><span class="line"># 安装gcc</span><br><span class="line">yum install gcc</span><br><span class="line"></span><br><span class="line"># 把下载好的redis-3.0.0-rc2.tar.gz放在&#x2F;usr&#x2F;local文件夹下，并解压</span><br><span class="line">tar -zxvf redis-3.0.0-rc2.tar.gz</span><br><span class="line"></span><br><span class="line"># 进入到解压好的redis-3.0.0目录下，进行编译</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"># 进入到redis-3.0.0&#x2F;src目录下进行安装，安装完成验证src目录下是否已经生成了redis-server 、redis-cil</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"># 建立俩个文件夹存放redis命令和配置文件</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 把redis-3.0.0下的redis.conf复制到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc下</span><br><span class="line">cp redis.conf &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;</span><br><span class="line"></span><br><span class="line"># 移动redis-3.0.0&#x2F;src里的几个文件到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin下</span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 启动并指定配置文件</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;redis.conf（注意要使用后台启动，所以修改redis.conf里的daemonize改为yes)</span><br><span class="line"></span><br><span class="line"># 验证启动是否成功</span><br><span class="line">ps -ef | grep redis </span><br><span class="line"></span><br><span class="line"># 查看是否有redis服务或者查看端口</span><br><span class="line">netstat -tunpl | grep 6379</span><br><span class="line"></span><br><span class="line"># 进入redis客户端 </span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli </span><br><span class="line"></span><br><span class="line"># 退出客户端</span><br><span class="line">quit</span><br><span class="line"></span><br><span class="line"># 退出redis服务： </span><br><span class="line">（1）pkill redis-server </span><br><span class="line">（2）kill 进程号                       </span><br><span class="line">（3）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli shutdown</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>redis集群搭建</strong></li>
+</ul>
+<p>redis集群需要至少要三个master节点，我们这里搭建三个master节点，并且给每个master再搭建一个slave节点，总共6个redis节点，由于节点数较多，这里采用在一台机器上创建6个redis实例，并将这6个redis实例配置成集群模式，所以这里搭建的是伪分布式集群模式，当然真正的分布式集群的配置方法几乎一样，搭建伪分布式集群的步骤如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一步：在&#x2F;usr&#x2F;local下创建文件夹redis-cluster，然后在其下面分别创建6个文件夾如下</span><br><span class="line">（1）mkdir -p &#x2F;usr&#x2F;local&#x2F;redis-cluster</span><br><span class="line">（2）mkdir 8001、 mkdir 8002、 mkdir 8003、 mkdir 8004、 mkdir 8005、 mkdir 8006</span><br><span class="line"></span><br><span class="line">第一步：把之前的redis.conf配置文件copy到8001下，修改如下内容：</span><br><span class="line">（1）daemonize yes</span><br><span class="line">（2）port 8001（分别对每个机器的端口号进行设置）</span><br><span class="line">（3）bind 192.168.0.61（必须要绑定当前机器的ip，这里方便redis集群定位机器，不绑定可能会出现循环查找集群节点机器的情况）</span><br><span class="line">（4）dir &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;8001&#x2F;（指定数据文件存放位置，必须要指定不同的目录位置，不然会丢失数据）</span><br><span class="line">（5）cluster-enabled yes（启动集群模式）</span><br><span class="line">（6）cluster-config-file nodes-8001.conf（这里800x最好和port对应上）</span><br><span class="line">（7）cluster-node-timeout 5000</span><br><span class="line">（8）appendonly yes</span><br><span class="line"></span><br><span class="line">第三步：把修改后的配置文件，分别 copy到各个文夹下，注意每个文件要修改第2、4、6项里的端口号</span><br><span class="line">快捷复制命令：%s&#x2F;原目标&#x2F;目标地址&#x2F;g    </span><br><span class="line">第四步：由于 redis集群需要使用 ruby命令，所以我们需要安装 ruby</span><br><span class="line">（1）yum install ruby</span><br><span class="line">（2）yum install rubygems</span><br><span class="line">（3）gem install redis --version 3.0.0（安装redis和 ruby的接囗）</span><br><span class="line"></span><br><span class="line">第五步：分别启动6个redis实例，然后检查是否启动成功</span><br><span class="line">（1）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;800*&#x2F;redis.conf</span><br><span class="line">（2）ps -ef | grep redis 查看是否启动成功</span><br><span class="line"></span><br><span class="line">第六步：在redis的安装目录下执行 redis-trib.rb命令</span><br><span class="line">（1）cd &#x2F;usr&#x2F;local&#x2F;redis-3.0.0&#x2F;src</span><br><span class="line">（2）.&#x2F;redis-trib.rb create --replicas 1 192.168.0.61:8001 192.168.0.61:8002 192.168.0.61:8003 192.168.0.61:8004 192.168.0.61:8005 192.168.0.61:8006</span><br><span class="line">新版本：redis-cli --cluster create 192.168.200.10:8001 192.168.200.10:8002  192.168.200.10:8003 192.168.200.10:8004 192.168.200.10:8005 192.168.200.10:8006  --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">第七步：验证集群：</span><br><span class="line">（1）连接任意一个客户端即可：.&#x2F;redis-cli -c -h -p (-c表示集群模式，指定ip地址和端口号）如：&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800*</span><br><span class="line">（2）进行验证： cluster info（查看集群信息）、cluster nodes（查看节点列表）</span><br><span class="line">（3）进行数据操作验证</span><br><span class="line">（4）关闭集群则需要逐个进行关闭，使用命令：</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800* shutdown</span><br><span class="line"></span><br><span class="line">PS：当出现集群无法启动时，删除redis的临时数据文件，再次重新启动每一个redis服务，然后重新构造集群环境。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3、Java操作redis集群"><a href="#3、Java操作redis集群" class="headerlink" title="3、Java操作redis集群"></a>3、Java操作redis集群</h3><p>借助redis的java客户端jedis可以操作以上集群，引用jedis版本的maven坐标如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;redis.clients&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jedis&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.9.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Java编写访问redis集群的代码非常简单，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">import redis.clients.jedis.HostAndPort;</span><br><span class="line">import redis.clients.jedis.JedisCluster;</span><br><span class="line">import redis.clients.jedis.JedisPoolConfig;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 访问redis集群</span><br><span class="line"> * @author aaron.rao</span><br><span class="line"> *</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class RedisCluster </span><br><span class="line">&#123;</span><br><span class="line">    public static void main(String[] args) throws IOException</span><br><span class="line">    &#123;</span><br><span class="line">        Set&lt;HostAndPort&gt; jedisClusterNode &#x3D; new HashSet&lt;HostAndPort&gt;();</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8001));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8002));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8003));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8004));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8005));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8006));</span><br><span class="line">        </span><br><span class="line">        JedisPoolConfig config &#x3D; new JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(100);</span><br><span class="line">        config.setMaxIdle(10);</span><br><span class="line">        config.setTestOnBorrow(true);</span><br><span class="line">        JedisCluster jedisCluster &#x3D; new JedisCluster(jedisClusterNode, 6000, 10, config);</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;student&quot;, &quot;aaron&quot;));</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;age&quot;, &quot;18&quot;));</span><br><span class="line">        </span><br><span class="line">        System.out.println(jedisCluster.get(&quot;student&quot;));</span><br><span class="line">        System.out.println(jedisCluster.get(&quot;age&quot;));</span><br><span class="line">        </span><br><span class="line">        jedisCluster.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">运行效果如下：</span><br><span class="line">OK</span><br><span class="line">OK</span><br><span class="line">aaron</span><br><span class="line">18</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Redis集群</category>
+      </categories>
+      <tags>
+        <tag>Redis集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring源码的下载与编译</title>
+    <url>/2020/10/19/Spring%E6%BA%90%E7%A0%81%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%BC%96%E8%AF%91/</url>
+    <content><![CDATA[<p>Spring学了很久了，但是一直没有深入到源码，希望在接下来的源码学习中有所收获。。。</p>
+<a id="more"></a>
+
+<h3 id="一、环境安装"><a href="#一、环境安装" class="headerlink" title="一、环境安装"></a>一、环境安装</h3><p>安装Idea，JDK，maven并完成相应的配置<br><img src="/images/2020101901.png" alt="image-20201019191945647"></p>
+<p><strong>注意：</strong>当前官方Spring最新版本为5.3.0，文档要求JDK版本需要在 <code>JDK 8 update 262 or later</code>。</p>
+<p>因为JDK官网只能下载到1.8_261，所以我使用的Spring-5.2.9</p>
+<p><img src="/images/2020101902.png" alt="image-20201019192232952"></p>
+<h3 id="二、下载和编译"><a href="#二、下载和编译" class="headerlink" title="二、下载和编译"></a>二、下载和编译</h3><h4 id="2-1-下载并解压"><a href="#2-1-下载并解压" class="headerlink" title="2.1 下载并解压"></a>2.1 下载并解压</h4><p><img src="/images/2020101903.png" alt="image-20201019192816197"></p>
+<h4 id="2-2-修改build-gradle"><a href="#2-2-修改build-gradle" class="headerlink" title="2.2 修改build.gradle"></a>2.2 修改build.gradle</h4><p>在build.gradle添加阿里云的中央仓库地址，提高依赖文件的下载速度</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			mavenCentral()</span><br><span class="line">			maven &#123; url <span class="string">"https://repo.spring.io/libs-spring-framework-build"</span> &#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2020101904.png" alt="image-20201019195803623"></p>
+<p><strong>查看阿里云Maven中央仓库：</strong><a href="https://maven.aliyun.com/mvn/guide" target="_blank" rel="noopener">https://maven.aliyun.com/mvn/guide</a></p>
+<h4 id="2-3-安装官方文档进行配置"><a href="#2-3-安装官方文档进行配置" class="headerlink" title="2.3 安装官方文档进行配置"></a>2.3 安装官方文档进行配置</h4><p><img src="/images/2020101906.png" alt="image-20201019200051103"></p>
+<p>1.Precompile <code>spring-oxm</code> with <code>./gradlew :spring-oxm:compileTestJava</code></p>
+<p><img src="/images/2020101907.png" alt="image-20201019201845436"></p>
+<p>2.Import into IntelliJ (File -&gt; New -&gt; Project from Existing Sources -&gt; Navigate to directory -&gt; Select build.gradle)</p>
+<p>导入项目</p>
+<p><img src="/images/2020101908.png" alt="image-20201019211425497"></p>
+<p>3.When prompted exclude the <code>spring-aspects</code> module (or after the import via File-&gt; Project Structure -&gt; Modules)</p>
+<p>因为<code>spring-aspects</code>有自己的编译器(AJC)，AJC会影响JVM的加载，所以需要排除出去</p>
+<p>这里右键项目–》Load/Unload Modules–》选择spring-aspects–》unload–》重新加载即可</p>
+<p><img src="/images/2020101909.png" alt="image-20201019212036285"></p>
+<p>4.Code away</p>
+<p>到这里就完成Spring源码的下载与编译</p>
+<h3 id="三、通过一个小demo来测试一下"><a href="#三、通过一个小demo来测试一下" class="headerlink" title="三、通过一个小demo来测试一下"></a>三、通过一个小demo来测试一下</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/01-spring-framework-5.2.9.RELEASE/spring-demo" target="_blank" rel="noopener">spring-demo代码链接</a></p>
+<h3 id="四、简易自研框架的编写"><a href="#四、简易自研框架的编写" class="headerlink" title="四、简易自研框架的编写"></a>四、简易自研框架的编写</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/02-simpleframework" target="_blank" rel="noopener">02-simpleframework</a></p>
+]]></content>
+      <categories>
+        <category>Spring源码</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot错误</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot启动时找不到或无法加载主类</title>
+    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
+    <content><![CDATA[<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
+<blockquote>
+<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
+</blockquote>
+<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot错误</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git Could not read from remote repository</title>
+    <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
+    <content><![CDATA[<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
+<p>git remote -v</p>
+<p>git bash输出</p>
+]]></content>
+      <categories>
+        <category>git常见错误</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ubuntu安装VMware Tools</title>
+    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
+    <content><![CDATA[<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
+<a id="more"></a>
+
+<blockquote>
+<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
+</blockquote>
+<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
+<p>解压完成之后即可运行安装文件安装wmware tools</p>
+]]></content>
+      <categories>
+        <category>Ubuntu</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java集合</title>
+    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>集合</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>fatal: not a git repository (or any of the parent directories): .git</title>
     <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
     <content><![CDATA[<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
@@ -407,11 +442,15 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git Could not read from remote repository</title>
-    <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
-    <content><![CDATA[<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
-<p>git remote -v</p>
-<p>git bash输出</p>
+    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
+    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
+    <content><![CDATA[<p>git push的时候报错：</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
 ]]></content>
       <categories>
         <category>git常见错误</category>
@@ -460,51 +499,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>多态是编译时行为还是运行时行为？</title>
-    <url>/2020/08/01/%E5%A4%9A%E6%80%81%E6%98%AF%E7%BC%96%E8%AF%91%E6%97%B6%E8%A1%8C%E4%B8%BA%E8%BF%98%E6%98%AF%E8%BF%90%E8%A1%8C%E6%97%B6%E8%A1%8C%E4%B8%BA%EF%BC%9F/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>ubuntu安装VMware Tools</title>
-    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
-    <content><![CDATA[<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
-<a id="more"></a>
-
-<blockquote>
-<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
-</blockquote>
-<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
-<p>解压完成之后即可运行安装文件安装wmware tools</p>
-]]></content>
-      <categories>
-        <category>Ubuntu</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>浅析equals()和hashcode()方法</title>
     <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
 ]]></content>
   </entry>
   <entry>
-    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
-    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
-    <content><![CDATA[<p>git push的时候报错：</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
+    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
+<a id="more"></a>
+
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
+<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
+<p>2.进入RabbitMQ　　</p>
+<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
+<p>3.开启　</p>
+<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
 ]]></content>
       <categories>
-        <category>git常见错误</category>
+        <category>RabbitMQ</category>
       </categories>
       <tags>
-        <tag>git</tag>
+        <tag>Docker</tag>
+        <tag>RabbitMQ</tag>
       </tags>
   </entry>
   <entry>
@@ -828,24 +846,18 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
-    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
+    <title>解决idea不显示maven工具栏的问题</title>
+    <url>/2020/08/11/%E8%A7%A3%E5%86%B3idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
 <a id="more"></a>
 
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
-<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
-<p>2.进入RabbitMQ　　</p>
-<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
-<p>3.开启　</p>
-<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
 ]]></content>
       <categories>
-        <category>RabbitMQ</category>
+        <category>idea小技巧</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>RabbitMQ</tag>
+        <tag>idea小技巧</tag>
       </tags>
   </entry>
   <entry>
@@ -862,6 +874,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>IntelliJ IDEA</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>多态是编译时行为还是运行时行为？</title>
+    <url>/2020/08/01/%E5%A4%9A%E6%80%81%E6%98%AF%E7%BC%96%E8%AF%91%E6%97%B6%E8%A1%8C%E4%B8%BA%E8%BF%98%E6%98%AF%E8%BF%90%E8%A1%8C%E6%97%B6%E8%A1%8C%E4%B8%BA%EF%BC%9F/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>添加系统调用</title>
@@ -950,21 +967,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决idea不显示maven工具栏的问题</title>
-    <url>/2020/08/11/%E8%A7%A3%E5%86%B3idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
-<a id="more"></a>
-
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
-]]></content>
-      <categories>
-        <category>idea小技巧</category>
-      </categories>
-      <tags>
-        <tag>idea小技巧</tag>
       </tags>
   </entry>
 </search>
