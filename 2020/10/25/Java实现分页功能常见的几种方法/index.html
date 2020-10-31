@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="总结一下分页功能的实现方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java实现分页功能常见的几种方法">
+<meta property="og:url" content="http://yoursite.com/2020/10/25/Java%E5%AE%9E%E7%8E%B0%E5%88%86%E9%A1%B5%E5%8A%9F%E8%83%BD%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="总结一下分页功能的实现方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-25T02:59:11.000Z">
+<meta property="article:modified_time" content="2020-10-31T01:46:09.311Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="分页功能">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/10/25/Java%E5%AE%9E%E7%8E%B0%E5%88%86%E9%A1%B5%E5%8A%9F%E8%83%BD%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java实现分页功能常见的几种方法 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/25/Java%E5%AE%9E%E7%8E%B0%E5%88%86%E9%A1%B5%E5%8A%9F%E8%83%BD%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java实现分页功能常见的几种方法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-25 10:59:11" itemprop="dateCreated datePublished" datetime="2020-10-25T10:59:11+08:00">2020-10-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>总结一下分页功能的实现方法</p>
+<a id="more"></a>
+
+<h2 id="一、limit关键字"><a href="#一、limit关键字" class="headerlink" title="一、limit关键字"></a>一、limit关键字</h2><p><strong>service层</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImplStudentService</span> <span class="keyword">implements</span> <span class="title">StudentService</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span>  StudentDao  studentDao;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Student&gt;  <span class="title">selectAllStudent</span><span class="params">(String province, Integer offset, Integer limit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> studentDao.selectAll(province,offset,limit);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>sql语句</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from student where province &#x3D; #&#123;province&#125; limit #&#123;offset&#125;,#&#123;limit&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、hibernate分页"><a href="#二、hibernate分页" class="headerlink" title="二、hibernate分页"></a>二、hibernate分页</h2><p><strong>service层</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> List <span class="title">getStudents</span><span class="params">(Integer  pageNo，Integer  pageSize)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"> <span class="comment">// 分页数据</span></span><br><span class="line"> <span class="keyword">int</span>[] startIdAndCount = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line"> startIdAndCount[<span class="number">0</span>] = pageNo * pageSize;</span><br><span class="line"> startIdAndCount[<span class="number">1</span>] = pageSize;</span><br><span class="line"> <span class="keyword">return</span> studentDao.selectStudentsByPage(startIdAndCount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>dao层</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">findByHqlPage</span><span class="params">(<span class="keyword">int</span>[] startIdAndCount)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	String hql = <span class="string">"..."</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		Query query = getSession().createQuery(hql);</span><br><span class="line">		<span class="comment">// 设置分页</span></span><br><span class="line">		<span class="keyword">if</span> (startIdAndCount != <span class="keyword">null</span> &amp;&amp; startIdAndCount.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> rowStartIdx = Math.max(<span class="number">0</span>, startIdAndCount[<span class="number">0</span>]);</span><br><span class="line">			<span class="keyword">if</span> (rowStartIdx &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				query.setFirstResult(rowStartIdx);<span class="comment">// 设置开始取值的索引</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (startIdAndCount.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">				<span class="keyword">int</span> rowCount = Math.max(<span class="number">0</span>, startIdAndCount[<span class="number">1</span>]);</span><br><span class="line">				<span class="keyword">if</span> (rowCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				query.setMaxResults(rowCount);<span class="comment">// 设置结束取值的索引</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> query.list();</span><br><span class="line">	&#125; <span class="keyword">catch</span> (RuntimeException re) &#123;</span><br><span class="line">		log.error(<span class="string">"分页查询失败！"</span>, re);</span><br><span class="line">		<span class="keyword">throw</span> re;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、截取List查询结果分页-简单粗暴"><a href="#三、截取List查询结果分页-简单粗暴" class="headerlink" title="三、截取List查询结果分页(简单粗暴)"></a>三、截取List查询结果分页(简单粗暴)</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">List&lt;StudentEnroll&gt; students = studentlDao.getAllStudents();</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(studentEnrolls != <span class="keyword">null</span> &amp;&amp; studentEnrolls.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	count = studentEnrolls.size();</span><br><span class="line">	<span class="keyword">int</span> fromIndex = pageNo * pageSize;</span><br><span class="line">	<span class="keyword">int</span> toIndex = (pageNo + <span class="number">1</span>) * pageSize;</span><br><span class="line">	<span class="keyword">if</span>(toIndex &gt; count) &#123;</span><br><span class="line">		toIndex = count;</span><br><span class="line">	&#125;</span><br><span class="line">	List&lt;StudentEnroll&gt; pageList = studentEnrolls.subList(fromIndex, toIndex);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、mybatis框架pageHelper插件分页"><a href="#四、mybatis框架pageHelper插件分页" class="headerlink" title="四、mybatis框架pageHelper插件分页"></a>四、mybatis框架pageHelper插件分页</h2><p>Spring整合：</p>
+<p>导入pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置项目配置文件(我在spring和mybatis整合的配置文件中配置的，如果在mybatis核心配置文件中配置，百度一下)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 依赖数据源 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 注册加载myBatis映射文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapperLocations"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath*:com/yyz/mapper/*Mapper.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- PageHelper分页配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"plugins"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"properties"</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--使用下面的方式配置参数，一行配置一个，后面会有所有的参数介绍 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--helperDialect属性来指定分页插件使用哪种方言。--&gt;</span></span><br><span class="line">                            helperDialect=mysql</span><br><span class="line">                    <span class="comment">&lt;!--分页合理化参数，设置为true时，pageNum&lt;=0时会查询第一页,pageNum&gt;pages(超过总数时),会查询最后一页。--&gt;</span></span><br><span class="line">                            reasonable=true</span><br><span class="line">                    <span class="comment">&lt;!--为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，</span></span><br><span class="line"><span class="comment">                        可以配置 pageNum,pageSize,count,pageSizeZero,reasonable--&gt;</span></span><br><span class="line">                            params=count=countSql</span><br><span class="line">                    <span class="comment">&lt;!--支持通过Mapper接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params 配</span></span><br><span class="line"><span class="comment">                     置的字段中取值，查找到合适的值时就会自动分页。--&gt;</span></span><br><span class="line">                            supportMethodsArguments=true</span><br><span class="line">                    <span class="comment">&lt;!--默认值为 false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页--&gt;</span></span><br><span class="line">                            autoRuntimeDialect=true</span><br><span class="line">                        <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 给数据库实体起别名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"typeAliasesPackage"</span> <span class="attr">value</span>=<span class="string">"com.yyz.entity;"</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>SpringBoot整合：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--分页插件--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>最新版本<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置项目application.yml文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#bybatis分页插件配置</span></span><br><span class="line"><span class="attr">pagehelper:</span></span><br><span class="line">  <span class="attr">helper-dialect:</span> <span class="string">mysql</span>  <span class="comment">#数据库</span></span><br><span class="line">  <span class="attr">reasonable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">support-methods-arguments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">params:</span> <span class="string">count=countSql</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h2 id="标题分页插件参数："><a href="#标题分页插件参数：" class="headerlink" title="标题分页插件参数："></a>标题分页插件参数：</h2><p>分页插件提供了多个可选参数，这些参数使用时，按照上面配置方式中的示例配置即可。</p>
+<p>分页插件可选参数如下：</p>
+<p><strong>dialect</strong>：默认情况下会使用 PageHelper 方式进行分页，如果想要实现自己的分页逻辑，可以实现<br><strong>Dialect</strong>(com.github.pagehelper.Dialect) 接口，然后配置该属性为实现类的全限定名称。 使用自定义<br>dialect 实现时，下面的参数没有任何作用。</p>
+<p><strong>helperDialect</strong>：分页插件会自动检测当前的数据库链接，自动选择合适的分页方式。<br>oracle,mysql,mariadb,sqlite,hsqldb,postgresql,db2,sqlserver,informix,h2,sqlserver2012,derby<br><strong>特别注意</strong>：使用 SqlServer2012 数据库时，需要手动指定为 sqlserver2012，否则会使用 SqlServer2005<br>的方式进行分页。</p>
+<p><strong>offsetAsPageNum</strong>：默认值为 false，该参数对使用 RowBounds 作为分页参数时有效。 当该参数设置为 true<br>时，会将 RowBounds 中的 offset 参数当成 pageNum 使用，可以用页码和页面大小两个参数进行分页。</p>
+<p><strong>rowBoundsWithCount</strong>：默认值为false，该参数对使用 RowBounds 作为分页参数时有效。<br>当该参数设置为true时，使用 RowBounds 分页会进行 count 查询。</p>
+<p><strong>pageSizeZero</strong>：默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者<br>RowBounds.limit = 0 就会查询出全部的结果（相当于没有执行分页查询，但是返回结果仍然是 Page 类型）。</p>
+<p><strong>reasonable</strong>：分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum&lt;=0<br>时会查询第一页，pageNum&gt;pages（超过总数时），会查询最后一页。默认false 时，直接根据参数进行查询。</p>
+<p><strong>params</strong>：为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，<br>可以配置 pageNum,pageSize,count,pageSizeZero,reasonable，不配置映射的用默认值，<br>默认值为pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero。</p>
+<p><strong>supportMethodsArguments</strong>：支持通过 Mapper<br>接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params<br>配置的字段中取值，查找到合适的值时就会自动分页。</p>
+<p><strong>aggregateFunctions</strong>：默认为所有常见数据库的聚合函数，允许手动添加聚合函数（影响行数），所有以聚合函数开头的函数，在进行<br>count 转换时，会套一层。其他函数和列会被替换为 count(0)，其中count列可以自己配置。</p>
+</blockquote>
+<h2 id="重要提示："><a href="#重要提示：" class="headerlink" title="重要提示："></a>重要提示：</h2><p>当 offsetAsPageNum=false 的时候，由于 PageNum 问题，RowBounds查询的时候 reasonable 会强制为 false。使用 PageHelper.startPage 方法不受影响。</p>
+<p>service层</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseResult <span class="title">selectAllStudent</span><span class="params">(Integer pageNum, Integer pageSize)</span> </span>&#123;</span><br><span class="line">    Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    PageHelper.startPage(pageNum,pageSize);</span><br><span class="line">    List&lt;Student&gt;  students = studentMapper.selectAllStudents();</span><br><span class="line">    PageInfo pageInfo = <span class="keyword">new</span> PageInfo(students);</span><br><span class="line">    <span class="keyword">long</span> total = pageInfo.getTotal();</span><br><span class="line">    map.put(<span class="string">"result"</span>,pageInfo);</span><br><span class="line">    map.put(<span class="string">"count"</span>,total);</span><br><span class="line">    <span class="keyword">return</span> ResponseResultUtil.success(map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>详细请看 <a href="https://blog.csdn.net/riemann_/article/details/90454451" target="_blank" rel="noopener">SpringBoot集成MyBatis的分页插件PageHelper</a></p>
+<h2 id="五、springData分页"><a href="#五、springData分页" class="headerlink" title="五、springData分页"></a>五、springData分页</h2><p>service层</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Sort.Order travelDate = <span class="keyword">new</span> Sort.Order(Sort.Direction.DESC, <span class="string">"travelDate"</span>);</span><br><span class="line">Sort.Order createdTime = <span class="keyword">new</span> Sort.Order(Sort.Direction.DESC, <span class="string">"createdTime"</span>);</span><br><span class="line">Sort sort = <span class="keyword">new</span> Sort(travelDate, createdTime);</span><br><span class="line">Pageable pageable = <span class="keyword">new</span> PageRequest(page, pageSize, sort);</span><br><span class="line">List&lt;TravelItem&gt; items = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    items = travelRepository.getTravelItemsByTravelDateBetweenAndUserId(theStartDate, theEndDate, openId, pageable);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> DatabaseRelatedException(<span class="string">"TravelRepository异常"</span>);</span><br><span class="line">&#125;</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
+
+<p>dao层：接口继承的是PagingAndSortingRepository接口，注意要加@Repository注解</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E9%A1%B5%E5%8A%9F%E8%83%BD/" rel="tag"># 分页功能</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/" rel="prev" title="人民日报给90后的理财计划">
+      <i class="fa fa-chevron-left"></i> 人民日报给90后的理财计划
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/" rel="next" title="SpringBoot集成MyBatis的分页插件PageHelper">
+      SpringBoot集成MyBatis的分页插件PageHelper <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、limit关键字"><span class="nav-number">1.</span> <span class="nav-text">一、limit关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、hibernate分页"><span class="nav-number">2.</span> <span class="nav-text">二、hibernate分页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、截取List查询结果分页-简单粗暴"><span class="nav-number">3.</span> <span class="nav-text">三、截取List查询结果分页(简单粗暴)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、mybatis框架pageHelper插件分页"><span class="nav-number">4.</span> <span class="nav-text">四、mybatis框架pageHelper插件分页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标题分页插件参数："><span class="nav-number">5.</span> <span class="nav-text">标题分页插件参数：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重要提示："><span class="nav-number">6.</span> <span class="nav-text">重要提示：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、springData分页"><span class="nav-number">7.</span> <span class="nav-text">五、springData分页</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

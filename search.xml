@@ -59,6 +59,86 @@
       </tags>
   </entry>
   <entry>
+    <title>Java动态代理</title>
+    <url>/2020/10/25/Java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Java实现分页功能常见的几种方法</title>
+    <url>/2020/10/25/Java%E5%AE%9E%E7%8E%B0%E5%88%86%E9%A1%B5%E5%8A%9F%E8%83%BD%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>总结一下分页功能的实现方法</p>
+<a id="more"></a>
+
+<h2 id="一、limit关键字"><a href="#一、limit关键字" class="headerlink" title="一、limit关键字"></a>一、limit关键字</h2><p><strong>service层</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImplStudentService</span> <span class="keyword">implements</span> <span class="title">StudentService</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span>  StudentDao  studentDao;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Student&gt;  <span class="title">selectAllStudent</span><span class="params">(String province, Integer offset, Integer limit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> studentDao.selectAll(province,offset,limit);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>sql语句</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from student where province &#x3D; #&#123;province&#125; limit #&#123;offset&#125;,#&#123;limit&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、hibernate分页"><a href="#二、hibernate分页" class="headerlink" title="二、hibernate分页"></a>二、hibernate分页</h2><p><strong>service层</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> List <span class="title">getStudents</span><span class="params">(Integer  pageNo，Integer  pageSize)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"> <span class="comment">// 分页数据</span></span><br><span class="line"> <span class="keyword">int</span>[] startIdAndCount = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line"> startIdAndCount[<span class="number">0</span>] = pageNo * pageSize;</span><br><span class="line"> startIdAndCount[<span class="number">1</span>] = pageSize;</span><br><span class="line"> <span class="keyword">return</span> studentDao.selectStudentsByPage(startIdAndCount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>dao层</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">findByHqlPage</span><span class="params">(<span class="keyword">int</span>[] startIdAndCount)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	String hql = <span class="string">"..."</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		Query query = getSession().createQuery(hql);</span><br><span class="line">		<span class="comment">// 设置分页</span></span><br><span class="line">		<span class="keyword">if</span> (startIdAndCount != <span class="keyword">null</span> &amp;&amp; startIdAndCount.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> rowStartIdx = Math.max(<span class="number">0</span>, startIdAndCount[<span class="number">0</span>]);</span><br><span class="line">			<span class="keyword">if</span> (rowStartIdx &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				query.setFirstResult(rowStartIdx);<span class="comment">// 设置开始取值的索引</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (startIdAndCount.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">				<span class="keyword">int</span> rowCount = Math.max(<span class="number">0</span>, startIdAndCount[<span class="number">1</span>]);</span><br><span class="line">				<span class="keyword">if</span> (rowCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				query.setMaxResults(rowCount);<span class="comment">// 设置结束取值的索引</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> query.list();</span><br><span class="line">	&#125; <span class="keyword">catch</span> (RuntimeException re) &#123;</span><br><span class="line">		log.error(<span class="string">"分页查询失败！"</span>, re);</span><br><span class="line">		<span class="keyword">throw</span> re;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、截取List查询结果分页-简单粗暴"><a href="#三、截取List查询结果分页-简单粗暴" class="headerlink" title="三、截取List查询结果分页(简单粗暴)"></a>三、截取List查询结果分页(简单粗暴)</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">List&lt;StudentEnroll&gt; students = studentlDao.getAllStudents();</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(studentEnrolls != <span class="keyword">null</span> &amp;&amp; studentEnrolls.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	count = studentEnrolls.size();</span><br><span class="line">	<span class="keyword">int</span> fromIndex = pageNo * pageSize;</span><br><span class="line">	<span class="keyword">int</span> toIndex = (pageNo + <span class="number">1</span>) * pageSize;</span><br><span class="line">	<span class="keyword">if</span>(toIndex &gt; count) &#123;</span><br><span class="line">		toIndex = count;</span><br><span class="line">	&#125;</span><br><span class="line">	List&lt;StudentEnroll&gt; pageList = studentEnrolls.subList(fromIndex, toIndex);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、mybatis框架pageHelper插件分页"><a href="#四、mybatis框架pageHelper插件分页" class="headerlink" title="四、mybatis框架pageHelper插件分页"></a>四、mybatis框架pageHelper插件分页</h2><p>Spring整合：</p>
+<p>导入pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置项目配置文件(我在spring和mybatis整合的配置文件中配置的，如果在mybatis核心配置文件中配置，百度一下)</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 依赖数据源 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 注册加载myBatis映射文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapperLocations"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath*:com/yyz/mapper/*Mapper.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- PageHelper分页配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"plugins"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"properties"</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--使用下面的方式配置参数，一行配置一个，后面会有所有的参数介绍 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--helperDialect属性来指定分页插件使用哪种方言。--&gt;</span></span><br><span class="line">                            helperDialect=mysql</span><br><span class="line">                    <span class="comment">&lt;!--分页合理化参数，设置为true时，pageNum&lt;=0时会查询第一页,pageNum&gt;pages(超过总数时),会查询最后一页。--&gt;</span></span><br><span class="line">                            reasonable=true</span><br><span class="line">                    <span class="comment">&lt;!--为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，</span></span><br><span class="line"><span class="comment">                        可以配置 pageNum,pageSize,count,pageSizeZero,reasonable--&gt;</span></span><br><span class="line">                            params=count=countSql</span><br><span class="line">                    <span class="comment">&lt;!--支持通过Mapper接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params 配</span></span><br><span class="line"><span class="comment">                     置的字段中取值，查找到合适的值时就会自动分页。--&gt;</span></span><br><span class="line">                            supportMethodsArguments=true</span><br><span class="line">                    <span class="comment">&lt;!--默认值为 false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页--&gt;</span></span><br><span class="line">                            autoRuntimeDialect=true</span><br><span class="line">                        <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 给数据库实体起别名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"typeAliasesPackage"</span> <span class="attr">value</span>=<span class="string">"com.yyz.entity;"</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>SpringBoot整合：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--分页插件--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>最新版本<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置项目application.yml文件</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#bybatis分页插件配置</span></span><br><span class="line"><span class="attr">pagehelper:</span></span><br><span class="line">  <span class="attr">helper-dialect:</span> <span class="string">mysql</span>  <span class="comment">#数据库</span></span><br><span class="line">  <span class="attr">reasonable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">support-methods-arguments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">params:</span> <span class="string">count=countSql</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h2 id="标题分页插件参数："><a href="#标题分页插件参数：" class="headerlink" title="标题分页插件参数："></a>标题分页插件参数：</h2><p>分页插件提供了多个可选参数，这些参数使用时，按照上面配置方式中的示例配置即可。</p>
+<p>分页插件可选参数如下：</p>
+<p><strong>dialect</strong>：默认情况下会使用 PageHelper 方式进行分页，如果想要实现自己的分页逻辑，可以实现<br><strong>Dialect</strong>(com.github.pagehelper.Dialect) 接口，然后配置该属性为实现类的全限定名称。 使用自定义<br>dialect 实现时，下面的参数没有任何作用。</p>
+<p><strong>helperDialect</strong>：分页插件会自动检测当前的数据库链接，自动选择合适的分页方式。<br>oracle,mysql,mariadb,sqlite,hsqldb,postgresql,db2,sqlserver,informix,h2,sqlserver2012,derby<br><strong>特别注意</strong>：使用 SqlServer2012 数据库时，需要手动指定为 sqlserver2012，否则会使用 SqlServer2005<br>的方式进行分页。</p>
+<p><strong>offsetAsPageNum</strong>：默认值为 false，该参数对使用 RowBounds 作为分页参数时有效。 当该参数设置为 true<br>时，会将 RowBounds 中的 offset 参数当成 pageNum 使用，可以用页码和页面大小两个参数进行分页。</p>
+<p><strong>rowBoundsWithCount</strong>：默认值为false，该参数对使用 RowBounds 作为分页参数时有效。<br>当该参数设置为true时，使用 RowBounds 分页会进行 count 查询。</p>
+<p><strong>pageSizeZero</strong>：默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者<br>RowBounds.limit = 0 就会查询出全部的结果（相当于没有执行分页查询，但是返回结果仍然是 Page 类型）。</p>
+<p><strong>reasonable</strong>：分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum&lt;=0<br>时会查询第一页，pageNum&gt;pages（超过总数时），会查询最后一页。默认false 时，直接根据参数进行查询。</p>
+<p><strong>params</strong>：为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，<br>可以配置 pageNum,pageSize,count,pageSizeZero,reasonable，不配置映射的用默认值，<br>默认值为pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero。</p>
+<p><strong>supportMethodsArguments</strong>：支持通过 Mapper<br>接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params<br>配置的字段中取值，查找到合适的值时就会自动分页。</p>
+<p><strong>aggregateFunctions</strong>：默认为所有常见数据库的聚合函数，允许手动添加聚合函数（影响行数），所有以聚合函数开头的函数，在进行<br>count 转换时，会套一层。其他函数和列会被替换为 count(0)，其中count列可以自己配置。</p>
+</blockquote>
+<h2 id="重要提示："><a href="#重要提示：" class="headerlink" title="重要提示："></a>重要提示：</h2><p>当 offsetAsPageNum=false 的时候，由于 PageNum 问题，RowBounds查询的时候 reasonable 会强制为 false。使用 PageHelper.startPage 方法不受影响。</p>
+<p>service层</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseResult <span class="title">selectAllStudent</span><span class="params">(Integer pageNum, Integer pageSize)</span> </span>&#123;</span><br><span class="line">    Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    PageHelper.startPage(pageNum,pageSize);</span><br><span class="line">    List&lt;Student&gt;  students = studentMapper.selectAllStudents();</span><br><span class="line">    PageInfo pageInfo = <span class="keyword">new</span> PageInfo(students);</span><br><span class="line">    <span class="keyword">long</span> total = pageInfo.getTotal();</span><br><span class="line">    map.put(<span class="string">"result"</span>,pageInfo);</span><br><span class="line">    map.put(<span class="string">"count"</span>,total);</span><br><span class="line">    <span class="keyword">return</span> ResponseResultUtil.success(map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>详细请看 <a href="https://blog.csdn.net/riemann_/article/details/90454451" target="_blank" rel="noopener">SpringBoot集成MyBatis的分页插件PageHelper</a></p>
+<h2 id="五、springData分页"><a href="#五、springData分页" class="headerlink" title="五、springData分页"></a>五、springData分页</h2><p>service层</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">Sort.Order travelDate = <span class="keyword">new</span> Sort.Order(Sort.Direction.DESC, <span class="string">"travelDate"</span>);</span><br><span class="line">Sort.Order createdTime = <span class="keyword">new</span> Sort.Order(Sort.Direction.DESC, <span class="string">"createdTime"</span>);</span><br><span class="line">Sort sort = <span class="keyword">new</span> Sort(travelDate, createdTime);</span><br><span class="line">Pageable pageable = <span class="keyword">new</span> PageRequest(page, pageSize, sort);</span><br><span class="line">List&lt;TravelItem&gt; items = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    items = travelRepository.getTravelItemsByTravelDateBetweenAndUserId(theStartDate, theEndDate, openId, pageable);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> DatabaseRelatedException(<span class="string">"TravelRepository异常"</span>);</span><br><span class="line">&#125;</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
+
+<p>dao层：接口继承的是PagingAndSortingRepository接口，注意要加@Repository注解</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>分页功能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java集合</title>
+    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>集合</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hadoop运行环境搭建</title>
     <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
@@ -127,15 +207,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Java集合</title>
-    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <title>MySQL数据库集群-PXC方案</title>
+    <url>/2020/10/21/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[]]></content>
       <categories>
-        <category>集合</category>
+        <category>MySQL</category>
+        <category>MySQL集群</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
+        <tag>MySQL数据库集群</tag>
       </tags>
   </entry>
   <entry>
@@ -228,19 +308,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot错误</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java多线程</title>
     <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
     <content><![CDATA[<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
@@ -303,42 +370,70 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot实现邮件发送功能</title>
-    <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
-    <content><![CDATA[<h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><h4 id="POP3协议是什么？"><a href="#POP3协议是什么？" class="headerlink" title="POP3协议是什么？"></a>POP3协议是什么？</h4><p>POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。</p>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
 <a id="more"></a>
-<h4 id="SMTP协议是什么？"><a href="#SMTP协议是什么？" class="headerlink" title="SMTP协议是什么？"></a>SMTP协议是什么？</h4><p>SMTP 的全称是Simple Mail Transfer Protocol，即简单邮件传输协议。它是一组用于从源地址到目的地址传输邮件的规范，通过它来控制邮件的中转方式。SMTP 协议属于 TCP/IP 协议簇，它帮助每台计算机在发送或中转信件时找到下一个目的地。SMTP 服务器就是遵循 SMTP 协议的发送邮件服务器。SMTP 认证，简单地说就是要求必须在提供了账户名和密码之后才可以登录 SMTP 服务器，这就使得那些垃圾邮件的散播者无可乘之机。增加 SMTP 认证的目的是为了使用户避免受到垃圾邮件的侵扰。</p>
-<h4 id="IMAP协议是什么？"><a href="#IMAP协议是什么？" class="headerlink" title="IMAP协议是什么？"></a>IMAP协议是什么？</h4><p>IMAP全称是Internet Mail Access Protocol，即交互式邮件存取协议，它是跟POP3类似邮件访问标准协议之一。不同的是，开启了IMAP后，您在电子邮件客户端收取的邮件仍然保留在服务器上，同时在客户端上的操作都会反馈到服务器上，如：删除邮件，标记已读等，服务器上的邮件也会做相应的动作。所以无论从浏览器登录邮箱或者客户端软件登录邮箱，看到的邮件以及状态都是一致的。</p>
-<h4 id="IMAP和POP3协议有什么不同呢？"><a href="#IMAP和POP3协议有什么不同呢？" class="headerlink" title="IMAP和POP3协议有什么不同呢？"></a>IMAP和POP3协议有什么不同呢？</h4><p>POP3协议允许电子邮件客户端下载服务器上的邮件，但是在客户端的操作（如移动邮件、标记已读等），不会反馈到服务器上，比如通过客户端收取了邮箱中的3封邮件并移动到其他文件夹，邮箱服务器上的这些邮件是没有同时被移动的 。</p>
-<p>而IMAP提供webmail 与电子邮件客户端之间的双向通信，客户端的操作都会反馈到服务器上，对邮件进行的操作，服务器上的邮件也会做相应的动作。</p>
-<p>同时，IMAP像POP3那样提供了方便的邮件下载服务，让用户能进行离线阅读。IMAP提供的摘要浏览功能可以让你在阅读完所有的邮件到达时间、主题、发件人、大小等信息后才作出是否下载的决定。此外，IMAP 更好地支持了从多个不同设备中随时访问新邮件。<br><img src="/images/2020081401.png" alt=""><br>总之，IMAP 整体上为用户带来更为便捷和可靠的体验。POP3 更易丢失邮件或多次下载相同的邮件，但 IMAP 通过邮件客户端与webmail 之间的双向同步功能很好地避免了这些问题。</p>
-<h3 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h3><p>对于邮箱功能，首先需要开启<code>POP3/SMTP服务</code>获取邮箱授权码。</p>
-<p>在邮箱主页-&gt;设置-&gt;账户中可以看到</p>
-<p><img src="/images/2020081402.png" alt=""></p>
-<p>开启之后会获取一个授权码，用来第三方验证，具体的可以看官方教程。<a href="https://service.mail.qq.com/cgi-bin/help?subtype=1&&no=1001256&&id=28" target="_blank" rel="noopener">官方教程</a></p>
-<h4 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h4><p>创建一个springboot项目，引入下方依赖。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-mail&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 
-<p> 然后修改application.properties 配置信息，这里我使用的是application.yml文件。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  mail:</span><br><span class="line">    host: smtp.qq.com</span><br><span class="line">    port: 587</span><br><span class="line">    username: 2826803629@qq.com</span><br><span class="line">    password: xxxxwwnddfh</span><br><span class="line">    default-encoding: UTF-8</span><br><span class="line">    properties:</span><br><span class="line">      mail:</span><br><span class="line">        smtp:</span><br><span class="line">          socketFactoryClass: javax.net.ssl.SSLsocketFactory</span><br><span class="line">        debug: true</span><br></pre></td></tr></table></figure>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>配置完成之后进行测试：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">   JavaMailSender javaMailSender;</span><br><span class="line">   <span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       SimpleMailMessage msg = <span class="keyword">new</span> SimpleMailMessage();</span><br><span class="line">       <span class="comment">//邮件主题</span></span><br><span class="line">       msg.setSubject(<span class="string">"测试邮件"</span>);</span><br><span class="line">       <span class="comment">//邮件内容</span></span><br><span class="line">       msg.setText(<span class="string">"hhhhhhh"</span>);</span><br><span class="line">       <span class="comment">//邮件发送者</span></span><br><span class="line">       msg.setFrom(<span class="string">"xxx@qq.com"</span>);</span><br><span class="line">       <span class="comment">//邮件接受者</span></span><br><span class="line">       msg.setTo(<span class="string">"xxx@qq.com"</span>);</span><br><span class="line">       <span class="comment">//发送邮件</span></span><br><span class="line">       javaMailSender.send(msg);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h3><p>有些同学可能会遇到下面的错误，这是授权码的问题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">javax.mail.AuthenticationFailedException: 535 Login Fail. Please enter your authorization code to login. More information <span class="keyword">in</span> http://service.mail.qq.com/cgi-bin/<span class="built_in">help</span>?subtype=1&amp;&amp;id=28&amp;&amp;no=1001256</span><br></pre></td></tr></table></figure>
-
-<p>重新开启POP3/SMTP服务即可。</p>
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
 ]]></content>
       <categories>
+        <category>MyBatis</category>
+      </categories>
+      <tags>
+        <tag>MyBatis缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot错误</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
+    <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
+    <content><![CDATA[<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，我就分开总结了，望各位笑纳。</p>
+<a id="more"></a>
+
+<h2 id="Spring集成PageHelper："><a href="#Spring集成PageHelper：" class="headerlink" title="Spring集成PageHelper："></a>Spring集成PageHelper：</h2><p><strong>第一步：pom文件引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：MyBatis的核心配置文件中引入配置项</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"cn.e3mall.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：业务逻辑实现分页功能，我们只需将当前查询的页数page和每页显示的总条数rows传进去，然后Pagehelper已经帮我们分好数据了，只需在web层获取数据即可。</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分页查询商品列表：</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DatagridResult <span class="title">itemList</span><span class="params">(Integer page, Integer rows)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//为了程序的严谨性，判断非空：</span></span><br><span class="line">    <span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;   <span class="comment">//设置默认当前页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(page &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(rows == <span class="keyword">null</span>)&#123;</span><br><span class="line">        rows = <span class="number">30</span>;    <span class="comment">//设置默认每页显示的商品数(因为jsp页面上默认写的就是30条)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1、设置分页信息，包括当前页数和每页显示的总计数</span></span><br><span class="line">    PageHelper.startPage(page, rows);</span><br><span class="line">    <span class="comment">//2、执行查询</span></span><br><span class="line">    TbItemExample example = <span class="keyword">new</span> TbItemExample();</span><br><span class="line">    List&lt;TbItem&gt; list = tbItemMapper.selectByExample(example);</span><br><span class="line">    <span class="comment">//3、获取分页查询后的数据</span></span><br><span class="line">    PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    <span class="comment">//4、封装需要返回的分页实体</span></span><br><span class="line">    DatagridResult result = <span class="keyword">new</span> DatagridResult();</span><br><span class="line">    <span class="comment">//设置获取到的总记录数total：</span></span><br><span class="line">    result.setTotal(pageInfo.getTotal());</span><br><span class="line">    <span class="comment">//设置数据集合rows：</span></span><br><span class="line">    result.setRows(list);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="springboot集成PageHelper："><a href="#springboot集成PageHelper：" class="headerlink" title="springboot集成PageHelper："></a>springboot集成PageHelper：</h2><p><strong>第一步：pom文件还是需要引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：这次直接是在项目的入口类application.java中直接设置PageHelper插件即可</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//配置mybatis的分页插件pageHelper</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PageHelper <span class="title">pageHelper</span><span class="params">()</span></span>&#123;</span><br><span class="line">    PageHelper pageHelper = <span class="keyword">new</span> PageHelper();</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.setProperty(<span class="string">"offsetAsPageNum"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"rowBoundsWithCount"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"reasonable"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"dialect"</span>,<span class="string">"mysql"</span>);    <span class="comment">//配置mysql数据库的方言</span></span><br><span class="line">    pageHelper.setProperties(properties);</span><br><span class="line">    <span class="keyword">return</span> pageHelper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：同理，使用插件实现分页功能，方式还是一样，只需将当前查询的页数和每页显示的条数穿进去即可，直接源码</strong></p>
+<p>这是需要用到的分页实体，各位可以直接享用。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.riemann.utils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页bean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 当前页</span></span><br><span class="line">    <span class="keyword">private</span> Integer currentPage = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 每页显示的总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer pageSize = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">// 总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalNum;</span><br><span class="line">    <span class="comment">// 是否有下一页</span></span><br><span class="line">    <span class="keyword">private</span> Integer isMore;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalPage;</span><br><span class="line">    <span class="comment">// 开始索引</span></span><br><span class="line">    <span class="keyword">private</span> Integer startIndex;</span><br><span class="line">    <span class="comment">// 分页结果</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;T&gt; items;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">(Integer currentPage, Integer pageSize, Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = (<span class="keyword">this</span>.totalNum+<span class="keyword">this</span>.pageSize-<span class="number">1</span>)/<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = (<span class="keyword">this</span>.currentPage-<span class="number">1</span>)*<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.isMore = <span class="keyword">this</span>.currentPage &gt;= <span class="keyword">this</span>.totalPage?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getCurrentPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCurrentPage</span><span class="params">(Integer currentPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getPageSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageSize</span><span class="params">(Integer pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalNum</span><span class="params">(Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getIsMore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsMore</span><span class="params">(Integer isMore)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isMore = isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalPage</span><span class="params">(Integer totalPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStartIndex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartIndex</span><span class="params">(Integer startIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">getItems</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> items;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItems</span><span class="params">(List&lt;T&gt; items)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.items = items;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分页功能源码(web层和service层)。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">findItemByPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】</span></span><br><span class="line">    PageHelper.startPage(currentPage, pageSize);</span><br><span class="line">    </span><br><span class="line">    List&lt;Item&gt; allItems = itemMapper.findAll();        <span class="comment">//全部商品</span></span><br><span class="line">    <span class="keyword">int</span> countNums = itemMapper.countItem();            <span class="comment">//总记录数</span></span><br><span class="line">    PageBean&lt;Item&gt; pageData = <span class="keyword">new</span> PageBean&lt;&gt;(currentPage, pageSize, countNums);</span><br><span class="line">    pageData.setItems(allItems);</span><br><span class="line">    <span class="keyword">return</span> pageData.getItems();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 商品分页功能(集成mybatis的分页插件pageHelper实现)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> currentPage    :当前页数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize        :每页显示的总记录数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/itemsPage"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">itemsPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> itemService.findItemByPage(currentPage, pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Java</category>
         <category>SpringBoot</category>
       </categories>
       <tags>
-        <tag>邮件</tag>
+        <tag>分页功能</tag>
       </tags>
   </entry>
   <entry>
@@ -381,6 +476,76 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot启动时找不到或无法加载主类</title>
+    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
+    <content><![CDATA[<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
+<blockquote>
+<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
+</blockquote>
+<a id="more"></a>
+
+<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot错误</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot实现邮件发送功能</title>
+    <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><h4 id="POP3协议是什么？"><a href="#POP3协议是什么？" class="headerlink" title="POP3协议是什么？"></a>POP3协议是什么？</h4><p>POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。</p>
+<a id="more"></a>
+<h4 id="SMTP协议是什么？"><a href="#SMTP协议是什么？" class="headerlink" title="SMTP协议是什么？"></a>SMTP协议是什么？</h4><p>SMTP 的全称是Simple Mail Transfer Protocol，即简单邮件传输协议。它是一组用于从源地址到目的地址传输邮件的规范，通过它来控制邮件的中转方式。SMTP 协议属于 TCP/IP 协议簇，它帮助每台计算机在发送或中转信件时找到下一个目的地。SMTP 服务器就是遵循 SMTP 协议的发送邮件服务器。SMTP 认证，简单地说就是要求必须在提供了账户名和密码之后才可以登录 SMTP 服务器，这就使得那些垃圾邮件的散播者无可乘之机。增加 SMTP 认证的目的是为了使用户避免受到垃圾邮件的侵扰。</p>
+<h4 id="IMAP协议是什么？"><a href="#IMAP协议是什么？" class="headerlink" title="IMAP协议是什么？"></a>IMAP协议是什么？</h4><p>IMAP全称是Internet Mail Access Protocol，即交互式邮件存取协议，它是跟POP3类似邮件访问标准协议之一。不同的是，开启了IMAP后，您在电子邮件客户端收取的邮件仍然保留在服务器上，同时在客户端上的操作都会反馈到服务器上，如：删除邮件，标记已读等，服务器上的邮件也会做相应的动作。所以无论从浏览器登录邮箱或者客户端软件登录邮箱，看到的邮件以及状态都是一致的。</p>
+<h4 id="IMAP和POP3协议有什么不同呢？"><a href="#IMAP和POP3协议有什么不同呢？" class="headerlink" title="IMAP和POP3协议有什么不同呢？"></a>IMAP和POP3协议有什么不同呢？</h4><p>POP3协议允许电子邮件客户端下载服务器上的邮件，但是在客户端的操作（如移动邮件、标记已读等），不会反馈到服务器上，比如通过客户端收取了邮箱中的3封邮件并移动到其他文件夹，邮箱服务器上的这些邮件是没有同时被移动的 。</p>
+<p>而IMAP提供webmail 与电子邮件客户端之间的双向通信，客户端的操作都会反馈到服务器上，对邮件进行的操作，服务器上的邮件也会做相应的动作。</p>
+<p>同时，IMAP像POP3那样提供了方便的邮件下载服务，让用户能进行离线阅读。IMAP提供的摘要浏览功能可以让你在阅读完所有的邮件到达时间、主题、发件人、大小等信息后才作出是否下载的决定。此外，IMAP 更好地支持了从多个不同设备中随时访问新邮件。<br><img src="/images/2020081401.png" alt=""><br>总之，IMAP 整体上为用户带来更为便捷和可靠的体验。POP3 更易丢失邮件或多次下载相同的邮件，但 IMAP 通过邮件客户端与webmail 之间的双向同步功能很好地避免了这些问题。</p>
+<h3 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h3><p>对于邮箱功能，首先需要开启<code>POP3/SMTP服务</code>获取邮箱授权码。</p>
+<p>在邮箱主页-&gt;设置-&gt;账户中可以看到</p>
+<p><img src="/images/2020081402.png" alt=""></p>
+<p>开启之后会获取一个授权码，用来第三方验证，具体的可以看官方教程。<a href="https://service.mail.qq.com/cgi-bin/help?subtype=1&&no=1001256&&id=28" target="_blank" rel="noopener">官方教程</a></p>
+<h4 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h4><p>创建一个springboot项目，引入下方依赖。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-mail&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p> 然后修改application.properties 配置信息，这里我使用的是application.yml文件。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  mail:</span><br><span class="line">    host: smtp.qq.com</span><br><span class="line">    port: 587</span><br><span class="line">    username: 2826803629@qq.com</span><br><span class="line">    password: xxxxwwnddfh</span><br><span class="line">    default-encoding: UTF-8</span><br><span class="line">    properties:</span><br><span class="line">      mail:</span><br><span class="line">        smtp:</span><br><span class="line">          socketFactoryClass: javax.net.ssl.SSLsocketFactory</span><br><span class="line">        debug: true</span><br></pre></td></tr></table></figure>
+
+<p>配置完成之后进行测试：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">   JavaMailSender javaMailSender;</span><br><span class="line">   <span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       SimpleMailMessage msg = <span class="keyword">new</span> SimpleMailMessage();</span><br><span class="line">       <span class="comment">//邮件主题</span></span><br><span class="line">       msg.setSubject(<span class="string">"测试邮件"</span>);</span><br><span class="line">       <span class="comment">//邮件内容</span></span><br><span class="line">       msg.setText(<span class="string">"hhhhhhh"</span>);</span><br><span class="line">       <span class="comment">//邮件发送者</span></span><br><span class="line">       msg.setFrom(<span class="string">"xxx@qq.com"</span>);</span><br><span class="line">       <span class="comment">//邮件接受者</span></span><br><span class="line">       msg.setTo(<span class="string">"xxx@qq.com"</span>);</span><br><span class="line">       <span class="comment">//发送邮件</span></span><br><span class="line">       javaMailSender.send(msg);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h3><p>有些同学可能会遇到下面的错误，这是授权码的问题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">javax.mail.AuthenticationFailedException: 535 Login Fail. Please enter your authorization code to login. More information <span class="keyword">in</span> http://service.mail.qq.com/cgi-bin/<span class="built_in">help</span>?subtype=1&amp;&amp;id=28&amp;&amp;no=1001256</span><br></pre></td></tr></table></figure>
+
+<p>重新开启POP3/SMTP服务即可。</p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>邮件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>fatal: not a git repository (or any of the parent directories): .git</title>
+    <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
+    <content><![CDATA[<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+]]></content>
+      <categories>
+        <category>git常见错误</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git Could not read from remote repository</title>
     <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
     <content><![CDATA[<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
@@ -395,10 +560,15 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>fatal: not a git repository (or any of the parent directories): .git</title>
-    <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
-    <content><![CDATA[<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
+    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
+    <content><![CDATA[<p>git push的时候报错：</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
 ]]></content>
       <categories>
         <category>git常见错误</category>
@@ -446,37 +616,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot启动时找不到或无法加载主类</title>
-    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
-    <content><![CDATA[<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
-<blockquote>
-<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
-</blockquote>
-<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot错误</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
-    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
-    <content><![CDATA[<p>git push的时候报错：</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+    <title>人民日报给90后的理财计划</title>
+    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>人民日报给90后的理财计划</p>
+<a id="more"></a>
+
+<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="6609c93d70cf3bc7295a8603c088c1a6cc112a12 (1)"></p>
+<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="faf2b2119313b07e200a895e195fea2496dd8c45"></p>
+<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="500fd9f9d72a6059f1733a1a3bbc4f9c023bbadb"></p>
+<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="0b46f21fbe096b6379df433618bbfc43eaf8ac25"></p>
+<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="5fdf8db1cb13495443971a8c42c6e95fd3094ad8"></p>
 ]]></content>
       <categories>
-        <category>git常见错误</category>
+        <category>理财</category>
       </categories>
       <tags>
-        <tag>git</tag>
+        <tag>理财</tag>
       </tags>
   </entry>
   <entry>
@@ -496,6 +651,37 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>反射的理解</title>
+    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实体类的4种类型</title>
+    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>记录一下：</p>
+<a id="more"></a>
+
+<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
+<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
+<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
+<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
+<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
+<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>Domain Object</tag>
       </tags>
   </entry>
   <entry>
@@ -528,36 +714,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Docker</tag>
         <tag>RabbitMQ</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决idea不显示maven工具栏的问题</title>
-    <url>/2020/08/11/%E8%A7%A3%E5%86%B3idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
-<a id="more"></a>
-
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
-]]></content>
-      <categories>
-        <category>idea小技巧</category>
-      </categories>
-      <tags>
-        <tag>idea小技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一个小小的强迫症</title>
-    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
-    <content><![CDATA[<p>在idea中经常会碰到这样的问题</p>
-<blockquote>
-<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
-</blockquote>
-<a id="more"></a>
-<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
-<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
-]]></content>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
       </tags>
   </entry>
   <entry>
@@ -881,6 +1037,36 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>记一个小小的强迫症</title>
+    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
+    <content><![CDATA[<p>在idea中经常会碰到这样的问题</p>
+<blockquote>
+<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
+</blockquote>
+<a id="more"></a>
+<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
+<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
+]]></content>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决idea不显示maven工具栏的问题</title>
+    <url>/2020/08/11/%E8%A7%A3%E5%86%B3idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
+<a id="more"></a>
+
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
+]]></content>
+      <categories>
+        <category>idea小技巧</category>
+      </categories>
+      <tags>
+        <tag>idea小技巧</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
@@ -967,6 +1153,53 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<a id="more"></a>
+
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（转）重定向与转发</title>
+    <url>/2020/10/23/%EF%BC%88%E8%BD%AC%EF%BC%89%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91/</url>
+    <content><![CDATA[<p>重定向（redirect）与转发（forward）</p>
+<h3 id="解释一"><a href="#解释一" class="headerlink" title="解释一　　"></a>解释一　　</h3><p>一句话，转发是服务器行为，重定向是客户端行为。为什么这样说呢，这就要看两个动作的工作流程：</p>
+<p><strong>转发过程：</strong>客户浏览器发送http请求—》web服务器接受此请求–》调用内部的一个方法在容器内部完成请求处理和转发动作—》将目标资源发送给客户；在这里，转发的路径必须是同一个web容器下的url，其不能转向到其他的web路径上去，中间传递的是自己的容器内的request。在客户浏览器路径栏显示的仍然是其第一次访问的路径，也就是说客户是感觉不到服务器做了转发的。转发行为是浏览器只做了一次访问请求。</p>
+<p><strong>重定向过程：</strong>客户浏览器发送http请求—》web服务器接受后发送302状态码响应及对应新的location给客户浏览器—》客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址—-》服务器根据此请求寻找资源并发送给客户。在这里location可以重定向到任意URL，既然是浏览器重新发出了请求，则就没有什么request传递的概念了。在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。</p>
+<h3 id="解释二"><a href="#解释二" class="headerlink" title="解释二"></a>解释二</h3><p>重定向，其实是两次request,<br>第一次，客户端request  A,服务器响应，并response回来，告诉浏览器，你应该去B。这个时候IE可以看到地址变了，而且历史的回退按钮也亮了。重定向可以访问自己web应用以外的资源。在重定向的过程中，传输的信息会被丢失。</p>
+<p><strong>例子：</strong></p>
+<p><img src="/images/2020102301.png" alt="img"><br>请求转发是服务器内部把对一个request/response的处理权，移交给另外一个<br>对于客户端而言，它只知道自己最早请求的那个A，而不知道中间的B，甚至C、D。 传输的信息不会丢失。</p>
+<p> <strong>例子：</strong></p>
+<p><img src="/images/2020102302.png" alt="img"></p>
+<h3 id="解释三"><a href="#解释三" class="headerlink" title="解释三"></a>解释三</h3><p>假设你去办理某个执照， </p>
+<p><strong>重定向：</strong>你先去了A局，A局的人说：“这个事情不归我们管，去B局”，然后，你就从A退了出来，自己乘车去了B局。 </p>
+<p><strong>转发：</strong>你先去了A局，A局看了以后，知道这个事情其实应该B局来管，但是他没有把你退回来，而是让你坐一会儿，自己到后面办公室联系了B的人，让他们办好后，送了过来。</p>
+]]></content>
+      <categories>
+        <category>Java Web</category>
+      </categories>
+      <tags>
+        <tag>Java Web</tag>
       </tags>
   </entry>
 </search>
