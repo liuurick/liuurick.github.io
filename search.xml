@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>mysql报错汇总</category>
-      </categories>
-      <tags>
-        <tag>mysql错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker常用命令整理</title>
     <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
     <content><![CDATA[<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
@@ -145,65 +125,23 @@
       </tags>
   </entry>
   <entry>
-    <title>Java多线程</title>
-    <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
 <a id="more"></a>
 
-<blockquote>
-<p>如：运行的QQ，运行中的MP3播放器<br>程序是静态的，进程是动态的<br>进程作为资源分配的单位，系统在运行时会为每个进程不同的内存区域。</p>
-</blockquote>
-<p>线程(thread)：进程可以进一步细化为线程，是一个程序内部的一条执行路径。</p>
-<blockquote>
-<p>若一个进程同一时间并行执行多个线程，就是支持多线程的。<br>线程作为调度和执行的单位，每个线程拥有独立的运行栈和程序计数器(PC)，线程切换的开销小<br>一个进程中的多个线程共享相同的内存单元/内存地址空间-&gt;它们从同一堆中分配对象，可以访问相同的变量和对象。这就使得线程间通信更简便、高效。但多个线程操作共享的系统资源可能带来安全的隐患。</p>
-</blockquote>
-<p><strong>单核CPU与多核CPU的理解</strong></p>
-<p>单核CPU，其实是一种假的多线程，因为在一个时间单元内，也只能执行一个线程的任务。例如：虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果有某个人不想交钱，那么收费人员可以把他“挂起”。但是因为CPU时间单元特别短，所以感觉不出来。</p>
-<p>多核CPU</p>
-<p><strong>并发与并行</strong></p>
-<p>并行：多个CPU同时执行多个任务。例如：多个人同时做不同的事情。</p>
-<p>并发：一个CPU（采用时间片）同时执行多个任务。例如：秒杀，多个人做一件事。</p>
-<p><strong>多线程的优点</strong></p>
-<p>1.提高应用程序的响应。对图形化界面更有意义，可以增强用户体验。</p>
-<p>2.提高计算机系统CPU的利用率</p>
-<p>3.改善程序结构。将既长又复杂的进程分为多个线程，独立运行，利于理解和修改</p>
-<h3 id="二-线程的创建和使用"><a href="#二-线程的创建和使用" class="headerlink" title="二.线程的创建和使用"></a>二.线程的创建和使用</h3><p>多线程的创建，方式一：继承与Thread类</p>
-<p>1.创建一个类继承于Thread类的子类</p>
-<p>2.重写Thread类的run()  ——》将此线程执行的操作声明在run()中</p>
-<p>3.创建Thread类的子类的对象</p>
-<p>4.通过此对象调用start()</p>
-<p><strong>线程的调度</strong>：</p>
-<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><h1 id="线程的状态变化"><a href="#线程的状态变化" class="headerlink" title="线程的状态变化"></a>线程的状态变化</h1><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
-<ul>
-<li>创建状态 </li>
-</ul>
-<p>在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时它已经有了相应的内存空间和其他资源，但还处于不可运行状态。新建一个线程对象可采用Thread 类的构造方法来实现，例如 “Thread thread=new Thread()”。</p>
-<ul>
-<li>就绪状态 </li>
-</ul>
-<p>新建线程对象后，调用该线程的 start() 方法就可以启动线程。当线程启动时，线程进入就绪状态。此时，线程将进入线程队列排队，等待 CPU 服务，这表明它已经具备了运行条件。</p>
-<ul>
-<li>运行状态 </li>
-</ul>
-<p>当就绪状态被调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的 run() 方法。run() 方法定义该线程的操作和功能。</p>
-<ul>
-<li>阻塞状态 </li>
-</ul>
-<p>一个正在执行的线程在某些特殊情况下，如被人为挂起或需要执行耗时的输入/输出操作，会让 CPU 暂时中止自己的执行，进入阻塞状态。在可执行状态下，如果调用sleep(),suspend(),wait() 等方法，线程都将进入阻塞状态，发生阻塞时线程不能进入排队队列，只有当引起阻塞的原因被消除后，线程才可以转入就绪状态。</p>
-<ul>
-<li>死亡状态 </li>
-</ul>
-<p>线程调用 stop() 方法时或 run() 方法执行结束后，即处于死亡状态。处于死亡状态的线程不具有继续运行的能力。</p>
-<p>在此提出一个问题，Java 程序每次运行至少启动几个线程？</p>
-<p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
-<h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
       <categories>
-        <category>多线程</category>
+        <category>mysql报错汇总</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>多线程</tag>
-        <tag>JavaSE</tag>
+        <tag>mysql错误</tag>
       </tags>
   </entry>
   <entry>
@@ -301,86 +239,65 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>Java集合</title>
-    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[]]></content>
+    <title>Java多线程</title>
+    <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
+<a id="more"></a>
+
+<blockquote>
+<p>如：运行的QQ，运行中的MP3播放器<br>程序是静态的，进程是动态的<br>进程作为资源分配的单位，系统在运行时会为每个进程不同的内存区域。</p>
+</blockquote>
+<p>线程(thread)：进程可以进一步细化为线程，是一个程序内部的一条执行路径。</p>
+<blockquote>
+<p>若一个进程同一时间并行执行多个线程，就是支持多线程的。<br>线程作为调度和执行的单位，每个线程拥有独立的运行栈和程序计数器(PC)，线程切换的开销小<br>一个进程中的多个线程共享相同的内存单元/内存地址空间-&gt;它们从同一堆中分配对象，可以访问相同的变量和对象。这就使得线程间通信更简便、高效。但多个线程操作共享的系统资源可能带来安全的隐患。</p>
+</blockquote>
+<p><strong>单核CPU与多核CPU的理解</strong></p>
+<p>单核CPU，其实是一种假的多线程，因为在一个时间单元内，也只能执行一个线程的任务。例如：虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果有某个人不想交钱，那么收费人员可以把他“挂起”。但是因为CPU时间单元特别短，所以感觉不出来。</p>
+<p>多核CPU</p>
+<p><strong>并发与并行</strong></p>
+<p>并行：多个CPU同时执行多个任务。例如：多个人同时做不同的事情。</p>
+<p>并发：一个CPU（采用时间片）同时执行多个任务。例如：秒杀，多个人做一件事。</p>
+<p><strong>多线程的优点</strong></p>
+<p>1.提高应用程序的响应。对图形化界面更有意义，可以增强用户体验。</p>
+<p>2.提高计算机系统CPU的利用率</p>
+<p>3.改善程序结构。将既长又复杂的进程分为多个线程，独立运行，利于理解和修改</p>
+<h3 id="二-线程的创建和使用"><a href="#二-线程的创建和使用" class="headerlink" title="二.线程的创建和使用"></a>二.线程的创建和使用</h3><p>多线程的创建，方式一：继承与Thread类</p>
+<p>1.创建一个类继承于Thread类的子类</p>
+<p>2.重写Thread类的run()  ——》将此线程执行的操作声明在run()中</p>
+<p>3.创建Thread类的子类的对象</p>
+<p>4.通过此对象调用start()</p>
+<p><strong>线程的调度</strong>：</p>
+<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><h1 id="线程的状态变化"><a href="#线程的状态变化" class="headerlink" title="线程的状态变化"></a>线程的状态变化</h1><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
+<ul>
+<li>创建状态 </li>
+</ul>
+<p>在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时它已经有了相应的内存空间和其他资源，但还处于不可运行状态。新建一个线程对象可采用Thread 类的构造方法来实现，例如 “Thread thread=new Thread()”。</p>
+<ul>
+<li>就绪状态 </li>
+</ul>
+<p>新建线程对象后，调用该线程的 start() 方法就可以启动线程。当线程启动时，线程进入就绪状态。此时，线程将进入线程队列排队，等待 CPU 服务，这表明它已经具备了运行条件。</p>
+<ul>
+<li>运行状态 </li>
+</ul>
+<p>当就绪状态被调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的 run() 方法。run() 方法定义该线程的操作和功能。</p>
+<ul>
+<li>阻塞状态 </li>
+</ul>
+<p>一个正在执行的线程在某些特殊情况下，如被人为挂起或需要执行耗时的输入/输出操作，会让 CPU 暂时中止自己的执行，进入阻塞状态。在可执行状态下，如果调用sleep(),suspend(),wait() 等方法，线程都将进入阻塞状态，发生阻塞时线程不能进入排队队列，只有当引起阻塞的原因被消除后，线程才可以转入就绪状态。</p>
+<ul>
+<li>死亡状态 </li>
+</ul>
+<p>线程调用 stop() 方法时或 run() 方法执行结束后，即处于死亡状态。处于死亡状态的线程不具有继续运行的能力。</p>
+<p>在此提出一个问题，Java 程序每次运行至少启动几个线程？</p>
+<p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
+<h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
       <categories>
-        <category>集合</category>
+        <category>多线程</category>
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>集合</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot错误</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<a id="more"></a>
-
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis集群搭建</title>
-    <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id="1、Redis集群方案比较"><a href="#1、Redis集群方案比较" class="headerlink" title="1、Redis集群方案比较"></a>1、Redis集群方案比较</h3><ul>
-<li><strong>哨兵模式</strong></li>
-</ul>
-<p><img src="/images/2020073001.jpg" alt="img"></p>
-<p>在redis3.0以前的版本要实现集群一般是借助哨兵sentinel工具来监控master节点的状态，如果master节点异常，则会做主从切换，将某一台slave作为master，哨兵的配置略微复杂，并且性能和高可用性等各方面表现一般，特别是在主从切换的瞬间存在访问瞬断的情况</p>
-<a id="more"></a>
-<ul>
-<li><strong>高可用集群模式</strong></li>
-</ul>
-<p><img src="/images/2020073002.png" alt="img"></p>
-<p>redis集群是一个由多个主从节点群组成的分布式服务器群，它具有复制、高可用和分片特性。Redis集群不需要sentinel哨兵也能完成节点移除和故障转移的功能。需要将每个节点设置成集群模式，这种集群模式没有中心节点，可水平扩展，据官方文档称可以线性扩展到1000节点。redis集群的性能和高可用性均优于之前版本的哨兵模式，且集群配置非常简单。</p>
-<h3 id="2、redis高可用集群搭建"><a href="#2、redis高可用集群搭建" class="headerlink" title="2、redis高可用集群搭建"></a>2、redis高可用集群搭建</h3><ul>
-<li><strong>redis安装</strong></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">下载地址：http:&#x2F;&#x2F;redis.io&#x2F;download</span><br><span class="line">安装步骤：</span><br><span class="line"># 安装gcc</span><br><span class="line">yum install gcc</span><br><span class="line"></span><br><span class="line"># 把下载好的redis-3.0.0-rc2.tar.gz放在&#x2F;usr&#x2F;local文件夹下，并解压</span><br><span class="line">tar -zxvf redis-3.0.0-rc2.tar.gz</span><br><span class="line"></span><br><span class="line"># 进入到解压好的redis-3.0.0目录下，进行编译</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"># 进入到redis-3.0.0&#x2F;src目录下进行安装，安装完成验证src目录下是否已经生成了redis-server 、redis-cil</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"># 建立俩个文件夹存放redis命令和配置文件</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 把redis-3.0.0下的redis.conf复制到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc下</span><br><span class="line">cp redis.conf &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;</span><br><span class="line"></span><br><span class="line"># 移动redis-3.0.0&#x2F;src里的几个文件到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin下</span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 启动并指定配置文件</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;redis.conf（注意要使用后台启动，所以修改redis.conf里的daemonize改为yes)</span><br><span class="line"></span><br><span class="line"># 验证启动是否成功</span><br><span class="line">ps -ef | grep redis </span><br><span class="line"></span><br><span class="line"># 查看是否有redis服务或者查看端口</span><br><span class="line">netstat -tunpl | grep 6379</span><br><span class="line"></span><br><span class="line"># 进入redis客户端 </span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli </span><br><span class="line"></span><br><span class="line"># 退出客户端</span><br><span class="line">quit</span><br><span class="line"></span><br><span class="line"># 退出redis服务： </span><br><span class="line">（1）pkill redis-server </span><br><span class="line">（2）kill 进程号                       </span><br><span class="line">（3）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli shutdown</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>redis集群搭建</strong></li>
-</ul>
-<p>redis集群需要至少要三个master节点，我们这里搭建三个master节点，并且给每个master再搭建一个slave节点，总共6个redis节点，由于节点数较多，这里采用在一台机器上创建6个redis实例，并将这6个redis实例配置成集群模式，所以这里搭建的是伪分布式集群模式，当然真正的分布式集群的配置方法几乎一样，搭建伪分布式集群的步骤如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一步：在&#x2F;usr&#x2F;local下创建文件夹redis-cluster，然后在其下面分别创建6个文件夾如下</span><br><span class="line">（1）mkdir -p &#x2F;usr&#x2F;local&#x2F;redis-cluster</span><br><span class="line">（2）mkdir 8001、 mkdir 8002、 mkdir 8003、 mkdir 8004、 mkdir 8005、 mkdir 8006</span><br><span class="line"></span><br><span class="line">第一步：把之前的redis.conf配置文件copy到8001下，修改如下内容：</span><br><span class="line">（1）daemonize yes</span><br><span class="line">（2）port 8001（分别对每个机器的端口号进行设置）</span><br><span class="line">（3）bind 192.168.0.61（必须要绑定当前机器的ip，这里方便redis集群定位机器，不绑定可能会出现循环查找集群节点机器的情况）</span><br><span class="line">（4）dir &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;8001&#x2F;（指定数据文件存放位置，必须要指定不同的目录位置，不然会丢失数据）</span><br><span class="line">（5）cluster-enabled yes（启动集群模式）</span><br><span class="line">（6）cluster-config-file nodes-8001.conf（这里800x最好和port对应上）</span><br><span class="line">（7）cluster-node-timeout 5000</span><br><span class="line">（8）appendonly yes</span><br><span class="line"></span><br><span class="line">第三步：把修改后的配置文件，分别 copy到各个文夹下，注意每个文件要修改第2、4、6项里的端口号</span><br><span class="line">快捷复制命令：%s&#x2F;原目标&#x2F;目标地址&#x2F;g    </span><br><span class="line">第四步：由于 redis集群需要使用 ruby命令，所以我们需要安装 ruby</span><br><span class="line">（1）yum install ruby</span><br><span class="line">（2）yum install rubygems</span><br><span class="line">（3）gem install redis --version 3.0.0（安装redis和 ruby的接囗）</span><br><span class="line"></span><br><span class="line">第五步：分别启动6个redis实例，然后检查是否启动成功</span><br><span class="line">（1）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;800*&#x2F;redis.conf</span><br><span class="line">（2）ps -ef | grep redis 查看是否启动成功</span><br><span class="line"></span><br><span class="line">第六步：在redis的安装目录下执行 redis-trib.rb命令</span><br><span class="line">（1）cd &#x2F;usr&#x2F;local&#x2F;redis-3.0.0&#x2F;src</span><br><span class="line">（2）.&#x2F;redis-trib.rb create --replicas 1 192.168.0.61:8001 192.168.0.61:8002 192.168.0.61:8003 192.168.0.61:8004 192.168.0.61:8005 192.168.0.61:8006</span><br><span class="line">新版本：redis-cli --cluster create 192.168.200.10:8001 192.168.200.10:8002  192.168.200.10:8003 192.168.200.10:8004 192.168.200.10:8005 192.168.200.10:8006  --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">第七步：验证集群：</span><br><span class="line">（1）连接任意一个客户端即可：.&#x2F;redis-cli -c -h -p (-c表示集群模式，指定ip地址和端口号）如：&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800*</span><br><span class="line">（2）进行验证： cluster info（查看集群信息）、cluster nodes（查看节点列表）</span><br><span class="line">（3）进行数据操作验证</span><br><span class="line">（4）关闭集群则需要逐个进行关闭，使用命令：</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800* shutdown</span><br><span class="line"></span><br><span class="line">PS：当出现集群无法启动时，删除redis的临时数据文件，再次重新启动每一个redis服务，然后重新构造集群环境。</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="3、Java操作redis集群"><a href="#3、Java操作redis集群" class="headerlink" title="3、Java操作redis集群"></a>3、Java操作redis集群</h3><p>借助redis的java客户端jedis可以操作以上集群，引用jedis版本的maven坐标如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;redis.clients&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jedis&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.9.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p>Java编写访问redis集群的代码非常简单，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">import redis.clients.jedis.HostAndPort;</span><br><span class="line">import redis.clients.jedis.JedisCluster;</span><br><span class="line">import redis.clients.jedis.JedisPoolConfig;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 访问redis集群</span><br><span class="line"> * @author aaron.rao</span><br><span class="line"> *</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class RedisCluster </span><br><span class="line">&#123;</span><br><span class="line">    public static void main(String[] args) throws IOException</span><br><span class="line">    &#123;</span><br><span class="line">        Set&lt;HostAndPort&gt; jedisClusterNode &#x3D; new HashSet&lt;HostAndPort&gt;();</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8001));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8002));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8003));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8004));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8005));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8006));</span><br><span class="line">        </span><br><span class="line">        JedisPoolConfig config &#x3D; new JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(100);</span><br><span class="line">        config.setMaxIdle(10);</span><br><span class="line">        config.setTestOnBorrow(true);</span><br><span class="line">        JedisCluster jedisCluster &#x3D; new JedisCluster(jedisClusterNode, 6000, 10, config);</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;student&quot;, &quot;aaron&quot;));</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;age&quot;, &quot;18&quot;));</span><br><span class="line">        </span><br><span class="line">        System.out.println(jedisCluster.get(&quot;student&quot;));</span><br><span class="line">        System.out.println(jedisCluster.get(&quot;age&quot;));</span><br><span class="line">        </span><br><span class="line">        jedisCluster.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">运行效果如下：</span><br><span class="line">OK</span><br><span class="line">OK</span><br><span class="line">aaron</span><br><span class="line">18</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Redis集群</category>
-      </categories>
-      <tags>
-        <tag>Redis集群</tag>
+        <tag>多线程</tag>
+        <tag>JavaSE</tag>
       </tags>
   </entry>
   <entry>
@@ -448,6 +365,168 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java集合</title>
+    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>集合</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<a id="more"></a>
+
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+      <tags>
+        <tag>MyBatis缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL数据库集群-PXC方案</title>
+    <url>/2020/08/21/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
+<table>
+<thead>
+<tr>
+<th>Replication</th>
+<th>PXC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
+<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
+</tr>
+<tr>
+<td>异步复制，从和主无法保证数据的一致性</td>
+<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
+</tr>
+</tbody></table>
+<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
+<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
+<a id="more"></a>
+
+<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>这里我是尝试通过Docker搭建的。Docker的安装与配置非常简单。</p>
+<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
+<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
+<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
+<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
+
+<p>查看docker卷信息：<code>docker inspect v1</code></p>
+<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
+<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
+<p>在DB1中新建test数据库并创建student表：</p>
+<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
+<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
+<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
+<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
+<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
+<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
+<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
+<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
+<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
+<p>haproxy.cfg</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
+<p>首页展示：</p>
+<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+        <category>MySQL集群</category>
+      </categories>
+      <tags>
+        <tag>MySQL数据库集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis集群搭建</title>
+    <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h3 id="1、Redis集群方案比较"><a href="#1、Redis集群方案比较" class="headerlink" title="1、Redis集群方案比较"></a>1、Redis集群方案比较</h3><ul>
+<li><strong>哨兵模式</strong></li>
+</ul>
+<p><img src="/images/2020073001.jpg" alt="img"></p>
+<p>在redis3.0以前的版本要实现集群一般是借助哨兵sentinel工具来监控master节点的状态，如果master节点异常，则会做主从切换，将某一台slave作为master，哨兵的配置略微复杂，并且性能和高可用性等各方面表现一般，特别是在主从切换的瞬间存在访问瞬断的情况</p>
+<a id="more"></a>
+<ul>
+<li><strong>高可用集群模式</strong></li>
+</ul>
+<p><img src="/images/2020073002.png" alt="img"></p>
+<p>redis集群是一个由多个主从节点群组成的分布式服务器群，它具有复制、高可用和分片特性。Redis集群不需要sentinel哨兵也能完成节点移除和故障转移的功能。需要将每个节点设置成集群模式，这种集群模式没有中心节点，可水平扩展，据官方文档称可以线性扩展到1000节点。redis集群的性能和高可用性均优于之前版本的哨兵模式，且集群配置非常简单。</p>
+<h3 id="2、redis高可用集群搭建"><a href="#2、redis高可用集群搭建" class="headerlink" title="2、redis高可用集群搭建"></a>2、redis高可用集群搭建</h3><ul>
+<li><strong>redis安装</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">下载地址：http:&#x2F;&#x2F;redis.io&#x2F;download</span><br><span class="line">安装步骤：</span><br><span class="line"># 安装gcc</span><br><span class="line">yum install gcc</span><br><span class="line"></span><br><span class="line"># 把下载好的redis-3.0.0-rc2.tar.gz放在&#x2F;usr&#x2F;local文件夹下，并解压</span><br><span class="line">tar -zxvf redis-3.0.0-rc2.tar.gz</span><br><span class="line"></span><br><span class="line"># 进入到解压好的redis-3.0.0目录下，进行编译</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"># 进入到redis-3.0.0&#x2F;src目录下进行安装，安装完成验证src目录下是否已经生成了redis-server 、redis-cil</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"># 建立俩个文件夹存放redis命令和配置文件</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 把redis-3.0.0下的redis.conf复制到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc下</span><br><span class="line">cp redis.conf &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;</span><br><span class="line"></span><br><span class="line"># 移动redis-3.0.0&#x2F;src里的几个文件到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin下</span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 启动并指定配置文件</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;redis.conf（注意要使用后台启动，所以修改redis.conf里的daemonize改为yes)</span><br><span class="line"></span><br><span class="line"># 验证启动是否成功</span><br><span class="line">ps -ef | grep redis </span><br><span class="line"></span><br><span class="line"># 查看是否有redis服务或者查看端口</span><br><span class="line">netstat -tunpl | grep 6379</span><br><span class="line"></span><br><span class="line"># 进入redis客户端 </span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli </span><br><span class="line"></span><br><span class="line"># 退出客户端</span><br><span class="line">quit</span><br><span class="line"></span><br><span class="line"># 退出redis服务： </span><br><span class="line">（1）pkill redis-server </span><br><span class="line">（2）kill 进程号                       </span><br><span class="line">（3）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli shutdown</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>redis集群搭建</strong></li>
+</ul>
+<p>redis集群需要至少要三个master节点，我们这里搭建三个master节点，并且给每个master再搭建一个slave节点，总共6个redis节点，由于节点数较多，这里采用在一台机器上创建6个redis实例，并将这6个redis实例配置成集群模式，所以这里搭建的是伪分布式集群模式，当然真正的分布式集群的配置方法几乎一样，搭建伪分布式集群的步骤如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一步：在&#x2F;usr&#x2F;local下创建文件夹redis-cluster，然后在其下面分别创建6个文件夾如下</span><br><span class="line">（1）mkdir -p &#x2F;usr&#x2F;local&#x2F;redis-cluster</span><br><span class="line">（2）mkdir 8001、 mkdir 8002、 mkdir 8003、 mkdir 8004、 mkdir 8005、 mkdir 8006</span><br><span class="line"></span><br><span class="line">第一步：把之前的redis.conf配置文件copy到8001下，修改如下内容：</span><br><span class="line">（1）daemonize yes</span><br><span class="line">（2）port 8001（分别对每个机器的端口号进行设置）</span><br><span class="line">（3）bind 192.168.0.61（必须要绑定当前机器的ip，这里方便redis集群定位机器，不绑定可能会出现循环查找集群节点机器的情况）</span><br><span class="line">（4）dir &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;8001&#x2F;（指定数据文件存放位置，必须要指定不同的目录位置，不然会丢失数据）</span><br><span class="line">（5）cluster-enabled yes（启动集群模式）</span><br><span class="line">（6）cluster-config-file nodes-8001.conf（这里800x最好和port对应上）</span><br><span class="line">（7）cluster-node-timeout 5000</span><br><span class="line">（8）appendonly yes</span><br><span class="line"></span><br><span class="line">第三步：把修改后的配置文件，分别 copy到各个文夹下，注意每个文件要修改第2、4、6项里的端口号</span><br><span class="line">快捷复制命令：%s&#x2F;原目标&#x2F;目标地址&#x2F;g    </span><br><span class="line">第四步：由于 redis集群需要使用 ruby命令，所以我们需要安装 ruby</span><br><span class="line">（1）yum install ruby</span><br><span class="line">（2）yum install rubygems</span><br><span class="line">（3）gem install redis --version 3.0.0（安装redis和 ruby的接囗）</span><br><span class="line"></span><br><span class="line">第五步：分别启动6个redis实例，然后检查是否启动成功</span><br><span class="line">（1）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;800*&#x2F;redis.conf</span><br><span class="line">（2）ps -ef | grep redis 查看是否启动成功</span><br><span class="line"></span><br><span class="line">第六步：在redis的安装目录下执行 redis-trib.rb命令</span><br><span class="line">（1）cd &#x2F;usr&#x2F;local&#x2F;redis-3.0.0&#x2F;src</span><br><span class="line">（2）.&#x2F;redis-trib.rb create --replicas 1 192.168.0.61:8001 192.168.0.61:8002 192.168.0.61:8003 192.168.0.61:8004 192.168.0.61:8005 192.168.0.61:8006</span><br><span class="line">新版本：redis-cli --cluster create 192.168.200.10:8001 192.168.200.10:8002  192.168.200.10:8003 192.168.200.10:8004 192.168.200.10:8005 192.168.200.10:8006  --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">第七步：验证集群：</span><br><span class="line">（1）连接任意一个客户端即可：.&#x2F;redis-cli -c -h -p (-c表示集群模式，指定ip地址和端口号）如：&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800*</span><br><span class="line">（2）进行验证： cluster info（查看集群信息）、cluster nodes（查看节点列表）</span><br><span class="line">（3）进行数据操作验证</span><br><span class="line">（4）关闭集群则需要逐个进行关闭，使用命令：</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800* shutdown</span><br><span class="line"></span><br><span class="line">PS：当出现集群无法启动时，删除redis的临时数据文件，再次重新启动每一个redis服务，然后重新构造集群环境。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3、Java操作redis集群"><a href="#3、Java操作redis集群" class="headerlink" title="3、Java操作redis集群"></a>3、Java操作redis集群</h3><p>借助redis的java客户端jedis可以操作以上集群，引用jedis版本的maven坐标如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;redis.clients&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jedis&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.9.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Java编写访问redis集群的代码非常简单，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">import redis.clients.jedis.HostAndPort;</span><br><span class="line">import redis.clients.jedis.JedisCluster;</span><br><span class="line">import redis.clients.jedis.JedisPoolConfig;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 访问redis集群</span><br><span class="line"> * @author aaron.rao</span><br><span class="line"> *</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class RedisCluster </span><br><span class="line">&#123;</span><br><span class="line">    public static void main(String[] args) throws IOException</span><br><span class="line">    &#123;</span><br><span class="line">        Set&lt;HostAndPort&gt; jedisClusterNode &#x3D; new HashSet&lt;HostAndPort&gt;();</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8001));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8002));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8003));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8004));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8005));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8006));</span><br><span class="line">        </span><br><span class="line">        JedisPoolConfig config &#x3D; new JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(100);</span><br><span class="line">        config.setMaxIdle(10);</span><br><span class="line">        config.setTestOnBorrow(true);</span><br><span class="line">        JedisCluster jedisCluster &#x3D; new JedisCluster(jedisClusterNode, 6000, 10, config);</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;student&quot;, &quot;aaron&quot;));</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;age&quot;, &quot;18&quot;));</span><br><span class="line">        </span><br><span class="line">        System.out.println(jedisCluster.get(&quot;student&quot;));</span><br><span class="line">        System.out.println(jedisCluster.get(&quot;age&quot;));</span><br><span class="line">        </span><br><span class="line">        jedisCluster.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">运行效果如下：</span><br><span class="line">OK</span><br><span class="line">OK</span><br><span class="line">aaron</span><br><span class="line">18</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Redis集群</category>
+      </categories>
+      <tags>
+        <tag>Redis集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot错误</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot启动时找不到或无法加载主类</title>
     <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
     <content><![CDATA[<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
@@ -464,11 +543,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>SpringBoot</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Zookeeper学习笔记</title>
-    <url>/2020/11/01/Zookeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>SpringBoot实现邮件发送功能</title>
@@ -583,6 +657,29 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Zookeeper学习笔记</title>
+    <url>/2020/11/01/Zookeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
+    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
+    <content><![CDATA[<p>git push的时候报错：</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+]]></content>
+      <categories>
+        <category>git常见错误</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>fatal: not a git repository (or any of the parent directories): .git</title>
     <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
     <content><![CDATA[<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
@@ -626,35 +723,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
-    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
-    <content><![CDATA[<p>git push的时候报错：</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-]]></content>
-      <categories>
-        <category>git常见错误</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>反射的理解</title>
-    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
       </tags>
   </entry>
   <entry>
@@ -978,11 +1046,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>多态是编译时行为还是运行时行为？</title>
-    <url>/2020/08/01/%E5%A4%9A%E6%80%81%E6%98%AF%E7%BC%96%E8%AF%91%E6%97%B6%E8%A1%8C%E4%B8%BA%E8%BF%98%E6%98%AF%E8%BF%90%E8%A1%8C%E6%97%B6%E8%A1%8C%E4%B8%BA%EF%BC%9F/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>人民日报给90后的理财计划</title>
     <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
     <content><![CDATA[<p>人民日报给90后的理财计划</p>
@@ -1000,6 +1063,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>理财</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>反射的理解</title>
+    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多态是编译时行为还是运行时行为？</title>
+    <url>/2020/08/01/%E5%A4%9A%E6%80%81%E6%98%AF%E7%BC%96%E8%AF%91%E6%97%B6%E8%A1%8C%E4%B8%BA%E8%BF%98%E6%98%AF%E8%BF%90%E8%A1%8C%E6%97%B6%E8%A1%8C%E4%B8%BA%EF%BC%9F/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>实体类的4种类型</title>
@@ -1044,12 +1123,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Java</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>浅析equals()和hashcode()方法</title>
-    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
-]]></content>
   </entry>
   <entry>
     <title>添加系统调用</title>
@@ -1141,82 +1214,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MySQL数据库集群-PXC方案</title>
-    <url>/2020/08/21/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
-<table>
-<thead>
-<tr>
-<th>Replication</th>
-<th>PXC</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
-<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
-</tr>
-<tr>
-<td>异步复制，从和主无法保证数据的一致性</td>
-<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
-</tr>
-</tbody></table>
-<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
-<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
+    <title>浅析equals()和hashcode()方法</title>
+    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
+    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
 <a id="more"></a>
 
-<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>这里我是尝试通过Docker搭建的。Docker的安装与配置非常简单。</p>
-<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
-<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
-<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
-<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
-
-<p>查看docker卷信息：<code>docker inspect v1</code></p>
-<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
-
-<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
-<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
-<p>在DB1中新建test数据库并创建student表：</p>
-<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
-<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
-<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
-<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
-<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
-<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
-<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
-<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
-<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
-<p>haproxy.cfg</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
-
-<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
-<p>首页展示：</p>
-<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
+<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
+<p>2.进入RabbitMQ　　</p>
+<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
+<p>3.开启　</p>
+<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
 ]]></content>
       <categories>
-        <category>Docker</category>
-        <category>MySQL集群</category>
+        <category>RabbitMQ</category>
       </categories>
       <tags>
-        <tag>MySQL数据库集群</tag>
+        <tag>Docker</tag>
+        <tag>RabbitMQ</tag>
       </tags>
   </entry>
   <entry>
@@ -1270,6 +1291,8 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
     <content><![CDATA[<p>重定向（redirect）与转发（forward）</p>
 <a id="more"></a>
 
+
+
 <h3 id="解释一"><a href="#解释一" class="headerlink" title="解释一　　"></a>解释一　　</h3><p>一句话，转发是服务器行为，重定向是客户端行为。为什么这样说呢，这就要看两个动作的工作流程：</p>
 <p><strong>转发过程：</strong>客户浏览器发送http请求—》web服务器接受此请求–》调用内部的一个方法在容器内部完成请求处理和转发动作—》将目标资源发送给客户；在这里，转发的路径必须是同一个web容器下的url，其不能转向到其他的web路径上去，中间传递的是自己的容器内的request。在客户浏览器路径栏显示的仍然是其第一次访问的路径，也就是说客户是感觉不到服务器做了转发的。转发行为是浏览器只做了一次访问请求。</p>
 <p><strong>重定向过程：</strong>客户浏览器发送http请求—》web服务器接受后发送302状态码响应及对应新的location给客户浏览器—》客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址—-》服务器根据此请求寻找资源并发送给客户。在这里location可以重定向到任意URL，既然是浏览器重新发出了请求，则就没有什么request传递的概念了。在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。</p>
@@ -1287,27 +1310,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Java Web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
-    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
-<a id="more"></a>
-
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
-<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
-<p>2.进入RabbitMQ　　</p>
-<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
-<p>3.开启　</p>
-<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
-]]></content>
-      <categories>
-        <category>RabbitMQ</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>RabbitMQ</tag>
       </tags>
   </entry>
 </search>
