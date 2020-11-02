@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）    Replication PXC    数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。 数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。   异步复制，从和主无法保证数据的一致性 同步复制，事务在所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据库集群-PXC方案">
+<meta property="og:url" content="http://yoursite.com/2020/08/21/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）    Replication PXC    数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。 数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。   异步复制，从和主无法保证数据的一致性 同步复制，事务在所有">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/2020110201.png">
+<meta property="og:image" content="http://yoursite.com/images/2020110202.png">
+<meta property="og:image" content="http://yoursite.com/images/2020110203.png">
+<meta property="og:image" content="http://yoursite.com/images/2020110204.png">
+<meta property="og:image" content="http://yoursite.com/images/2020110205.png">
+<meta property="article:published_time" content="2020-08-21T12:24:44.000Z">
+<meta property="article:modified_time" content="2020-11-02T07:26:36.167Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="MySQL数据库集群">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/2020110201.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/21/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL数据库集群-PXC方案 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/21/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL数据库集群-PXC方案
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-21 20:24:44" itemprop="dateCreated datePublished" datetime="2020-08-21T20:24:44+08:00">2020-08-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/MySQL%E9%9B%86%E7%BE%A4/" itemprop="url" rel="index"><span itemprop="name">MySQL集群</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
+<table>
+<thead>
+<tr>
+<th>Replication</th>
+<th>PXC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
+<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
+</tr>
+<tr>
+<td>异步复制，从和主无法保证数据的一致性</td>
+<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
+</tr>
+</tbody></table>
+<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
+<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
+<a id="more"></a>
+
+<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>这里我是尝试通过Docker搭建的。Docker的安装与配置非常简单。</p>
+<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
+<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
+<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
+<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
+
+<p>查看docker卷信息：<code>docker inspect v1</code></p>
+<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
+<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
+<p>在DB1中新建test数据库并创建student表：</p>
+<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
+<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
+<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
+<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
+<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
+<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
+<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
+<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
+<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
+<p>haproxy.cfg</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
+<p>首页展示：</p>
+<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4/" rel="tag"># MySQL数据库集群</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/14/Duplicate-entry-for-key-PRIMARY/" rel="prev" title="Duplicate entry for key 'PRIMARY'">
+      <i class="fa fa-chevron-left"></i> Duplicate entry for key 'PRIMARY'
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/" rel="next" title="记一个小小的强迫症">
+      记一个小小的强迫症 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、搭建准备"><span class="nav-number">1.</span> <span class="nav-text">一、搭建准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-安装docker"><span class="nav-number">1.1.</span> <span class="nav-text">1.安装docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-配置docker镜像加速器"><span class="nav-number">1.2.</span> <span class="nav-text">2.配置docker镜像加速器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-docker常用命令"><span class="nav-number">1.3.</span> <span class="nav-text">3.docker常用命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Mysql-PXC集群环境部署"><span class="nav-number">2.</span> <span class="nav-text">二、Mysql PXC集群环境部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-下载镜像"><span class="nav-number">2.1.</span> <span class="nav-text">1.下载镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-创建内部网络"><span class="nav-number">2.2.</span> <span class="nav-text">2.创建内部网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-创建Docker卷"><span class="nav-number">2.3.</span> <span class="nav-text">3.创建Docker卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-创建PXC容器"><span class="nav-number">2.4.</span> <span class="nav-text">4.创建PXC容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、验证是否创建成功PCX集群"><span class="nav-number">3.</span> <span class="nav-text">三、验证是否创建成功PCX集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、数据库负载的配置"><span class="nav-number">4.</span> <span class="nav-text">四、数据库负载的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-haproxy的下载"><span class="nav-number">4.1.</span> <span class="nav-text">1.haproxy的下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-创建haproxy配置文件"><span class="nav-number">4.2.</span> <span class="nav-text">2.创建haproxy配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-实例化haproxy"><span class="nav-number">4.3.</span> <span class="nav-text">4.实例化haproxy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-登陆到交互容器里"><span class="nav-number">4.4.</span> <span class="nav-text">5.登陆到交互容器里</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-测试"><span class="nav-number">4.5.</span> <span class="nav-text">6.测试</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
