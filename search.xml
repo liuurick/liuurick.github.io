@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>mysql报错汇总</category>
+      </categories>
+      <tags>
+        <tag>mysql错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ElasticSearch集群搭建</title>
     <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
@@ -39,48 +79,11 @@
       </tags>
   </entry>
   <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>mysql报错汇总</category>
-      </categories>
-      <tags>
-        <tag>mysql错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hadoop运行环境搭建</title>
     <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
-<a id="more"></a>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
 <h3 id="系统环境："><a href="#系统环境：" class="headerlink" title="系统环境："></a>系统环境：</h3><p>Windows环境：Windows10<br>Linux环境：CentOS-6.10-x86_64-bin-DVD1<br>VMware：15.5.0 build-14665864</p>
 <h3 id="所需文件"><a href="#所需文件" class="headerlink" title="所需文件"></a>所需文件</h3><p><strong>链接：</strong> <a href="https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA" target="_blank" rel="noopener">https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA</a><br>提取码：dgmt<br><strong>资源失效记得留言</strong></p>
 <h3 id="检查是否开启虚拟机"><a href="#检查是否开启虚拟机" class="headerlink" title="检查是否开启虚拟机"></a>检查是否开启虚拟机</h3><p><img src="https://img-blog.csdnimg.cn/2020032710260212.png?x-oss-process=image" alt="在这里插入图片描述"></p>
@@ -142,85 +145,6 @@
       </categories>
       <tags>
         <tag>Hadoop</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java动态代理</title>
-    <url>/2020/10/25/Java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>Java多线程</title>
-    <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
-<a id="more"></a>
-
-<blockquote>
-<p>如：运行的QQ，运行中的MP3播放器<br>程序是静态的，进程是动态的<br>进程作为资源分配的单位，系统在运行时会为每个进程不同的内存区域。</p>
-</blockquote>
-<p>线程(thread)：进程可以进一步细化为线程，是一个程序内部的一条执行路径。</p>
-<blockquote>
-<p>若一个进程同一时间并行执行多个线程，就是支持多线程的。<br>线程作为调度和执行的单位，每个线程拥有独立的运行栈和程序计数器(PC)，线程切换的开销小<br>一个进程中的多个线程共享相同的内存单元/内存地址空间-&gt;它们从同一堆中分配对象，可以访问相同的变量和对象。这就使得线程间通信更简便、高效。但多个线程操作共享的系统资源可能带来安全的隐患。</p>
-</blockquote>
-<p><strong>单核CPU与多核CPU的理解</strong></p>
-<p>单核CPU，其实是一种假的多线程，因为在一个时间单元内，也只能执行一个线程的任务。例如：虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果有某个人不想交钱，那么收费人员可以把他“挂起”。但是因为CPU时间单元特别短，所以感觉不出来。</p>
-<p>多核CPU</p>
-<p><strong>并发与并行</strong></p>
-<p>并行：多个CPU同时执行多个任务。例如：多个人同时做不同的事情。</p>
-<p>并发：一个CPU（采用时间片）同时执行多个任务。例如：秒杀，多个人做一件事。</p>
-<p><strong>多线程的优点</strong></p>
-<p>1.提高应用程序的响应。对图形化界面更有意义，可以增强用户体验。</p>
-<p>2.提高计算机系统CPU的利用率</p>
-<p>3.改善程序结构。将既长又复杂的进程分为多个线程，独立运行，利于理解和修改</p>
-<h3 id="二-线程的创建和使用"><a href="#二-线程的创建和使用" class="headerlink" title="二.线程的创建和使用"></a>二.线程的创建和使用</h3><p>多线程的创建，方式一：继承与Thread类</p>
-<p>1.创建一个类继承于Thread类的子类</p>
-<p>2.重写Thread类的run()  ——》将此线程执行的操作声明在run()中</p>
-<p>3.创建Thread类的子类的对象</p>
-<p>4.通过此对象调用start()</p>
-<p><strong>线程的调度</strong>：</p>
-<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><h1 id="线程的状态变化"><a href="#线程的状态变化" class="headerlink" title="线程的状态变化"></a>线程的状态变化</h1><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
-<ul>
-<li>创建状态 </li>
-</ul>
-<p>在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时它已经有了相应的内存空间和其他资源，但还处于不可运行状态。新建一个线程对象可采用Thread 类的构造方法来实现，例如 “Thread thread=new Thread()”。</p>
-<ul>
-<li>就绪状态 </li>
-</ul>
-<p>新建线程对象后，调用该线程的 start() 方法就可以启动线程。当线程启动时，线程进入就绪状态。此时，线程将进入线程队列排队，等待 CPU 服务，这表明它已经具备了运行条件。</p>
-<ul>
-<li>运行状态 </li>
-</ul>
-<p>当就绪状态被调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的 run() 方法。run() 方法定义该线程的操作和功能。</p>
-<ul>
-<li>阻塞状态 </li>
-</ul>
-<p>一个正在执行的线程在某些特殊情况下，如被人为挂起或需要执行耗时的输入/输出操作，会让 CPU 暂时中止自己的执行，进入阻塞状态。在可执行状态下，如果调用sleep(),suspend(),wait() 等方法，线程都将进入阻塞状态，发生阻塞时线程不能进入排队队列，只有当引起阻塞的原因被消除后，线程才可以转入就绪状态。</p>
-<ul>
-<li>死亡状态 </li>
-</ul>
-<p>线程调用 stop() 方法时或 run() 方法执行结束后，即处于死亡状态。处于死亡状态的线程不具有继续运行的能力。</p>
-<p>在此提出一个问题，Java 程序每次运行至少启动几个线程？</p>
-<p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
-<h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
-      <categories>
-        <category>多线程</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>多线程</tag>
-        <tag>JavaSE</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java集合</title>
-    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>集合</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -377,11 +301,85 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java多线程</title>
+    <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
+<blockquote>
+<p>如：运行的QQ，运行中的MP3播放器<br>程序是静态的，进程是动态的<br>进程作为资源分配的单位，系统在运行时会为每个进程不同的内存区域。</p>
+</blockquote>
+<p>线程(thread)：进程可以进一步细化为线程，是一个程序内部的一条执行路径。</p>
+<blockquote>
+<p>若一个进程同一时间并行执行多个线程，就是支持多线程的。<br>线程作为调度和执行的单位，每个线程拥有独立的运行栈和程序计数器(PC)，线程切换的开销小<br>一个进程中的多个线程共享相同的内存单元/内存地址空间-&gt;它们从同一堆中分配对象，可以访问相同的变量和对象。这就使得线程间通信更简便、高效。但多个线程操作共享的系统资源可能带来安全的隐患。</p>
+</blockquote>
+<p><strong>单核CPU与多核CPU的理解</strong></p>
+<p>单核CPU，其实是一种假的多线程，因为在一个时间单元内，也只能执行一个线程的任务。例如：虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果有某个人不想交钱，那么收费人员可以把他“挂起”。但是因为CPU时间单元特别短，所以感觉不出来。</p>
+<p>多核CPU</p>
+<p><strong>并发与并行</strong></p>
+<p>并行：多个CPU同时执行多个任务。例如：多个人同时做不同的事情。</p>
+<p>并发：一个CPU（采用时间片）同时执行多个任务。例如：秒杀，多个人做一件事。</p>
+<p><strong>多线程的优点</strong></p>
+<p>1.提高应用程序的响应。对图形化界面更有意义，可以增强用户体验。</p>
+<p>2.提高计算机系统CPU的利用率</p>
+<p>3.改善程序结构。将既长又复杂的进程分为多个线程，独立运行，利于理解和修改</p>
+<h3 id="二-线程的创建和使用"><a href="#二-线程的创建和使用" class="headerlink" title="二.线程的创建和使用"></a>二.线程的创建和使用</h3><p>多线程的创建，方式一：继承与Thread类</p>
+<p>1.创建一个类继承于Thread类的子类</p>
+<p>2.重写Thread类的run()  ——》将此线程执行的操作声明在run()中</p>
+<p>3.创建Thread类的子类的对象</p>
+<p>4.通过此对象调用start()</p>
+<p><strong>线程的调度</strong>：</p>
+<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><h1 id="线程的状态变化"><a href="#线程的状态变化" class="headerlink" title="线程的状态变化"></a>线程的状态变化</h1><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
+<ul>
+<li>创建状态 </li>
+</ul>
+<p>在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时它已经有了相应的内存空间和其他资源，但还处于不可运行状态。新建一个线程对象可采用Thread 类的构造方法来实现，例如 “Thread thread=new Thread()”。</p>
+<ul>
+<li>就绪状态 </li>
+</ul>
+<p>新建线程对象后，调用该线程的 start() 方法就可以启动线程。当线程启动时，线程进入就绪状态。此时，线程将进入线程队列排队，等待 CPU 服务，这表明它已经具备了运行条件。</p>
+<ul>
+<li>运行状态 </li>
+</ul>
+<p>当就绪状态被调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的 run() 方法。run() 方法定义该线程的操作和功能。</p>
+<ul>
+<li>阻塞状态 </li>
+</ul>
+<p>一个正在执行的线程在某些特殊情况下，如被人为挂起或需要执行耗时的输入/输出操作，会让 CPU 暂时中止自己的执行，进入阻塞状态。在可执行状态下，如果调用sleep(),suspend(),wait() 等方法，线程都将进入阻塞状态，发生阻塞时线程不能进入排队队列，只有当引起阻塞的原因被消除后，线程才可以转入就绪状态。</p>
+<ul>
+<li>死亡状态 </li>
+</ul>
+<p>线程调用 stop() 方法时或 run() 方法执行结束后，即处于死亡状态。处于死亡状态的线程不具有继续运行的能力。</p>
+<p>在此提出一个问题，Java 程序每次运行至少启动几个线程？</p>
+<p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
+<h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>多线程</tag>
+        <tag>JavaSE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java集合</title>
+    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>集合</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MyBatis二级缓存的一个小细节</title>
     <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<a id="more"></a>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
 
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
 <p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
 <p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -398,7 +396,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>MySQL数据库集群-PXC方案</title>
     <url>/2020/08/21/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
 <table>
 <thead>
 <tr>
@@ -417,8 +417,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 </tbody></table>
 <p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
 <p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
-<a id="more"></a>
-
 <h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>这里我是尝试通过Docker搭建的。Docker的安装与配置非常简单。</p>
 <h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
 
@@ -475,27 +473,15 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot错误</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id="1、Redis集群方案比较"><a href="#1、Redis集群方案比较" class="headerlink" title="1、Redis集群方案比较"></a>1、Redis集群方案比较</h3><ul>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<h3 id="1、Redis集群方案比较"><a href="#1、Redis集群方案比较" class="headerlink" title="1、Redis集群方案比较"></a>1、Redis集群方案比较</h3><ul>
 <li><strong>哨兵模式</strong></li>
 </ul>
 <p><img src="/images/2020073001.jpg" alt="img"></p>
 <p>在redis3.0以前的版本要实现集群一般是借助哨兵sentinel工具来监控master节点的状态，如果master节点异常，则会做主从切换，将某一台slave作为master，哨兵的配置略微复杂，并且性能和高可用性等各方面表现一般，特别是在主从切换的瞬间存在访问瞬断的情况</p>
-<a id="more"></a>
 <ul>
 <li><strong>高可用集群模式</strong></li>
 </ul>
@@ -527,14 +513,27 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot错误</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot启动时找不到或无法加载主类</title>
     <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
-    <content><![CDATA[<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
 <blockquote>
 <p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
 </blockquote>
-<a id="more"></a>
-
 <p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
@@ -545,50 +544,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot实现邮件发送功能</title>
-    <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
-    <content><![CDATA[<h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><h4 id="POP3协议是什么？"><a href="#POP3协议是什么？" class="headerlink" title="POP3协议是什么？"></a>POP3协议是什么？</h4><p>POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。</p>
-<a id="more"></a>
-<h4 id="SMTP协议是什么？"><a href="#SMTP协议是什么？" class="headerlink" title="SMTP协议是什么？"></a>SMTP协议是什么？</h4><p>SMTP 的全称是Simple Mail Transfer Protocol，即简单邮件传输协议。它是一组用于从源地址到目的地址传输邮件的规范，通过它来控制邮件的中转方式。SMTP 协议属于 TCP/IP 协议簇，它帮助每台计算机在发送或中转信件时找到下一个目的地。SMTP 服务器就是遵循 SMTP 协议的发送邮件服务器。SMTP 认证，简单地说就是要求必须在提供了账户名和密码之后才可以登录 SMTP 服务器，这就使得那些垃圾邮件的散播者无可乘之机。增加 SMTP 认证的目的是为了使用户避免受到垃圾邮件的侵扰。</p>
-<h4 id="IMAP协议是什么？"><a href="#IMAP协议是什么？" class="headerlink" title="IMAP协议是什么？"></a>IMAP协议是什么？</h4><p>IMAP全称是Internet Mail Access Protocol，即交互式邮件存取协议，它是跟POP3类似邮件访问标准协议之一。不同的是，开启了IMAP后，您在电子邮件客户端收取的邮件仍然保留在服务器上，同时在客户端上的操作都会反馈到服务器上，如：删除邮件，标记已读等，服务器上的邮件也会做相应的动作。所以无论从浏览器登录邮箱或者客户端软件登录邮箱，看到的邮件以及状态都是一致的。</p>
-<h4 id="IMAP和POP3协议有什么不同呢？"><a href="#IMAP和POP3协议有什么不同呢？" class="headerlink" title="IMAP和POP3协议有什么不同呢？"></a>IMAP和POP3协议有什么不同呢？</h4><p>POP3协议允许电子邮件客户端下载服务器上的邮件，但是在客户端的操作（如移动邮件、标记已读等），不会反馈到服务器上，比如通过客户端收取了邮箱中的3封邮件并移动到其他文件夹，邮箱服务器上的这些邮件是没有同时被移动的 。</p>
-<p>而IMAP提供webmail 与电子邮件客户端之间的双向通信，客户端的操作都会反馈到服务器上，对邮件进行的操作，服务器上的邮件也会做相应的动作。</p>
-<p>同时，IMAP像POP3那样提供了方便的邮件下载服务，让用户能进行离线阅读。IMAP提供的摘要浏览功能可以让你在阅读完所有的邮件到达时间、主题、发件人、大小等信息后才作出是否下载的决定。此外，IMAP 更好地支持了从多个不同设备中随时访问新邮件。<br><img src="/images/2020081401.png" alt=""><br>总之，IMAP 整体上为用户带来更为便捷和可靠的体验。POP3 更易丢失邮件或多次下载相同的邮件，但 IMAP 通过邮件客户端与webmail 之间的双向同步功能很好地避免了这些问题。</p>
-<h3 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h3><p>对于邮箱功能，首先需要开启<code>POP3/SMTP服务</code>获取邮箱授权码。</p>
-<p>在邮箱主页-&gt;设置-&gt;账户中可以看到</p>
-<p><img src="/images/2020081402.png" alt=""></p>
-<p>开启之后会获取一个授权码，用来第三方验证，具体的可以看官方教程。<a href="https://service.mail.qq.com/cgi-bin/help?subtype=1&&no=1001256&&id=28" target="_blank" rel="noopener">官方教程</a></p>
-<h4 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h4><p>创建一个springboot项目，引入下方依赖。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-mail&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p> 然后修改application.properties 配置信息，这里我使用的是application.yml文件。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  mail:</span><br><span class="line">    host: smtp.qq.com</span><br><span class="line">    port: 587</span><br><span class="line">    username: 2826803629@qq.com</span><br><span class="line">    password: xxxxwwnddfh</span><br><span class="line">    default-encoding: UTF-8</span><br><span class="line">    properties:</span><br><span class="line">      mail:</span><br><span class="line">        smtp:</span><br><span class="line">          socketFactoryClass: javax.net.ssl.SSLsocketFactory</span><br><span class="line">        debug: true</span><br></pre></td></tr></table></figure>
-
-<p>配置完成之后进行测试：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">   JavaMailSender javaMailSender;</span><br><span class="line">   <span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       SimpleMailMessage msg = <span class="keyword">new</span> SimpleMailMessage();</span><br><span class="line">       <span class="comment">//邮件主题</span></span><br><span class="line">       msg.setSubject(<span class="string">"测试邮件"</span>);</span><br><span class="line">       <span class="comment">//邮件内容</span></span><br><span class="line">       msg.setText(<span class="string">"hhhhhhh"</span>);</span><br><span class="line">       <span class="comment">//邮件发送者</span></span><br><span class="line">       msg.setFrom(<span class="string">"xxx@qq.com"</span>);</span><br><span class="line">       <span class="comment">//邮件接受者</span></span><br><span class="line">       msg.setTo(<span class="string">"xxx@qq.com"</span>);</span><br><span class="line">       <span class="comment">//发送邮件</span></span><br><span class="line">       javaMailSender.send(msg);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h3><p>有些同学可能会遇到下面的错误，这是授权码的问题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">javax.mail.AuthenticationFailedException: 535 Login Fail. Please enter your authorization code to login. More information <span class="keyword">in</span> http://service.mail.qq.com/cgi-bin/<span class="built_in">help</span>?subtype=1&amp;&amp;id=28&amp;&amp;no=1001256</span><br></pre></td></tr></table></figure>
-
-<p>重新开启POP3/SMTP服务即可。</p>
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>邮件</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
-    <content><![CDATA[<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，我就分开总结了，望各位笑纳。</p>
-<a id="more"></a>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
 
+<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，我就分开总结了，望各位笑纳。</p>
 <h2 id="Spring集成PageHelper："><a href="#Spring集成PageHelper：" class="headerlink" title="Spring集成PageHelper："></a>Spring集成PageHelper：</h2><p><strong>第一步：pom文件引入依赖</strong></p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -616,24 +576,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>分页功能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
-    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
-    <content><![CDATA[<p>git push的时候报错：</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-]]></content>
-      <categories>
-        <category>git常见错误</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -675,9 +617,71 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
+    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>git push的时候报错：</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+]]></content>
+      <categories>
+        <category>git常见错误</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot实现邮件发送功能</title>
+    <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><h4 id="POP3协议是什么？"><a href="#POP3协议是什么？" class="headerlink" title="POP3协议是什么？"></a>POP3协议是什么？</h4><p>POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。</p>
+<h4 id="SMTP协议是什么？"><a href="#SMTP协议是什么？" class="headerlink" title="SMTP协议是什么？"></a>SMTP协议是什么？</h4><p>SMTP 的全称是Simple Mail Transfer Protocol，即简单邮件传输协议。它是一组用于从源地址到目的地址传输邮件的规范，通过它来控制邮件的中转方式。SMTP 协议属于 TCP/IP 协议簇，它帮助每台计算机在发送或中转信件时找到下一个目的地。SMTP 服务器就是遵循 SMTP 协议的发送邮件服务器。SMTP 认证，简单地说就是要求必须在提供了账户名和密码之后才可以登录 SMTP 服务器，这就使得那些垃圾邮件的散播者无可乘之机。增加 SMTP 认证的目的是为了使用户避免受到垃圾邮件的侵扰。</p>
+<h4 id="IMAP协议是什么？"><a href="#IMAP协议是什么？" class="headerlink" title="IMAP协议是什么？"></a>IMAP协议是什么？</h4><p>IMAP全称是Internet Mail Access Protocol，即交互式邮件存取协议，它是跟POP3类似邮件访问标准协议之一。不同的是，开启了IMAP后，您在电子邮件客户端收取的邮件仍然保留在服务器上，同时在客户端上的操作都会反馈到服务器上，如：删除邮件，标记已读等，服务器上的邮件也会做相应的动作。所以无论从浏览器登录邮箱或者客户端软件登录邮箱，看到的邮件以及状态都是一致的。</p>
+<h4 id="IMAP和POP3协议有什么不同呢？"><a href="#IMAP和POP3协议有什么不同呢？" class="headerlink" title="IMAP和POP3协议有什么不同呢？"></a>IMAP和POP3协议有什么不同呢？</h4><p>POP3协议允许电子邮件客户端下载服务器上的邮件，但是在客户端的操作（如移动邮件、标记已读等），不会反馈到服务器上，比如通过客户端收取了邮箱中的3封邮件并移动到其他文件夹，邮箱服务器上的这些邮件是没有同时被移动的 。</p>
+<p>而IMAP提供webmail 与电子邮件客户端之间的双向通信，客户端的操作都会反馈到服务器上，对邮件进行的操作，服务器上的邮件也会做相应的动作。</p>
+<p>同时，IMAP像POP3那样提供了方便的邮件下载服务，让用户能进行离线阅读。IMAP提供的摘要浏览功能可以让你在阅读完所有的邮件到达时间、主题、发件人、大小等信息后才作出是否下载的决定。此外，IMAP 更好地支持了从多个不同设备中随时访问新邮件。<br><img src="/images/2020081401.png" alt=""><br>总之，IMAP 整体上为用户带来更为便捷和可靠的体验。POP3 更易丢失邮件或多次下载相同的邮件，但 IMAP 通过邮件客户端与webmail 之间的双向同步功能很好地避免了这些问题。</p>
+<h3 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h3><p>对于邮箱功能，首先需要开启<code>POP3/SMTP服务</code>获取邮箱授权码。</p>
+<p>在邮箱主页-&gt;设置-&gt;账户中可以看到</p>
+<p><img src="/images/2020081402.png" alt=""></p>
+<p>开启之后会获取一个授权码，用来第三方验证，具体的可以看官方教程。<a href="https://service.mail.qq.com/cgi-bin/help?subtype=1&&no=1001256&&id=28" target="_blank" rel="noopener">官方教程</a></p>
+<h4 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h4><p>创建一个springboot项目，引入下方依赖。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-mail&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p> 然后修改application.properties 配置信息，这里我使用的是application.yml文件。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  mail:</span><br><span class="line">    host: smtp.qq.com</span><br><span class="line">    port: 587</span><br><span class="line">    username: 2826803629@qq.com</span><br><span class="line">    password: xxxxwwnddfh</span><br><span class="line">    default-encoding: UTF-8</span><br><span class="line">    properties:</span><br><span class="line">      mail:</span><br><span class="line">        smtp:</span><br><span class="line">          socketFactoryClass: javax.net.ssl.SSLsocketFactory</span><br><span class="line">        debug: true</span><br></pre></td></tr></table></figure>
+
+<p>配置完成之后进行测试：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">   JavaMailSender javaMailSender;</span><br><span class="line">   <span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       SimpleMailMessage msg = <span class="keyword">new</span> SimpleMailMessage();</span><br><span class="line">       <span class="comment">//邮件主题</span></span><br><span class="line">       msg.setSubject(<span class="string">"测试邮件"</span>);</span><br><span class="line">       <span class="comment">//邮件内容</span></span><br><span class="line">       msg.setText(<span class="string">"hhhhhhh"</span>);</span><br><span class="line">       <span class="comment">//邮件发送者</span></span><br><span class="line">       msg.setFrom(<span class="string">"xxx@qq.com"</span>);</span><br><span class="line">       <span class="comment">//邮件接受者</span></span><br><span class="line">       msg.setTo(<span class="string">"xxx@qq.com"</span>);</span><br><span class="line">       <span class="comment">//发送邮件</span></span><br><span class="line">       javaMailSender.send(msg);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h3><p>有些同学可能会遇到下面的错误，这是授权码的问题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">javax.mail.AuthenticationFailedException: 535 Login Fail. Please enter your authorization code to login. More information <span class="keyword">in</span> http://service.mail.qq.com/cgi-bin/<span class="built_in">help</span>?subtype=1&amp;&amp;id=28&amp;&amp;no=1001256</span><br></pre></td></tr></table></figure>
+
+<p>重新开启POP3/SMTP服务即可。</p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>邮件</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>fatal: not a git repository (or any of the parent directories): .git</title>
     <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
-    <content><![CDATA[<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
 <h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
 ]]></content>
       <categories>
@@ -690,7 +694,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>git Could not read from remote repository</title>
     <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
-    <content><![CDATA[<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
 <p>git remote -v</p>
 <p>git bash输出</p>
 ]]></content>
@@ -704,9 +710,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>ubuntu安装VMware Tools</title>
     <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
-    <content><![CDATA[<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
-<a id="more"></a>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
 
+<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
 <blockquote>
 <p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
 </blockquote>
@@ -723,11 +729,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>nginx安装及其配置</title>
     <url>/2020/07/31/nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="1-nginx-介绍"><a href="#1-nginx-介绍" class="headerlink" title="1 nginx 介绍"></a>1 nginx 介绍</h1><h2 id="1-什么是nginx"><a href="#1-什么是nginx" class="headerlink" title="1 什么是nginx"></a>1 什么是nginx</h2><p>Nginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。</p>
+    <content><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><a id="more"></a>
+
+<h1 id="1-nginx-介绍"><a href="#1-nginx-介绍" class="headerlink" title="1 nginx 介绍"></a>1 nginx 介绍</h1><h2 id="1-什么是nginx"><a href="#1-什么是nginx" class="headerlink" title="1 什么是nginx"></a>1 什么是nginx</h2><p>Nginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。</p>
 <p>由俄罗斯的程序设计师Igor Sysoev所开发，官方测试nginx能够支支撑5万并发链接，</p>
 <p>并且cpu、内存等资源消耗却非常低，运行非常稳定。</p>
-<a id="more"></a> 
-
 <h2 id="2-应用场景"><a href="#2-应用场景" class="headerlink" title="2 应用场景"></a>2 应用场景</h2><p>1、http服务器。Nginx是一个http服务可以独立提供http服务。可以做网页静态服务器。</p>
 <p>2、虚拟主机。可以实现在一台服务器虚拟出多个网站。例如个人网站使用的虚拟主机。</p>
 <p>3、反向代理，负载均衡。当网站的访问量达到一定程度后，单台服务器不能满足用户的请求时，</p>
@@ -1041,17 +1047,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>反射的理解</title>
-    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>人民日报给90后的理财计划</title>
     <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
     <content><![CDATA[<p>人民日报给90后的理财计划</p>
@@ -1071,15 +1066,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>多态是编译时行为还是运行时行为？</title>
-    <url>/2020/08/01/%E5%A4%9A%E6%80%81%E6%98%AF%E7%BC%96%E8%AF%91%E6%97%B6%E8%A1%8C%E4%B8%BA%E8%BF%98%E6%98%AF%E8%BF%90%E8%A1%8C%E6%97%B6%E8%A1%8C%E4%B8%BA%EF%BC%9F/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>实体类的4种类型</title>
     <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>记录一下：</p>
-<a id="more"></a>
+    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
 
 <p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
 <p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
@@ -1098,10 +1087,10 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>浅析Java平台无关性的实现</title>
     <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<a id="more"></a>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
 
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
 <h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
@@ -1126,45 +1115,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
-    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
-    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
-<a id="more"></a>
-
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
-<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
-<p>2.进入RabbitMQ　　</p>
-<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
-<p>3.开启　</p>
-<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
-]]></content>
-      <categories>
-        <category>RabbitMQ</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>RabbitMQ</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一个小小的强迫症</title>
-    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
-    <content><![CDATA[<p>在idea中经常会碰到这样的问题</p>
-<blockquote>
-<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
-</blockquote>
-<a id="more"></a>
-<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
-<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
-]]></content>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
 
 <h4 id="1-下载一个内核"><a href="#1-下载一个内核" class="headerlink" title="1.下载一个内核"></a>1.下载一个内核</h4><p>将内核文件下载到/usr/src路径下</p>
 <p>官方下载地址：<a href="https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/" target="_blank" rel="noopener">https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/</a></p>
@@ -1226,7 +1179,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>8)    安装内核</p>
 <p><code>make install</code>         </p>
 <h4 id="8-重启选择相应的系统"><a href="#8-重启选择相应的系统" class="headerlink" title="8.重启选择相应的系统"></a>8.重启选择相应的系统</h4><p><img src="file:///C:%5CUsers%5Cadmin%5CAppData%5CLocal%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_image014.jpg" alt="img"></p>
-<h3 id="4-2-4-测试"><a href="#4-2-4-测试" class="headerlink" title="4.2.4 测试:"></a>4.2.4 测试:</h3><p>dmesg用来显示内核环缓冲区（kernel-ring buffer）内容，内核将各种消息存放在这里。在系统引导时，内核将与硬件和模块初始化相关的信息填到这个缓冲区中。内核环缓冲区中的消息对于诊断系统问题 通常非常有用。在运行dmesg时，它显示大量信息。通常通过less或grep使用管道查看dmesg的输出，这样可以更容易找到待查信息。例如，如果发现硬盘性能低下，可以使用dmesg来检查它们是否运行在DMA模式：</p>
+<h4 id="9-测试"><a href="#9-测试" class="headerlink" title="9. 测试:"></a>9. 测试:</h4><p>dmesg用来显示内核环缓冲区（kernel-ring buffer）内容，内核将各种消息存放在这里。在系统引导时，内核将与硬件和模块初始化相关的信息填到这个缓冲区中。内核环缓冲区中的消息对于诊断系统问题 通常非常有用。在运行dmesg时，它显示大量信息。通常通过less或grep使用管道查看dmesg的输出，这样可以更容易找到待查信息。例如，如果发现硬盘性能低下，可以使用dmesg来检查它们是否运行在DMA模式：</p>
 <p>首先创建test文件：</p>
 <p>touch test.c</p>
 <p>代码：</p>
@@ -1251,6 +1204,27 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
+    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
+<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
+<p>2.进入RabbitMQ　　</p>
+<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
+<p>3.开启　</p>
+<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
+]]></content>
+      <categories>
+        <category>RabbitMQ</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>RabbitMQ</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>解决idea不显示maven工具栏的问题</title>
     <url>/2020/08/11/%E8%A7%A3%E5%86%B3idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
@@ -1266,9 +1240,25 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>记一个小小的强迫症</title>
+    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
+    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
+
+<p>在idea中经常会碰到这样的问题</p>
+<blockquote>
+<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
+</blockquote>
+<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
+<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
+]]></content>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>防火墙管理</title>
     <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
 
 <h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
 
@@ -1283,11 +1273,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>（转）重定向与转发</title>
     <url>/2018/04/21/%EF%BC%88%E8%BD%AC%EF%BC%89%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91/</url>
-    <content><![CDATA[<p>重定向（redirect）与转发（forward）</p>
-<a id="more"></a>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
 
-
-
+<p>重定向（redirect）与转发（forward）</p>
 <h3 id="解释一"><a href="#解释一" class="headerlink" title="解释一　　"></a>解释一　　</h3><p>一句话，转发是服务器行为，重定向是客户端行为。为什么这样说呢，这就要看两个动作的工作流程：</p>
 <p><strong>转发过程：</strong>客户浏览器发送http请求—》web服务器接受此请求–》调用内部的一个方法在容器内部完成请求处理和转发动作—》将目标资源发送给客户；在这里，转发的路径必须是同一个web容器下的url，其不能转向到其他的web路径上去，中间传递的是自己的容器内的request。在客户浏览器路径栏显示的仍然是其第一次访问的路径，也就是说客户是感觉不到服务器做了转发的。转发行为是浏览器只做了一次访问请求。</p>
 <p><strong>重定向过程：</strong>客户浏览器发送http请求—》web服务器接受后发送302状态码响应及对应新的location给客户浏览器—》客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址—-》服务器根据此请求寻找资源并发送给客户。在这里location可以重定向到任意URL，既然是浏览器重新发出了请求，则就没有什么request传递的概念了。在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。</p>

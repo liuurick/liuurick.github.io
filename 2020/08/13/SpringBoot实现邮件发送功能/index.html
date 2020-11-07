@@ -20,17 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="基本知识POP3协议是什么？POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot实现邮件发送功能">
 <meta property="og:url" content="http://yoursite.com/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/index.html">
 <meta property="og:site_name" content="lb Blog">
-<meta property="og:description" content="基本知识POP3协议是什么？POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/images/2020081401.png">
 <meta property="og:image" content="http://yoursite.com/images/2020081402.png">
 <meta property="article:published_time" content="2020-08-13T06:34:43.000Z">
-<meta property="article:modified_time" content="2020-10-20T13:58:11.265Z">
+<meta property="article:modified_time" content="2020-11-07T13:24:35.511Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="邮件">
 <meta name="twitter:card" content="summary">
@@ -243,8 +241,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><h4 id="POP3协议是什么？"><a href="#POP3协议是什么？" class="headerlink" title="POP3协议是什么？"></a>POP3协议是什么？</h4><p>POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。</p>
-<a id="more"></a>
+        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><h4 id="POP3协议是什么？"><a href="#POP3协议是什么？" class="headerlink" title="POP3协议是什么？"></a>POP3协议是什么？</h4><p>POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。</p>
 <h4 id="SMTP协议是什么？"><a href="#SMTP协议是什么？" class="headerlink" title="SMTP协议是什么？"></a>SMTP协议是什么？</h4><p>SMTP 的全称是Simple Mail Transfer Protocol，即简单邮件传输协议。它是一组用于从源地址到目的地址传输邮件的规范，通过它来控制邮件的中转方式。SMTP 协议属于 TCP/IP 协议簇，它帮助每台计算机在发送或中转信件时找到下一个目的地。SMTP 服务器就是遵循 SMTP 协议的发送邮件服务器。SMTP 认证，简单地说就是要求必须在提供了账户名和密码之后才可以登录 SMTP 服务器，这就使得那些垃圾邮件的散播者无可乘之机。增加 SMTP 认证的目的是为了使用户避免受到垃圾邮件的侵扰。</p>
 <h4 id="IMAP协议是什么？"><a href="#IMAP协议是什么？" class="headerlink" title="IMAP协议是什么？"></a>IMAP协议是什么？</h4><p>IMAP全称是Internet Mail Access Protocol，即交互式邮件存取协议，它是跟POP3类似邮件访问标准协议之一。不同的是，开启了IMAP后，您在电子邮件客户端收取的邮件仍然保留在服务器上，同时在客户端上的操作都会反馈到服务器上，如：删除邮件，标记已读等，服务器上的邮件也会做相应的动作。所以无论从浏览器登录邮箱或者客户端软件登录邮箱，看到的邮件以及状态都是一致的。</p>
 <h4 id="IMAP和POP3协议有什么不同呢？"><a href="#IMAP和POP3协议有什么不同呢？" class="headerlink" title="IMAP和POP3协议有什么不同呢？"></a>IMAP和POP3协议有什么不同呢？</h4><p>POP3协议允许电子邮件客户端下载服务器上的邮件，但是在客户端的操作（如移动邮件、标记已读等），不会反馈到服务器上，比如通过客户端收取了邮箱中的3封邮件并移动到其他文件夹，邮箱服务器上的这些邮件是没有同时被移动的 。</p>
@@ -354,7 +353,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本知识"><span class="nav-number">1.</span> <span class="nav-text">基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#POP3协议是什么？"><span class="nav-number">1.1.</span> <span class="nav-text">POP3协议是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SMTP协议是什么？"><span class="nav-number">1.2.</span> <span class="nav-text">SMTP协议是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IMAP协议是什么？"><span class="nav-number">1.3.</span> <span class="nav-text">IMAP协议是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IMAP和POP3协议有什么不同呢？"><span class="nav-number">1.4.</span> <span class="nav-text">IMAP和POP3协议有什么不同呢？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能实现"><span class="nav-number">2.</span> <span class="nav-text">功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小试牛刀"><span class="nav-number">2.1.</span> <span class="nav-text">小试牛刀</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见错误"><span class="nav-number">3.</span> <span class="nav-text">常见错误</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本知识"><span class="nav-number">2.</span> <span class="nav-text">基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#POP3协议是什么？"><span class="nav-number">2.1.</span> <span class="nav-text">POP3协议是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SMTP协议是什么？"><span class="nav-number">2.2.</span> <span class="nav-text">SMTP协议是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IMAP协议是什么？"><span class="nav-number">2.3.</span> <span class="nav-text">IMAP协议是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IMAP和POP3协议有什么不同呢？"><span class="nav-number">2.4.</span> <span class="nav-text">IMAP和POP3协议有什么不同呢？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能实现"><span class="nav-number">3.</span> <span class="nav-text">功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小试牛刀"><span class="nav-number">3.1.</span> <span class="nav-text">小试牛刀</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见错误"><span class="nav-number">4.</span> <span class="nav-text">常见错误</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -370,7 +369,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -383,7 +382,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
