@@ -311,76 +311,14 @@
       
           <p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
 <p>主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据</p>
-<h3 id="1-负载均衡的高可用方案"><a href="#1-负载均衡的高可用方案" class="headerlink" title="1.负载均衡的高可用方案"></a>1.负载均衡的高可用方案</h3><p>虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。</p>
-<h4 id="1-1-安装Keepalived"><a href="#1-1-安装Keepalived" class="headerlink" title="1.1 安装Keepalived"></a>1.1 安装Keepalived</h4><p>进入容器<br><code>docker exec -it h1 bash</code><br>在容器中安装<br><code>apt-get update</code><br><code>apt-get install keepalived</code></p>
-<h4 id="1-2-Keepalived配置文件"><a href="#1-2-Keepalived配置文件" class="headerlink" title="1.2 Keepalived配置文件"></a>1.2 Keepalived配置文件</h4><p>在容器中<br><code>vim /etc/keepalived/keepalived.conf</code><br>如果容器没有安装vim，请输入命令：<code>apt-get install vim</code><br>然后在文件里贴上配置</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.10.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>state 是keepalived的身份（MASTER主服务，BACKUP备服务器）。主服务要抢占虚拟IP，备用服务器不会抢占IP</li>
-<li>interface 网卡设备</li>
-<li>virtual_router_id 虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是 0 ～ 255</li>
-<li>priority 权重</li>
-<li>advert_int 心跳检测秒，MASTER与BACKUP节点间同步检查的时间间。主备之间必须一致。</li>
-<li>authentication 主从服务器验证方式。主备必须使用相同的密码才能正常通信</li>
-<li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
-</ul>
-<h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png" alt="image-20201109224438458"></p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110902.png" alt="image-20201109225321905"></p>
-<h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
-<p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
-<p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
-<h4 id="2-2-热备份："><a href="#2-2-热备份：" class="headerlink" title="2.2 热备份："></a>2.2 热备份：</h4><p>热备份是在系统运行的状态下备份数据，也是难度最大的备份，Mysql常见的热备份有LVM和XtraBackup两种方案。<br>这里我使用的是XtraBackup方案实现热备份，XtraBackup是一款基于InnoDB的在线热备工具，具有开源免费，支持在线热备，占用磁盘空间小，能够非常快速地备份与恢复Mysql数据库等特点</p>
-<p><strong>优势：</strong></p>
-<ul>
-<li><p>备份过程中不锁表、快速可靠</p>
-</li>
-<li><p>备份过程中不会打断正在执行的事务</p>
-</li>
-<li><p>能够基于压缩等功能节约磁盘空间和流量</p>
-</li>
-</ul>
-<p><strong>每天进行一次增量备份，每周进行一次全量备份</strong></p>
-<p><strong>全量备份：</strong>备份全部数据。备份过程时间长，占用空间大</p>
-<p><strong>增量备份：</strong>只备份变化的数据。备份时间短，占用空间小</p>
-<h4 id="2-3-全量数据热备份"><a href="#2-3-全量数据热备份" class="headerlink" title="2.3 全量数据热备份"></a>2.3 全量数据热备份</h4><p>1.创建数据券</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
-
-<p>2.选择数据节点映射数据券</p>
-<p>​    先停止节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
-
-<p>​    删除node1重新创建</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm node1</span><br></pre></td></tr></table></figure>
-
-<p>​    创建node1</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p <span class="number">3306</span>:<span class="number">3306</span> -e MYSQL_ROOT_PASSWORD=<span class="number">123456</span> -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=<span class="number">123456</span> -v v1:/<span class="keyword">var</span>/lib/mysql -v backup:/<span class="keyword">data</span> --privileged -e CLUSTER_JOIN=node2 --name=node1 --net=net1 --ip <span class="number">172.10</span><span class="number">.0</span><span class="number">.2</span> pxc</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>PXC容器中安装XtraBackup，并执行备份</strong></p>
-<p>进入节点</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it node1 bash</span><br></pre></td></tr></table></figure>
-
-<p>执行</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install percona-xtrabackup<span class="number">-24</span></span><br></pre></td></tr></table></figure>
-
-<p>全量备份</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> /<span class="keyword">data</span>/backup/full</span><br></pre></td></tr></table></figure>
-
-<p>容器内备份数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;data&#x2F;backup&#x2F;full</span><br><span class="line">退出容器</span><br><span class="line">exit</span><br><span class="line">查看数据券目录</span><br><span class="line">docker inspect backup</span><br><span class="line">进入备份目录</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-4-全量数据冷还原"><a href="#2-4-全量数据冷还原" class="headerlink" title="2.4 全量数据冷还原"></a>2.4 全量数据冷还原</h4><p>数据库可以热备份，但是不能热还原。为了避免恢复过程中的数据同步。我们采用空白的MySQL还原数据，然后再建立PXC集群；还原数据前要将未提交的事务回滚，还原数据之后重启MySQL。</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /<span class="keyword">var</span>/lib/mysql<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
-
-<p>事务回滚</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --apply-back /<span class="keyword">data</span>/backup/full/</span><br></pre></td></tr></table></figure>
-
-<p>全量数据冷还原</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
