@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进： 主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据 1.负载均衡的高可用方案虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。 1.1 安装Keepalived进入容器docker exec -it h1 bash在容器中安装apt-get updateapt-get inst">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PXC方案的一些改进">
+<meta property="og:url" content="http://yoursite.com/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进： 主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据 1.负载均衡的高可用方案虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。 1.1 安装Keepalived进入容器docker exec -it h1 bash在容器中安装apt-get updateapt-get inst">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110902.png">
+<meta property="article:published_time" content="2020-11-09T13:35:39.000Z">
+<meta property="article:modified_time" content="2020-11-10T01:36:19.088Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="MySQL集群">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PXC方案的一些改进 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PXC方案的一些改进
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-09 21:35:39" itemprop="dateCreated datePublished" datetime="2020-11-09T21:35:39+08:00">2020-11-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL%E9%9B%86%E7%BE%A4/" itemprop="url" rel="index"><span itemprop="name">MySQL集群</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
+<p>主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据</p>
+<h3 id="1-负载均衡的高可用方案"><a href="#1-负载均衡的高可用方案" class="headerlink" title="1.负载均衡的高可用方案"></a>1.负载均衡的高可用方案</h3><p>虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。</p>
+<h4 id="1-1-安装Keepalived"><a href="#1-1-安装Keepalived" class="headerlink" title="1.1 安装Keepalived"></a>1.1 安装Keepalived</h4><p>进入容器<br><code>docker exec -it h1 bash</code><br>在容器中安装<br><code>apt-get update</code><br><code>apt-get install keepalived</code></p>
+<h4 id="1-2-Keepalived配置文件"><a href="#1-2-Keepalived配置文件" class="headerlink" title="1.2 Keepalived配置文件"></a>1.2 Keepalived配置文件</h4><p>在容器中<br><code>vim /etc/keepalived/keepalived.conf</code><br>如果容器没有安装vim，请输入命令：<code>apt-get install vim</code><br>然后在文件里贴上配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.10.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>state 是keepalived的身份（MASTER主服务，BACKUP备服务器）。主服务要抢占虚拟IP，备用服务器不会抢占IP</li>
+<li>interface 网卡设备</li>
+<li>virtual_router_id 虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是 0 ～ 255</li>
+<li>priority 权重</li>
+<li>advert_int 心跳检测秒，MASTER与BACKUP节点间同步检查的时间间。主备之间必须一致。</li>
+<li>authentication 主从服务器验证方式。主备必须使用相同的密码才能正常通信</li>
+<li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
+</ul>
+<h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png" alt="image-20201109224438458"></p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110902.png" alt="image-20201109225321905"></p>
+<h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
+<p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
+<p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
+<h4 id="2-2-热备份："><a href="#2-2-热备份：" class="headerlink" title="2.2 热备份："></a>2.2 热备份：</h4><p>热备份是在系统运行的状态下备份数据，也是难度最大的备份，Mysql常见的热备份有LVM和XtraBackup两种方案。<br>这里我使用的是XtraBackup方案实现热备份，XtraBackup是一款基于InnoDB的在线热备工具，具有开源免费，支持在线热备，占用磁盘空间小，能够非常快速地备份与恢复Mysql数据库等特点</p>
+<p><strong>优势：</strong></p>
+<ul>
+<li><p>备份过程中不锁表、快速可靠</p>
+</li>
+<li><p>备份过程中不会打断正在执行的事务</p>
+</li>
+<li><p>能够基于压缩等功能节约磁盘空间和流量</p>
+</li>
+</ul>
+<p><strong>每天进行一次增量备份，每周进行一次全量备份</strong></p>
+<p><strong>全量备份：</strong>备份全部数据。备份过程时间长，占用空间大</p>
+<p><strong>增量备份：</strong>只备份变化的数据。备份时间短，占用空间小</p>
+<h4 id="2-3-全量数据热备份"><a href="#2-3-全量数据热备份" class="headerlink" title="2.3 全量数据热备份"></a>2.3 全量数据热备份</h4><p>1.创建数据券</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
+
+<p>2.选择数据节点映射数据券</p>
+<p>​    先停止节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
+
+<p>​    删除node1重新创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm node1</span><br></pre></td></tr></table></figure>
+
+<p>​    创建node1</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p <span class="number">3306</span>:<span class="number">3306</span> -e MYSQL_ROOT_PASSWORD=<span class="number">123456</span> -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=<span class="number">123456</span> -v v1:/<span class="keyword">var</span>/lib/mysql -v backup:/<span class="keyword">data</span> --privileged -e CLUSTER_JOIN=node2 --name=node1 --net=net1 --ip <span class="number">172.10</span><span class="number">.0</span><span class="number">.2</span> pxc</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>PXC容器中安装XtraBackup，并执行备份</strong></p>
+<p>进入节点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it node1 bash</span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install percona-xtrabackup<span class="number">-24</span></span><br></pre></td></tr></table></figure>
+
+<p>全量备份</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> /<span class="keyword">data</span>/backup/full</span><br></pre></td></tr></table></figure>
+
+<p>容器内备份数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;data&#x2F;backup&#x2F;full</span><br><span class="line">退出容器</span><br><span class="line">exit</span><br><span class="line">查看数据券目录</span><br><span class="line">docker inspect backup</span><br><span class="line">进入备份目录</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-全量数据冷还原"><a href="#2-4-全量数据冷还原" class="headerlink" title="2.4 全量数据冷还原"></a>2.4 全量数据冷还原</h4><p>数据库可以热备份，但是不能热还原。为了避免恢复过程中的数据同步。我们采用空白的MySQL还原数据，然后再建立PXC集群；还原数据前要将未提交的事务回滚，还原数据之后重启MySQL。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /<span class="keyword">var</span>/lib/mysql<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
+
+<p>事务回滚</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --apply-back /<span class="keyword">data</span>/backup/full/</span><br></pre></td></tr></table></figure>
+
+<p>全量数据冷还原</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/MySQL%E9%9B%86%E7%BE%A4/" rel="tag"># MySQL集群</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/" rel="prev" title="实体类的4种类型">
+      <i class="fa fa-chevron-left"></i> 实体类的4种类型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/" rel="next" title="Docker设置镜像自启动">
+      Docker设置镜像自启动 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-负载均衡的高可用方案"><span class="nav-number">1.</span> <span class="nav-text">1.负载均衡的高可用方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-安装Keepalived"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 安装Keepalived</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Keepalived配置文件"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Keepalived配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-启动keepalived"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 启动keepalived</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-MySQL集群-热备份数据"><span class="nav-number">2.</span> <span class="nav-text">2.MySQL集群 热备份数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-冷备份："><span class="nav-number">2.1.</span> <span class="nav-text">2.1 冷备份：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-热备份："><span class="nav-number">2.2.</span> <span class="nav-text">2.2 热备份：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-全量数据热备份"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 全量数据热备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-全量数据冷还原"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 全量数据冷还原</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
