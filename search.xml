@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
     <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
     <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
@@ -80,26 +100,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hadoop运行环境搭建</title>
     <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -166,340 +166,6 @@
       </categories>
       <tags>
         <tag>Hadoop</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java多线程</title>
-    <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
-<blockquote>
-<p>如：运行的QQ，运行中的MP3播放器<br>程序是静态的，进程是动态的<br>进程作为资源分配的单位，系统在运行时会为每个进程不同的内存区域。</p>
-</blockquote>
-<p>线程(thread)：进程可以进一步细化为线程，是一个程序内部的一条执行路径。</p>
-<blockquote>
-<p>若一个进程同一时间并行执行多个线程，就是支持多线程的。<br>线程作为调度和执行的单位，每个线程拥有独立的运行栈和程序计数器(PC)，线程切换的开销小<br>一个进程中的多个线程共享相同的内存单元/内存地址空间-&gt;它们从同一堆中分配对象，可以访问相同的变量和对象。这就使得线程间通信更简便、高效。但多个线程操作共享的系统资源可能带来安全的隐患。</p>
-</blockquote>
-<p><strong>单核CPU与多核CPU的理解</strong></p>
-<p>单核CPU，其实是一种假的多线程，因为在一个时间单元内，也只能执行一个线程的任务。例如：虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果有某个人不想交钱，那么收费人员可以把他“挂起”。但是因为CPU时间单元特别短，所以感觉不出来。</p>
-<p>多核CPU</p>
-<p><strong>并发与并行</strong></p>
-<p>并行：多个CPU同时执行多个任务。例如：多个人同时做不同的事情。</p>
-<p>并发：一个CPU（采用时间片）同时执行多个任务。例如：秒杀，多个人做一件事。</p>
-<p><strong>多线程的优点</strong></p>
-<p>1.提高应用程序的响应。对图形化界面更有意义，可以增强用户体验。</p>
-<p>2.提高计算机系统CPU的利用率</p>
-<p>3.改善程序结构。将既长又复杂的进程分为多个线程，独立运行，利于理解和修改</p>
-<h3 id="二-线程的创建和使用"><a href="#二-线程的创建和使用" class="headerlink" title="二.线程的创建和使用"></a>二.线程的创建和使用</h3><p>多线程的创建，方式一：继承与Thread类</p>
-<p>1.创建一个类继承于Thread类的子类</p>
-<p>2.重写Thread类的run()  ——》将此线程执行的操作声明在run()中</p>
-<p>3.创建Thread类的子类的对象</p>
-<p>4.通过此对象调用start()</p>
-<p><strong>线程的调度</strong>：</p>
-<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><h1 id="线程的状态变化"><a href="#线程的状态变化" class="headerlink" title="线程的状态变化"></a>线程的状态变化</h1><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
-<ul>
-<li>创建状态 </li>
-</ul>
-<p>在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时它已经有了相应的内存空间和其他资源，但还处于不可运行状态。新建一个线程对象可采用Thread 类的构造方法来实现，例如 “Thread thread=new Thread()”。</p>
-<ul>
-<li>就绪状态 </li>
-</ul>
-<p>新建线程对象后，调用该线程的 start() 方法就可以启动线程。当线程启动时，线程进入就绪状态。此时，线程将进入线程队列排队，等待 CPU 服务，这表明它已经具备了运行条件。</p>
-<ul>
-<li>运行状态 </li>
-</ul>
-<p>当就绪状态被调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的 run() 方法。run() 方法定义该线程的操作和功能。</p>
-<ul>
-<li>阻塞状态 </li>
-</ul>
-<p>一个正在执行的线程在某些特殊情况下，如被人为挂起或需要执行耗时的输入/输出操作，会让 CPU 暂时中止自己的执行，进入阻塞状态。在可执行状态下，如果调用sleep(),suspend(),wait() 等方法，线程都将进入阻塞状态，发生阻塞时线程不能进入排队队列，只有当引起阻塞的原因被消除后，线程才可以转入就绪状态。</p>
-<ul>
-<li>死亡状态 </li>
-</ul>
-<p>线程调用 stop() 方法时或 run() 方法执行结束后，即处于死亡状态。处于死亡状态的线程不具有继续运行的能力。</p>
-<p>在此提出一个问题，Java 程序每次运行至少启动几个线程？</p>
-<p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
-<h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
-      <categories>
-        <category>多线程</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>多线程</tag>
-        <tag>JavaSE</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL集群-PXC方案</title>
-    <url>/2020/08/21/MySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
-<table>
-<thead>
-<tr>
-<th>Replication</th>
-<th>PXC</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
-<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
-</tr>
-<tr>
-<td>异步复制，从和主无法保证数据的一致性</td>
-<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
-</tr>
-</tbody></table>
-<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
-<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
-<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>这里我是尝试通过Docker搭建的。Docker的安装与配置非常简单。</p>
-<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
-<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
-<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
-<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
-
-<p>查看docker卷信息：<code>docker inspect v1</code></p>
-<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
-
-<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
-<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
-<p>在DB1中新建test数据库并创建student表：</p>
-<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
-<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
-<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
-<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
-<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
-<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
-<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
-<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
-<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
-<p>haproxy.cfg</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
-
-<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
-<p>首页展示：</p>
-<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
-]]></content>
-      <categories>
-        <category>MySQL集群</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>MySQL集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java集合</title>
-    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>集合</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PXC方案的一些改进</title>
-    <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
-    <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
-<p>主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据</p>
-<a id="more"></a>
-
-<h3 id="1-负载均衡的高可用方案"><a href="#1-负载均衡的高可用方案" class="headerlink" title="1.负载均衡的高可用方案"></a>1.负载均衡的高可用方案</h3><p>虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。</p>
-<h4 id="1-1-安装Keepalived"><a href="#1-1-安装Keepalived" class="headerlink" title="1.1 安装Keepalived"></a>1.1 安装Keepalived</h4><p>进入容器<br><code>docker exec -it h1 bash</code><br>在容器中安装<br><code>apt-get update</code><br><code>apt-get install keepalived</code></p>
-<h4 id="1-2-Keepalived配置文件"><a href="#1-2-Keepalived配置文件" class="headerlink" title="1.2 Keepalived配置文件"></a>1.2 Keepalived配置文件</h4><p>在容器中<br><code>vim /etc/keepalived/keepalived.conf</code><br>如果容器没有安装vim，请输入命令：<code>apt-get install vim</code><br>然后在文件里贴上配置</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.10.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>state 是keepalived的身份（MASTER主服务，BACKUP备服务器）。主服务要抢占虚拟IP，备用服务器不会抢占IP</li>
-<li>interface 网卡设备</li>
-<li>virtual_router_id 虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是 0 ～ 255</li>
-<li>priority 权重</li>
-<li>advert_int 心跳检测秒，MASTER与BACKUP节点间同步检查的时间间。主备之间必须一致。</li>
-<li>authentication 主从服务器验证方式。主备必须使用相同的密码才能正常通信</li>
-<li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
-</ul>
-<h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png" alt="image-20201109224438458"></p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110902.png" alt="image-20201109225321905"></p>
-<h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
-<p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
-<p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
-<h4 id="2-2-热备份："><a href="#2-2-热备份：" class="headerlink" title="2.2 热备份："></a>2.2 热备份：</h4><p>热备份是在系统运行的状态下备份数据，也是难度最大的备份，Mysql常见的热备份有LVM和XtraBackup两种方案。<br>这里我使用的是XtraBackup方案实现热备份，XtraBackup是一款基于InnoDB的在线热备工具，具有开源免费，支持在线热备，占用磁盘空间小，能够非常快速地备份与恢复Mysql数据库等特点</p>
-<p><strong>优势：</strong></p>
-<ul>
-<li><p>备份过程中不锁表、快速可靠</p>
-</li>
-<li><p>备份过程中不会打断正在执行的事务</p>
-</li>
-<li><p>能够基于压缩等功能节约磁盘空间和流量</p>
-</li>
-</ul>
-<p><strong>每天进行一次增量备份，每周进行一次全量备份</strong></p>
-<p><strong>全量备份：</strong>备份全部数据。备份过程时间长，占用空间大</p>
-<p><strong>增量备份：</strong>只备份变化的数据。备份时间短，占用空间小</p>
-<h4 id="2-3-全量数据热备份"><a href="#2-3-全量数据热备份" class="headerlink" title="2.3 全量数据热备份"></a>2.3 全量数据热备份</h4><p>1.创建数据券</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
-
-<p>2.选择数据节点映射数据券</p>
-<p>​    先停止节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
-
-<p>​    删除node1重新创建</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker rm node1</span><br></pre></td></tr></table></figure>
-
-<p>​    创建node1</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">docker run -d -p <span class="number">3306</span>:<span class="number">3306</span> -e MYSQL_ROOT_PASSWORD=<span class="number">123456</span> -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=<span class="number">123456</span> -v v1:/<span class="keyword">var</span>/lib/mysql -v backup:/<span class="keyword">data</span> --privileged -e CLUSTER_JOIN=node2 --name=node1 --net=net1 --ip <span class="number">172.10</span><span class="number">.0</span><span class="number">.2</span> pxc</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>PXC容器中安装XtraBackup，并执行备份</strong></p>
-<p>进入节点</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it node1 bash</span><br></pre></td></tr></table></figure>
-
-<p>执行</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install percona-xtrabackup<span class="number">-24</span></span><br></pre></td></tr></table></figure>
-
-<p>全量备份</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> /<span class="keyword">data</span>/backup/full</span><br></pre></td></tr></table></figure>
-
-<p>容器内备份数据</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;data&#x2F;backup&#x2F;full</span><br><span class="line">退出容器</span><br><span class="line">exit</span><br><span class="line">查看数据券目录</span><br><span class="line">docker inspect backup</span><br><span class="line">进入备份目录</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-4-全量数据冷还原"><a href="#2-4-全量数据冷还原" class="headerlink" title="2.4 全量数据冷还原"></a>2.4 全量数据冷还原</h4><p>数据库可以热备份，但是不能热还原。为了避免恢复过程中的数据同步。我们采用空白的MySQL还原数据，然后再建立PXC集群；还原数据前要将未提交的事务回滚，还原数据之后重启MySQL。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">rm -rf /<span class="keyword">var</span>/lib/mysql<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
-
-<p>事务回滚</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --apply-back /<span class="keyword">data</span>/backup/full/</span><br></pre></td></tr></table></figure>
-
-<p>全量数据冷还原</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>MySQL集群</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>MySQL集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java实现分页功能常见的几种方法</title>
-    <url>/2019/02/25/Java%E5%AE%9E%E7%8E%B0%E5%88%86%E9%A1%B5%E5%8A%9F%E8%83%BD%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>总结一下分页功能的实现方法</p>
-<a id="more"></a>
-
-<h2 id="一、limit关键字"><a href="#一、limit关键字" class="headerlink" title="一、limit关键字"></a>一、limit关键字</h2><p><strong>service层</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImplStudentService</span> <span class="keyword">implements</span> <span class="title">StudentService</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span>  StudentDao  studentDao;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Student&gt;  <span class="title">selectAllStudent</span><span class="params">(String province, Integer offset, Integer limit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> studentDao.selectAll(province,offset,limit);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>sql语句</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from student where province &#x3D; #&#123;province&#125; limit #&#123;offset&#125;,#&#123;limit&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、hibernate分页"><a href="#二、hibernate分页" class="headerlink" title="二、hibernate分页"></a>二、hibernate分页</h2><p><strong>service层</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> List <span class="title">getStudents</span><span class="params">(Integer  pageNo，Integer  pageSize)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"> <span class="comment">// 分页数据</span></span><br><span class="line"> <span class="keyword">int</span>[] startIdAndCount = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line"> startIdAndCount[<span class="number">0</span>] = pageNo * pageSize;</span><br><span class="line"> startIdAndCount[<span class="number">1</span>] = pageSize;</span><br><span class="line"> <span class="keyword">return</span> studentDao.selectStudentsByPage(startIdAndCount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>dao层</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">findByHqlPage</span><span class="params">(<span class="keyword">int</span>[] startIdAndCount)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	String hql = <span class="string">"..."</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		Query query = getSession().createQuery(hql);</span><br><span class="line">		<span class="comment">// 设置分页</span></span><br><span class="line">		<span class="keyword">if</span> (startIdAndCount != <span class="keyword">null</span> &amp;&amp; startIdAndCount.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> rowStartIdx = Math.max(<span class="number">0</span>, startIdAndCount[<span class="number">0</span>]);</span><br><span class="line">			<span class="keyword">if</span> (rowStartIdx &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				query.setFirstResult(rowStartIdx);<span class="comment">// 设置开始取值的索引</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (startIdAndCount.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">				<span class="keyword">int</span> rowCount = Math.max(<span class="number">0</span>, startIdAndCount[<span class="number">1</span>]);</span><br><span class="line">				<span class="keyword">if</span> (rowCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				query.setMaxResults(rowCount);<span class="comment">// 设置结束取值的索引</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> query.list();</span><br><span class="line">	&#125; <span class="keyword">catch</span> (RuntimeException re) &#123;</span><br><span class="line">		log.error(<span class="string">"分页查询失败！"</span>, re);</span><br><span class="line">		<span class="keyword">throw</span> re;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="三、截取List查询结果分页-简单粗暴"><a href="#三、截取List查询结果分页-简单粗暴" class="headerlink" title="三、截取List查询结果分页(简单粗暴)"></a>三、截取List查询结果分页(简单粗暴)</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;StudentEnroll&gt; students = studentlDao.getAllStudents();</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(studentEnrolls != <span class="keyword">null</span> &amp;&amp; studentEnrolls.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	count = studentEnrolls.size();</span><br><span class="line">	<span class="keyword">int</span> fromIndex = pageNo * pageSize;</span><br><span class="line">	<span class="keyword">int</span> toIndex = (pageNo + <span class="number">1</span>) * pageSize;</span><br><span class="line">	<span class="keyword">if</span>(toIndex &gt; count) &#123;</span><br><span class="line">		toIndex = count;</span><br><span class="line">	&#125;</span><br><span class="line">	List&lt;StudentEnroll&gt; pageList = studentEnrolls.subList(fromIndex, toIndex);</span><br></pre></td></tr></table></figure>
-
-<h2 id="四、mybatis框架pageHelper插件分页"><a href="#四、mybatis框架pageHelper插件分页" class="headerlink" title="四、mybatis框架pageHelper插件分页"></a>四、mybatis框架pageHelper插件分页</h2><p>Spring整合：</p>
-<p>导入pom.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>配置项目配置文件(我在spring和mybatis整合的配置文件中配置的，如果在mybatis核心配置文件中配置，百度一下)</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 依赖数据源 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 注册加载myBatis映射文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapperLocations"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath*:com/yyz/mapper/*Mapper.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- PageHelper分页配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"plugins"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"properties"</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--使用下面的方式配置参数，一行配置一个，后面会有所有的参数介绍 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--helperDialect属性来指定分页插件使用哪种方言。--&gt;</span></span><br><span class="line">                            helperDialect=mysql</span><br><span class="line">                    <span class="comment">&lt;!--分页合理化参数，设置为true时，pageNum&lt;=0时会查询第一页,pageNum&gt;pages(超过总数时),会查询最后一页。--&gt;</span></span><br><span class="line">                            reasonable=true</span><br><span class="line">                    <span class="comment">&lt;!--为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，</span></span><br><span class="line"><span class="comment">                        可以配置 pageNum,pageSize,count,pageSizeZero,reasonable--&gt;</span></span><br><span class="line">                            params=count=countSql</span><br><span class="line">                    <span class="comment">&lt;!--支持通过Mapper接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params 配</span></span><br><span class="line"><span class="comment">                     置的字段中取值，查找到合适的值时就会自动分页。--&gt;</span></span><br><span class="line">                            supportMethodsArguments=true</span><br><span class="line">                    <span class="comment">&lt;!--默认值为 false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页--&gt;</span></span><br><span class="line">                            autoRuntimeDialect=true</span><br><span class="line">                        <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 给数据库实体起别名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"typeAliasesPackage"</span> <span class="attr">value</span>=<span class="string">"com.yyz.entity;"</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>SpringBoot整合：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--分页插件--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>最新版本<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>配置项目application.yml文件</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#bybatis分页插件配置</span></span><br><span class="line"><span class="attr">pagehelper:</span></span><br><span class="line">  <span class="attr">helper-dialect:</span> <span class="string">mysql</span>  <span class="comment">#数据库</span></span><br><span class="line">  <span class="attr">reasonable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">support-methods-arguments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">params:</span> <span class="string">count=countSql</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<h2 id="标题分页插件参数："><a href="#标题分页插件参数：" class="headerlink" title="标题分页插件参数："></a>标题分页插件参数：</h2><p>分页插件提供了多个可选参数，这些参数使用时，按照上面配置方式中的示例配置即可。</p>
-<p>分页插件可选参数如下：</p>
-<p><strong>dialect</strong>：默认情况下会使用 PageHelper 方式进行分页，如果想要实现自己的分页逻辑，可以实现<br><strong>Dialect</strong>(com.github.pagehelper.Dialect) 接口，然后配置该属性为实现类的全限定名称。 使用自定义<br>dialect 实现时，下面的参数没有任何作用。</p>
-<p><strong>helperDialect</strong>：分页插件会自动检测当前的数据库链接，自动选择合适的分页方式。<br>oracle,mysql,mariadb,sqlite,hsqldb,postgresql,db2,sqlserver,informix,h2,sqlserver2012,derby<br><strong>特别注意</strong>：使用 SqlServer2012 数据库时，需要手动指定为 sqlserver2012，否则会使用 SqlServer2005<br>的方式进行分页。</p>
-<p><strong>offsetAsPageNum</strong>：默认值为 false，该参数对使用 RowBounds 作为分页参数时有效。 当该参数设置为 true<br>时，会将 RowBounds 中的 offset 参数当成 pageNum 使用，可以用页码和页面大小两个参数进行分页。</p>
-<p><strong>rowBoundsWithCount</strong>：默认值为false，该参数对使用 RowBounds 作为分页参数时有效。<br>当该参数设置为true时，使用 RowBounds 分页会进行 count 查询。</p>
-<p><strong>pageSizeZero</strong>：默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者<br>RowBounds.limit = 0 就会查询出全部的结果（相当于没有执行分页查询，但是返回结果仍然是 Page 类型）。</p>
-<p><strong>reasonable</strong>：分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum&lt;=0<br>时会查询第一页，pageNum&gt;pages（超过总数时），会查询最后一页。默认false 时，直接根据参数进行查询。</p>
-<p><strong>params</strong>：为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，<br>可以配置 pageNum,pageSize,count,pageSizeZero,reasonable，不配置映射的用默认值，<br>默认值为pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero。</p>
-<p><strong>supportMethodsArguments</strong>：支持通过 Mapper<br>接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params<br>配置的字段中取值，查找到合适的值时就会自动分页。</p>
-<p><strong>aggregateFunctions</strong>：默认为所有常见数据库的聚合函数，允许手动添加聚合函数（影响行数），所有以聚合函数开头的函数，在进行<br>count 转换时，会套一层。其他函数和列会被替换为 count(0)，其中count列可以自己配置。</p>
-</blockquote>
-<h2 id="重要提示："><a href="#重要提示：" class="headerlink" title="重要提示："></a>重要提示：</h2><p>当 offsetAsPageNum=false 的时候，由于 PageNum 问题，RowBounds查询的时候 reasonable 会强制为 false。使用 PageHelper.startPage 方法不受影响。</p>
-<p>service层</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseResult <span class="title">selectAllStudent</span><span class="params">(Integer pageNum, Integer pageSize)</span> </span>&#123;</span><br><span class="line">    Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    PageHelper.startPage(pageNum,pageSize);</span><br><span class="line">    List&lt;Student&gt;  students = studentMapper.selectAllStudents();</span><br><span class="line">    PageInfo pageInfo = <span class="keyword">new</span> PageInfo(students);</span><br><span class="line">    <span class="keyword">long</span> total = pageInfo.getTotal();</span><br><span class="line">    map.put(<span class="string">"result"</span>,pageInfo);</span><br><span class="line">    map.put(<span class="string">"count"</span>,total);</span><br><span class="line">    <span class="keyword">return</span> ResponseResultUtil.success(map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="五、springData分页"><a href="#五、springData分页" class="headerlink" title="五、springData分页"></a>五、springData分页</h2><p>service层</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Sort.Order travelDate = <span class="keyword">new</span> Sort.Order(Sort.Direction.DESC, <span class="string">"travelDate"</span>);</span><br><span class="line">Sort.Order createdTime = <span class="keyword">new</span> Sort.Order(Sort.Direction.DESC, <span class="string">"createdTime"</span>);</span><br><span class="line">Sort sort = <span class="keyword">new</span> Sort(travelDate, createdTime);</span><br><span class="line">Pageable pageable = <span class="keyword">new</span> PageRequest(page, pageSize, sort);</span><br><span class="line">List&lt;TravelItem&gt; items = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    items = travelRepository.getTravelItemsByTravelDateBetweenAndUserId(theStartDate, theEndDate, openId, pageable);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> DatabaseRelatedException(<span class="string">"TravelRepository异常"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>dao层：接口继承的是PagingAndSortingRepository接口，注意要加@Repository注解</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>分页功能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot错误</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
       </tags>
   </entry>
   <entry>
@@ -592,18 +258,337 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>fatal: not a git repository (or any of the parent directories): .git</title>
-    <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
+    <title>Java多线程</title>
+    <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
 
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-]]></content>
+<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
+<blockquote>
+<p>如：运行的QQ，运行中的MP3播放器<br>程序是静态的，进程是动态的<br>进程作为资源分配的单位，系统在运行时会为每个进程不同的内存区域。</p>
+</blockquote>
+<p>线程(thread)：进程可以进一步细化为线程，是一个程序内部的一条执行路径。</p>
+<blockquote>
+<p>若一个进程同一时间并行执行多个线程，就是支持多线程的。<br>线程作为调度和执行的单位，每个线程拥有独立的运行栈和程序计数器(PC)，线程切换的开销小<br>一个进程中的多个线程共享相同的内存单元/内存地址空间-&gt;它们从同一堆中分配对象，可以访问相同的变量和对象。这就使得线程间通信更简便、高效。但多个线程操作共享的系统资源可能带来安全的隐患。</p>
+</blockquote>
+<p><strong>单核CPU与多核CPU的理解</strong></p>
+<p>单核CPU，其实是一种假的多线程，因为在一个时间单元内，也只能执行一个线程的任务。例如：虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果有某个人不想交钱，那么收费人员可以把他“挂起”。但是因为CPU时间单元特别短，所以感觉不出来。</p>
+<p>多核CPU</p>
+<p><strong>并发与并行</strong></p>
+<p>并行：多个CPU同时执行多个任务。例如：多个人同时做不同的事情。</p>
+<p>并发：一个CPU（采用时间片）同时执行多个任务。例如：秒杀，多个人做一件事。</p>
+<p><strong>多线程的优点</strong></p>
+<p>1.提高应用程序的响应。对图形化界面更有意义，可以增强用户体验。</p>
+<p>2.提高计算机系统CPU的利用率</p>
+<p>3.改善程序结构。将既长又复杂的进程分为多个线程，独立运行，利于理解和修改</p>
+<h3 id="二-线程的创建和使用"><a href="#二-线程的创建和使用" class="headerlink" title="二.线程的创建和使用"></a>二.线程的创建和使用</h3><p>多线程的创建，方式一：继承与Thread类</p>
+<p>1.创建一个类继承于Thread类的子类</p>
+<p>2.重写Thread类的run()  ——》将此线程执行的操作声明在run()中</p>
+<p>3.创建Thread类的子类的对象</p>
+<p>4.通过此对象调用start()</p>
+<p><strong>线程的调度</strong>：</p>
+<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><h1 id="线程的状态变化"><a href="#线程的状态变化" class="headerlink" title="线程的状态变化"></a>线程的状态变化</h1><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
+<ul>
+<li>创建状态 </li>
+</ul>
+<p>在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时它已经有了相应的内存空间和其他资源，但还处于不可运行状态。新建一个线程对象可采用Thread 类的构造方法来实现，例如 “Thread thread=new Thread()”。</p>
+<ul>
+<li>就绪状态 </li>
+</ul>
+<p>新建线程对象后，调用该线程的 start() 方法就可以启动线程。当线程启动时，线程进入就绪状态。此时，线程将进入线程队列排队，等待 CPU 服务，这表明它已经具备了运行条件。</p>
+<ul>
+<li>运行状态 </li>
+</ul>
+<p>当就绪状态被调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的 run() 方法。run() 方法定义该线程的操作和功能。</p>
+<ul>
+<li>阻塞状态 </li>
+</ul>
+<p>一个正在执行的线程在某些特殊情况下，如被人为挂起或需要执行耗时的输入/输出操作，会让 CPU 暂时中止自己的执行，进入阻塞状态。在可执行状态下，如果调用sleep(),suspend(),wait() 等方法，线程都将进入阻塞状态，发生阻塞时线程不能进入排队队列，只有当引起阻塞的原因被消除后，线程才可以转入就绪状态。</p>
+<ul>
+<li>死亡状态 </li>
+</ul>
+<p>线程调用 stop() 方法时或 run() 方法执行结束后，即处于死亡状态。处于死亡状态的线程不具有继续运行的能力。</p>
+<p>在此提出一个问题，Java 程序每次运行至少启动几个线程？</p>
+<p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
+<h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
       <categories>
-        <category>git常见错误</category>
+        <category>多线程</category>
       </categories>
       <tags>
-        <tag>git</tag>
+        <tag>Java</tag>
+        <tag>多线程</tag>
+        <tag>JavaSE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java集合</title>
+    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>集合</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java实现分页功能常见的几种方法</title>
+    <url>/2019/02/25/Java%E5%AE%9E%E7%8E%B0%E5%88%86%E9%A1%B5%E5%8A%9F%E8%83%BD%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>总结一下分页功能的实现方法</p>
+<a id="more"></a>
+
+<h2 id="一、limit关键字"><a href="#一、limit关键字" class="headerlink" title="一、limit关键字"></a>一、limit关键字</h2><p><strong>service层</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImplStudentService</span> <span class="keyword">implements</span> <span class="title">StudentService</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span>  StudentDao  studentDao;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Student&gt;  <span class="title">selectAllStudent</span><span class="params">(String province, Integer offset, Integer limit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> studentDao.selectAll(province,offset,limit);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>sql语句</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from student where province &#x3D; #&#123;province&#125; limit #&#123;offset&#125;,#&#123;limit&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、hibernate分页"><a href="#二、hibernate分页" class="headerlink" title="二、hibernate分页"></a>二、hibernate分页</h2><p><strong>service层</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> List <span class="title">getStudents</span><span class="params">(Integer  pageNo，Integer  pageSize)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"> <span class="comment">// 分页数据</span></span><br><span class="line"> <span class="keyword">int</span>[] startIdAndCount = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line"> startIdAndCount[<span class="number">0</span>] = pageNo * pageSize;</span><br><span class="line"> startIdAndCount[<span class="number">1</span>] = pageSize;</span><br><span class="line"> <span class="keyword">return</span> studentDao.selectStudentsByPage(startIdAndCount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>dao层</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">findByHqlPage</span><span class="params">(<span class="keyword">int</span>[] startIdAndCount)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	String hql = <span class="string">"..."</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		Query query = getSession().createQuery(hql);</span><br><span class="line">		<span class="comment">// 设置分页</span></span><br><span class="line">		<span class="keyword">if</span> (startIdAndCount != <span class="keyword">null</span> &amp;&amp; startIdAndCount.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> rowStartIdx = Math.max(<span class="number">0</span>, startIdAndCount[<span class="number">0</span>]);</span><br><span class="line">			<span class="keyword">if</span> (rowStartIdx &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				query.setFirstResult(rowStartIdx);<span class="comment">// 设置开始取值的索引</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (startIdAndCount.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">				<span class="keyword">int</span> rowCount = Math.max(<span class="number">0</span>, startIdAndCount[<span class="number">1</span>]);</span><br><span class="line">				<span class="keyword">if</span> (rowCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				query.setMaxResults(rowCount);<span class="comment">// 设置结束取值的索引</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> query.list();</span><br><span class="line">	&#125; <span class="keyword">catch</span> (RuntimeException re) &#123;</span><br><span class="line">		log.error(<span class="string">"分页查询失败！"</span>, re);</span><br><span class="line">		<span class="keyword">throw</span> re;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、截取List查询结果分页-简单粗暴"><a href="#三、截取List查询结果分页-简单粗暴" class="headerlink" title="三、截取List查询结果分页(简单粗暴)"></a>三、截取List查询结果分页(简单粗暴)</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;StudentEnroll&gt; students = studentlDao.getAllStudents();</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(studentEnrolls != <span class="keyword">null</span> &amp;&amp; studentEnrolls.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	count = studentEnrolls.size();</span><br><span class="line">	<span class="keyword">int</span> fromIndex = pageNo * pageSize;</span><br><span class="line">	<span class="keyword">int</span> toIndex = (pageNo + <span class="number">1</span>) * pageSize;</span><br><span class="line">	<span class="keyword">if</span>(toIndex &gt; count) &#123;</span><br><span class="line">		toIndex = count;</span><br><span class="line">	&#125;</span><br><span class="line">	List&lt;StudentEnroll&gt; pageList = studentEnrolls.subList(fromIndex, toIndex);</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、mybatis框架pageHelper插件分页"><a href="#四、mybatis框架pageHelper插件分页" class="headerlink" title="四、mybatis框架pageHelper插件分页"></a>四、mybatis框架pageHelper插件分页</h2><p>Spring整合：</p>
+<p>导入pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置项目配置文件(我在spring和mybatis整合的配置文件中配置的，如果在mybatis核心配置文件中配置，百度一下)</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 依赖数据源 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 注册加载myBatis映射文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapperLocations"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath*:com/yyz/mapper/*Mapper.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- PageHelper分页配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"plugins"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"properties"</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--使用下面的方式配置参数，一行配置一个，后面会有所有的参数介绍 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--helperDialect属性来指定分页插件使用哪种方言。--&gt;</span></span><br><span class="line">                            helperDialect=mysql</span><br><span class="line">                    <span class="comment">&lt;!--分页合理化参数，设置为true时，pageNum&lt;=0时会查询第一页,pageNum&gt;pages(超过总数时),会查询最后一页。--&gt;</span></span><br><span class="line">                            reasonable=true</span><br><span class="line">                    <span class="comment">&lt;!--为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，</span></span><br><span class="line"><span class="comment">                        可以配置 pageNum,pageSize,count,pageSizeZero,reasonable--&gt;</span></span><br><span class="line">                            params=count=countSql</span><br><span class="line">                    <span class="comment">&lt;!--支持通过Mapper接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params 配</span></span><br><span class="line"><span class="comment">                     置的字段中取值，查找到合适的值时就会自动分页。--&gt;</span></span><br><span class="line">                            supportMethodsArguments=true</span><br><span class="line">                    <span class="comment">&lt;!--默认值为 false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页--&gt;</span></span><br><span class="line">                            autoRuntimeDialect=true</span><br><span class="line">                        <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 给数据库实体起别名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"typeAliasesPackage"</span> <span class="attr">value</span>=<span class="string">"com.yyz.entity;"</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>SpringBoot整合：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--分页插件--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>最新版本<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置项目application.yml文件</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#bybatis分页插件配置</span></span><br><span class="line"><span class="attr">pagehelper:</span></span><br><span class="line">  <span class="attr">helper-dialect:</span> <span class="string">mysql</span>  <span class="comment">#数据库</span></span><br><span class="line">  <span class="attr">reasonable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">support-methods-arguments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">params:</span> <span class="string">count=countSql</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h2 id="标题分页插件参数："><a href="#标题分页插件参数：" class="headerlink" title="标题分页插件参数："></a>标题分页插件参数：</h2><p>分页插件提供了多个可选参数，这些参数使用时，按照上面配置方式中的示例配置即可。</p>
+<p>分页插件可选参数如下：</p>
+<p><strong>dialect</strong>：默认情况下会使用 PageHelper 方式进行分页，如果想要实现自己的分页逻辑，可以实现<br><strong>Dialect</strong>(com.github.pagehelper.Dialect) 接口，然后配置该属性为实现类的全限定名称。 使用自定义<br>dialect 实现时，下面的参数没有任何作用。</p>
+<p><strong>helperDialect</strong>：分页插件会自动检测当前的数据库链接，自动选择合适的分页方式。<br>oracle,mysql,mariadb,sqlite,hsqldb,postgresql,db2,sqlserver,informix,h2,sqlserver2012,derby<br><strong>特别注意</strong>：使用 SqlServer2012 数据库时，需要手动指定为 sqlserver2012，否则会使用 SqlServer2005<br>的方式进行分页。</p>
+<p><strong>offsetAsPageNum</strong>：默认值为 false，该参数对使用 RowBounds 作为分页参数时有效。 当该参数设置为 true<br>时，会将 RowBounds 中的 offset 参数当成 pageNum 使用，可以用页码和页面大小两个参数进行分页。</p>
+<p><strong>rowBoundsWithCount</strong>：默认值为false，该参数对使用 RowBounds 作为分页参数时有效。<br>当该参数设置为true时，使用 RowBounds 分页会进行 count 查询。</p>
+<p><strong>pageSizeZero</strong>：默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者<br>RowBounds.limit = 0 就会查询出全部的结果（相当于没有执行分页查询，但是返回结果仍然是 Page 类型）。</p>
+<p><strong>reasonable</strong>：分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum&lt;=0<br>时会查询第一页，pageNum&gt;pages（超过总数时），会查询最后一页。默认false 时，直接根据参数进行查询。</p>
+<p><strong>params</strong>：为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，<br>可以配置 pageNum,pageSize,count,pageSizeZero,reasonable，不配置映射的用默认值，<br>默认值为pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero。</p>
+<p><strong>supportMethodsArguments</strong>：支持通过 Mapper<br>接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params<br>配置的字段中取值，查找到合适的值时就会自动分页。</p>
+<p><strong>aggregateFunctions</strong>：默认为所有常见数据库的聚合函数，允许手动添加聚合函数（影响行数），所有以聚合函数开头的函数，在进行<br>count 转换时，会套一层。其他函数和列会被替换为 count(0)，其中count列可以自己配置。</p>
+</blockquote>
+<h2 id="重要提示："><a href="#重要提示：" class="headerlink" title="重要提示："></a>重要提示：</h2><p>当 offsetAsPageNum=false 的时候，由于 PageNum 问题，RowBounds查询的时候 reasonable 会强制为 false。使用 PageHelper.startPage 方法不受影响。</p>
+<p>service层</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseResult <span class="title">selectAllStudent</span><span class="params">(Integer pageNum, Integer pageSize)</span> </span>&#123;</span><br><span class="line">    Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    PageHelper.startPage(pageNum,pageSize);</span><br><span class="line">    List&lt;Student&gt;  students = studentMapper.selectAllStudents();</span><br><span class="line">    PageInfo pageInfo = <span class="keyword">new</span> PageInfo(students);</span><br><span class="line">    <span class="keyword">long</span> total = pageInfo.getTotal();</span><br><span class="line">    map.put(<span class="string">"result"</span>,pageInfo);</span><br><span class="line">    map.put(<span class="string">"count"</span>,total);</span><br><span class="line">    <span class="keyword">return</span> ResponseResultUtil.success(map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="五、springData分页"><a href="#五、springData分页" class="headerlink" title="五、springData分页"></a>五、springData分页</h2><p>service层</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Sort.Order travelDate = <span class="keyword">new</span> Sort.Order(Sort.Direction.DESC, <span class="string">"travelDate"</span>);</span><br><span class="line">Sort.Order createdTime = <span class="keyword">new</span> Sort.Order(Sort.Direction.DESC, <span class="string">"createdTime"</span>);</span><br><span class="line">Sort sort = <span class="keyword">new</span> Sort(travelDate, createdTime);</span><br><span class="line">Pageable pageable = <span class="keyword">new</span> PageRequest(page, pageSize, sort);</span><br><span class="line">List&lt;TravelItem&gt; items = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    items = travelRepository.getTravelItemsByTravelDateBetweenAndUserId(theStartDate, theEndDate, openId, pageable);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> DatabaseRelatedException(<span class="string">"TravelRepository异常"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>dao层：接口继承的是PagingAndSortingRepository接口，注意要加@Repository注解</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>分页功能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+      <tags>
+        <tag>MyBatis缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL集群-PXC方案</title>
+    <url>/2020/08/21/MySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
+<table>
+<thead>
+<tr>
+<th>Replication</th>
+<th>PXC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
+<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
+</tr>
+<tr>
+<td>异步复制，从和主无法保证数据的一致性</td>
+<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
+</tr>
+</tbody></table>
+<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
+<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
+<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>这里我是尝试通过Docker搭建的。Docker的安装与配置非常简单。</p>
+<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
+<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
+<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
+<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
+
+<p>查看docker卷信息：<code>docker inspect v1</code></p>
+<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
+<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
+<p>在DB1中新建test数据库并创建student表：</p>
+<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
+<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
+<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
+<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
+<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
+<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
+<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
+<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
+<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
+<p>haproxy.cfg</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
+<p>首页展示：</p>
+<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
+]]></content>
+      <categories>
+        <category>MySQL集群</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>MySQL集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot错误</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PXC方案的一些改进</title>
+    <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
+<p>主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据</p>
+<a id="more"></a>
+
+<h3 id="1-负载均衡的高可用方案"><a href="#1-负载均衡的高可用方案" class="headerlink" title="1.负载均衡的高可用方案"></a>1.负载均衡的高可用方案</h3><p>虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。</p>
+<h4 id="1-1-安装Keepalived"><a href="#1-1-安装Keepalived" class="headerlink" title="1.1 安装Keepalived"></a>1.1 安装Keepalived</h4><p>进入容器<br><code>docker exec -it h1 bash</code><br>在容器中安装<br><code>apt-get update</code><br><code>apt-get install keepalived</code></p>
+<h4 id="1-2-Keepalived配置文件"><a href="#1-2-Keepalived配置文件" class="headerlink" title="1.2 Keepalived配置文件"></a>1.2 Keepalived配置文件</h4><p>在容器中<br><code>vim /etc/keepalived/keepalived.conf</code><br>如果容器没有安装vim，请输入命令：<code>apt-get install vim</code><br>然后在文件里贴上配置</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.10.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>state 是keepalived的身份（MASTER主服务，BACKUP备服务器）。主服务要抢占虚拟IP，备用服务器不会抢占IP</li>
+<li>interface 网卡设备</li>
+<li>virtual_router_id 虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是 0 ～ 255</li>
+<li>priority 权重</li>
+<li>advert_int 心跳检测秒，MASTER与BACKUP节点间同步检查的时间间。主备之间必须一致。</li>
+<li>authentication 主从服务器验证方式。主备必须使用相同的密码才能正常通信</li>
+<li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
+</ul>
+<h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png" alt="image-20201109224438458"></p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110902.png" alt="image-20201109225321905"></p>
+<h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
+<p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
+<p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
+<h4 id="2-2-热备份："><a href="#2-2-热备份：" class="headerlink" title="2.2 热备份："></a>2.2 热备份：</h4><p>热备份是在系统运行的状态下备份数据，也是难度最大的备份，Mysql常见的热备份有LVM和XtraBackup两种方案。<br>这里我使用的是XtraBackup方案实现热备份，XtraBackup是一款基于InnoDB的在线热备工具，具有开源免费，支持在线热备，占用磁盘空间小，能够非常快速地备份与恢复Mysql数据库等特点</p>
+<p><strong>优势：</strong></p>
+<ul>
+<li><p>备份过程中不锁表、快速可靠</p>
+</li>
+<li><p>备份过程中不会打断正在执行的事务</p>
+</li>
+<li><p>能够基于压缩等功能节约磁盘空间和流量</p>
+</li>
+</ul>
+<p><strong>每天进行一次增量备份，每周进行一次全量备份</strong></p>
+<p><strong>全量备份：</strong>备份全部数据。备份过程时间长，占用空间大</p>
+<p><strong>增量备份：</strong>只备份变化的数据。备份时间短，占用空间小</p>
+<h4 id="2-3-全量数据热备份"><a href="#2-3-全量数据热备份" class="headerlink" title="2.3 全量数据热备份"></a>2.3 全量数据热备份</h4><p>1.创建数据券</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
+
+<p>2.选择数据节点映射数据券</p>
+<p>​    先停止节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
+
+<p>​    删除node1重新创建</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker rm node1</span><br></pre></td></tr></table></figure>
+
+<p>​    创建node1</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">docker run -d -p <span class="number">3306</span>:<span class="number">3306</span> -e MYSQL_ROOT_PASSWORD=<span class="number">123456</span> -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=<span class="number">123456</span> -v v1:/<span class="keyword">var</span>/lib/mysql -v backup:/<span class="keyword">data</span> --privileged -e CLUSTER_JOIN=node2 --name=node1 --net=net1 --ip <span class="number">172.10</span><span class="number">.0</span><span class="number">.2</span> pxc</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>PXC容器中安装XtraBackup，并执行备份</strong></p>
+<p>进入节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it node1 bash</span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install percona-xtrabackup<span class="number">-24</span></span><br></pre></td></tr></table></figure>
+
+<p>全量备份</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> /<span class="keyword">data</span>/backup/full</span><br></pre></td></tr></table></figure>
+
+<p>容器内备份数据</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;data&#x2F;backup&#x2F;full</span><br><span class="line">退出容器</span><br><span class="line">exit</span><br><span class="line">查看数据券目录</span><br><span class="line">docker inspect backup</span><br><span class="line">进入备份目录</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-全量数据冷还原"><a href="#2-4-全量数据冷还原" class="headerlink" title="2.4 全量数据冷还原"></a>2.4 全量数据冷还原</h4><p>数据库可以热备份，但是不能热还原。为了避免恢复过程中的数据同步。我们采用空白的MySQL还原数据，然后再建立PXC集群；还原数据前要将未提交的事务回滚，还原数据之后重启MySQL。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">rm -rf /<span class="keyword">var</span>/lib/mysql<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
+
+<p>事务回滚</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --apply-back /<span class="keyword">data</span>/backup/full/</span><br></pre></td></tr></table></figure>
+
+<p>全量数据冷还原</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL集群</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>MySQL集群</tag>
       </tags>
   </entry>
   <entry>
@@ -647,38 +632,21 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
-    <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+    <title>SpringBoot启动时找不到或无法加载主类</title>
+    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
 
-<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，这里就分开总结了。。。</p>
-<h2 id="Spring集成PageHelper："><a href="#Spring集成PageHelper：" class="headerlink" title="Spring集成PageHelper："></a>Spring集成PageHelper：</h2><p><strong>第一步：pom文件引入依赖</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第二步：MyBatis的核心配置文件中引入配置项</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"cn.e3mall.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第三步：业务逻辑实现分页功能，我们只需将当前查询的页数page和每页显示的总条数rows传进去，然后Pagehelper已经帮我们分好数据了，只需在web层获取数据即可。</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分页查询商品列表：</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DatagridResult <span class="title">itemList</span><span class="params">(Integer page, Integer rows)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//为了程序的严谨性，判断非空：</span></span><br><span class="line">    <span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;   <span class="comment">//设置默认当前页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(page &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(rows == <span class="keyword">null</span>)&#123;</span><br><span class="line">        rows = <span class="number">30</span>;    <span class="comment">//设置默认每页显示的商品数(因为jsp页面上默认写的就是30条)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1、设置分页信息，包括当前页数和每页显示的总计数</span></span><br><span class="line">    PageHelper.startPage(page, rows);</span><br><span class="line">    <span class="comment">//2、执行查询</span></span><br><span class="line">    TbItemExample example = <span class="keyword">new</span> TbItemExample();</span><br><span class="line">    List&lt;TbItem&gt; list = tbItemMapper.selectByExample(example);</span><br><span class="line">    <span class="comment">//3、获取分页查询后的数据</span></span><br><span class="line">    PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    <span class="comment">//4、封装需要返回的分页实体</span></span><br><span class="line">    DatagridResult result = <span class="keyword">new</span> DatagridResult();</span><br><span class="line">    <span class="comment">//设置获取到的总记录数total：</span></span><br><span class="line">    result.setTotal(pageInfo.getTotal());</span><br><span class="line">    <span class="comment">//设置数据集合rows：</span></span><br><span class="line">    result.setRows(list);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="springboot集成PageHelper："><a href="#springboot集成PageHelper：" class="headerlink" title="springboot集成PageHelper："></a>springboot集成PageHelper：</h2><p><strong>第一步：pom文件还是需要引入依赖</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第二步：这次直接是在项目的入口类application.java中直接设置PageHelper插件即可</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//配置mybatis的分页插件pageHelper</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PageHelper <span class="title">pageHelper</span><span class="params">()</span></span>&#123;</span><br><span class="line">    PageHelper pageHelper = <span class="keyword">new</span> PageHelper();</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.setProperty(<span class="string">"offsetAsPageNum"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"rowBoundsWithCount"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"reasonable"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"dialect"</span>,<span class="string">"mysql"</span>);    <span class="comment">//配置mysql数据库的方言</span></span><br><span class="line">    pageHelper.setProperties(properties);</span><br><span class="line">    <span class="keyword">return</span> pageHelper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>第三步：同理，使用插件实现分页功能，方式还是一样，只需将当前查询的页数和每页显示的条数穿进去即可，直接源码</strong></p>
-<p>这是需要用到的分页实体，各位可以直接享用。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.riemann.utils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页bean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 当前页</span></span><br><span class="line">    <span class="keyword">private</span> Integer currentPage = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 每页显示的总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer pageSize = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">// 总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalNum;</span><br><span class="line">    <span class="comment">// 是否有下一页</span></span><br><span class="line">    <span class="keyword">private</span> Integer isMore;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalPage;</span><br><span class="line">    <span class="comment">// 开始索引</span></span><br><span class="line">    <span class="keyword">private</span> Integer startIndex;</span><br><span class="line">    <span class="comment">// 分页结果</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;T&gt; items;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">(Integer currentPage, Integer pageSize, Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = (<span class="keyword">this</span>.totalNum+<span class="keyword">this</span>.pageSize-<span class="number">1</span>)/<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = (<span class="keyword">this</span>.currentPage-<span class="number">1</span>)*<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.isMore = <span class="keyword">this</span>.currentPage &gt;= <span class="keyword">this</span>.totalPage?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getCurrentPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCurrentPage</span><span class="params">(Integer currentPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getPageSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageSize</span><span class="params">(Integer pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalNum</span><span class="params">(Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getIsMore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsMore</span><span class="params">(Integer isMore)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isMore = isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalPage</span><span class="params">(Integer totalPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStartIndex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartIndex</span><span class="params">(Integer startIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">getItems</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> items;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItems</span><span class="params">(List&lt;T&gt; items)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.items = items;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>分页功能源码(web层和service层)。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">findItemByPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】</span></span><br><span class="line">    PageHelper.startPage(currentPage, pageSize);</span><br><span class="line">    </span><br><span class="line">    List&lt;Item&gt; allItems = itemMapper.findAll();        <span class="comment">//全部商品</span></span><br><span class="line">    <span class="keyword">int</span> countNums = itemMapper.countItem();            <span class="comment">//总记录数</span></span><br><span class="line">    PageBean&lt;Item&gt; pageData = <span class="keyword">new</span> PageBean&lt;&gt;(currentPage, pageSize, countNums);</span><br><span class="line">    pageData.setItems(allItems);</span><br><span class="line">    <span class="keyword">return</span> pageData.getItems();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 商品分页功能(集成mybatis的分页插件pageHelper实现)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> currentPage    :当前页数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize        :每页显示的总记录数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/itemsPage"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">itemsPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> itemService.findItemByPage(currentPage, pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
+<blockquote>
+<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
+</blockquote>
+<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>Java</category>
-        <category>SpringBoot</category>
+        <category>SpringBoot错误</category>
       </categories>
       <tags>
-        <tag>分页功能</tag>
+        <tag>SpringBoot</tag>
       </tags>
   </entry>
   <entry>
@@ -722,58 +690,38 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git Could not read from remote repository</title>
-    <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+    <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
+    <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
 
-<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
-<p>git remote -v</p>
-<p>git bash输出</p>
-]]></content>
+<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，这里就分开总结了。。。</p>
+<h2 id="Spring集成PageHelper："><a href="#Spring集成PageHelper：" class="headerlink" title="Spring集成PageHelper："></a>Spring集成PageHelper：</h2><p><strong>第一步：pom文件引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：MyBatis的核心配置文件中引入配置项</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"cn.e3mall.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：业务逻辑实现分页功能，我们只需将当前查询的页数page和每页显示的总条数rows传进去，然后Pagehelper已经帮我们分好数据了，只需在web层获取数据即可。</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分页查询商品列表：</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DatagridResult <span class="title">itemList</span><span class="params">(Integer page, Integer rows)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//为了程序的严谨性，判断非空：</span></span><br><span class="line">    <span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;   <span class="comment">//设置默认当前页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(page &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(rows == <span class="keyword">null</span>)&#123;</span><br><span class="line">        rows = <span class="number">30</span>;    <span class="comment">//设置默认每页显示的商品数(因为jsp页面上默认写的就是30条)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1、设置分页信息，包括当前页数和每页显示的总计数</span></span><br><span class="line">    PageHelper.startPage(page, rows);</span><br><span class="line">    <span class="comment">//2、执行查询</span></span><br><span class="line">    TbItemExample example = <span class="keyword">new</span> TbItemExample();</span><br><span class="line">    List&lt;TbItem&gt; list = tbItemMapper.selectByExample(example);</span><br><span class="line">    <span class="comment">//3、获取分页查询后的数据</span></span><br><span class="line">    PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    <span class="comment">//4、封装需要返回的分页实体</span></span><br><span class="line">    DatagridResult result = <span class="keyword">new</span> DatagridResult();</span><br><span class="line">    <span class="comment">//设置获取到的总记录数total：</span></span><br><span class="line">    result.setTotal(pageInfo.getTotal());</span><br><span class="line">    <span class="comment">//设置数据集合rows：</span></span><br><span class="line">    result.setRows(list);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="springboot集成PageHelper："><a href="#springboot集成PageHelper：" class="headerlink" title="springboot集成PageHelper："></a>springboot集成PageHelper：</h2><p><strong>第一步：pom文件还是需要引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：这次直接是在项目的入口类application.java中直接设置PageHelper插件即可</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//配置mybatis的分页插件pageHelper</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PageHelper <span class="title">pageHelper</span><span class="params">()</span></span>&#123;</span><br><span class="line">    PageHelper pageHelper = <span class="keyword">new</span> PageHelper();</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.setProperty(<span class="string">"offsetAsPageNum"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"rowBoundsWithCount"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"reasonable"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"dialect"</span>,<span class="string">"mysql"</span>);    <span class="comment">//配置mysql数据库的方言</span></span><br><span class="line">    pageHelper.setProperties(properties);</span><br><span class="line">    <span class="keyword">return</span> pageHelper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：同理，使用插件实现分页功能，方式还是一样，只需将当前查询的页数和每页显示的条数穿进去即可，直接源码</strong></p>
+<p>这是需要用到的分页实体，各位可以直接享用。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.riemann.utils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页bean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 当前页</span></span><br><span class="line">    <span class="keyword">private</span> Integer currentPage = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 每页显示的总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer pageSize = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">// 总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalNum;</span><br><span class="line">    <span class="comment">// 是否有下一页</span></span><br><span class="line">    <span class="keyword">private</span> Integer isMore;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalPage;</span><br><span class="line">    <span class="comment">// 开始索引</span></span><br><span class="line">    <span class="keyword">private</span> Integer startIndex;</span><br><span class="line">    <span class="comment">// 分页结果</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;T&gt; items;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">(Integer currentPage, Integer pageSize, Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = (<span class="keyword">this</span>.totalNum+<span class="keyword">this</span>.pageSize-<span class="number">1</span>)/<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = (<span class="keyword">this</span>.currentPage-<span class="number">1</span>)*<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.isMore = <span class="keyword">this</span>.currentPage &gt;= <span class="keyword">this</span>.totalPage?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getCurrentPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCurrentPage</span><span class="params">(Integer currentPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getPageSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageSize</span><span class="params">(Integer pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalNum</span><span class="params">(Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getIsMore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsMore</span><span class="params">(Integer isMore)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isMore = isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalPage</span><span class="params">(Integer totalPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStartIndex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartIndex</span><span class="params">(Integer startIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">getItems</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> items;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItems</span><span class="params">(List&lt;T&gt; items)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.items = items;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分页功能源码(web层和service层)。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">findItemByPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】</span></span><br><span class="line">    PageHelper.startPage(currentPage, pageSize);</span><br><span class="line">    </span><br><span class="line">    List&lt;Item&gt; allItems = itemMapper.findAll();        <span class="comment">//全部商品</span></span><br><span class="line">    <span class="keyword">int</span> countNums = itemMapper.countItem();            <span class="comment">//总记录数</span></span><br><span class="line">    PageBean&lt;Item&gt; pageData = <span class="keyword">new</span> PageBean&lt;&gt;(currentPage, pageSize, countNums);</span><br><span class="line">    pageData.setItems(allItems);</span><br><span class="line">    <span class="keyword">return</span> pageData.getItems();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 商品分页功能(集成mybatis的分页插件pageHelper实现)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> currentPage    :当前页数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize        :每页显示的总记录数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/itemsPage"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">itemsPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> itemService.findItemByPage(currentPage, pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>git常见错误</category>
+        <category>分页功能</category>
       </categories>
       <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
-    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>git push的时候报错：</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-]]></content>
-      <categories>
-        <category>git常见错误</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ubuntu安装VMware Tools</title>
-    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
-<blockquote>
-<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
-</blockquote>
-<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
-<p>解压完成之后即可运行安装文件安装wmware tools</p>
-]]></content>
-      <categories>
-        <category>Ubuntu</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
+        <tag>Java</tag>
+        <tag>SpringBoot</tag>
       </tags>
   </entry>
   <entry>
@@ -815,21 +763,55 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>反射的理解</title>
-    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[]]></content>
+    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
+    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>git push的时候报错：</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+]]></content>
       <categories>
-        <category>Java</category>
+        <category>git常见错误</category>
       </categories>
       <tags>
-        <tag>反射</tag>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
-    <title>浅析equals()和hashcode()方法</title>
-    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
+    <title>fatal: not a git repository (or any of the parent directories): .git</title>
+    <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
 ]]></content>
+      <categories>
+        <category>git常见错误</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git Could not read from remote repository</title>
+    <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
+<p>git remote -v</p>
+<p>git bash输出</p>
+]]></content>
+      <categories>
+        <category>git常见错误</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
   </entry>
   <entry>
     <title>nginx安装及其配置</title>
@@ -1152,27 +1134,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
+    <title>ubuntu安装VMware Tools</title>
+    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
 
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
+<blockquote>
+<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
+</blockquote>
+<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
+<p>解压完成之后即可运行安装文件安装wmware tools</p>
 ]]></content>
       <categories>
-        <category>Java</category>
-        <category>JVM</category>
+        <category>Ubuntu</category>
       </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -1195,6 +1172,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>反射的理解</title>
+    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实体类的4种类型</title>
     <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
@@ -1212,6 +1200,36 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Domain Object</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅析equals()和hashcode()方法</title>
+    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
+]]></content>
   </entry>
   <entry>
     <title>添加系统调用</title>
@@ -1303,39 +1321,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>解决idea不显示maven工具栏的问题</title>
-    <url>/2020/08/11/%E8%A7%A3%E5%86%B3idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
-<a id="more"></a>
-
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
-]]></content>
-      <categories>
-        <category>idea小技巧</category>
-      </categories>
-      <tags>
-        <tag>idea小技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot启动时找不到或无法加载主类</title>
-    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
-<blockquote>
-<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
-</blockquote>
-<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot错误</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
     <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -1354,6 +1339,37 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Docker</tag>
         <tag>RabbitMQ</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决idea不显示maven工具栏的问题</title>
+    <url>/2020/08/11/%E8%A7%A3%E5%86%B3idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
+<a id="more"></a>
+
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
+]]></content>
+      <categories>
+        <category>idea小技巧</category>
+      </categories>
+      <tags>
+        <tag>idea小技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一个小小的强迫症</title>
+    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
+    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
+
+<p>在idea中经常会碰到这样的问题</p>
+<blockquote>
+<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
+</blockquote>
+<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
+<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
+]]></content>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
       </tags>
   </entry>
   <entry>
@@ -1394,22 +1410,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Java Web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一个小小的强迫症</title>
-    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
-    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
-
-<p>在idea中经常会碰到这样的问题</p>
-<blockquote>
-<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
-</blockquote>
-<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
-<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
-]]></content>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
       </tags>
   </entry>
 </search>
