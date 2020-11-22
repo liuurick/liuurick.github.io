@@ -309,55 +309,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1-搭建CRM项目的开发环境"><a href="#1-搭建CRM项目的开发环境" class="headerlink" title="1.搭建CRM项目的开发环境"></a>1.搭建CRM项目的开发环境</h1><ul>
-<li>设置字体</li>
-<li>设置工作区的字符集为utf-8</li>
-<li>设置basePath变量及base标签</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112001.png" alt="image-20201120175318348"></p>
-<p>打开settings.xml设置本地仓库位置</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112002.png" alt=""></p>
-<p>创建Maven web项目</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112003.png" alt="image-20201120175508091"></p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112004.png" alt="image-20201120175542687"></p>
-<p>新创建的Maven项目，目录结构如下：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112005.png" alt="image-20201120175616811"></p>
-<p>将pom.xml中没有用的信息去除掉</p>
-<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
-<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
-<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112006.png" alt="image-20201120175810912"></p>
-<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
-<p><strong><img src="file:///C:%5CUsers%5Cadmin%5CAppData%5CLocal%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_image014.png" alt="img"></strong></p>
-<p>将我们自己的web.xml模板导入</p>
-<p>通过pom.xml导入我们需要的jar包</p>
-<p>在pom.xml中加入构建资源</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>点击左侧Maven Projects，点击刷新</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112007.png" alt="image-20201120180057366"></p>
-<p>在resource路径下引入开发用的配置文件和属性文件</p>
-<p>jdbc.properties（修改数据库名）</p>
-<p>log4j.properties</p>
-<p>mybatis-config.xml</p>
-<p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
-<p>项目文件结构如下：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112008.png" alt="image-20201120180226721"></p>
-<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112009.png" alt="image-20201120180410393"></p>
-<ul>
-<li><p>将项目原型拷贝到webapp目录下</p>
-</li>
-<li><p>启动Tomcat服务器，测试</p>
-</li>
-</ul>
-
+          <p>Idea通过maven快速构建项目</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
