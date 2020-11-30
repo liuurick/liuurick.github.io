@@ -764,6 +764,259 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/19/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/19/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">通用型支付系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-19 11:38:25" itemprop="dateCreated datePublished" datetime="2020-11-19T11:38:25+08:00">2020-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">支付系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一、系统概述"><a href="#一、系统概述" class="headerlink" title="一、系统概述"></a>一、系统概述</h1><p>下单–》支付</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020111901.png" alt="image-20201119114332792"></p>
+<p>支付结果：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020111902.png" alt="image-20201119114412609"></p>
+<h1 id="二、数据库设计"><a href="#二、数据库设计" class="headerlink" title="二、数据库设计"></a>二、数据库设计</h1><ul>
+<li><p>表关系</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020111903.png" alt="image-20201119143923962"></p>
+</li>
+<li><p>表结构</p>
+</li>
+<li><p>唯一索引</p>
+</li>
+<li><p>单索引及组合索引</p>
+<p>加快查询速度</p>
+<p>订单号，user_id来查</p>
+</li>
+<li><p>时间戳</p>
+</li>
+</ul>
+<h1 id="三、支付系统"><a href="#三、支付系统" class="headerlink" title="三、支付系统"></a>三、支付系统</h1><p>消息队列MQ应用：业务解耦，实现支付高性能</p>
+<h2 id="1-支付知识普及"><a href="#1-支付知识普及" class="headerlink" title="1.支付知识普及"></a>1.支付知识普及</h2><h3 id="1-1-支付场景"><a href="#1-1-支付场景" class="headerlink" title="1.1 支付场景"></a>1.1 支付场景</h3><h4 id="微信支付场景"><a href="#微信支付场景" class="headerlink" title="微信支付场景"></a>微信支付场景</h4><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201124185915599.png" alt="image-20201124185915599"></p>
+<p><strong>付款码支付：</strong>主要用于商户收银员用扫码设备扫描用户的条码/二维码支付。超市中很常见</p>
+<p>详细介绍网址：<a href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=5_1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=5_1</a></p>
+<p><strong>JSAPI支付：</strong>商户已有H5商城网站，用户通过消息或扫描二维码在微信内打开网页时，可以调用微信支付完成下单购买的流程。</p>
+<p>详细介绍网址：<a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_1</a></p>
+<p><strong>Native支付：</strong>用户扫描商户展示在各种场景的二维码进行支付。</p>
+<p>详细介绍网址：<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1</a></p>
+<p><strong>APP支付：</strong>适用于商户在移动端APP中集成微信支付功能。</p>
+<p>商户APP调用微信提供的SDK调用微信支付模块，商户APP会跳转到微信中完成支付，支付完后跳回到商户APP内，最后展示支付结果。目前微信支付支持手机系统有：IOS（苹果）、Android（安卓）和WP（Windows Phone）。</p>
+<p>详细介绍网址：<a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1</a></p>
+<p><strong>H5支付：</strong>是指商户在微信客户端外的移动端网页展示商品或服务，用户在前述页面确认使用微信支付时，商户发起本服务呼起微信客户端进行支付。</p>
+<p>主要用于触屏版的手机浏览器请求微信支付的场景。可以方便的从外部浏览器唤起微信支付。</p>
+<p><strong>提醒：</strong>H5支付不建议在APP端使用，如需要在APP中使用微信支付，请接APP支付</p>
+<p>详细介绍网址：<a href="https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_1</a></p>
+<p><strong>小程序支付：</strong>如果开发者已做过JSAPI或JSSDK调起微信支付，接入小程序支付非常相似，以下是三种接入方式的对比：</p>
+<p>详细介绍网址：<a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_3&amp;index=1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_3&amp;index=1</a></p>
+<p><strong>刷脸支付：</strong><a href="https://pay.weixin.qq.com/wiki/doc/wxfacepay/" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/wxfacepay/</a></p>
+<h4 id="支付宝支付场景"><a href="#支付宝支付场景" class="headerlink" title="支付宝支付场景"></a>支付宝支付场景</h4><p>支付宝支付和微信支付大致相似，平时用的最多的也就是<strong>当面付</strong></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129112417755.png" alt="image-20201129112417755"></p>
+<p>官方文档：<a href="https://opendocs.alipay.com/open/194/105072" target="_blank" rel="noopener">https://opendocs.alipay.com/open/194/105072</a></p>
+<h3 id="1-2-名词解释"><a href="#1-2-名词解释" class="headerlink" title="1.2 名词解释"></a>1.2 名词解释</h3><h4 id="微信："><a href="#微信：" class="headerlink" title="微信："></a>微信：</h4><p><a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=2_2" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=2_2</a></p>
+<h4 id="支付宝："><a href="#支付宝：" class="headerlink" title="支付宝："></a>支付宝：</h4><table>
+<thead>
+<tr>
+<th>配置参数</th>
+<th>示例值解释</th>
+<th>获取方式/示例值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>URL</td>
+<td>支付宝网关（固定）</td>
+<td><a href="https://openapi.alipay.com/gateway.do" target="_blank" rel="noopener">https://openapi.alipay.com/gateway.do</a></td>
+</tr>
+<tr>
+<td>APPID</td>
+<td>APPID 即创建应用后生成</td>
+<td>获取见上方 创建应用</td>
+</tr>
+<tr>
+<td>APP_PRIVATE_KEY</td>
+<td>开发者私钥，由开发者自己生成</td>
+<td>获取见 <a href="https://opendocs.alipay.com/open/291/105971" target="_blank" rel="noopener">配置密钥</a></td>
+</tr>
+<tr>
+<td>FORMAT</td>
+<td>参数返回格式，只支持 json</td>
+<td>json（固定）</td>
+</tr>
+<tr>
+<td>CHARSET</td>
+<td>编码集，支持 GBK/UTF-8</td>
+<td>开发者根据实际工程编码配置</td>
+</tr>
+<tr>
+<td>ALIPAY_PUBLIC_KEY</td>
+<td>支付宝公钥，由支付宝生成</td>
+<td>获取详见 <a href="https://opendocs.alipay.com/open/291/105971" target="_blank" rel="noopener">配置密钥</a></td>
+</tr>
+<tr>
+<td>SIGN_TYPE</td>
+<td>商户生成签名字符串所使用的签名算法类型，目前支持 RSA2 和 RSA，推荐使用 RSA2</td>
+<td>RSA2</td>
+</tr>
+</tbody></table>
+<p>时序图：</p>
+<p><img src="https://gw.alipayobjects.com/os/skylark-tools/public/files/0ba3e82ad37ecf8649ee4219cfe9d16b.png%26originHeight%3D2023%26originWidth%3D2815%26size%3D526149%26status%3Ddone%26width%3D2815" alt="电脑网站支付.png"></p>
+<h3 id="1-3-同步-异步支付"><a href="#1-3-同步-异步支付" class="headerlink" title="1.3 同步/异步支付"></a>1.3 同步/异步支付</h3><blockquote>
+<p><a href="https://blog.csdn.net/shiyong1949/article/details/80854656" target="_blank" rel="noopener">https://blog.csdn.net/shiyong1949/article/details/80854656</a></p>
+</blockquote>
+<p>异步与同步的区别简而言之就是一个需要等待，一个不需要等待。同步固然是好，但是涉及到支付金钱等方面还是要以安全为主。所以支付以异步为准。</p>
+<h2 id="2-通用型支付系统开发"><a href="#2-通用型支付系统开发" class="headerlink" title="2.通用型支付系统开发"></a>2.通用型支付系统开发</h2><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201124194214540.png" alt="image-20201124194214540"></p>
+<p>参考支付demo</p>
+<p><a href="https://github.com/Pay-Group/best-pay-sdk" target="_blank" rel="noopener">https://github.com/Pay-Group/best-pay-sdk</a></p>
+<p><a href="https://github.com/Pay-Group/best-pay-demo" target="_blank" rel="noopener">https://github.com/Pay-Group/best-pay-demo</a></p>
+<h3 id="2-1-SpringBoot项目初始化"><a href="#2-1-SpringBoot项目初始化" class="headerlink" title="2.1 SpringBoot项目初始化"></a>2.1 SpringBoot项目初始化</h3><p>maven：3.6.3</p>
+<p>jdk:1.8</p>
+<p>springboot2.1.7</p>
+<h3 id="2-2-对接微信Native支付"><a href="#2-2-对接微信Native支付" class="headerlink" title="2.2 对接微信Native支付"></a>2.2 对接微信Native支付</h3><p>微信支付我实现的是Native支付，Native支付有两种模式。模式二与模式一相比，流程更为简单，不依赖设置的回调支付URL。</p>
+<p>商户后台系统先调用微信支付的统一下单接口，微信后台系统返回链接参数code_url，商户后台系统将code_url值生成<strong>二维码</strong>图片，用户使用微信客户端扫码后发起支付。</p>
+<p><strong>微信Native支付</strong>：<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1</a></p>
+<p><strong>模式二</strong>：<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5</a></p>
+<p><strong>注意：code_url有效期为2小时</strong>，过期后扫码不能再发起支付。</p>
+<p>生成二维码所需参数列表</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201125160437833.png" alt="image-20201125160437833"></p>
+<p>商户提供的支付回调URL（<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_3" target="_blank" rel="noopener">回调地址设置</a>）需要实现以下功能：接收用户扫码后微信支付系统发送的数据，根据接收的数据生成支付订单，调用【<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_1" target="_blank" rel="noopener">统一下单API</a>】提交支付交易。</p>
+<p>输入参数：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201125160553821.png" alt="image-20201125160553821"></p>
+<p>输出参数：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201125160658048.png" alt="image-20201125160658048"></p>
+<h3 id="2-3-微信Native支付业务逻辑实现"><a href="#2-3-微信Native支付业务逻辑实现" class="headerlink" title="2.3 微信Native支付业务逻辑实现"></a>2.3 微信Native支付业务逻辑实现</h3><h3 id="2-4-师兄教你看错误信息进行代码Review"><a href="#2-4-师兄教你看错误信息进行代码Review" class="headerlink" title="2.4 师兄教你看错误信息进行代码Review"></a>2.4 师兄教你看错误信息进行代码Review</h3><h3 id="2-5-用程序实现支付链接转换成二维码"><a href="#2-5-用程序实现支付链接转换成二维码" class="headerlink" title="2.5 用程序实现支付链接转换成二维码"></a>2.5 用程序实现支付链接转换成二维码</h3><h3 id="2-6-避免重复支付的正确姿势"><a href="#2-6-避免重复支付的正确姿势" class="headerlink" title="2.6 避免重复支付的正确姿势"></a>2.6 避免重复支付的正确姿势</h3><h3 id="2-7-微信异步通知"><a href="#2-7-微信异步通知" class="headerlink" title="2.7. 微信异步通知"></a>2.7. 微信异步通知</h3><p>异步结果校验：</p>
+<p>1.签名校验</p>
+<p>2.金额校验</p>
+<p>3.修改订单支付状态</p>
+<p>4.告诉微信/支付宝不要再通知了</p>
+<p><strong>支付宝电脑网站支付</strong>：<a href="https://opendocs.alipay.com/open/270/105898" target="_blank" rel="noopener">https://opendocs.alipay.com/open/270/105898</a></p>
+<p><strong>支付宝沙箱环境</strong>：<a href="https://opendocs.alipay.com/open/200/105311" target="_blank" rel="noopener">https://opendocs.alipay.com/open/200/105311</a></p>
+<h3 id="2-8-支付宝密钥说明"><a href="#2-8-支付宝密钥说明" class="headerlink" title="2.8 支付宝密钥说明"></a>2.8 支付宝密钥说明</h3><p><a href="https://opendocs.alipay.com/open/291/105971" target="_blank" rel="noopener">https://opendocs.alipay.com/open/291/105971</a></p>
+<p>![img](file:///C:\Users\admin\Documents\Tencent Files\2826803629\Image\C2C\19A9DF332B895A78CC9E0A2C58676BE4.png)</p>
+<h3 id="2-9-支付宝电脑网站支付"><a href="#2-9-支付宝电脑网站支付" class="headerlink" title="2.9 支付宝电脑网站支付"></a>2.9 支付宝电脑网站支付</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号</span><br><span class="line">appId: xxxxxxxx</span><br><span class="line"># 商户私钥，您的PKCS8格式RSA2私钥</span><br><span class="line">privateKey: xxxxxxx</span><br><span class="line"># 支付宝公钥,查看地址：https:&#x2F;&#x2F;openhome.com&#x2F;platform&#x2F;keyManage.htm 对应APPID下的支付宝公钥。</span><br><span class="line">publicKey: xxxxxxx</span><br><span class="line"># 服务器异步通知页面路径需http:&#x2F;&#x2F;格式的完整路径，不能加?id&#x3D;123这类自定义参数</span><br><span class="line">notifyUrl:  http:&#x2F;&#x2F;xutakf.natappfree.cc&#x2F;notify</span><br><span class="line"># 页面跳转同步通知页面路径 需http:&#x2F;&#x2F;格式的完整路径，不能加?id&#x3D;123这类自定义参数</span><br><span class="line">returnUrl: http:&#x2F;&#x2F;xutakf.natappfree.cc&#x2F;pay&#x2F;success</span><br><span class="line"># 签名方式</span><br><span class="line">signType: RSA2</span><br><span class="line"># 字符编码格式</span><br><span class="line">charset: utf-8</span><br><span class="line"># 支付宝网关</span><br><span class="line">gatewayUrl: https:&#x2F;&#x2F;openapi.alipaydev.com&#x2F;gateway.do</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-10-支付与数据库"><a href="#2-10-支付与数据库" class="headerlink" title="2.10 支付与数据库"></a>2.10 支付与数据库</h3><p>payInfo</p>
+<h3 id="2-11微信支付完成页面跳转"><a href="#2-11微信支付完成页面跳转" class="headerlink" title="2.11微信支付完成页面跳转"></a>2.11微信支付完成页面跳转</h3><h3 id="2-12-规范配置"><a href="#2-12-规范配置" class="headerlink" title="2.12 规范配置"></a>2.12 规范配置</h3><h1 id="四、电商平台"><a href="#四、电商平台" class="headerlink" title="四、电商平台"></a>四、电商平台</h1><p>1.用户模块</p>
+<p>8-1 理论介绍</p>
+<p> 8-2 Service-完成注册功能</p>
+<p> 8-3 Service-注册功能单测</p>
+<p> 8-4 Mybatis打印SQL</p>
+<p> 8-5 Controller接收参数</p>
+<p> 8-6 Controller返回Json</p>
+<p> 8-7 错误状态码使用枚举</p>
+<p> 8-8 表单验证</p>
+<p> 8-9 接入service完成注册功能</p>
+<p> 8-10 登录功能的实现-上</p>
+<p> 8-11 登录功能的实现-下</p>
+<p> 8-12 session和cookie</p>
+<p> 8-13 退出登录</p>
+<p> 8-14 统一判断登录状态-拦截器</p>
+<p> 8-15 单元测试</p>
+<p>2.分类模块开发：多级目录（递归）</p>
+<p> 9-1 类目功能介绍与开发</p>
+<p> 9-2 商品分类之类目查询功能</p>
+<p> 9-3 商品类目之子类目</p>
+<p> 10-1 商品列表-上</p>
+<p> 10-2 商品列表-中</p>
+<p> 10-3 商品列表-下</p>
+<p> 10-4 商品列表分页</p>
+<p> 10-5 商品详情</p>
+<p>3.购物车模块（Redis）–hashSet</p>
+<p> 11-1 Redis和可视化管理软件的安装</p>
+<p> 11-2 表单统一验证处理</p>
+<p> 11-3 购物车-添加商品-1</p>
+<p> 11-4 购物车-添加商品-2</p>
+<p> 11-5 购物车-列表</p>
+<p> 11-6 购物车-更新&amp;删除</p>
+<p> 11-7 购物车-全选&amp;全不选&amp;总数量</p>
+<p> 11-8 购物车-联通controller</p>
+<p>4.收货地址模块开发</p>
+<p> 12-1 新增收货地址</p>
+<p> 12-2 删除&amp;更新收货地址</p>
+<p> 12-3 收货地址列表</p>
+<p>5.订单模块开发</p>
+<p> 13-1 创建订单-流程分析</p>
+<p> 13-2 创建订单-购物车</p>
+<p> 13-3 创建订单-构造OrderItem</p>
+<p> 13-4 创建订单-Order数据写入数据库</p>
+<p> 13-5 创建订单-完成数据库的写入</p>
+<p> 13-6 创建订单-扣库存&amp;更新购物车</p>
+<p> 13-7 创建订单-单测</p>
+<p> 13-8 订单列表-1</p>
+<p> 13-9 订单列表-2</p>
+<p> 13-10 订单详情</p>
+<p> 13-11 取消订单</p>
+<p> 13-12 OrderController</p>
+<p> 13-13 RabbitMQ的安装</p>
+<p> 13-14 mq消息-发送&amp;接受</p>
+<p> 13-15 完成支付和订单对接</p>
+<h1 id="五、上线部署"><a href="#五、上线部署" class="headerlink" title="五、上线部署"></a>五、上线部署</h1><p>1.前后端联调</p>
+<p>2.阿里云</p>
+<p> 14-1 购买云服务器</p>
+<p> 14-2 搭建Nginx和部署前端代码</p>
+<p> 14-3 安装redis和mq</p>
+<p> 14-4 数据库准备完毕</p>
+<p> 14-5 前后端联调</p>
+<p> 14-6 部署pay项目</p>
+<h1 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h1><p><a href="https://natapp.cn/article/natapp_newbie" target="_blank" rel="noopener">https://natapp.cn/article/natapp_newbie</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -815,80 +1068,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="liubin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lb Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-18 19:42:40" itemprop="dateCreated datePublished" datetime="2020-11-18T19:42:40+08:00">2020-11-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -979,20 +1158,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
