@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker设置镜像自启动</title>
     <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
     <content><![CDATA[<p>Docker便捷小技巧：</p>
@@ -53,50 +93,80 @@
 <p><img src="/images/2020101105.png" alt="nodes"></p>
 <h4 id=""><a href="#" class="headerlink" title=""></a></h4>]]></content>
       <categories>
-        <category>ElasticSearch集群</category>
+        <category>ElasticSearch</category>
       </categories>
       <tags>
-        <tag>ElasticSearch</tag>
+        <tag>ElasticSearch集群</tag>
       </tags>
   </entry>
   <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+    <title>Hadoop运行环境搭建</title>
+    <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>Hadoop运行环境搭建</p>
 <a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
+<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
+<h3 id="系统环境："><a href="#系统环境：" class="headerlink" title="系统环境："></a>系统环境：</h3><p>Windows环境：Windows10<br>Linux环境：CentOS-6.10-x86_64-bin-DVD1<br>VMware：15.5.0 build-14665864</p>
+<h3 id="所需文件"><a href="#所需文件" class="headerlink" title="所需文件"></a>所需文件</h3><p><strong>链接：</strong> <a href="https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA" target="_blank" rel="noopener">https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA</a><br>提取码：dgmt<br><strong>资源失效记得留言</strong></p>
+<h3 id="检查是否开启虚拟机"><a href="#检查是否开启虚拟机" class="headerlink" title="检查是否开启虚拟机"></a>检查是否开启虚拟机</h3><p><img src="https://img-blog.csdnimg.cn/2020032710260212.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="安装Linux"><a href="#安装Linux" class="headerlink" title="安装Linux"></a>安装Linux</h3><p>1.选择自定义<br><img src="https://img-blog.csdnimg.cn/20200327103653439.png?x-oss-process=image" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/2020032710440027.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.稍后安装操作系统<br><img src="https://img-blog.csdnimg.cn/20200327104418203.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.选择Linux 版本为Centos6 64位<br><img src="https://img-blog.csdnimg.cn/20200327104437670.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.虚拟机命名为Hadoop001<br><img src="https://img-blog.csdnimg.cn/20200327104457220.png?x-oss-process=image" alt="在这里插入图片描述"><br>6.处理机配置，这里配置最好对应下图：<br><img src="https://img-blog.csdnimg.cn/2020032710451572.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意:</strong> 如果电脑配置不足，虚拟机会自动提示，这里根据自己电脑配置调整即可<br><img src="https://img-blog.csdnimg.cn/20200327110559495.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>7.网络类型选择NAT<br><img src="https://img-blog.csdnimg.cn/20200327104532614.png?x-oss-process=image" alt="在这里插入图片描述"><br>8.I/O控制器类型选择LSI Logic<br><img src="https://img-blog.csdnimg.cn/20200327104555764.png?x-oss-process=image" alt="在这里插入图片描述"><br>9.磁盘类型选择SCSI<br><img src="https://img-blog.csdnimg.cn/20200327104618841.png?x-oss-process=image" alt="在这里插入图片描述"><br>10.创建新虚拟磁盘<br><img src="https://img-blog.csdnimg.cn/20200327104635294.png?x-oss-process=image" alt="在这里插入图片描述"><br>11.磁盘大小分配50G，将虚拟磁盘拆分成多个文件<br><img src="https://img-blog.csdnimg.cn/20200327104652738.png?x-oss-process=image" alt="在这里插入图片描述"><br>12.指定磁盘文件<br><img src="https://img-blog.csdnimg.cn/20200327104707478.png?x-oss-process=image" alt="在这里插入图片描述"><br>13.创建完成<br><img src="https://img-blog.csdnimg.cn/2020032710473853.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>14.在虚拟机配置中选择下载好的镜像文件<br><img src="https://img-blog.csdnimg.cn/20200327104750966.png?x-oss-process=image" alt="在这里插入图片描述"><br>15.选择第一个<br> <img src="https://img-blog.csdnimg.cn/20200327105929634.png?x-oss-process=image" alt="在这里插入图片描述"><br>16.选择skip<br><img src="https://img-blog.csdnimg.cn/20200327105959950.png?x-oss-process=image" alt="在这里插入图片描述"><br>17.选择next<br><img src="https://img-blog.csdnimg.cn/20200327110029718.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>18.语言环境选择英文<br><img src="https://img-blog.csdnimg.cn/20200327110101712.png?x-oss-process=image" alt="在这里插入图片描述"><br>19.选择输入法<br><img src="https://img-blog.csdnimg.cn/20200327110230645.png?x-oss-process=image" alt="在这里插入图片描述"><br>20.选择Basic Storage Devices<br><img src="https://img-blog.csdnimg.cn/20200327110259402.png?x-oss-process=image" alt="在这里插入图片描述"><br>21.同意即可<br><img src="https://img-blog.csdnimg.cn/20200327110344102.png?x-oss-process=image" alt="在这里插入图片描述"><br>22.主机命名<br><img src="https://img-blog.csdnimg.cn/20200327110434306.png?x-oss-process=image" alt="在这里插入图片描述"><br>23.配置Configure Network<br><img src="https://img-blog.csdnimg.cn/20200327110518430.png?x-oss-process=image" alt="在这里插入图片描述"><br>24.勾选即可<br><img src="https://img-blog.csdnimg.cn/20200327110749262.png?x-oss-process=image" alt="在这里插入图片描述"><br>25.选择相应的时区<br><img src="https://img-blog.csdnimg.cn/20200327110908993.png?x-oss-process=image" alt="在这里插入图片描述"><br>26.密码设个123456就行了<br><img src="https://img-blog.csdnimg.cn/20200327110937171.png?x-oss-process=image" alt="在这里插入图片描述"><br>27.选择Use All Space<br><img src="https://img-blog.csdnimg.cn/20200327111016724.png?x-oss-process=image0" alt="在这里插入图片描述"><br>28.write changes to disk<br><img src="https://img-blog.csdnimg.cn/20200327111055987.png?x-oss-process=image" alt="在这里插入图片描述"><br>29.选择Basic<br><img src="https://img-blog.csdnimg.cn/20200327111132984.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>30.系统开始初始化<br><img src="https://img-blog.csdnimg.cn/20200327111233395.png?x-oss-process=image" alt="在这里插入图片描述"><br>31.可见系统已经安装成功，reboot重启即可<img src="https://img-blog.csdnimg.cn/20200327111308432.png?x-oss-process=image" alt="在这里插入图片描述"><br>32.进入系统界面<br><img src="https://img-blog.csdnimg.cn/20200327111408414.png?x-oss-process=image" alt="在这里插入图片描述"><br>因为hadoop实验需要3个服务器，另外两个可以使用克隆安装<br>33.选择下一步<img src="https://img-blog.csdnimg.cn/20200327111548739.png?x-oss-process=image" alt="在这里插入图片描述"><br>34.下一步<br><img src="https://img-blog.csdnimg.cn/20200327111614282.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>35.克隆类型选择链接克隆，尽量节省磁盘空间<br><img src="https://img-blog.csdnimg.cn/2020032711163713.png?x-oss-process=image" alt="在这里插入图片描述"><br>36.命名<br><img src="https://img-blog.csdnimg.cn/20200327111730702.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111810391.png?x-oss-process=image" alt="在这里插入图片描述"><br>37.可以看到安装完成之后的情形<br><img src="https://img-blog.csdnimg.cn/20200327111851452.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111909745.png" alt="在这里插入图片描述"></p>
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><h4 id="1-配置网卡"><a href="#1-配置网卡" class="headerlink" title="1.配置网卡"></a>1.配置网卡</h4><p><img src="https://img-blog.csdnimg.cn/20200327112637566.png" alt="在这里插入图片描述"><br>输入上面的命令可以查看hadoop01的网络环境：如下图所示<br><img src="https://img-blog.csdnimg.cn/20200327112644781.png" alt="在这里插入图片描述"><br>然后开始修改hadoop02，hadoop03的网络配置<br><img src="https://img-blog.csdnimg.cn/20200327112715134.png?x-oss-process=image" alt="在这里插入图片描述"><br>改动如下图所示：<br>也就是将上面的配置删除，下面的NAME=”eth1” 改成eth0<br><img src="https://img-blog.csdnimg.cn/20200327112733595.png" alt="在这里插入图片描述"><br>hadoop03的操作和hadoop02的一样</p>
+<p><strong>注意：</strong> 这里的MAC地址不能一样，如果一样，就需要自动生成一个<br><img src="https://img-blog.csdnimg.cn/20200327113128393.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="2-配置静态ip"><a href="#2-配置静态ip" class="headerlink" title="2.配置静态ip"></a>2.配置静态ip</h4><p>修改hadoop01，02，03的网络配置文件(ifcfg-eth0)<br><img src="https://img-blog.csdnimg.cn/20200327113449436.png" alt="在这里插入图片描述"><br>可以查看配置文件的内容如下图所示：<br><img src="https://img-blog.csdnimg.cn/20200327113458775.png" alt="在这里插入图片描述"><br>将网络配置改为下面的：<br><img src="https://img-blog.csdnimg.cn/20200327113507394.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>验证网络配置：<br><img src="https://img-blog.csdnimg.cn/20200327113527171.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里使用静态IP，ip地址分别是134 135 136<br>hadoop02和hadoop03的操作和hadoop01的一样，重复即可</p>
+<h4 id="3-配置虚拟机网络"><a href="#3-配置虚拟机网络" class="headerlink" title="3.配置虚拟机网络"></a>3.配置虚拟机网络</h4><p>首先需要检查是否开启了5个服务<br>在控制面板的服务里面可以看到是否开启<br><img src="https://img-blog.csdnimg.cn/20200327112000348.png" alt="在这里插入图片描述"><br>1.编辑-&gt;虚拟网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114410335.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2.配置网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114500515.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200327114550386.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327114917915.png?x-oss-process=image" alt="在这里插入图片描述"><br>NAT设置如图所示：<br><img src="https://img-blog.csdnimg.cn/20200327114628469.png?x-oss-process=image" alt="在这里插入图片描述"><br>DHCP设置如图所示：<br><img src="https://img-blog.csdnimg.cn/2020032711470347.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改VMware network<br><img src="https://img-blog.csdnimg.cn/20200327114710335.png" alt="在这里插入图片描述"><br>将VMnet8的ipv4修改为下图所示<br><img src="https://img-blog.csdnimg.cn/20200327114717792.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="4-主机名映射配置"><a href="#4-主机名映射配置" class="headerlink" title="4.主机名映射配置"></a>4.主机名映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115555637.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115608830.png" alt="在这里插入图片描述"></p>
+<h4 id="5-IP映射配置"><a href="#5-IP映射配置" class="headerlink" title="5.IP映射配置"></a>5.IP映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115618260.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115627958.png" alt="在这里插入图片描述"></p>
+<h4 id="6-windows的hosts配置"><a href="#6-windows的hosts配置" class="headerlink" title="6.windows的hosts配置"></a>6.windows的hosts配置</h4><p>修改Windows下的hosts文件<br><img src="https://img-blog.csdnimg.cn/20200327115930695.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115937887.png" alt="在这里插入图片描述"></p>
+<p><strong>注意：</strong>网络配置完成记得重启网络服务<br><code>service network restart</code>或者重启服务器<code>reboot</code><br>完成以上步骤，网络配置就算完成</p>
+<h4 id="7-测试网络配置"><a href="#7-测试网络配置" class="headerlink" title="7.测试网络配置"></a>7.测试网络配置</h4><p>接下来测试网络配置是否完成<br><img src="https://img-blog.csdnimg.cn/20200327120013734.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>ifcfg-eth0 配置参数说明<br>1.TYPE：配置文件接口类型。在/etc/sysconfig/network-scripts/目录有多种网络配置文件，有Ethernet 、IPsec等类型，网络接口类型为Ethernet。<br>2.DEVICE：网络接口名称<br>3.BOOTPROTO：系统启动地址协议<br>4.none：不使用启动地址协议<br>5.bootp：BOOTP协议<br>6.dhcp：DHCP动态地址协议<br>7.static：静态地址协议<br>8.ONBOOT：系统启动时是否激活<br>            yes：系统启动时激活该网络接口<br>            no：系统启动时不激活该网络接口<br>9.IPADDR：IP地址<br>10.NETMASK：子网掩码<br>11.GATEWAY：网关地址<br>12.BROADCAST：广播地址<br>13.HWADDR/MACADDR：MAC地址。只需设置其中一个，同时设置时不能相互冲突。<br>14.PEERDNS：是否指定DNS。如果使用DHCP协议，默认为yes</p>
+</blockquote>
+<h3 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h3><p>输入<code>rpm -qa|grep ssh</code>查看ssh是否安装<br><img src="https://img-blog.csdnimg.cn/20200327121043104.png" alt="在这里插入图片描述"><br>如果没有安装：<code>yum install openssh-server</code></p>
+<h3 id="免密登陆"><a href="#免密登陆" class="headerlink" title="免密登陆"></a>免密登陆</h3><p>1.为什么要免密登录<br>Hadoop节点众多，所以一般在主节点启动从节点，这个时候就需要程序自动在主节点登录<br>到从节点中，如果不能免密就每次都要输入密码，非常麻烦<br>2. 免密SSH登录的原理<br>需要先在B节点配置A节点的公钥<br>A节点请求B节点要球登录<br>B节点使用A节点的公钥，加密一段随机文本<br>A节点使用私钥解密，并发回给B节点<br>B节点验证文本是否正确</p>
+<p><img src="https://img-blog.csdnimg.cn/20200327121318858.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>这里为了更方便的操作，使用secureCRT文件<br>打开secureCRT文件，new Session创建相应的session连接<br>1.new Session<img src="https://img-blog.csdnimg.cn/20200327122809177.png" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/20200327122947738.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.填写相应信息<br><img src="https://img-blog.csdnimg.cn/20200327123020515.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.SFTP协议<img src="https://img-blog.csdnimg.cn/20200327123105814.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.命名<br><img src="https://img-blog.csdnimg.cn/2020032712314534.png?x-oss-process=image" alt="在这里插入图片描述"><br>最后效果：<br> <img src="https://img-blog.csdnimg.cn/20200327123215433.png" alt="在这里插入图片描述"><br> 配置完成之后虚拟机就可以后台运行了<br><img src="https://img-blog.csdnimg.cn/20200327124339234.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里为了软件的美观，可以进行相应的设置<br>这里推荐一个配色方案：<br><a href="https://blog.51cto.com/sandshell/2109176" target="_blank" rel="noopener">SecureCRT优化调整、永久设置、保护眼睛和配色方案</a></p>
+<h4 id="配置免密登录"><a href="#配置免密登录" class="headerlink" title="配置免密登录"></a>配置免密登录</h4><p>1.在三台机器执行以下命令，生成公钥与私钥<br><code>ssh-keygen -t rsa</code><br>一直回车就行了<br><img src="https://img-blog.csdnimg.cn/20200327123828820.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>2.复制<code>ssh-copy-id hadoop01</code><br><img src="https://img-blog.csdnimg.cn/20200327123939763.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327123952454.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327124005151.png?x-oss-process=image" alt="在这里插入图片描述"><br>将第一台机器的公钥拷贝到其他机器<br><code>scp /root/.ssh/authorized_keys hadoop02:/root/.ssh</code><br><code>scp /root/.ssh/authorized_keys hadoop03:/root/.ssh</code><br><img src="https://img-blog.csdnimg.cn/20200327124148240.png" alt="在这里插入图片描述"><br>如果3台机器可以相互访问，说明配置成功<br><img src="https://img-blog.csdnimg.cn/20200327124153657.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="hadoop安装"><a href="#hadoop安装" class="headerlink" title="hadoop安装"></a>hadoop安装</h3><blockquote>
+<p>Hadoop集群部署模式 </p>
+<ol>
+<li>在独立模式下，所有程序都在单个VM上执行，调试Hadoop集群的MapReduce程序也非常方便。一般情况下，该模式常用于学习或开发阶段进行调试程序。</li>
+<li>在伪分布式模式下，Hadoop程序的守护进程都运行在一台节点上，该模式主要用于调试Hadoop分布式程序的代码，以及程序执行是否正确。伪分布式模式是完全分布式模式的一个特例。</li>
+<li>在完全分布式模式下，Hadoop的守护进程分别运行在由多个主机措建的集群上，不同节点担任不同的角色，在实际工作应用开发中，通常使用该模式构建企业级Hadoop系统。</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>从JDK版本7u71以后，JAVA将会在同一时间发布两个版本的JDK，其中： </p>
+<ol>
+<li>奇数版本为BUG修正并全部通过检验的版本，官方强烈推荐使用这个版本。</li>
+<li>偶数版本包含了奇数版本所有的内容，以及未被验证的BUG修复，Oracle官方表示：除非你深受BUG困扰，否则不推荐您使用这个版本。</li>
+</ol>
+</blockquote>
+<p><a href="http://hbase.apache.org/book.html#basic.prerequisites" target="_blank" rel="noopener">http://hbase.apache.org/book.html#basic.prerequisites</a><br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a><br><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a><br>根据官网推荐，使用如下软件配置<br><img src="https://img-blog.csdnimg.cn/202003271247571.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="1-上传文件并创建相应文件"><a href="#1-上传文件并创建相应文件" class="headerlink" title="1.上传文件并创建相应文件"></a>1.上传文件并创建相应文件</h4><p>1.创建文件：在根目录下创建下图文件<br><img src="https://img-blog.csdnimg.cn/2020032712490655.png" alt="在这里插入图片描述"></p>
+<p>2.通过命令将文件拖进software文件中<br>安装上传文件命令<code>yum install -y lrzsz</code><br>执行命令rz，上传文件<br>执行命令sz，下载文件<br><img src="https://img-blog.csdnimg.cn/20200327125021970.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="2-安装JDK"><a href="#2-安装JDK" class="headerlink" title="2.安装JDK"></a>2.安装JDK</h4><p>解压jdk文件到/export/servers/路径下<br><code>tar -zxvf jdk-8u201-linux-x64.tar.gz -C /export/servers/</code><br>将jdk文件移动到jdk路径下<br><code>mv jdk1.8.0_201 jdk</code></p>
+<p>4.添加环境变量<br><code>vim /etc/profile</code><br>添加下列代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;export&#x2F;servers&#x2F;jdk</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br></pre></td></tr></table></figure>
+<p>添加完成之后记得<code>source /etc/profile</code>使配置生效<br>测试：<br><code>java -version</code><br><img src="https://img-blog.csdnimg.cn/20200327125713207.png" alt="在这里插入图片描述"><br><code>which java</code><br><img src="https://img-blog.csdnimg.cn/20200327125729409.png" alt="在这里插入图片描述"></p>
+<h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop"></a>安装hadoop</h4><p>1.解压<br><code>tar -zxvf hadoop-2.7.7.tar.gz -C /export/servers/</code><br>2.编写<code>/etc/profile文件</code><br><code>vim /etc/profile</code><br>添加下列命令：<br><img src="https://img-blog.csdnimg.cn/20200327125936586.png" alt="在这里插入图片描述"><br>配置完成之后：<code>source /etc/profile</code><br> <img src="https://img-blog.csdnimg.cn/20200327125950742.png" alt="在这里插入图片描述"><br> 测试：<br> <code>hadoop version</code>查看是否配置完成<img src="https://img-blog.csdnimg.cn/2020032713000287.png" alt="在这里插入图片描述"></p>
+<h3 id="hadoop入门案例："><a href="#hadoop入门案例：" class="headerlink" title="hadoop入门案例："></a>hadoop入门案例：</h3><p><img src="https://img-blog.csdnimg.cn/20200327130134643.png" alt="在这里插入图片描述"><br>1.进入hadoop-2.7.7下面<br>2.创建一个input文件夹<br>3.将Hadoop的xml配置文件复制到input<br>xml配置文件是etc/hadoop/*.xml’</p>
+<p>4.执行share目录下的MapReduce程序<br><code>hadoop jar hadoop-mapreduce-examples-2.7.2.jar grep input output &#39;dfs[a-z.]+&#39;</code><br><img src="https://img-blog.csdnimg.cn/20200327130119673.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.在<strong>hadoop-2.7.7路径下</strong>查看输出结果<br><code>cat output/*</code></p>
+<p><strong>注意:</strong> hadoop jar 是命令，hadoop-mapreduce-examples-2.7.7.jar是自己写的mr代码，input 输入文件夹，output 输出文件夹</p>
 ]]></content>
       <categories>
-        <category>mysql报错汇总</category>
+        <category>Hadoop</category>
       </categories>
       <tags>
-        <tag>mysql错误</tag>
+        <tag>Hadoop集群</tag>
       </tags>
   </entry>
   <entry>
@@ -182,79 +252,10 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <h4 id="5-测试"><a href="#5-测试" class="headerlink" title="5.测试"></a>5.测试</h4><p>修改hadoop02的当前时间：<br><img src="https://img-blog.csdnimg.cn/20200327160931558.png" alt="在这里插入图片描述"><br>然后输入<code>mail</code>,系统会提示时间已经修改<br><img src="https://img-blog.csdnimg.cn/20200327161036874.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327161056816.png?x-oss-process=image" alt="在这里插入图片描述"></p>
 ]]></content>
       <categories>
-        <category>Hadoop集群</category>
+        <category>Hadoop</category>
       </categories>
       <tags>
-        <tag>Hadoop</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hadoop运行环境搭建</title>
-    <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
-<h3 id="系统环境："><a href="#系统环境：" class="headerlink" title="系统环境："></a>系统环境：</h3><p>Windows环境：Windows10<br>Linux环境：CentOS-6.10-x86_64-bin-DVD1<br>VMware：15.5.0 build-14665864</p>
-<h3 id="所需文件"><a href="#所需文件" class="headerlink" title="所需文件"></a>所需文件</h3><p><strong>链接：</strong> <a href="https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA" target="_blank" rel="noopener">https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA</a><br>提取码：dgmt<br><strong>资源失效记得留言</strong></p>
-<h3 id="检查是否开启虚拟机"><a href="#检查是否开启虚拟机" class="headerlink" title="检查是否开启虚拟机"></a>检查是否开启虚拟机</h3><p><img src="https://img-blog.csdnimg.cn/2020032710260212.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="安装Linux"><a href="#安装Linux" class="headerlink" title="安装Linux"></a>安装Linux</h3><p>1.选择自定义<br><img src="https://img-blog.csdnimg.cn/20200327103653439.png?x-oss-process=image" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/2020032710440027.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.稍后安装操作系统<br><img src="https://img-blog.csdnimg.cn/20200327104418203.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.选择Linux 版本为Centos6 64位<br><img src="https://img-blog.csdnimg.cn/20200327104437670.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.虚拟机命名为Hadoop001<br><img src="https://img-blog.csdnimg.cn/20200327104457220.png?x-oss-process=image" alt="在这里插入图片描述"><br>6.处理机配置，这里配置最好对应下图：<br><img src="https://img-blog.csdnimg.cn/2020032710451572.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意:</strong> 如果电脑配置不足，虚拟机会自动提示，这里根据自己电脑配置调整即可<br><img src="https://img-blog.csdnimg.cn/20200327110559495.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>7.网络类型选择NAT<br><img src="https://img-blog.csdnimg.cn/20200327104532614.png?x-oss-process=image" alt="在这里插入图片描述"><br>8.I/O控制器类型选择LSI Logic<br><img src="https://img-blog.csdnimg.cn/20200327104555764.png?x-oss-process=image" alt="在这里插入图片描述"><br>9.磁盘类型选择SCSI<br><img src="https://img-blog.csdnimg.cn/20200327104618841.png?x-oss-process=image" alt="在这里插入图片描述"><br>10.创建新虚拟磁盘<br><img src="https://img-blog.csdnimg.cn/20200327104635294.png?x-oss-process=image" alt="在这里插入图片描述"><br>11.磁盘大小分配50G，将虚拟磁盘拆分成多个文件<br><img src="https://img-blog.csdnimg.cn/20200327104652738.png?x-oss-process=image" alt="在这里插入图片描述"><br>12.指定磁盘文件<br><img src="https://img-blog.csdnimg.cn/20200327104707478.png?x-oss-process=image" alt="在这里插入图片描述"><br>13.创建完成<br><img src="https://img-blog.csdnimg.cn/2020032710473853.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>14.在虚拟机配置中选择下载好的镜像文件<br><img src="https://img-blog.csdnimg.cn/20200327104750966.png?x-oss-process=image" alt="在这里插入图片描述"><br>15.选择第一个<br> <img src="https://img-blog.csdnimg.cn/20200327105929634.png?x-oss-process=image" alt="在这里插入图片描述"><br>16.选择skip<br><img src="https://img-blog.csdnimg.cn/20200327105959950.png?x-oss-process=image" alt="在这里插入图片描述"><br>17.选择next<br><img src="https://img-blog.csdnimg.cn/20200327110029718.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>18.语言环境选择英文<br><img src="https://img-blog.csdnimg.cn/20200327110101712.png?x-oss-process=image" alt="在这里插入图片描述"><br>19.选择输入法<br><img src="https://img-blog.csdnimg.cn/20200327110230645.png?x-oss-process=image" alt="在这里插入图片描述"><br>20.选择Basic Storage Devices<br><img src="https://img-blog.csdnimg.cn/20200327110259402.png?x-oss-process=image" alt="在这里插入图片描述"><br>21.同意即可<br><img src="https://img-blog.csdnimg.cn/20200327110344102.png?x-oss-process=image" alt="在这里插入图片描述"><br>22.主机命名<br><img src="https://img-blog.csdnimg.cn/20200327110434306.png?x-oss-process=image" alt="在这里插入图片描述"><br>23.配置Configure Network<br><img src="https://img-blog.csdnimg.cn/20200327110518430.png?x-oss-process=image" alt="在这里插入图片描述"><br>24.勾选即可<br><img src="https://img-blog.csdnimg.cn/20200327110749262.png?x-oss-process=image" alt="在这里插入图片描述"><br>25.选择相应的时区<br><img src="https://img-blog.csdnimg.cn/20200327110908993.png?x-oss-process=image" alt="在这里插入图片描述"><br>26.密码设个123456就行了<br><img src="https://img-blog.csdnimg.cn/20200327110937171.png?x-oss-process=image" alt="在这里插入图片描述"><br>27.选择Use All Space<br><img src="https://img-blog.csdnimg.cn/20200327111016724.png?x-oss-process=image0" alt="在这里插入图片描述"><br>28.write changes to disk<br><img src="https://img-blog.csdnimg.cn/20200327111055987.png?x-oss-process=image" alt="在这里插入图片描述"><br>29.选择Basic<br><img src="https://img-blog.csdnimg.cn/20200327111132984.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>30.系统开始初始化<br><img src="https://img-blog.csdnimg.cn/20200327111233395.png?x-oss-process=image" alt="在这里插入图片描述"><br>31.可见系统已经安装成功，reboot重启即可<img src="https://img-blog.csdnimg.cn/20200327111308432.png?x-oss-process=image" alt="在这里插入图片描述"><br>32.进入系统界面<br><img src="https://img-blog.csdnimg.cn/20200327111408414.png?x-oss-process=image" alt="在这里插入图片描述"><br>因为hadoop实验需要3个服务器，另外两个可以使用克隆安装<br>33.选择下一步<img src="https://img-blog.csdnimg.cn/20200327111548739.png?x-oss-process=image" alt="在这里插入图片描述"><br>34.下一步<br><img src="https://img-blog.csdnimg.cn/20200327111614282.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>35.克隆类型选择链接克隆，尽量节省磁盘空间<br><img src="https://img-blog.csdnimg.cn/2020032711163713.png?x-oss-process=image" alt="在这里插入图片描述"><br>36.命名<br><img src="https://img-blog.csdnimg.cn/20200327111730702.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111810391.png?x-oss-process=image" alt="在这里插入图片描述"><br>37.可以看到安装完成之后的情形<br><img src="https://img-blog.csdnimg.cn/20200327111851452.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111909745.png" alt="在这里插入图片描述"></p>
-<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><h4 id="1-配置网卡"><a href="#1-配置网卡" class="headerlink" title="1.配置网卡"></a>1.配置网卡</h4><p><img src="https://img-blog.csdnimg.cn/20200327112637566.png" alt="在这里插入图片描述"><br>输入上面的命令可以查看hadoop01的网络环境：如下图所示<br><img src="https://img-blog.csdnimg.cn/20200327112644781.png" alt="在这里插入图片描述"><br>然后开始修改hadoop02，hadoop03的网络配置<br><img src="https://img-blog.csdnimg.cn/20200327112715134.png?x-oss-process=image" alt="在这里插入图片描述"><br>改动如下图所示：<br>也就是将上面的配置删除，下面的NAME=”eth1” 改成eth0<br><img src="https://img-blog.csdnimg.cn/20200327112733595.png" alt="在这里插入图片描述"><br>hadoop03的操作和hadoop02的一样</p>
-<p><strong>注意：</strong> 这里的MAC地址不能一样，如果一样，就需要自动生成一个<br><img src="https://img-blog.csdnimg.cn/20200327113128393.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="2-配置静态ip"><a href="#2-配置静态ip" class="headerlink" title="2.配置静态ip"></a>2.配置静态ip</h4><p>修改hadoop01，02，03的网络配置文件(ifcfg-eth0)<br><img src="https://img-blog.csdnimg.cn/20200327113449436.png" alt="在这里插入图片描述"><br>可以查看配置文件的内容如下图所示：<br><img src="https://img-blog.csdnimg.cn/20200327113458775.png" alt="在这里插入图片描述"><br>将网络配置改为下面的：<br><img src="https://img-blog.csdnimg.cn/20200327113507394.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>验证网络配置：<br><img src="https://img-blog.csdnimg.cn/20200327113527171.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里使用静态IP，ip地址分别是134 135 136<br>hadoop02和hadoop03的操作和hadoop01的一样，重复即可</p>
-<h4 id="3-配置虚拟机网络"><a href="#3-配置虚拟机网络" class="headerlink" title="3.配置虚拟机网络"></a>3.配置虚拟机网络</h4><p>首先需要检查是否开启了5个服务<br>在控制面板的服务里面可以看到是否开启<br><img src="https://img-blog.csdnimg.cn/20200327112000348.png" alt="在这里插入图片描述"><br>1.编辑-&gt;虚拟网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114410335.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2.配置网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114500515.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20200327114550386.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327114917915.png?x-oss-process=image" alt="在这里插入图片描述"><br>NAT设置如图所示：<br><img src="https://img-blog.csdnimg.cn/20200327114628469.png?x-oss-process=image" alt="在这里插入图片描述"><br>DHCP设置如图所示：<br><img src="https://img-blog.csdnimg.cn/2020032711470347.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改VMware network<br><img src="https://img-blog.csdnimg.cn/20200327114710335.png" alt="在这里插入图片描述"><br>将VMnet8的ipv4修改为下图所示<br><img src="https://img-blog.csdnimg.cn/20200327114717792.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="4-主机名映射配置"><a href="#4-主机名映射配置" class="headerlink" title="4.主机名映射配置"></a>4.主机名映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115555637.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115608830.png" alt="在这里插入图片描述"></p>
-<h4 id="5-IP映射配置"><a href="#5-IP映射配置" class="headerlink" title="5.IP映射配置"></a>5.IP映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115618260.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115627958.png" alt="在这里插入图片描述"></p>
-<h4 id="6-windows的hosts配置"><a href="#6-windows的hosts配置" class="headerlink" title="6.windows的hosts配置"></a>6.windows的hosts配置</h4><p>修改Windows下的hosts文件<br><img src="https://img-blog.csdnimg.cn/20200327115930695.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115937887.png" alt="在这里插入图片描述"></p>
-<p><strong>注意：</strong>网络配置完成记得重启网络服务<br><code>service network restart</code>或者重启服务器<code>reboot</code><br>完成以上步骤，网络配置就算完成</p>
-<h4 id="7-测试网络配置"><a href="#7-测试网络配置" class="headerlink" title="7.测试网络配置"></a>7.测试网络配置</h4><p>接下来测试网络配置是否完成<br><img src="https://img-blog.csdnimg.cn/20200327120013734.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>ifcfg-eth0 配置参数说明<br>1.TYPE：配置文件接口类型。在/etc/sysconfig/network-scripts/目录有多种网络配置文件，有Ethernet 、IPsec等类型，网络接口类型为Ethernet。<br>2.DEVICE：网络接口名称<br>3.BOOTPROTO：系统启动地址协议<br>4.none：不使用启动地址协议<br>5.bootp：BOOTP协议<br>6.dhcp：DHCP动态地址协议<br>7.static：静态地址协议<br>8.ONBOOT：系统启动时是否激活<br>            yes：系统启动时激活该网络接口<br>            no：系统启动时不激活该网络接口<br>9.IPADDR：IP地址<br>10.NETMASK：子网掩码<br>11.GATEWAY：网关地址<br>12.BROADCAST：广播地址<br>13.HWADDR/MACADDR：MAC地址。只需设置其中一个，同时设置时不能相互冲突。<br>14.PEERDNS：是否指定DNS。如果使用DHCP协议，默认为yes</p>
-</blockquote>
-<h3 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h3><p>输入<code>rpm -qa|grep ssh</code>查看ssh是否安装<br><img src="https://img-blog.csdnimg.cn/20200327121043104.png" alt="在这里插入图片描述"><br>如果没有安装：<code>yum install openssh-server</code></p>
-<h3 id="免密登陆"><a href="#免密登陆" class="headerlink" title="免密登陆"></a>免密登陆</h3><p>1.为什么要免密登录<br>Hadoop节点众多，所以一般在主节点启动从节点，这个时候就需要程序自动在主节点登录<br>到从节点中，如果不能免密就每次都要输入密码，非常麻烦<br>2. 免密SSH登录的原理<br>需要先在B节点配置A节点的公钥<br>A节点请求B节点要球登录<br>B节点使用A节点的公钥，加密一段随机文本<br>A节点使用私钥解密，并发回给B节点<br>B节点验证文本是否正确</p>
-<p><img src="https://img-blog.csdnimg.cn/20200327121318858.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>这里为了更方便的操作，使用secureCRT文件<br>打开secureCRT文件，new Session创建相应的session连接<br>1.new Session<img src="https://img-blog.csdnimg.cn/20200327122809177.png" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/20200327122947738.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.填写相应信息<br><img src="https://img-blog.csdnimg.cn/20200327123020515.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.SFTP协议<img src="https://img-blog.csdnimg.cn/20200327123105814.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.命名<br><img src="https://img-blog.csdnimg.cn/2020032712314534.png?x-oss-process=image" alt="在这里插入图片描述"><br>最后效果：<br> <img src="https://img-blog.csdnimg.cn/20200327123215433.png" alt="在这里插入图片描述"><br> 配置完成之后虚拟机就可以后台运行了<br><img src="https://img-blog.csdnimg.cn/20200327124339234.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里为了软件的美观，可以进行相应的设置<br>这里推荐一个配色方案：<br><a href="https://blog.51cto.com/sandshell/2109176" target="_blank" rel="noopener">SecureCRT优化调整、永久设置、保护眼睛和配色方案</a></p>
-<h4 id="配置免密登录"><a href="#配置免密登录" class="headerlink" title="配置免密登录"></a>配置免密登录</h4><p>1.在三台机器执行以下命令，生成公钥与私钥<br><code>ssh-keygen -t rsa</code><br>一直回车就行了<br><img src="https://img-blog.csdnimg.cn/20200327123828820.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>2.复制<code>ssh-copy-id hadoop01</code><br><img src="https://img-blog.csdnimg.cn/20200327123939763.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327123952454.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327124005151.png?x-oss-process=image" alt="在这里插入图片描述"><br>将第一台机器的公钥拷贝到其他机器<br><code>scp /root/.ssh/authorized_keys hadoop02:/root/.ssh</code><br><code>scp /root/.ssh/authorized_keys hadoop03:/root/.ssh</code><br><img src="https://img-blog.csdnimg.cn/20200327124148240.png" alt="在这里插入图片描述"><br>如果3台机器可以相互访问，说明配置成功<br><img src="https://img-blog.csdnimg.cn/20200327124153657.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="hadoop安装"><a href="#hadoop安装" class="headerlink" title="hadoop安装"></a>hadoop安装</h3><blockquote>
-<p>Hadoop集群部署模式 </p>
-<ol>
-<li>在独立模式下，所有程序都在单个VM上执行，调试Hadoop集群的MapReduce程序也非常方便。一般情况下，该模式常用于学习或开发阶段进行调试程序。</li>
-<li>在伪分布式模式下，Hadoop程序的守护进程都运行在一台节点上，该模式主要用于调试Hadoop分布式程序的代码，以及程序执行是否正确。伪分布式模式是完全分布式模式的一个特例。</li>
-<li>在完全分布式模式下，Hadoop的守护进程分别运行在由多个主机措建的集群上，不同节点担任不同的角色，在实际工作应用开发中，通常使用该模式构建企业级Hadoop系统。</li>
-</ol>
-</blockquote>
-<blockquote>
-<p>从JDK版本7u71以后，JAVA将会在同一时间发布两个版本的JDK，其中： </p>
-<ol>
-<li>奇数版本为BUG修正并全部通过检验的版本，官方强烈推荐使用这个版本。</li>
-<li>偶数版本包含了奇数版本所有的内容，以及未被验证的BUG修复，Oracle官方表示：除非你深受BUG困扰，否则不推荐您使用这个版本。</li>
-</ol>
-</blockquote>
-<p><a href="http://hbase.apache.org/book.html#basic.prerequisites" target="_blank" rel="noopener">http://hbase.apache.org/book.html#basic.prerequisites</a><br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a><br><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a><br>根据官网推荐，使用如下软件配置<br><img src="https://img-blog.csdnimg.cn/202003271247571.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="1-上传文件并创建相应文件"><a href="#1-上传文件并创建相应文件" class="headerlink" title="1.上传文件并创建相应文件"></a>1.上传文件并创建相应文件</h4><p>1.创建文件：在根目录下创建下图文件<br><img src="https://img-blog.csdnimg.cn/2020032712490655.png" alt="在这里插入图片描述"></p>
-<p>2.通过命令将文件拖进software文件中<br>安装上传文件命令<code>yum install -y lrzsz</code><br>执行命令rz，上传文件<br>执行命令sz，下载文件<br><img src="https://img-blog.csdnimg.cn/20200327125021970.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="2-安装JDK"><a href="#2-安装JDK" class="headerlink" title="2.安装JDK"></a>2.安装JDK</h4><p>解压jdk文件到/export/servers/路径下<br><code>tar -zxvf jdk-8u201-linux-x64.tar.gz -C /export/servers/</code><br>将jdk文件移动到jdk路径下<br><code>mv jdk1.8.0_201 jdk</code></p>
-<p>4.添加环境变量<br><code>vim /etc/profile</code><br>添加下列代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;export&#x2F;servers&#x2F;jdk</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br></pre></td></tr></table></figure>
-<p>添加完成之后记得<code>source /etc/profile</code>使配置生效<br>测试：<br><code>java -version</code><br><img src="https://img-blog.csdnimg.cn/20200327125713207.png" alt="在这里插入图片描述"><br><code>which java</code><br><img src="https://img-blog.csdnimg.cn/20200327125729409.png" alt="在这里插入图片描述"></p>
-<h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop"></a>安装hadoop</h4><p>1.解压<br><code>tar -zxvf hadoop-2.7.7.tar.gz -C /export/servers/</code><br>2.编写<code>/etc/profile文件</code><br><code>vim /etc/profile</code><br>添加下列命令：<br><img src="https://img-blog.csdnimg.cn/20200327125936586.png" alt="在这里插入图片描述"><br>配置完成之后：<code>source /etc/profile</code><br> <img src="https://img-blog.csdnimg.cn/20200327125950742.png" alt="在这里插入图片描述"><br> 测试：<br> <code>hadoop version</code>查看是否配置完成<img src="https://img-blog.csdnimg.cn/2020032713000287.png" alt="在这里插入图片描述"></p>
-<h3 id="hadoop入门案例："><a href="#hadoop入门案例：" class="headerlink" title="hadoop入门案例："></a>hadoop入门案例：</h3><p><img src="https://img-blog.csdnimg.cn/20200327130134643.png" alt="在这里插入图片描述"><br>1.进入hadoop-2.7.7下面<br>2.创建一个input文件夹<br>3.将Hadoop的xml配置文件复制到input<br>xml配置文件是etc/hadoop/*.xml’</p>
-<p>4.执行share目录下的MapReduce程序<br><code>hadoop jar hadoop-mapreduce-examples-2.7.2.jar grep input output &#39;dfs[a-z.]+&#39;</code><br><img src="https://img-blog.csdnimg.cn/20200327130119673.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.在<strong>hadoop-2.7.7路径下</strong>查看输出结果<br><code>cat output/*</code></p>
-<p><strong>注意:</strong> hadoop jar 是命令，hadoop-mapreduce-examples-2.7.7.jar是自己写的mr代码，input 输入文件夹，output 输出文件夹</p>
-]]></content>
-      <categories>
-        <category>Hadoop集群</category>
-      </categories>
-      <tags>
-        <tag>Hadoop</tag>
+        <tag>Hadoop集群</tag>
       </tags>
   </entry>
   <entry>
@@ -272,7 +273,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>Java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>Java新特性</tag>
       </tags>
   </entry>
   <entry>
@@ -285,6 +286,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
+<p>jsp约束：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>JSP</category>
@@ -297,7 +301,8 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>Java多线程</title>
     <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+    <content><![CDATA[<p>Java多线程知识总结</p>
+<a id="more"></a>
 
 <h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
 <blockquote>
@@ -323,7 +328,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>3.创建Thread类的子类的对象</p>
 <p>4.通过此对象调用start()</p>
 <p><strong>线程的调度</strong>：</p>
-<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><h1 id="线程的状态变化"><a href="#线程的状态变化" class="headerlink" title="线程的状态变化"></a>线程的状态变化</h1><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
+<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
 <ul>
 <li>创建状态 </li>
 </ul>
@@ -348,24 +353,12 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
 <h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
       <categories>
-        <category>多线程</category>
+        <category>Java</category>
       </categories>
       <tags>
         <tag>Java</tag>
         <tag>多线程</tag>
         <tag>JavaSE</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java集合</title>
-    <url>/2020/08/05/Java%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>集合</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -393,7 +386,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>配置项目配置文件(我在spring和mybatis整合的配置文件中配置的，如果在mybatis核心配置文件中配置，百度一下)</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 依赖数据源 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 注册加载myBatis映射文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapperLocations"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath*:com/yyz/mapper/*Mapper.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- PageHelper分页配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"plugins"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"properties"</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--使用下面的方式配置参数，一行配置一个，后面会有所有的参数介绍 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--helperDialect属性来指定分页插件使用哪种方言。--&gt;</span></span><br><span class="line">                            helperDialect=mysql</span><br><span class="line">                    <span class="comment">&lt;!--分页合理化参数，设置为true时，pageNum&lt;=0时会查询第一页,pageNum&gt;pages(超过总数时),会查询最后一页。--&gt;</span></span><br><span class="line">                            reasonable=true</span><br><span class="line">                    <span class="comment">&lt;!--为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，</span></span><br><span class="line"><span class="comment">                        可以配置 pageNum,pageSize,count,pageSizeZero,reasonable--&gt;</span></span><br><span class="line">                            params=count=countSql</span><br><span class="line">                    <span class="comment">&lt;!--支持通过Mapper接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params 配</span></span><br><span class="line"><span class="comment">                     置的字段中取值，查找到合适的值时就会自动分页。--&gt;</span></span><br><span class="line">                            supportMethodsArguments=true</span><br><span class="line">                    <span class="comment">&lt;!--默认值为 false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页--&gt;</span></span><br><span class="line">                            autoRuntimeDialect=true</span><br><span class="line">                        <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 给数据库实体起别名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"typeAliasesPackage"</span> <span class="attr">value</span>=<span class="string">"com.yyz.entity;"</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 依赖数据源 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 注册加载myBatis映射文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapperLocations"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath*:com/liuurick/mapper/*Mapper.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- PageHelper分页配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"plugins"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"properties"</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--使用下面的方式配置参数，一行配置一个，后面会有所有的参数介绍 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--helperDialect属性来指定分页插件使用哪种方言。--&gt;</span></span><br><span class="line">                            helperDialect=mysql</span><br><span class="line">                    <span class="comment">&lt;!--分页合理化参数，设置为true时，pageNum&lt;=0时会查询第一页,pageNum&gt;pages(超过总数时),会查询最后一页。--&gt;</span></span><br><span class="line">                            reasonable=true</span><br><span class="line">                    <span class="comment">&lt;!--为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值，</span></span><br><span class="line"><span class="comment">                        可以配置 pageNum,pageSize,count,pageSizeZero,reasonable--&gt;</span></span><br><span class="line">                            params=count=countSql</span><br><span class="line">                    <span class="comment">&lt;!--支持通过Mapper接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params 配</span></span><br><span class="line"><span class="comment">                     置的字段中取值，查找到合适的值时就会自动分页。--&gt;</span></span><br><span class="line">                            supportMethodsArguments=true</span><br><span class="line">                    <span class="comment">&lt;!--默认值为 false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页--&gt;</span></span><br><span class="line">                            autoRuntimeDialect=true</span><br><span class="line">                        <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 给数据库实体起别名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"typeAliasesPackage"</span> <span class="attr">value</span>=<span class="string">"com.liuurick.entity;"</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>SpringBoot整合：</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--分页插件--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>最新版本<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -433,6 +426,34 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java集合</title>
+    <url>/2019/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux安装配置大全</title>
+    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
+    <content><![CDATA[<p>Linux各种版本安装配置</p>
+<a id="more"></a>
+
+<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
+<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MyBatis三剑客</title>
     <url>/2020/11/19/MyBatis%E4%B8%89%E5%89%91%E5%AE%A2/</url>
     <content><![CDATA[<p>MyBatis-generator</p>
@@ -468,7 +489,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>MyBatis</category>
       </categories>
       <tags>
-        <tag>MyBatis</tag>
+        <tag>Mybatis-generator</tag>
+        <tag>Mybatis-plugin</tag>
+        <tag>Mybatis-PageHelper</tag>
       </tags>
   </entry>
   <entry>
@@ -522,6 +545,36 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p><strong>性能对比结论</strong></p>
 <p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
 ]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
+    <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
+<a id="more"></a>
+
+<p><strong>DATE</strong>类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以’YYYY-MM-DD’格式显示DATE值，支持的范围是’1000-01-01’到’9999-12-31’。</p>
+<p><strong>TIMESTAMP</strong>列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。</p>
+<p><strong>TIME</strong>数据类型表示一天中的时间。MySQL检索并且以”HH:MM:SS”格式显示TIME值。支持的范围是’00:00:00’到’23:59:59’。</p>
+<p>创建数据库表测试：</p>
+<p><img src="/images/2020111501.png" alt="image-20201115191901682"></p>
+<p><img src="http://www.linuxidc.com/upload/2012_08/120811102669351.jpg" alt="img"></p>
+<p><strong>datetime和timestamp的区别：</strong><br>1.datetime 的日期范围比较大；如果有1970年以前的数据还是要用datetime.但是timestamp 所占存储空间比较小。<br>2.timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新。</p>
+<p>3.timestamp比较受时区timezone的影响以及MYSQL版本和服务器的<strong>SQL</strong> MODE的影响.</p>
+<p>使用一个常用的格式集的任何一个，你可以指定DATETIME、</p>
+<p><strong>DATE和TIMESTAMP值：</strong><br>‘YYYY-MM-DD HH:MM:SS’或’YY-MM-DD HH:MM:SS’格式的一个字符串,允许一种”宽松”的语法:任何标点可用作在日期部分和时间部分之间的分隔符。例如，’98-12-31 11:30:45’、’98.12.31 11+30+45’、’98/12/31 11<em>30</em>45’和‘98@12@31 11^30^45’是等价的。</p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL日期类型</tag>
+      </tags>
   </entry>
   <entry>
     <title>MySQL集群-PXC方案</title>
@@ -595,7 +648,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
 ]]></content>
       <categories>
-        <category>MySQL集群</category>
+        <category>MySQL</category>
       </categories>
       <tags>
         <tag>Docker</tag>
@@ -603,27 +656,291 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
-    <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
+    <title>MySQL高级</title>
+    <url>/2020/11/20/MySQL%E9%AB%98%E7%BA%A7/</url>
+    <content><![CDATA[<p>MySQL的深入学习主要分为5个部分，分别是：</p>
+<ul>
+<li>MySQL的架构介绍</li>
+<li>索引优化分析</li>
+<li>查询截取分析</li>
+<li>MySQL锁机制</li>
+<li>主从复制</li>
+</ul>
 <a id="more"></a>
 
-<p><strong>DATE</strong>类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以’YYYY-MM-DD’格式显示DATE值，支持的范围是’1000-01-01’到’9999-12-31’。</p>
-<p><strong>TIMESTAMP</strong>列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。</p>
-<p><strong>TIME</strong>数据类型表示一天中的时间。MySQL检索并且以”HH:MM:SS”格式显示TIME值。支持的范围是’00:00:00’到’23:59:59’。</p>
-<p>创建数据库表测试：</p>
-<p><img src="/images/2020111501.png" alt="image-20201115191901682"></p>
-<p><img src="http://www.linuxidc.com/upload/2012_08/120811102669351.jpg" alt="img"></p>
-<p><strong>datetime和timestamp的区别：</strong><br>1.datetime 的日期范围比较大；如果有1970年以前的数据还是要用datetime.但是timestamp 所占存储空间比较小。<br>2.timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新。</p>
-<p>3.timestamp比较受时区timezone的影响以及MYSQL版本和服务器的<strong>SQL</strong> MODE的影响.</p>
-<p>使用一个常用的格式集的任何一个，你可以指定DATETIME、</p>
-<p><strong>DATE和TIMESTAMP值：</strong><br>‘YYYY-MM-DD HH:MM:SS’或’YY-MM-DD HH:MM:SS’格式的一个字符串,允许一种”宽松”的语法:任何标点可用作在日期部分和时间部分之间的分隔符。例如，’98-12-31 11:30:45’、’98.12.31 11+30+45’、’98/12/31 11<em>30</em>45’和‘98@12@31 11^30^45’是等价的。</p>
-]]></content>
+<h1 id="一-mysql的架构介绍"><a href="#一-mysql的架构介绍" class="headerlink" title="一.mysql的架构介绍"></a>一.mysql的架构介绍</h1><h2 id="1-MysqlLinux版本的安装–mysql5-5"><a href="#1-MysqlLinux版本的安装–mysql5-5" class="headerlink" title="1. MysqlLinux版本的安装–mysql5.5"></a>1. MysqlLinux版本的安装–mysql5.5</h2><h3 id="1-1-下载地址"><a href="#1-1-下载地址" class="headerlink" title="1.1 下载地址"></a>1.1 下载地址</h3><p><a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a></p>
+<h3 id="1-2-检查当前系统是否安装过mysql"><a href="#1-2-检查当前系统是否安装过mysql" class="headerlink" title="1.2 检查当前系统是否安装过mysql"></a>1.2 检查当前系统是否安装过mysql</h3><p>查询命令：<code>rpm -qa|grep -i mysql</code></p>
+<p>删除命令：<code>rpm -e RPM软件包名（改名字是上一个命令查出来的名字）</code></p>
+<h3 id="1-3-安装mysql服务端-注意提示-与客户端"><a href="#1-3-安装mysql服务端-注意提示-与客户端" class="headerlink" title="1.3 安装mysql服务端(注意提示)与客户端"></a>1.3 安装mysql服务端(注意提示)与客户端</h3><p>安装路径：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020112201.png" alt="image-20201122172644460"></p>
+<p>上传并解压文件：</p>
+<p><code>tar -xvf MySQL-5.5.62-1.el7.x86_64.rpm-bundle.tar</code></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122210059330.png" alt="image-20201122210059330"></p>
+<p>安装：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -ivh MySQL-server-5.5.62-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-client-5.5.62-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里可能会出现错误：</p>
+<blockquote>
+<p>conflicts with file from package mariadb-libs-1:5.5.56-2.el7.x86_641</p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122210437197.png" alt="image-20201122210437197"></p>
+<p>与mariadb冲突，删除mariadb即可！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -e mariadb-libs-1:5.5.65-1.el7.x86_64 --nodeps</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="1-4-查看Mysql安装时创建的mysql用户和mysql组"><a href="#1-4-查看Mysql安装时创建的mysql用户和mysql组" class="headerlink" title="1.4 查看Mysql安装时创建的mysql用户和mysql组"></a>1.4 查看Mysql安装时创建的mysql用户和mysql组</h3><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122204405232.png" alt="image-20201122204405232"></p>
+<p>或者也可以执行mysqladmin –version 命令，类似java -version，如果可以查看消息，说明成功</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122210850349.png" alt="image-20201122210850349"></p>
+<h3 id="1-5-mysql服务的启动和停止"><a href="#1-5-mysql服务的启动和停止" class="headerlink" title="1.5 mysql服务的启动和停止"></a>1.5 mysql服务的启动和停止</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service mysql start</span><br><span class="line">service mysql stop</span><br></pre></td></tr></table></figure>
+
+<p>查看进程：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122211604756.png" alt="image-20201122211604756"></p>
+<p><strong>注意：</strong>可能会报下面的错误</p>
+<blockquote>
+<p>Starting MySQL. ERROR! The server quit without updating PID file (/var/lib/mysql/localhost.localdomain.pid).</p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122211244330.png" alt="image-20201122211244330"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">解决步骤：</span><br><span class="line">yum -y install autoconf</span><br><span class="line">&#x2F;usr&#x2F;bin&#x2F;mysql_install_db --user&#x3D;mysql</span><br><span class="line">service mysql start</span><br></pre></td></tr></table></figure>
+
+<p>解答参考页面：<a href="https://www.cnblogs.com/weibanggang/p/11230528.html" target="_blank" rel="noopener">https://www.cnblogs.com/weibanggang/p/11230528.html</a></p>
+<h3 id="1-6-mysql的ROOT密码设置"><a href="#1-6-mysql的ROOT密码设置" class="headerlink" title="1.6 mysql的ROOT密码设置"></a>1.6 mysql的ROOT密码设置</h3><p>首次会直接连接成功，因为mysql默认没有密码。</p>
+<p>修改密码可以按照Service中的提示：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;bin&#x2F;mysqladmin -u root password 123456</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122212503860.png" alt="image-20201122212503860"></p>
+<h3 id="1-7-自启动mysql服务"><a href="#1-7-自启动mysql服务" class="headerlink" title="1.7 自启动mysql服务"></a>1.7 自启动mysql服务</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chkconfig mysql on</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ntsysv</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>chkconfig --list|grep mysql</code></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122213038046.png" alt="image-20201122213038046"></p>
+<h3 id="1-8-修改配置文件位置"><a href="#1-8-修改配置文件位置" class="headerlink" title="1.8 修改配置文件位置"></a>1.8 修改配置文件位置</h3><p>5.5版本：<code>cp /usr/share/mysql/my-huge.cnf /etc/my.cnf</code></p>
+<p>5.6版本：<code>cp /usr/share/mysql/my-default.cnf /etc/my.cnf</code></p>
+<h3 id="1-9-修改字符集和数据存储路径"><a href="#1-9-修改字符集和数据存储路径" class="headerlink" title="1.9 修改字符集和数据存储路径"></a>1.9 修改字符集和数据存储路径</h3><p>查看字符集：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show variables like &#39;%char%&#39;;</span><br><span class="line">show variables like &#39;%character%&#39;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122220007001.png" alt="image-20201122220007001"></p>
+<p>修改my.cnf文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">#password	&#x3D; your_password</span><br><span class="line">port		&#x3D; 3306</span><br><span class="line">socket		&#x3D; &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;mysql.sock</span><br><span class="line"></span><br><span class="line">default-character-set &#x3D; utf8mb4</span><br><span class="line"></span><br><span class="line"># Here follows entries for some specific programs</span><br><span class="line"></span><br><span class="line"># The MySQL server</span><br><span class="line">[mysqld]</span><br><span class="line">port		&#x3D; 3306</span><br><span class="line"></span><br><span class="line">character-set-client-handshake &#x3D; FALSE</span><br><span class="line">character-set-server &#x3D; utf8mb4</span><br><span class="line">collation-server &#x3D; utf8mb4_general_ci</span><br><span class="line"></span><br><span class="line">socket		&#x3D; &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;mysql.sock</span><br><span class="line">skip-external-locking</span><br><span class="line">key_buffer_size &#x3D; 384M</span><br><span class="line">max_allowed_packet &#x3D; 1M</span><br><span class="line">table_open_cache &#x3D; 512</span><br><span class="line">sort_buffer_size &#x3D; 2M</span><br><span class="line">read_buffer_size &#x3D; 2M</span><br><span class="line">read_rnd_buffer_size &#x3D; 8M</span><br><span class="line">myisam_sort_buffer_size &#x3D; 64M</span><br><span class="line">thread_cache_size &#x3D; 8</span><br><span class="line">query_cache_size &#x3D; 32M</span><br><span class="line"># Try number of CPU&#39;s*2 for thread_concurrency</span><br><span class="line">thread_concurrency &#x3D; 8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">log-bin&#x3D;mysql-bin</span><br><span class="line"></span><br><span class="line"># required unique id between 1 and 2^32 - 1</span><br><span class="line"># defaults to 1 if master-host is not set</span><br><span class="line"># but will not function as a master if omitted</span><br><span class="line">server-id	&#x3D; 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[mysqldump]</span><br><span class="line">quick</span><br><span class="line">max_allowed_packet &#x3D; 16M</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">no-auto-rehash</span><br><span class="line"></span><br><span class="line">default-character-set &#x3D; utf8mb4</span><br><span class="line"></span><br><span class="line"># Remove the next comment character if you are not familiar with SQL</span><br><span class="line">#safe-updates</span><br><span class="line"></span><br><span class="line">[myisamchk]</span><br><span class="line">key_buffer_size &#x3D; 256M</span><br><span class="line">sort_buffer_size &#x3D; 256M</span><br><span class="line">read_buffer &#x3D; 2M</span><br><span class="line">write_buffer &#x3D; 2M</span><br><span class="line"></span><br><span class="line">[mysqlhotcopy]</span><br><span class="line">interactive-timeout</span><br></pre></td></tr></table></figure>
+
+<p>修改完成之后重启mysql服务</p>
+<h3 id="1-10-Mysql的安装位置"><a href="#1-10-Mysql的安装位置" class="headerlink" title="1.10 Mysql的安装位置"></a>1.10 Mysql的安装位置</h3><p>在linux下查看安装目录 ps -ef|grep mysql</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122212059724.png" alt="image-20201122212059724"></p>
+<h2 id="2-Mysql配置文件"><a href="#2-Mysql配置文件" class="headerlink" title="2.Mysql配置文件"></a>2.Mysql配置文件</h2><h3 id="2-1-二进制日志log-bin"><a href="#2-1-二进制日志log-bin" class="headerlink" title="2.1 二进制日志log-bin"></a>2.1 二进制日志log-bin</h3><p>主要用作主重复制</p>
+<h3 id="2-2-错误日志log-error"><a href="#2-2-错误日志log-error" class="headerlink" title="2.2 错误日志log-error"></a>2.2 错误日志log-error</h3><p>默认是关闭的,记录严重的警告和错误信息,每次启动和关闭的详细信息等.</p>
+<h3 id="2-3-查询日志log"><a href="#2-3-查询日志log" class="headerlink" title="2.3 查询日志log"></a>2.3 查询日志log</h3><p>默认关闭,记录查询的sql语句，如果开启会减低mysql的整体性能，因为记录日志也是需要消耗系统资源的</p>
+<h3 id="2-4-数据文件"><a href="#2-4-数据文件" class="headerlink" title="2.4 数据文件"></a>2.4 数据文件</h3><p>在Windows下，D:\ProgramFiles\MySQL\MySQLServer5.5\data目录下可以挑选很多库；</p>
+<p>在Linux下，看看当前系统中的全部库后再进去（默认路径：/var/lib/mysql）。    </p>
+<p><strong>数据文件：</strong>    </p>
+<p>​    frm文件：存放表结构</p>
+<p>​    myd文件：存放表数据</p>
+<p>​    myi文件：存放表索引</p>
+<h3 id="2-5-如何配置"><a href="#2-5-如何配置" class="headerlink" title="2.5 如何配置"></a>2.5 如何配置</h3><p>windows：my.ini文件</p>
+<p>Linux：/etc/my.cnf文件</p>
+<h2 id="3-Mysql逻辑架构介绍"><a href="#3-Mysql逻辑架构介绍" class="headerlink" title="3.Mysql逻辑架构介绍"></a>3.Mysql逻辑架构介绍</h2><p>和其它数据库相比，MySQL有点与众不同，它的架构可以在多种不同场景中应用并发挥良好作用。主要体现在存储引擎的架构上，插件式的存储引擎架构将查询处理和其它的系统任务以及数据的存储提取相分离。这种架构可以根据业务的需求和实际需要选择合适的存储引擎。</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201123095017572.png" alt="image-20201123095017572"></p>
+<h3 id="3-1-连接层"><a href="#3-1-连接层" class="headerlink" title="3.1 连接层"></a>3.1 连接层</h3><p>最上层是一些客户端和连接服务，包含本地sock通信和大多数基于客户端/服务端工具实现的类似于tcp/ip的通信。主要完成一些类似于连接处理、授权认证、及相关的安全方案。在该层上引入了线程池的概念，为通过认证安全接入的客户端提供线程。同样在该层上可以实现基于SSL的安全链接。服务器也会为安全接入的每个客户端验证它所具有的操作权限。</p>
+<p><strong>Connectors：</strong>指的是不同语言中与SQL的交互</p>
+<p><strong>Connection Pool</strong>: 连接池<br>管理缓冲用户连接，线程处理等需要缓存的需求。<br>负责监听对 MySQL Server 的各种请求，接收连接请求，转发所有连接请求到线程管理模块。每一个连接上 MySQL Server 的客户端请求都会被分配（或创建）一个连接线程为其单独服务。而连接线程的主要工作就是负责 MySQL Server 与客户端的通信，接受客户端的命令请求，传递 Server 端的结果信息等。线程管理模块则负责管理维护这些连接线程。包括线程的创建，线程的 cache 等。</p>
+<h3 id="3-2-服务层"><a href="#3-2-服务层" class="headerlink" title="3.2 服务层"></a>3.2 服务层</h3><p>第二层架构主要完成大多数的核心服务功能，如SQL接口，并完成缓存的查询，SQL的分析和优化及部分内置函数的执行，所有跨存储引擎的功能也在这一层实现，如过程，函数等。在该层，服务器会解析查询并创建相应的内部解析树，并对其完成相应的优化，如确定查询表的顺序，是否利用索引等，最后生成相应的执行操作。如果是select语句，服务器还会查询内部的缓存，如果缓存空间足够大，这样在解决大量读操作的环境中能够很好的提升系统的性能。</p>
+<p><strong>Management Serveices &amp; Utilities： *<em>系统管理和控制工具<br>*</em>Connection Pool: 连接池</strong>。管理缓冲用户连接，线程处理等需要缓存的需求。<br>负责监听对 MySQL Server 的各种请求，接收连接请求，转发所有连接请求到线程管理模块。每一个连接上 MySQL Server 的客户端请求都会被分配（或创建）一个连接线程为其单独服务。而连接线程的主要工作就是负责 MySQL Server 与客户端的通信，接受客户端的命令请求，传递 Server 端的结果信息等。线程管理模块则负责管理维护这些连接线程。包括线程的创建，线程的 cache 等。<br><strong>SQL Interface: SQL接口</strong><br>接受用户的SQL命令，并且返回用户需要查询的结果。比如select from就是调用SQL Interface<br><strong>Parser: 解析器</strong><br>SQL命令传递到解析器的时候会被解析器验证和解析。解析器是由Lex和YACC实现的，是一个很长的脚本。<br>在 MySQL中我们习惯将所有 Client 端发送给 Server 端的命令都称为 query ，在 MySQL Server 里面，连接线程接收到客户端的一个 Query 后，会直接将该 query 传递给专门负责将各种 Query 进行分类然后转发给各个对应的处理模块。</p>
+<p>​        主要功能：<br>​        a . 将SQL语句进行语义和语法的分析，分解成数据结构，然后按照不同的操作类型进行分类，然后做出针对性的转发到后续步骤，以后SQL语句的传递和处理就是基于这个结构的。<br>​        b.  如果在分解构成中遇到错误，那么就说明这个sql语句是不合理的</p>
+<p><strong>Optimizer: 查询优化器</strong></p>
+<p>SQL语句在查询之前会使用查询优化器对查询进行优化。就是优化客户端请求的 query（sql语句） ，根据客户端请求的 query 语句，和数据库中的一些统计信息，在一系列算法的基础上进行分析，得出一个最优的策略，告诉后面的程序如何取得这个 query 语句的结果<br>他使用的是“<strong>选取-投影-联接</strong>”策略进行查询。<br>       用一个例子就可以理解： select uid,name from user where gender = 1;<br>       这个select 查询先根据where 语句进行选取，而不是先将表全部查询出来以后再进行gender过滤<br>       这个select查询先根据uid和name进行属性投影，而不是将属性全部取出以后再进行过滤<br>       将这两个查询条件联接起来生成最终查询结果</p>
+<p><strong>Cache和Buffer： 查询缓存</strong><br>他的主要功能是将客户端提交 给MySQL 的 Select 类 query 请求的返回结果集 cache 到内存中，与该 query 的一个 hash 值 做一个对应。该 Query 所取数据的基表发生任何数据的变化之后， MySQL 会自动使该 query 的Cache 失效。在读写比例非常高的应用系统中， Query Cache 对性能的提高是非常显著的。当然它对内存的消耗也是非常大的。<br>如果查询缓存有命中的查询结果，查询语句就可以直接去查询缓存中取数据。这个缓存机制是由一系列小缓存组成的。比如表缓存，记录缓存，key缓存，权限缓存等</p>
+<h3 id="3-3-引擎层"><a href="#3-3-引擎层" class="headerlink" title="3.3 引擎层"></a>3.3 引擎层</h3><p>存储引擎层，存储引擎真正的负责了MySQL中数据的存储和提取，服务器通过API与存储引擎进行通信。不同的存储引擎具有的功能不同，这样我们可以根据自己的实际需要进行选取。</p>
+<p><strong>存储引擎接口模块</strong>：可以说是 MySQL 数据库中最有特色的一点了。目前各种数据库产品中，基本上只有 MySQL 可以实现其底层数据存储引擎的插件式管理。这个模块实际上只是 一个抽象类，但正是因为它成功地将各种数据处理高度抽象化，才成就了今天 MySQL 可插拔存储引擎的特色。<br>     从上图可以看出，MySQL区别于其他数据库的最重要的特点就是其插件式的表存储引擎。MySQL插件式的存储引擎架构提供了一系列标准的管理和服务支持，这些标准与存储引擎本身无关，可能是每个数据库系统本身都必需的，如SQL分析器和优化器等，而存储引擎是底层物理结构的实现，每个存储引擎开发者都可以按照自己的意愿来进行开发。<br>    <strong>注意：</strong>存储引擎是基于表的，而不是数据库。</p>
+<h3 id="3-4-存储层"><a href="#3-4-存储层" class="headerlink" title="3.4 存储层"></a>3.4 存储层</h3><p>数据存储层，主要是将数据存储在运行于裸设备的文件系统之上，并完成与存储引擎的交互。</p>
+<p><strong>查询说明：</strong></p>
+<p><strong><img src="https://img2018.cnblogs.com/blog/1491092/201906/1491092-20190604210526387-1627086664.png" alt="img"></strong></p>
+<p>首先，mysql的查询流程大致是：</p>
+<ul>
+<li><p>mysql客户端通过协议与mysql服务器建连接，发送查询语句，先检查查询缓存，如果命中(一模一样的sql才能命中)，直接返回结果，否则进行语句解析,也就是说，在解析查询之前，服务器会先访问查询缓存(query cache)——它存储SELECT语句以及相应的查询结果集。如果某个查询结果已经位于缓存中，服务器就不会再对查询进行解析、优化、以及执行。它仅仅将缓存中的结果返回给用户即可，这将大大提高系统的性能。</p>
+</li>
+<li><p>语法解析器和预处理：首先mysql通过关键字将SQL语句进行解析，并生成一颗对应的“解析树”。mysql解析器将使用mysql语法规则验证和解析查询；预处理器则根据一些mysql规则进一步检查解析数是否合法。</p>
+</li>
+<li><p>查询优化器当解析树被认为是合法的了，并且由优化器将其转化成执行计划。一条查询可以有很多种执行方式，最后都返回相同的结果。优化器的作用就是找到这其中最好的执行计划。。</p>
+</li>
+<li><p>然后，mysql默认使用的BTREE索引，并且一个大致方向是:无论怎么折腾sql，至少在目前来说，mysql最多只用到表中的一个索引。</p>
+</li>
+</ul>
+<h2 id="4-Mysql存储引擎"><a href="#4-Mysql存储引擎" class="headerlink" title="4.Mysql存储引擎"></a>4.Mysql存储引擎</h2><p>常用命令：</p>
+<p>查看mysql现在提供什么存储引擎</p>
+<p><code>show engines;</code></p>
+<p>查看mysql当前默认的存储引擎</p>
+<p><code>show variables like &#39;%storage_engine%&#39;</code></p>
+<p>MyISAM和InnoDB对比：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201123100931321.png" alt="image-20201123100931321"></p>
+<h1 id="二-索引优化分析"><a href="#二-索引优化分析" class="headerlink" title="二.索引优化分析"></a>二.索引优化分析</h1><h2 id="1-性能下降SQL慢-，执行时间长-，等待时间长的原因分析"><a href="#1-性能下降SQL慢-，执行时间长-，等待时间长的原因分析" class="headerlink" title="1.性能下降SQL慢 ，执行时间长 ，等待时间长的原因分析"></a>1.性能下降SQL慢 ，执行时间长 ，等待时间长的原因分析</h2><p>主要有以下原因：</p>
+<ul>
+<li><p>查询语句写的烂</p>
+</li>
+<li><p>索引失效</p>
+<p>​    单值索引/复合索引失效</p>
+</li>
+<li><p>关联查询太多join(设计缺陷或不得已的需求)</p>
+</li>
+<li><p>服务器调优及各个参数设置(缓冲\线程数等)</p>
+</li>
+</ul>
+<h2 id="2-常见通用的join查询"><a href="#2-常见通用的join查询" class="headerlink" title="2.常见通用的join查询"></a>2.常见通用的join查询</h2><h3 id="2-1-SQL执行顺序"><a href="#2-1-SQL执行顺序" class="headerlink" title="2.1 SQL执行顺序"></a>2.1 SQL执行顺序</h3><p>手写：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> &lt;query_list&gt; <span class="keyword">FROM</span> &lt;left_table&gt;</span><br><span class="line">&lt;<span class="keyword">join</span> <span class="keyword">type</span>&gt; <span class="keyword">JOIN</span> &lt;right_table&gt; <span class="keyword">ON</span> &lt;join_condition&gt;</span><br><span class="line"><span class="keyword">WHERE</span> &lt;wherer_condition&gt;</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> &lt;group_by_list&gt;</span><br><span class="line"><span class="keyword">HAVING</span> &lt;having_condition&gt;</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> &lt;order_by_list&gt;</span><br><span class="line"><span class="keyword">LIMIT</span> &lt;<span class="keyword">limit</span> <span class="built_in">number</span>&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>机读：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FROM &lt;left_table&gt; </span><br><span class="line">ON &lt;join_condition&gt;</span><br><span class="line">&lt;join_type&gt; JOIN &lt;right_table&gt;</span><br><span class="line">WHERE &lt;where_condition&gt;</span><br><span class="line">GROUP BY &lt;group_by_list&gt;</span><br><span class="line">HAVING &lt;having_condition&gt;</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line"><span class="keyword">DISTINCT</span> &lt;query_list&gt;</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> &lt;order_by_condition&gt;</span><br><span class="line"><span class="keyword">LIMIT</span> &lt;limit_number&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>总结：</p>
+<p><img src="https://images2015.cnblogs.com/blog/1054685/201706/1054685-20170626154318664-711238691.jpg" alt="img"></p>
+<p>Join图</p>
+<p><img src="https://images2015.cnblogs.com/blog/1054685/201706/1054685-20170626113414446-2016950911.jpg" alt="img"></p>
+<h3 id="2-2-MySQL数据库实例"><a href="#2-2-MySQL数据库实例" class="headerlink" title="2.2 MySQL数据库实例"></a>2.2 MySQL数据库实例</h3><h4 id="1-创建数据库："><a href="#1-创建数据库：" class="headerlink" title="1.创建数据库："></a>1.创建数据库：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; create database db_test;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-使用数据库："><a href="#2-使用数据库：" class="headerlink" title="2.使用数据库："></a>2.使用数据库：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; use db_test;</span><br><span class="line">Database changed</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-创建表、添加数据："><a href="#3-创建表、添加数据：" class="headerlink" title="3.创建表、添加数据："></a>3.创建表、添加数据：</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_dept`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'部门主键'</span>,</span><br><span class="line">  <span class="string">`deptName`</span> <span class="built_in">varchar</span>(<span class="number">30</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'部门名称'</span>,</span><br><span class="line">  <span class="string">`locAdd`</span> <span class="built_in">varchar</span>(<span class="number">40</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'楼层'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">1</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_emp`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'员工主键'</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'员工姓名'</span>,</span><br><span class="line">  <span class="string">`deptId`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'部门外键'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`fk_dept_id`</span> (<span class="string">`deptId`</span>)</span><br><span class="line">  <span class="comment">#CONSTRAINT `fk_dept_id` FOREIGN KEY (`deptId`) REFERENCES `tb_dept` (`id`) COMMENT '部门外键设置, 已经注释掉。'</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">1</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'RD'</span>, <span class="string">'11'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'2'</span>, <span class="string">'HR'</span>, <span class="string">'12'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'3'</span>, <span class="string">'MK'</span>, <span class="string">'13'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'4'</span>, <span class="string">'MIS'</span>, <span class="string">'14'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'5'</span>, <span class="string">'FD'</span>, <span class="string">'15'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'张三'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'2'</span>, <span class="string">'李四'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'3'</span>, <span class="string">'王二'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'4'</span>, <span class="string">'麻子'</span>, <span class="string">'2'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'5'</span>, <span class="string">'小马'</span>, <span class="string">'2'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'6'</span>, <span class="string">'马旭'</span>, <span class="string">'3'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'7'</span>, <span class="string">'小丁'</span>, <span class="string">'4'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'8'</span>, <span class="string">'小西'</span>, <span class="string">'51'</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>tb_emp表数据：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp;</span><br><span class="line">+<span class="comment">----+--------+--------+</span></span><br><span class="line">| id | name   | deptId |</span><br><span class="line">+<span class="comment">----+--------+--------+</span></span><br><span class="line">|  1 | 张三   |      1 |</span><br><span class="line">|  2 | 李四   |      1 |</span><br><span class="line">|  3 | 王二   |      1 |</span><br><span class="line">|  4 | 麻子   |      2 |</span><br><span class="line">|  5 | 小马   |      2 |</span><br><span class="line">|  6 | 马旭   |      3 |</span><br><span class="line">|  7 | 小丁   |      4 |</span><br><span class="line">|  8 | 小西   |     51 |</span><br><span class="line">+<span class="comment">----+--------+--------+</span></span><br><span class="line">8 rows in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>tb_dept表数据：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_dept;</span><br><span class="line">+<span class="comment">----+----------+--------+</span></span><br><span class="line">| id | deptName | locAdd |</span><br><span class="line">+<span class="comment">----+----------+--------+</span></span><br><span class="line">|  1 | RD       | 11     |</span><br><span class="line">|  2 | HR       | 12     |</span><br><span class="line">|  3 | MK       | 13     |</span><br><span class="line">|  4 | MIS      | 14     |</span><br><span class="line">|  5 | FD       | 15     |</span><br><span class="line">+<span class="comment">----+----------+--------+</span></span><br><span class="line">5 rows in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>笛卡儿积：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp, tb_dept;</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">| id | name   | deptId | id | deptName | locAdd |</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">|  1 | 张三   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  1 | 张三   |      1 |  2 | HR       | 12     |</span><br><span class="line">|  1 | 张三   |      1 |  3 | MK       | 13     |</span><br><span class="line">|  1 | 张三   |      1 |  4 | MIS      | 14     |</span><br><span class="line">|  1 | 张三   |      1 |  5 | FD       | 15     |</span><br><span class="line">|  2 | 李四   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  2 | 李四   |      1 |  2 | HR       | 12     |</span><br><span class="line">|  2 | 李四   |      1 |  3 | MK       | 13     |</span><br><span class="line">|  2 | 李四   |      1 |  4 | MIS      | 14     |</span><br><span class="line">|  2 | 李四   |      1 |  5 | FD       | 15     |</span><br><span class="line">|  3 | 王二   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  3 | 王二   |      1 |  2 | HR       | 12     |</span><br><span class="line">|  3 | 王二   |      1 |  3 | MK       | 13     |</span><br><span class="line">|  3 | 王二   |      1 |  4 | MIS      | 14     |</span><br><span class="line">|  3 | 王二   |      1 |  5 | FD       | 15     |</span><br><span class="line">|  4 | 麻子   |      2 |  1 | RD       | 11     |</span><br><span class="line">|  4 | 麻子   |      2 |  2 | HR       | 12     |</span><br><span class="line">|  4 | 麻子   |      2 |  3 | MK       | 13     |</span><br><span class="line">|  4 | 麻子   |      2 |  4 | MIS      | 14     |</span><br><span class="line">|  4 | 麻子   |      2 |  5 | FD       | 15     |</span><br><span class="line">|  5 | 小马   |      2 |  1 | RD       | 11     |</span><br><span class="line">|  5 | 小马   |      2 |  2 | HR       | 12     |</span><br><span class="line">|  5 | 小马   |      2 |  3 | MK       | 13     |</span><br><span class="line">|  5 | 小马   |      2 |  4 | MIS      | 14     |</span><br><span class="line">|  5 | 小马   |      2 |  5 | FD       | 15     |</span><br><span class="line">|  6 | 马旭   |      3 |  1 | RD       | 11     |</span><br><span class="line">|  6 | 马旭   |      3 |  2 | HR       | 12     |</span><br><span class="line">|  6 | 马旭   |      3 |  3 | MK       | 13     |</span><br><span class="line">|  6 | 马旭   |      3 |  4 | MIS      | 14     |</span><br><span class="line">|  6 | 马旭   |      3 |  5 | FD       | 15     |</span><br><span class="line">|  7 | 小丁   |      4 |  1 | RD       | 11     |</span><br><span class="line">|  7 | 小丁   |      4 |  2 | HR       | 12     |</span><br><span class="line">|  7 | 小丁   |      4 |  3 | MK       | 13     |</span><br><span class="line">|  7 | 小丁   |      4 |  4 | MIS      | 14     |</span><br><span class="line">|  7 | 小丁   |      4 |  5 | FD       | 15     |</span><br><span class="line">|  8 | 小西   |     51 |  1 | RD       | 11     |</span><br><span class="line">|  8 | 小西   |     51 |  2 | HR       | 12     |</span><br><span class="line">|  8 | 小西   |     51 |  3 | MK       | 13     |</span><br><span class="line">|  8 | 小西   |     51 |  4 | MIS      | 14     |</span><br><span class="line">|  8 | 小西   |     51 |  5 | FD       | 15     |</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">40 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查询tb_emp表和tb_dept中公共的数据：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; inner join tb_dept d on e.deptId = d.id;</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">| id | name   | deptId | id | deptName | locAdd |</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">|  1 | 张三   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  2 | 李四   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  3 | 王二   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  4 | 麻子   |      2 |  2 | HR       | 12     |</span><br><span class="line">|  5 | 小马   |      2 |  2 | HR       | 12     |</span><br><span class="line">|  6 | 马旭   |      3 |  3 | MK       | 13     |</span><br><span class="line">|  7 | 小丁   |      4 |  4 | MIS      | 14     |</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">7 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查询tb_emp表中全部的数据：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; left join tb_dept d on e.deptId = d.id;</span><br><span class="line">    </span><br><span class="line"><span class="comment">#该条数据为 tb_emp 表中独有的数据, tb_dept 表中的字段用 null 占位</span></span><br><span class="line">+<span class="comment">----+--------+--------+------+----------+--------+</span></span><br><span class="line">| id | name   | deptId | id   | deptName | locAdd |</span><br><span class="line">+<span class="comment">----+--------+--------+------+----------+--------+</span></span><br><span class="line">|  1 | 张三   |      1 |    1 | RD       | 11     |</span><br><span class="line">|  2 | 李四   |      1 |    1 | RD       | 11     |</span><br><span class="line">|  3 | 王二   |      1 |    1 | RD       | 11     |</span><br><span class="line">|  4 | 麻子   |      2 |    2 | HR       | 12     |</span><br><span class="line">|  5 | 小马   |      2 |    2 | HR       | 12     |</span><br><span class="line">|  6 | 马旭   |      3 |    3 | MK       | 13     |</span><br><span class="line">|  7 | 小丁   |      4 |    4 | MIS      | 14     |</span><br><span class="line">|  8 | 小西   |     51 | NULL | NULL     | NULL   |　　　　</span><br><span class="line">+<span class="comment">----+--------+--------+------+----------+--------+</span></span><br><span class="line">8 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查询tb_dept表中全部的数据：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; right join tb_dept d on e.deptId = d.id;</span><br><span class="line">    </span><br><span class="line"><span class="comment">#该条数据为 tb_dept 表中独有的数据, tb_emp 表中的字段用 null 占位</span></span><br><span class="line">+<span class="comment">------+--------+--------+----+----------+--------+</span></span><br><span class="line">| id   | name   | deptId | id | deptName | locAdd |</span><br><span class="line">+<span class="comment">------+--------+--------+----+----------+--------+</span></span><br><span class="line">|    1 | 张三   |      1 |  1 | RD       | 11     |</span><br><span class="line">|    2 | 李四   |      1 |  1 | RD       | 11     |</span><br><span class="line">|    3 | 王二   |      1 |  1 | RD       | 11     |</span><br><span class="line">|    4 | 麻子   |      2 |  2 | HR       | 12     |</span><br><span class="line">|    5 | 小马   |      2 |  2 | HR       | 12     |</span><br><span class="line">|    6 | 马旭   |      3 |  3 | MK       | 13     |</span><br><span class="line">|    7 | 小丁   |      4 |  4 | MIS      | 14     |</span><br><span class="line">| NULL | NULL   |   NULL |  5 | FD       | 15     |     </span><br><span class="line">+<span class="comment">------+--------+--------+----+----------+--------+</span></span><br><span class="line">8 rows in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查询tb_emp表中独有的数据：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; left join tb_dept d on e.deptId = d.id</span><br><span class="line">    -&gt; where d.id is null;</span><br><span class="line">+<span class="comment">----+--------+--------+------+----------+--------+</span></span><br><span class="line">| id | name   | deptId | id   | deptName | locAdd |</span><br><span class="line">+<span class="comment">----+--------+--------+------+----------+--------+</span></span><br><span class="line">|  8 | 小西   |     51 | NULL | NULL     | NULL   |</span><br><span class="line">+<span class="comment">----+--------+--------+------+----------+--------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查询tb_dept表中独有的数据：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; right join tb_dept d on e.deptId = d.id</span><br><span class="line">    -&gt; where e.deptId is null;</span><br><span class="line">+<span class="comment">------+------+--------+----+----------+--------+</span></span><br><span class="line">| id   | name | deptId | id | deptName | locAdd |</span><br><span class="line">+<span class="comment">------+------+--------+----+----------+--------+</span></span><br><span class="line">| NULL | NULL |   NULL |  5 | FD       | 15     |</span><br><span class="line">+<span class="comment">------+------+--------+----+----------+--------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查询tb_emp和tb_dept表中所有的数据：</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; full outer join tb_dept d on e.deptId = d.id;</span><br><span class="line">ERROR 1064 (42000): You have an error in your SQL syntax; <span class="keyword">check</span> the <span class="keyword">manual</span> that corresponds <span class="keyword">to</span> your MySQL <span class="keyword">server</span> <span class="keyword">version</span> <span class="keyword">for</span> the <span class="keyword">right</span> syntax <span class="keyword">to</span> <span class="keyword">use</span> near <span class="string">'full outer join tb_dept d on e.deptId = d.id'</span> <span class="keyword">at</span> line <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>出错原因：mysql 中不支持这种连接方式。</p>
+<p><strong>解决办法：</strong>左连接数据和右连接数据相加，将公共的部分去重。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e </span><br><span class="line">    -&gt; left join tb_dept d on e.deptId &#x3D; d.id</span><br><span class="line">    -&gt; union　　　　　#去重</span><br><span class="line">    -&gt; select * from tb_emp e</span><br><span class="line">    -&gt; right join tb_dept d on e.deptId &#x3D; d.id;</span><br><span class="line">    </span><br><span class="line">#该条数据为 tb_emp 表中独有的数据, tb_dept 表中的字段用 null 占位</span><br><span class="line">#该条数据为 tb_dept 表中独有的数据, tb_emp 表中的字段用 null 占位</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">| id   | name   | deptId | id   | deptName | locAdd |</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">|    1 | 张三   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    2 | 李四   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    3 | 王二   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    4 | 麻子   |      2 |    2 | HR       | 12     |</span><br><span class="line">|    5 | 小马   |      2 |    2 | HR       | 12     |</span><br><span class="line">|    6 | 马旭   |      3 |    3 | MK       | 13     |</span><br><span class="line">|    7 | 小丁   |      4 |    4 | MIS      | 14     |</span><br><span class="line">|    8 | 小西   |     51 | NULL | NULL     | NULL   |　　　　</span><br><span class="line">| NULL | NULL   |   NULL |    5 | FD       | 15     |　　　 </span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查询tb_emp和tb_dept表中独有的数据：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; left join tb_dept d on e.deptId &#x3D; d.id</span><br><span class="line">    -&gt; where d.id is null</span><br><span class="line">    -&gt; union</span><br><span class="line">    -&gt; select * from tb_emp e</span><br><span class="line">    -&gt; right join tb_dept d on e.deptId &#x3D; d.id</span><br><span class="line">    -&gt; where e.deptId is null;</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">| id   | name   | deptId | id   | deptName | locAdd |</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">|    8 | 小西   |     51 | NULL | NULL     | NULL   |</span><br><span class="line">| NULL | NULL   |   NULL |    5 | FD       | 15     |</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>7种Join</p>
+<h2 id="3-索引简介"><a href="#3-索引简介" class="headerlink" title="3.索引简介"></a>3.索引简介</h2><p><strong>索引概述：</strong></p>
+<ul>
+<li>索引(Index) 是帮助MySQL高效获取数据的数据结构。索引的本质就是数据结构。 索引的目的在于提高查询效率，可以类比字典，可以简单的理解为“排好序的快速查找数据结构”。</li>
+<li>在数据本身之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用(指向)数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构就是索引。</li>
+<li>一般来说索引本身也很大，不可能全部存储在内存中，因此索引往往以索引文件的形式存储在磁盘上。</li>
+<li>我们平时所说的索引，如果没有特别指明，都是指B树结构组织的索引。</li>
+</ul>
+<p><strong>二叉树算法图：</strong></p>
+<p><strong><a href="https://images2015.cnblogs.com/blog/1054685/201706/1054685-20170627085051383-985324526.png" target="_blank" rel="noopener"><img src="https://images2015.cnblogs.com/blog/1054685/201706/1054685-20170627085051383-985324526.png" alt="img"></a></strong></p>
+<p>​    为了加快Col2的查找，可以维护一个右边所示的二叉查找树，每个节点分别包含索引键值和一个指向对应数据记录物理地址的指针，这样就可以运用二叉查找在一定复杂度内获取到相应数据，从而快速的检索出符合条件的记录。</p>
+<p><strong>索引的优势：</strong></p>
+<ol>
+<li>创建索引可以提高数据检索的效率，降低数据库的IO成本。</li>
+<li>通过索引列对数据进行排序，降低数据排序的成本，降低了CPU的消耗。</li>
+</ol>
+<p><strong>索引的劣势：</strong></p>
+<ol>
+<li>索引其实也是一张表，该表保存了主键与索引字段，并指向实体的记录，所以索引列也是要占用空间的。</li>
+<li>索引虽然提高了查询速度，同时却会降低更新表的速度，如对表进行INSERT、UPDATE和DELETE。因为更新表时，MySQL不仅要保存数据，还要调整因为更新所带来的键值变化后的索引信息。</li>
+<li>索引只是提高效率的一个因素，如果MySQL有大数据量的表，就需要花时间研究建立最优秀的索引，或优化查询语句。</li>
+</ol>
+<p><strong>MySQL索引分类：</strong></p>
+<ol>
+<li>单值索引：一个索引只包含一个单列，一个表可以有多个单列索引。</li>
+<li>唯一索引：索引列的值必须唯一，但允许有空值。</li>
+<li>复合索引：一个索引包含多个列。</li>
+</ol>
+<p><strong>索引的基本语法：</strong></p>
+<ul>
+<li><strong>创建：</strong></li>
+</ul>
+<ol>
+<li>CREATE [UNIQUE] INDEX indexName ON tableName(colName(length));。——如果是CHAR、VARCHAR类型，length可以小于字段实际长度，若是BLOB和TEXT类型，必须指定length。</li>
+<li>ALTER tableName ADD [UNIQUE] INDEX indexName ON (colName(length));。</li>
+</ol>
+<ul>
+<li><strong>删除：</strong>DROP INDEX [indexName] ON tableName;　　</li>
+<li><strong>查看：</strong>SHOW INDEX FROM tableName;</li>
+</ul>
+<p><strong>使用ALTER命令四种方式添加数据表的索引：</strong></p>
+<ol>
+<li>ALTER TABLE tableName ADD PRIMARY KEY(column_list); 该语句添加一个主键，这意味着索引值必须唯一，且不能为null。</li>
+<li>ALTER TABLE tableName ADD UNIQUE indexName(column_list);该语句创建索引的值必须唯一(null除外，null可能会出现多次)。</li>
+<li>ALTER TABLE tableName ADD INDEX indexName(column_list);该语句添加普通索引，索引值可出现多次。</li>
+<li>AKTER TABLE tableName ADD FULLTEXT indexName(column_list);该语句指定索引为FULLTEXT，用于全文索引。</li>
+</ol>
+<p><strong>MySQL索引结构：</strong></p>
+<ol>
+<li>BTree索引</li>
+<li>Hash索引</li>
+<li>full-text全文索引</li>
+<li>R-Tree索引</li>
+</ol>
+<p>java工程师掌握BTree就可以。</p>
+<p><strong>哪些情况需要创建索引：</strong></p>
+<ol>
+<li>主键自动建立唯一索引。</li>
+<li>频繁作为查询条件的字段应该创建索引。</li>
+<li>查询中与其他表关联的字段，外键关系建立索引。</li>
+<li>在高并发下倾向创建组合索引。</li>
+<li>查询中的排序字段适合创建索引，排序字段若通过索引去访问将大大提高排序速率。</li>
+<li>查询中统计或者分组字段适合创建索引。</li>
+</ol>
+<p><strong>哪些情况不要创建索引：</strong></p>
+<ol>
+<li>where条件里用不到的字段不创建索引。</li>
+<li>表记录太少。</li>
+<li>频繁更新的字段不不适合创建索引。——因为每次更新不仅更新了记录还会更新索引，加重了IO负担。</li>
+<li>经常增删改的表。</li>
+<li>数据重复且平均分录的表字段，建立索引没有太大的实际效果。</li>
+</ol>
+<h2 id="4-性能分析"><a href="#4-性能分析" class="headerlink" title="4.性能分析"></a>4.性能分析</h2><h2 id="5-索引优化"><a href="#5-索引优化" class="headerlink" title="5.索引优化"></a>5.索引优化</h2><h1 id="三-查询截取分析"><a href="#三-查询截取分析" class="headerlink" title="三.查询截取分析"></a>三.查询截取分析</h1><h1 id="四-MySQL锁机制"><a href="#四-MySQL锁机制" class="headerlink" title="四.MySQL锁机制"></a>四.MySQL锁机制</h1><h1 id="五-主从复制"><a href="#五-主从复制" class="headerlink" title="五.主从复制"></a>五.主从复制</h1>]]></content>
       <categories>
         <category>MySQL</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
+        <tag>MySQL高级</tag>
       </tags>
   </entry>
   <entry>
@@ -704,7 +1021,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>MySQL集群</category>
+        <category>MySQL</category>
       </categories>
       <tags>
         <tag>Docker</tag>
@@ -748,7 +1065,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>Redis集群</category>
       </categories>
       <tags>
-        <tag>Redis集群</tag>
+        <tag>Redis</tag>
       </tags>
   </entry>
   <entry>
@@ -758,10 +1075,10 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
 ]]></content>
       <categories>
-        <category>SpringBoot错误</category>
+        <category>SpringBoot</category>
       </categories>
       <tags>
-        <tag>SpringBoot</tag>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -776,16 +1093,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>SpringBoot错误</category>
+        <category>SpringBoot</category>
       </categories>
       <tags>
-        <tag>SpringBoot</tag>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
     <title>SpringBoot实现邮件发送功能</title>
     <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+    <content><![CDATA[<p>SpringBoot实现邮件发送功能</p>
+<a id="more"></a>
 
 <h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><h4 id="POP3协议是什么？"><a href="#POP3协议是什么？" class="headerlink" title="POP3协议是什么？"></a>POP3协议是什么？</h4><p>POP3是Post Office Protocol 3的简称，即邮局协议的第3个版本,它规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。</p>
 <h4 id="SMTP协议是什么？"><a href="#SMTP协议是什么？" class="headerlink" title="SMTP协议是什么？"></a>SMTP协议是什么？</h4><p>SMTP 的全称是Simple Mail Transfer Protocol，即简单邮件传输协议。它是一组用于从源地址到目的地址传输邮件的规范，通过它来控制邮件的中转方式。SMTP 协议属于 TCP/IP 协议簇，它帮助每台计算机在发送或中转信件时找到下一个目的地。SMTP 服务器就是遵循 SMTP 协议的发送邮件服务器。SMTP 认证，简单地说就是要求必须在提供了账户名和密码之后才可以登录 SMTP 服务器，这就使得那些垃圾邮件的散播者无可乘之机。增加 SMTP 认证的目的是为了使用户避免受到垃圾邮件的侵扰。</p>
@@ -832,7 +1150,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>第二步：MyBatis的核心配置文件中引入配置项</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"cn.e3mall.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"com.liuurick.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>第三步：业务逻辑实现分页功能，我们只需将当前查询的页数page和每页显示的总条数rows传进去，然后Pagehelper已经帮我们分好数据了，只需在web层获取数据即可。</strong></p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分页查询商品列表：</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DatagridResult <span class="title">itemList</span><span class="params">(Integer page, Integer rows)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//为了程序的严谨性，判断非空：</span></span><br><span class="line">    <span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;   <span class="comment">//设置默认当前页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(page &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(rows == <span class="keyword">null</span>)&#123;</span><br><span class="line">        rows = <span class="number">30</span>;    <span class="comment">//设置默认每页显示的商品数(因为jsp页面上默认写的就是30条)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1、设置分页信息，包括当前页数和每页显示的总计数</span></span><br><span class="line">    PageHelper.startPage(page, rows);</span><br><span class="line">    <span class="comment">//2、执行查询</span></span><br><span class="line">    TbItemExample example = <span class="keyword">new</span> TbItemExample();</span><br><span class="line">    List&lt;TbItem&gt; list = tbItemMapper.selectByExample(example);</span><br><span class="line">    <span class="comment">//3、获取分页查询后的数据</span></span><br><span class="line">    PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    <span class="comment">//4、封装需要返回的分页实体</span></span><br><span class="line">    DatagridResult result = <span class="keyword">new</span> DatagridResult();</span><br><span class="line">    <span class="comment">//设置获取到的总记录数total：</span></span><br><span class="line">    result.setTotal(pageInfo.getTotal());</span><br><span class="line">    <span class="comment">//设置数据集合rows：</span></span><br><span class="line">    result.setRows(list);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -889,18 +1207,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <h3 id="四、简易自研框架的编写"><a href="#四、简易自研框架的编写" class="headerlink" title="四、简易自研框架的编写"></a>四、简易自研框架的编写</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/02-simpleframework" target="_blank" rel="noopener">02-simpleframework</a></p>
 ]]></content>
       <categories>
-        <category>Spring源码</category>
+        <category>Spring</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
+        <tag>Spring源码</tag>
       </tags>
   </entry>
   <entry>
-    <title>error: failed to push some refs to git@github.com:liuurick/BlogBackup.git</title>
-    <url>/2019/07/30/error%20failed%20to%20push%20some%20refs%20to%20git/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+    <title>git常见错误</title>
+    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>记录git常见错误</p>
+<a id="more"></a>
 
-<p>git push的时候报错：</p>
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
+<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+<p>2.git Could not read from remote repository</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.error: failed to push some refs to xxx</p>
 <blockquote>
 <p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
 </blockquote>
@@ -909,47 +1235,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
 ]]></content>
       <categories>
-        <category>git常见错误</category>
+        <category>git</category>
       </categories>
       <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>fatal: not a git repository (or any of the parent directories): .git</title>
-    <url>/2019/07/28/fatal%20not%20a%20git%20repository%20or%20any%20of%20the%20parent%20directories%20git/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 </p>
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-]]></content>
-      <categories>
-        <category>git常见错误</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git Could not read from remote repository</title>
-    <url>/2019/07/20/git%20Could%20not%20read%20from%20remote%20repository/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>git remote add origin <a href="mailto:git@github.com">git@github.com</a>:liuurick/BlogBackup.git</p>
-<p>git remote -v</p>
-<p>git bash输出</p>
-]]></content>
-      <categories>
-        <category>git常见错误</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
+        <tag>git常见错误</tag>
       </tags>
   </entry>
   <entry>
     <title>nginx安装及其配置</title>
     <url>/2020/07/31/nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><a id="more"></a>
+    <content><![CDATA[<p>nginx安装及其配置</p>
+<a id="more"></a>
 
 <h1 id="1-nginx-介绍"><a href="#1-nginx-介绍" class="headerlink" title="1 nginx 介绍"></a>1 nginx 介绍</h1><h2 id="1-什么是nginx"><a href="#1-什么是nginx" class="headerlink" title="1 什么是nginx"></a>1 什么是nginx</h2><p>Nginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。</p>
 <p>由俄罗斯的程序设计师Igor Sysoev所开发，官方测试nginx能够支支撑5万并发链接，</p>
@@ -1305,66 +1601,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>快速构建Java Web项目的开发环境</title>
-    <url>/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<p>Idea通过maven快速构建项目</p>
-<a id="more"></a>
-
-<h1 id="1-搭建CRM项目的开发环境"><a href="#1-搭建CRM项目的开发环境" class="headerlink" title="1.搭建CRM项目的开发环境"></a>1.搭建CRM项目的开发环境</h1><ul>
-<li>设置字体</li>
-<li>设置工作区的字符集为utf-8</li>
-<li>设置basePath变量及base标签</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库<img src="/images/2020112001.png" alt="image-20201120175318348"></p>
-<p>打开settings.xml设置本地仓库位置</p>
-<p><img src="/images/2020112002.png" alt=""></p>
-<p>创建Maven web项目</p>
-<p><img src="/images/2020112003.png" alt="image-20201120175508091"></p>
-<p><img src="/images/2020112004.png" alt="image-20201120175542687"></p>
-<p>新创建的Maven项目，目录结构如下：</p>
-<p><img src="/images/2020112005.png" alt="image-20201120175616811"></p>
-<p>将pom.xml中没有用的信息去除掉</p>
-<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
-<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
-<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
-<p><img src="/images/2020112006.png" alt="image-20201120175810912"></p>
-<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
-<p>将我们自己的web.xml模板导入</p>
-<p>通过pom.xml导入我们需要的jar包</p>
-<p>在pom.xml中加入构建资源</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>点击左侧Maven Projects，点击刷新</p>
-<p><img src="/images/2020112007.png" alt="image-20201120180057366"></p>
-<p>在resource路径下引入开发用的配置文件和属性文件</p>
-<p>jdbc.properties（修改数据库名）</p>
-<p>log4j.properties</p>
-<p>mybatis-config.xml</p>
-<p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
-<p>项目文件结构如下：</p>
-<p><img src="/images/2020112008.png" alt="image-20201120180226721"></p>
-<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="/images/2020112009.png" alt="image-20201120180410393"></p>
-<ul>
-<li><p>将项目原型拷贝到webapp目录下</p>
-</li>
-<li><p>启动Tomcat服务器，测试</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Java Web</category>
-      </categories>
-      <tags>
-        <tag>Java Web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>反射的理解</title>
     <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[]]></content>
@@ -1378,7 +1614,8 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>实体类的4种类型</title>
     <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
+    <content><![CDATA[<p>实体类的4种类型总结</p>
+<a id="more"></a>
 
 <p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
 <p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
@@ -1419,9 +1656,16 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>浅析equals()和hashcode()方法</title>
+    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
-    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
+    <content><![CDATA[<p>操作系统课设</p>
+<a id="more"></a>
 
 <h4 id="1-下载一个内核"><a href="#1-下载一个内核" class="headerlink" title="1.下载一个内核"></a>1.下载一个内核</h4><p>将内核文件下载到/usr/src路径下</p>
 <p>官方下载地址：<a href="https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/" target="_blank" rel="noopener">https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/</a></p>
@@ -1501,17 +1745,83 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p><img src="file:///C:%5CUsers%5Cadmin%5CAppData%5CLocal%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_image020.jpg" alt="img"></p>
 ]]></content>
       <categories>
-        <category>操作系统</category>
+        <category>Linux</category>
       </categories>
       <tags>
         <tag>操作系统</tag>
       </tags>
   </entry>
   <entry>
-    <title>浅析equals()和hashcode()方法</title>
-    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
+    <title>快速构建Java Web项目的开发环境</title>
+    <url>/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<p>Idea通过maven快速构建项目</p>
+<a id="more"></a>
+
+<h1 id="1-搭建CRM项目的开发环境"><a href="#1-搭建CRM项目的开发环境" class="headerlink" title="1.搭建CRM项目的开发环境"></a>1.搭建CRM项目的开发环境</h1><ul>
+<li>设置字体</li>
+<li>设置工作区的字符集为utf-8</li>
+<li>设置basePath变量及base标签</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库<img src="/images/2020112001.png" alt="image-20201120175318348"></p>
+<p>打开settings.xml设置本地仓库位置</p>
+<p><img src="/images/2020112002.png" alt=""></p>
+<p>创建Maven web项目</p>
+<p><img src="/images/2020112003.png" alt="image-20201120175508091"></p>
+<p><img src="/images/2020112004.png" alt="image-20201120175542687"></p>
+<p>新创建的Maven项目，目录结构如下：</p>
+<p><img src="/images/2020112005.png" alt="image-20201120175616811"></p>
+<p>将pom.xml中没有用的信息去除掉</p>
+<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
+<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
+<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
+<p><img src="/images/2020112006.png" alt="image-20201120175810912"></p>
+<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
+<p>将我们自己的web.xml模板导入</p>
+<p>通过pom.xml导入我们需要的jar包</p>
+<p>在pom.xml中加入构建资源</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>点击左侧Maven Projects，点击刷新</p>
+<p><img src="/images/2020112007.png" alt="image-20201120180057366"></p>
+<p>在resource路径下引入开发用的配置文件和属性文件</p>
+<p>jdbc.properties（修改数据库名）</p>
+<p>log4j.properties</p>
+<p>mybatis-config.xml</p>
+<p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
+<p>项目文件结构如下：</p>
+<p><img src="/images/2020112008.png" alt="image-20201120180226721"></p>
+<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="/images/2020112009.png" alt="image-20201120180410393"></p>
+<ul>
+<li><p>将项目原型拷贝到webapp目录下</p>
+</li>
+<li><p>启动Tomcat服务器，测试</p>
+</li>
+</ul>
 ]]></content>
+      <categories>
+        <category>Java Web</category>
+      </categories>
+      <tags>
+        <tag>Java Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>短信登录注册功能的实现</title>
+    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>短信服务</tag>
+      </tags>
   </entry>
   <entry>
     <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
@@ -1543,25 +1853,10 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
 ]]></content>
       <categories>
-        <category>Idea小技巧</category>
+        <category>IntelliJ IDEA</category>
       </categories>
       <tags>
         <tag>Idea小技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>防火墙管理</title>
-    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
-
-<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>firewall</tag>
       </tags>
   </entry>
   <entry>
@@ -1578,6 +1873,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
       <tags>
         <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设计模式</title>
+    <url>/2020/11/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>防火墙管理</title>
+    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>firewall</tag>
       </tags>
   </entry>
   <entry>
