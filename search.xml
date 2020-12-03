@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker命令</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker设置镜像自启动</title>
     <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
     <content><![CDATA[<p>Docker便捷小技巧：</p>
@@ -50,6 +30,26 @@
       </categories>
       <tags>
         <tag>ElasticSearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
       </tags>
   </entry>
   <entry>
@@ -1652,6 +1652,25 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>ubuntu安装VMware Tools</title>
+    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
+<blockquote>
+<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
+</blockquote>
+<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
+<p>解压完成之后即可运行安装文件安装wmware tools</p>
+]]></content>
+      <categories>
+        <category>Ubuntu</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>nginx安装及其配置</title>
     <url>/2020/07/31/nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>nginx安装及其配置</p>
@@ -1973,25 +1992,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>ubuntu安装VMware Tools</title>
-    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
-<blockquote>
-<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
-</blockquote>
-<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
-<p>解压完成之后即可运行安装文件安装wmware tools</p>
-]]></content>
-      <categories>
-        <category>Ubuntu</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>人民日报给90后的理财计划</title>
     <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
     <content><![CDATA[<p>人民日报给90后的理财计划</p>
@@ -2105,6 +2105,8 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
     <title>快速构建SSM开发环境</title>
     <url>/2020/12/01/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BASSM%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>记录一下SSM的搭建过程。</p>
+<a id="more"></a>
+
 <h2 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h2><p>先准备好搭建项目的基本环境</p>
 <p>Intellij IDEA：2020.1.1</p>
 <p>JDK：1.8</p>
@@ -2191,12 +2193,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <tag>Java</tag>
         <tag>JVM</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>浅析equals()和hashcode()方法</title>
-    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
-]]></content>
   </entry>
   <entry>
     <title>添加系统调用</title>
@@ -2289,6 +2285,12 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>浅析equals()和hashcode()方法</title>
+    <url>/2020/08/06/%E6%B5%85%E6%9E%90equals-%E5%92%8Chashcode-%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>需要注意的是当equals()方法被override时，hashCode()也要被override。按照一般hashCode()方法的实现来说，相等的对象，它们的hash code一定相等。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>短信登录注册功能的实现</title>
     <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
@@ -2356,6 +2358,21 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
     <title>设计模式</title>
     <url>/2020/11/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>防火墙管理</title>
+    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>firewall</tag>
+      </tags>
   </entry>
   <entry>
     <title>通用型支付系统</title>
@@ -2586,21 +2603,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Native支付</tag>
         <tag>支付宝PC支付</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>防火墙管理</title>
-    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
-
-<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>firewall</tag>
       </tags>
   </entry>
   <entry>
