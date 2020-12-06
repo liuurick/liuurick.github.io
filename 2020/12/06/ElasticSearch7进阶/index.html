@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="ElasticSearch的进阶学习主要有两种分别是通读文档和案例学习。这里我选择的是通过案例来深入学习es。 案例数据选择的是tmdb网站的公开数据。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ElasticSearch7进阶">
+<meta property="og:url" content="http://yoursite.com/2020/12/06/ElasticSearch7%E8%BF%9B%E9%98%B6/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="ElasticSearch的进阶学习主要有两种分别是通读文档和案例学习。这里我选择的是通过案例来深入学习es。 案例数据选择的是tmdb网站的公开数据。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/2020120601.png">
+<meta property="article:published_time" content="2020-12-06T03:10:05.000Z">
+<meta property="article:modified_time" content="2020-12-06T13:06:20.164Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="ElasticSearch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/2020120601.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/06/ElasticSearch7%E8%BF%9B%E9%98%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ElasticSearch7进阶 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/06/ElasticSearch7%E8%BF%9B%E9%98%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ElasticSearch7进阶
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-06 11:10:05" itemprop="dateCreated datePublished" datetime="2020-12-06T11:10:05+08:00">2020-12-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index"><span itemprop="name">ElasticSearch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>ElasticSearch的进阶学习主要有两种分别是通读文档和案例学习。这里我选择的是通过案例来深入学习es。</p>
+<p>案例数据选择的是tmdb网站的公开数据。</p>
+<a id="more"></a>
+
+<blockquote>
+<p>tmdb网站：<a href="https://www.themoviedb.org/" target="_blank" rel="noopener">https://www.themoviedb.org/</a></p>
+</blockquote>
+<h1 id="tmdb索引创建"><a href="#tmdb索引创建" class="headerlink" title="tmdb索引创建"></a>tmdb索引创建</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">PUT &#x2F;movie</span><br><span class="line">&#123;</span><br><span class="line">   &quot;settings&quot; : &#123;</span><br><span class="line">      &quot;number_of_shards&quot; : 1,</span><br><span class="line">      &quot;number_of_replicas&quot; : 1</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;mappings&quot;: &#123;</span><br><span class="line">     &quot;properties&quot;: &#123;</span><br><span class="line">       &quot;title&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;,</span><br><span class="line">       &quot;tagline&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;,</span><br><span class="line">       &quot;release_date&quot;:&#123;&quot;type&quot;:&quot;date&quot;,        &quot;format&quot;: &quot;8yyyy&#x2F;MM&#x2F;dd||yyyy&#x2F;M&#x2F;dd||yyyy&#x2F;MM&#x2F;d||yyyy&#x2F;M&#x2F;d&quot;&#125;,</span><br><span class="line">       &quot;popularity&quot;:&#123;&quot;type&quot;:&quot;double&quot;&#125;,</span><br><span class="line">       &quot;cast&quot;:&#123;</span><br><span class="line">         &quot;type&quot;:&quot;object&quot;,</span><br><span class="line">         &quot;properties&quot;:&#123;</span><br><span class="line">           &quot;character&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;:&quot;standard&quot;&#125;,</span><br><span class="line">           &quot;name&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;:&quot;standard&quot;&#125;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;,</span><br><span class="line">       &quot;overview&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="tmdb文档导入"><a href="#tmdb文档导入" class="headerlink" title="tmdb文档导入"></a>tmdb文档导入</h1><blockquote>
+<p>csv文件导入es用通过SpringBoot实现的：<a href="https://github.com/liuurick/csvimportes" target="_blank" rel="noopener">https://github.com/liuurick/csvimportes</a></p>
+</blockquote>
+<h1 id="tmdb查询学习"><a href="#tmdb查询学习" class="headerlink" title="tmdb查询学习"></a>tmdb查询学习</h1><h2 id="query-DSL"><a href="#query-DSL" class="headerlink" title="query DSL"></a>query DSL</h2><blockquote>
+<p><a href="https://blog.csdn.net/supermao1013/article/details/84261526" target="_blank" rel="noopener">https://blog.csdn.net/supermao1013/article/details/84261526</a></p>
+</blockquote>
+<h3 id="1-match查询与terms查询"><a href="#1-match查询与terms查询" class="headerlink" title="1.match查询与terms查询"></a>1.match查询与terms查询</h3><h4 id="match查询"><a href="#match查询" class="headerlink" title="match查询"></a>match查询</h4><p>match query 知道分词器的存在，会对field进行分词操作，然后再查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;title&quot;: &quot;Steve Jobs&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 3,</span><br><span class="line">  &quot;timed_out&quot; : false,</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 7,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : 14.340551,</span><br><span class="line">    &quot;hits&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;2340&quot;,</span><br><span class="line">        &quot;_score&quot; : 14.340551,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Steve Jobs&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;Can a great man be a good man?&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2015&#x2F;10&#x2F;9&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;53.670525&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Burke&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Aaron Eckhart&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Set backstage at three iconic product launches and ending in 1998 with the unveiling of the iMac, Steve Jobs takes us behind the scenes of the digital revolution to paint an intimate portrait of the brilliant man at its epicenter.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;703&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.936559,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;The Italian Job&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;Get in. Get out. Get even.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2003&#x2F;5&#x2F;30&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;62.766854&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Jason Bourne&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Matt Damon&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Charlie Croker pulled off the crime of a lifetime. The one thing that he didn&#39;t plan on was being double-crossed. Along with a drop-dead gorgeous safecracker, Croker and his team take off to re-steal the loot and end up in a pulse-pounding, pedal-to-the-metal chase that careens up, down, above and below the streets of Los Angeles.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;1581&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.936559,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;The Nut Job&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;Let&#39;s Get Nuts!&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2014&#x2F;1&#x2F;17&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;18.568021&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Kay&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Meryl Streep&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Surly, a curmudgeon, independent squirrel is banished from his park and forced to survive in the city. Lucky for him, he stumbles on the one thing that may be able to save his life, and the rest of park community, as they gear up for winter - Maury&#39;s Nut Store.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;2152&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.936559,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;The Bank Job&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2008&#x2F;2&#x2F;28&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;30.387754&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Lucius&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Tom Felton&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Terry is a small-time car dealer trying to leave his shady past behind and start a family. Martine is a beautiful model from Terry&#39;s old neighbourhood who knows that Terry is no angel. When Martine proposes a foolproof plan to rob a bank, Terry recognises the danger but realises this may be the opportunity of a lifetime. As the resourceful band of thieves burrows its way into a safe-deposit vault at a Lloyds Bank, they quickly realise that, besides millions in riches, the boxes also contain secrets that implicate everyone from London&#39;s most notorious underworld gangsters to powerful government figures, and even the Royal Family. Although the heist makes headlines throughout Britain for several days, a government gag order eventually brings all reporting of the case to an immediate halt.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;4081&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.936559,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Inside Job&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;The film that cost $20,000,000,000,000 to make.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2010&#x2F;10&#x2F;8&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;16.930914&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Adam Beach&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;A film that exposes the shocking truth behind the economic crisis of 2008. The global financial meltdown, at a cost of over $20 trillion, resulted in millions of people losing their homes and jobs. Through extensive research and interviews with major financial insiders, politicians and journalists, Inside Job traces the rise of a rogue industry and unveils the corrosive relationships which have corrupted politics, regulation and academia.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;2552&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.198678,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;All About Steve&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;A Comedy That Clings&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2009&#x2F;9&#x2F;4&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;13.237835&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Melvin B. Tolson&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Denzel Washington&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;After one short date, a brilliant crossword constructor decides that a CNN cameraman is her true love. Because the cameraman&#39;s job takes him hither and yon, she crisscrosses the country, turning up at media events as she tries to convince him they are perfect for each other.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;979&quot;,</span><br><span class="line">        &quot;_score&quot; : 5.3308554,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;The Life Aquatic with Steve Zissou&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;The deeper you go, the weirder life gets.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2004&#x2F;12&#x2F;10&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;25.237969&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Hannibal Lecter&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Gaspard Ulliel&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Wes Anderson��s incisive quirky comedy build up stars complex characters like in ��The Royal Tenenbaums�� with Bill Murray on in the leading role. An ocean adventure documentary film maker Zissou is put in all imaginable life situations and a tough life crisis as he attempts to make a new film about capturing the creature that caused him pain.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="查看分词分析"><a href="#查看分词分析" class="headerlink" title="查看分词分析"></a>查看分词分析</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;title&quot;, </span><br><span class="line">  &quot;text&quot;: &quot;Steve Jobs&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过下方结果可知”Steve Jobs”被分词为steve和job</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot; : [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot; : &quot;steve&quot;,</span><br><span class="line">      &quot;start_offset&quot; : 0,</span><br><span class="line">      &quot;end_offset&quot; : 5,</span><br><span class="line">      &quot;type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot; : 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot; : &quot;job&quot;,</span><br><span class="line">      &quot;start_offset&quot; : 6,</span><br><span class="line">      &quot;end_offset&quot; : 10,</span><br><span class="line">      &quot;type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot; : 1</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="term查询"><a href="#term查询" class="headerlink" title="term查询"></a>term查询</h4><p>term：查询某个字段里含有某个关键词的文档</p>
+<p>terms：查询某个字段里含有多个关键词的文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;terms&quot;: &#123;</span><br><span class="line">      &quot;title&quot;: [</span><br><span class="line">        &quot;Steve Jobs&quot;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过下方结果可知并没有命中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 1,</span><br><span class="line">  &quot;timed_out&quot; : false,</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 0,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : null,</span><br><span class="line">    &quot;hits&quot; : [ ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>match查询是按照字段上的定义的分词分析后去索引内查询</p>
+<p>term查询是不进行分词的查询，直接去索引内查询，这种查询适合keyword、numeric、date等明确值的</p>
+<h3 id="2-match分词后的and和or"><a href="#2-match分词后的and和or" class="headerlink" title="2.match分词后的and和or"></a>2.match分词后的and和or</h3><p>match查询默认是or</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;:&#123;&quot;title&quot;:&quot;basketball with cartoom aliens&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 12,</span><br><span class="line">  &quot;timed_out&quot; : false,</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 11,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : 8.280251,</span><br><span class="line">    &quot;hits&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;2550&quot;,</span><br><span class="line">        &quot;_score&quot; : 8.280251,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Love &amp; Basketball&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;All&#39;s fair in love and basketball.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2000&#x2F;4&#x2F;21&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;2.027393&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Laurie Strode&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Jamie Lee Curtis&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;A young African-American couple navigates the tricky paths of romance and athletics in this drama. Quincy McCall (Omar Epps) and Monica Wright (Sanaa Lathan) grew up in the same neighborhood and have known each other since childhood. As they grow into adulthood, they fall in love, but they also share another all-consuming passion: basketball. They&#39;ve followed the game all their lives and have no small amount of talent on the court. As Quincy and Monica struggle to make their relationship work, they follow separate career paths though high school and college basketball and, they hope, into stardom in big-league professional ball.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;839&quot;,</span><br><span class="line">        &quot;_score&quot; : 7.7807794,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Alien³&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;The bitch is back.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;1992&#x2F;5&#x2F;22&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;45.856409&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Beatrix &#39;The Bride&#39; Kiddo&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Uma Thurman&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;After escaping with Newt and Hicks from the alien planet, Ripley crash lands on Fiorina 161, a prison planet and host to a correctional facility. Unfortunately, although Newt and Hicks do not survive the crash, a more unwelcome visitor does. The prison does not allow weapons of any kind, and with aid being a long time away, the prisoners must simply survive in any way they can.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;2389&quot;,</span><br><span class="line">        &quot;_score&quot; : 7.7807794,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Aliens&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;This Time It&#39;s War&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;1986&#x2F;7&#x2F;18&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;67.66094&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Conner&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Jason Momoa&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;When Ripley&#39;s lifepod is found by a salvage crew over 50 years later, she finds that terra-formers are on the very planet they found the alien species. When the company sends a family of colonists out to investigate her story, all contact is lost with the planet and colonists. They enlist Ripley and the colonial marines to return and search for answers.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;3144&quot;,</span><br><span class="line">        &quot;_score&quot; : 7.7807794,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Alien&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;In space no one can hear you scream.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;1979&#x2F;5&#x2F;25&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;94.184658&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Raimunda&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Penu00e9lope Cruz&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;During its return to the earth, commercial spaceship Nostromo intercepts a distress signal from a distant planet. When a three-member team of the crew discovers a chamber containing thousands of eggs on the planet, a creature inside one of the eggs attacks an explorer. The entire crew is unaware of the impending nightmare set to descend upon them when the alien parasite planted inside its unfortunate host is birthed.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;741&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.26783,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Alien: Resurrection&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;It&#39;s already too late.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;1997&#x2F;11&#x2F;12&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;37.44963&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Jennings&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Ben Affleck&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Two hundred years after Lt. Ripley died, a group of scientists clone her, hoping to breed the ultimate weapon. But the new Ripley is full of surprises �� as are the new aliens. Ripley must team with a band of smugglers to keep the creatures from reaching Earth.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;1087&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.26783,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Aliens in the Attic&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;The aliens vs. the Pearsons&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2009&#x2F;7&#x2F;31&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;13.707183&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Hova&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Julia Roberts&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;It&#39;s summer vacation, but the Pearson family kids are stuck at a boring lake house with their nerdy parents. That is until feisty, little, green aliens crash-land on the roof, with plans to conquer the house AND Earth! Using only their wits, courage and video game-playing skills, the youngsters must band together to defeat the aliens and save the world - but the toughest part might be keeping the whole thing a secret from their parents! Featuring an all-star cast including Ashley Tisdale, Andy Richter, Kevin Nealon, Tim Meadows and Doris Roberts, Aliens In The Attic is the most fun you can have on this planet!&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;3347&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.26783,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Alien Zone&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;Don&#39;t you dare go in there!&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;1978&#x2F;11&#x2F;22&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;0.000372&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Sgt. Jericho &#39;Action&#39; Jackson&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Carl Weathers&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;A man who is having an affair with a married woman is dropped off on the wrong street when going back to his hotel. He takes refuge out of the rain when an old man invites him in. He turns out to be a mortician, who tells him the stories of the people who have wound up in his establishment over the course of four stories.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;68&quot;,</span><br><span class="line">        &quot;_score&quot; : 5.2474747,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Monsters vs Aliens&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;When aliens attack, monsters fight back.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2009&#x2F;3&#x2F;19&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;36.167578&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Carl Fredricksen (voice)&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Ed Asner&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;When Susan Murphy is unwittingly clobbered by a meteor full of outer space gunk on her wedding day, she mysteriously grows to 49-feet-11-inches. The military jumps into action and captures Susan, secreting her away to a covert government compound. She is renamed Ginormica and placed in confinement with a ragtag group of Monsters...&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;2468&quot;,</span><br><span class="line">        &quot;_score&quot; : 5.2474747,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;My Stepmother is an Alien&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;Man&#39;s closest encounter.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;1988&#x2F;12&#x2F;9&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;9.455596&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Cristina&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Scarlett Johansson&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Trying to rescue her home planet from destruction, a gorgeous extraterrestrial named Celeste arrives on Earth and begins her scientific research. She woos quirky scientist Dr. Steve Mills, a widower with a young daughter. Before long, Celeste finds herself in love with Steve and her new life on Earth, where she experiences true intimacy for the first time. But when she loses sight of her mission, she begins to question where she belongs.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;1214&quot;,</span><br><span class="line">        &quot;_score&quot; : 4.512821,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Aliens vs Predator: Requiem&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;The Last Place On Earth We Want To Be Is In The Middle&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2007&#x2F;12&#x2F;25&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;39.381913&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Alex Wyler&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Keanu Reeves&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;A sequel to 2004&#39;s Alien vs. Predator, the iconic creatures from two of the scariest film franchises in movie history wage their most brutal battle ever - in our own backyard. The small town of Gunnison, Colorado becomes a war zone between two of the deadliest extra-terrestrial life forms - the Alien and the Predator. When a Predator scout ship crash-lands in the hills outside the town, Alien Facehuggers and a hybrid Alien&#x2F;Predator are released and begin to terrorize the town.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将or换成and，想同时匹配到basketball 和cartoom aliens</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;: &#123;</span><br><span class="line">   &quot;title&quot;: &#123;</span><br><span class="line">     &quot;query&quot;: &quot;basketball with cartoom aliens&quot;,</span><br><span class="line">     &quot;operator&quot;: &quot;and&quot; </span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 1,</span><br><span class="line">  &quot;timed_out&quot; : false,</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 0,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : null,</span><br><span class="line">    &quot;hits&quot; : [ ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-最小词项匹配"><a href="#3-最小词项匹配" class="headerlink" title="3.最小词项匹配"></a>3.最小词项匹配</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;: &#123;</span><br><span class="line">   &quot;title&quot;: &#123;</span><br><span class="line">     &quot;query&quot;: &quot;basketball with cartoom aliens&quot;,</span><br><span class="line">     &quot;operator&quot;: &quot;or&quot; ,</span><br><span class="line">     &quot;minimum_should_match&quot;: 2</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 5,</span><br><span class="line">  &quot;timed_out&quot; : false,</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 0,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : null,</span><br><span class="line">    &quot;hits&quot; : [ ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-短语查询"><a href="#4-短语查询" class="headerlink" title="4.短语查询"></a>4.短语查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match_phrase&quot;:&#123;&quot;title&quot;:&quot;steve zissou&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 13,</span><br><span class="line">  &quot;timed_out&quot; : false,</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 1,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : 11.292614,</span><br><span class="line">    &quot;hits&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;979&quot;,</span><br><span class="line">        &quot;_score&quot; : 11.292614,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;The Life Aquatic with Steve Zissou&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;The deeper you go, the weirder life gets.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2004&#x2F;12&#x2F;10&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;25.237969&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Hannibal Lecter&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Gaspard Ulliel&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Wes Anderson��s incisive quirky comedy build up stars complex characters like in ��The Royal Tenenbaums�� with Bill Murray on in the leading role. An ocean adventure documentary film maker Zissou is put in all imaginable life situations and a tough life crisis as he attempts to make a new film about capturing the creature that caused him pain.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>短语前缀查询:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match_phrase_prefix&quot;:&#123;&quot;title&quot;:&quot;steve zis&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 14,</span><br><span class="line">  &quot;timed_out&quot; : false,</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 1,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : 23.216133,</span><br><span class="line">    &quot;hits&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;979&quot;,</span><br><span class="line">        &quot;_score&quot; : 23.216133,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;The Life Aquatic with Steve Zissou&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;The deeper you go, the weirder life gets.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2004&#x2F;12&#x2F;10&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;25.237969&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Hannibal Lecter&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Gaspard Ulliel&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Wes Anderson��s incisive quirky comedy build up stars complex characters like in ��The Royal Tenenbaums�� with Bill Murray on in the leading role. An ocean adventure documentary film maker Zissou is put in all imaginable life situations and a tough life crisis as he attempts to make a new film about capturing the creature that caused him pain.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-多字段查询"><a href="#5-多字段查询" class="headerlink" title="5.多字段查询"></a>5.多字段查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;multi_match&quot;:&#123;</span><br><span class="line">   &quot;query&quot;:&quot;basketball with cartoom aliens&quot;,</span><br><span class="line">   &quot;field&quot;:[&quot;title&quot;,&quot;overview&quot;]</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;error&quot; : &#123;</span><br><span class="line">    &quot;root_cause&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;type&quot; : &quot;parsing_exception&quot;,</span><br><span class="line">        &quot;reason&quot; : &quot;[multi_match] unknown token [START_ARRAY] after [field]&quot;,</span><br><span class="line">        &quot;line&quot; : 5,</span><br><span class="line">        &quot;col&quot; : 12</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;type&quot; : &quot;parsing_exception&quot;,</span><br><span class="line">    &quot;reason&quot; : &quot;[multi_match] unknown token [START_ARRAY] after [field]&quot;,</span><br><span class="line">    &quot;line&quot; : 5,</span><br><span class="line">    &quot;col&quot; : 12</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;status&quot; : 400</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>操作不管是字符与还是或，按照逻辑关系命中后相加得分</p>
+<blockquote>
+<p>“explain”: true 类似于MySQL中的explain </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;explain&quot;: true, </span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;:&#123;&quot;title&quot;:&quot;steve&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p> 查询结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 4,</span><br><span class="line">  &quot;timed_out&quot; : false,</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 3,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : 7.4039927,</span><br><span class="line">    &quot;hits&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_shard&quot; : &quot;[movie][0]&quot;,</span><br><span class="line">        &quot;_node&quot; : &quot;NpA3du0ARfyfdH55kWTlrw&quot;,</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;2340&quot;,</span><br><span class="line">        &quot;_score&quot; : 7.4039927,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;Steve Jobs&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;Can a great man be a good man?&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2015&#x2F;10&#x2F;9&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;53.670525&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Burke&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Aaron Eckhart&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Set backstage at three iconic product launches and ending in 1998 with the unveiling of the iMac, Steve Jobs takes us behind the scenes of the digital revolution to paint an intimate portrait of the brilliant man at its epicenter.&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;_explanation&quot; : &#123;</span><br><span class="line">          &quot;value&quot; : 7.4039927,</span><br><span class="line">          &quot;description&quot; : &quot;weight(title:steve in 1437) [PerFieldSimilarity], result of:&quot;,</span><br><span class="line">          &quot;details&quot; : [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;value&quot; : 7.4039927,</span><br><span class="line">              &quot;description&quot; : &quot;score(freq&#x3D;1.0), computed as boost * idf * tf from:&quot;,</span><br><span class="line">              &quot;details&quot; : [</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 2.2,</span><br><span class="line">                  &quot;description&quot; : &quot;boost&quot;,</span><br><span class="line">                  &quot;details&quot; : [ ]</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 7.1592917,</span><br><span class="line">                  &quot;description&quot; : &quot;idf, computed as log(1 + (N - n + 0.5) &#x2F; (n + 0.5)) from:&quot;,</span><br><span class="line">                  &quot;details&quot; : [</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 3,</span><br><span class="line">                      &quot;description&quot; : &quot;n, number of documents containing term&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 4500,</span><br><span class="line">                      &quot;description&quot; : &quot;N, total number of documents with field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;</span><br><span class="line">                  ]</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 0.47008157,</span><br><span class="line">                  &quot;description&quot; : &quot;tf, computed as freq &#x2F; (freq + k1 * (1 - b + b * dl &#x2F; avgdl)) from:&quot;,</span><br><span class="line">                  &quot;details&quot; : [</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 1.0,</span><br><span class="line">                      &quot;description&quot; : &quot;freq, occurrences of term within document&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 1.2,</span><br><span class="line">                      &quot;description&quot; : &quot;k1, term saturation parameter&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 0.75,</span><br><span class="line">                      &quot;description&quot; : &quot;b, length normalization parameter&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 2.0,</span><br><span class="line">                      &quot;description&quot; : &quot;dl, length of field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 2.1757777,</span><br><span class="line">                      &quot;description&quot; : &quot;avgdl, average length of field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;</span><br><span class="line">                  ]</span><br><span class="line">                &#125;</span><br><span class="line">              ]</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_shard&quot; : &quot;[movie][0]&quot;,</span><br><span class="line">        &quot;_node&quot; : &quot;NpA3du0ARfyfdH55kWTlrw&quot;,</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;2552&quot;,</span><br><span class="line">        &quot;_score&quot; : 6.198678,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;All About Steve&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;A Comedy That Clings&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2009&#x2F;9&#x2F;4&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;13.237835&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Melvin B. Tolson&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Denzel Washington&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;After one short date, a brilliant crossword constructor decides that a CNN cameraman is her true love. Because the cameraman&#39;s job takes him hither and yon, she crisscrosses the country, turning up at media events as she tries to convince him they are perfect for each other.&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;_explanation&quot; : &#123;</span><br><span class="line">          &quot;value&quot; : 6.198678,</span><br><span class="line">          &quot;description&quot; : &quot;weight(title:steve in 1632) [PerFieldSimilarity], result of:&quot;,</span><br><span class="line">          &quot;details&quot; : [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;value&quot; : 6.198678,</span><br><span class="line">              &quot;description&quot; : &quot;score(freq&#x3D;1.0), computed as boost * idf * tf from:&quot;,</span><br><span class="line">              &quot;details&quot; : [</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 2.2,</span><br><span class="line">                  &quot;description&quot; : &quot;boost&quot;,</span><br><span class="line">                  &quot;details&quot; : [ ]</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 7.1592917,</span><br><span class="line">                  &quot;description&quot; : &quot;idf, computed as log(1 + (N - n + 0.5) &#x2F; (n + 0.5)) from:&quot;,</span><br><span class="line">                  &quot;details&quot; : [</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 3,</span><br><span class="line">                      &quot;description&quot; : &quot;n, number of documents containing term&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 4500,</span><br><span class="line">                      &quot;description&quot; : &quot;N, total number of documents with field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;</span><br><span class="line">                  ]</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 0.39355576,</span><br><span class="line">                  &quot;description&quot; : &quot;tf, computed as freq &#x2F; (freq + k1 * (1 - b + b * dl &#x2F; avgdl)) from:&quot;,</span><br><span class="line">                  &quot;details&quot; : [</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 1.0,</span><br><span class="line">                      &quot;description&quot; : &quot;freq, occurrences of term within document&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 1.2,</span><br><span class="line">                      &quot;description&quot; : &quot;k1, term saturation parameter&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 0.75,</span><br><span class="line">                      &quot;description&quot; : &quot;b, length normalization parameter&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 3.0,</span><br><span class="line">                      &quot;description&quot; : &quot;dl, length of field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 2.1757777,</span><br><span class="line">                      &quot;description&quot; : &quot;avgdl, average length of field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;</span><br><span class="line">                  ]</span><br><span class="line">                &#125;</span><br><span class="line">              ]</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_shard&quot; : &quot;[movie][0]&quot;,</span><br><span class="line">        &quot;_node&quot; : &quot;NpA3du0ARfyfdH55kWTlrw&quot;,</span><br><span class="line">        &quot;_index&quot; : &quot;movie&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;979&quot;,</span><br><span class="line">        &quot;_score&quot; : 5.3308554,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;title&quot; : &quot;The Life Aquatic with Steve Zissou&quot;,</span><br><span class="line">          &quot;tagline&quot; : &quot;The deeper you go, the weirder life gets.&quot;,</span><br><span class="line">          &quot;release_date&quot; : &quot;2004&#x2F;12&#x2F;10&quot;,</span><br><span class="line">          &quot;popularity&quot; : &quot;25.237969&quot;,</span><br><span class="line">          &quot;cast&quot; : &#123;</span><br><span class="line">            &quot;character&quot; : &quot;Hannibal Lecter&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Gaspard Ulliel&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;overview&quot; : &quot;Wes Anderson��s incisive quirky comedy build up stars complex characters like in ��The Royal Tenenbaums�� with Bill Murray on in the leading role. An ocean adventure documentary film maker Zissou is put in all imaginable life situations and a tough life crisis as he attempts to make a new film about capturing the creature that caused him pain.&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;_explanation&quot; : &#123;</span><br><span class="line">          &quot;value&quot; : 5.3308554,</span><br><span class="line">          &quot;description&quot; : &quot;weight(title:steve in 140) [PerFieldSimilarity], result of:&quot;,</span><br><span class="line">          &quot;details&quot; : [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;value&quot; : 5.3308554,</span><br><span class="line">              &quot;description&quot; : &quot;score(freq&#x3D;1.0), computed as boost * idf * tf from:&quot;,</span><br><span class="line">              &quot;details&quot; : [</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 2.2,</span><br><span class="line">                  &quot;description&quot; : &quot;boost&quot;,</span><br><span class="line">                  &quot;details&quot; : [ ]</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 7.1592917,</span><br><span class="line">                  &quot;description&quot; : &quot;idf, computed as log(1 + (N - n + 0.5) &#x2F; (n + 0.5)) from:&quot;,</span><br><span class="line">                  &quot;details&quot; : [</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 3,</span><br><span class="line">                      &quot;description&quot; : &quot;n, number of documents containing term&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 4500,</span><br><span class="line">                      &quot;description&quot; : &quot;N, total number of documents with field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;</span><br><span class="line">                  ]</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;value&quot; : 0.33845747,</span><br><span class="line">                  &quot;description&quot; : &quot;tf, computed as freq &#x2F; (freq + k1 * (1 - b + b * dl &#x2F; avgdl)) from:&quot;,</span><br><span class="line">                  &quot;details&quot; : [</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 1.0,</span><br><span class="line">                      &quot;description&quot; : &quot;freq, occurrences of term within document&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 1.2,</span><br><span class="line">                      &quot;description&quot; : &quot;k1, term saturation parameter&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 0.75,</span><br><span class="line">                      &quot;description&quot; : &quot;b, length normalization parameter&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 4.0,</span><br><span class="line">                      &quot;description&quot; : &quot;dl, length of field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      &quot;value&quot; : 2.1757777,</span><br><span class="line">                      &quot;description&quot; : &quot;avgdl, average length of field&quot;,</span><br><span class="line">                      &quot;details&quot; : [ ]</span><br><span class="line">                    &#125;</span><br><span class="line">                  ]</span><br><span class="line">                &#125;</span><br><span class="line">              ]</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看数值，tfidf多少分，tfnorm归一化后多少分</p>
+<p><img src="/images/2020120601.png" alt="image-20201206201041743"></p>
+<p>多字段查询索引内有query分词后的结果，因为title比overview命中更重要，因此需要加权重</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;movie&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;multi_match&quot;:&#123;</span><br><span class="line">   &quot;query&quot;:&quot;basketball with cartoom aliens&quot;,</span><br><span class="line">   &quot;fields&quot;:[&quot;title^10&quot;,&quot;overview&quot;],</span><br><span class="line">   &quot;tie_break&quot;:0.3</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;error&quot; : &#123;</span><br><span class="line">    &quot;root_cause&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;type&quot; : &quot;parsing_exception&quot;,</span><br><span class="line">        &quot;reason&quot; : &quot;[multi_match] query does not support [tie_break]&quot;,</span><br><span class="line">        &quot;line&quot; : 6,</span><br><span class="line">        &quot;col&quot; : 16</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;type&quot; : &quot;parsing_exception&quot;,</span><br><span class="line">    &quot;reason&quot; : &quot;[multi_match] query does not support [tie_break]&quot;,</span><br><span class="line">    &quot;line&quot; : 6,</span><br><span class="line">    &quot;col&quot; : 16</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;status&quot; : 400</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="查全率和查准率"><a href="#查全率和查准率" class="headerlink" title="查全率和查准率"></a>查全率和查准率</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="相关性排序调整"><a href="#相关性排序调整" class="headerlink" title="相关性排序调整"></a>相关性排序调整</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p> 8-5 查询语句进阶（1） (07:36)</p>
+<p> 8-6 查询语句进阶（2） (09:25)</p>
+<p> 8-7 查询语句进阶（3） (08:59)</p>
+<p> 8-8 查询语句进阶（4） (04:35)</p>
+<p> 8-9 查询语句进阶（5） (06:09)</p>
+<p> 8-10 查询语句进阶（6） (04:51)</p>
+<p> 8-11 多字段查询进阶（1） (11:26)</p>
+<p> 8-12 多字段查询进阶（2） (04:02)</p>
+<p> 8-13 多字段查询进阶（3） (06:16)</p>
+<p> 8-14 多字段查询进阶（4） (12:11)</p>
+<p> 8-15 过滤与排序 (13:34)</p>
+<p> 8-16 自定义score计算（上） (07:01)</p>
+<p> 8-17 自定义score计算（下） (09:28)</p>
+<p> 8-18 【阶段总结】ES进阶之构建试验</p>
+<p> 8-19 【阶段总结】ES进阶之多字段查询</p>
+<p> 8-20 【阶段总结】ES进阶之自定义排序</p>
+<p> 8-21 【勤于思考，夯实学习成果】ES进阶之课后思考题</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ElasticSearch/" rel="tag"><i class="fa fa-tag"></i> ElasticSearch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/02/ElasticSearch7%E7%AC%94%E8%AE%B0/" rel="prev" title="ElasticSearch7笔记">
+      <i class="fa fa-chevron-left"></i> ElasticSearch7笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/06/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="Java设计模式">
+      Java设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tmdb索引创建"><span class="nav-number">1.</span> <span class="nav-text">tmdb索引创建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tmdb文档导入"><span class="nav-number">2.</span> <span class="nav-text">tmdb文档导入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tmdb查询学习"><span class="nav-number">3.</span> <span class="nav-text">tmdb查询学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#query-DSL"><span class="nav-number">3.1.</span> <span class="nav-text">query DSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-match查询与terms查询"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.match查询与terms查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#match查询"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">match查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看分词分析"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">查看分词分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#term查询"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">term查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">3.1.1.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-match分词后的and和or"><span class="nav-number">3.1.2.</span> <span class="nav-text">2.match分词后的and和or</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-最小词项匹配"><span class="nav-number">3.1.3.</span> <span class="nav-text">3.最小词项匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-短语查询"><span class="nav-number">3.1.4.</span> <span class="nav-text">4.短语查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-多字段查询"><span class="nav-number">3.1.5.</span> <span class="nav-text">5.多字段查询</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">4.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查全率和查准率"><span class="nav-number">5.</span> <span class="nav-text">查全率和查准率</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关性排序调整"><span class="nav-number">6.</span> <span class="nav-text">相关性排序调整</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
