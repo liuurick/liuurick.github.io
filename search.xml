@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
-<a id="more"></a>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
 
 
 
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
 ]]></content>
       <categories>
-        <category>MySQL</category>
+        <category>Docker</category>
       </categories>
       <tags>
-        <tag>MySQL错误</tag>
+        <tag>Docker命令</tag>
       </tags>
   </entry>
   <entry>
@@ -39,6 +39,26 @@
       </categories>
       <tags>
         <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -149,26 +169,6 @@
       </categories>
       <tags>
         <tag>ElasticSearch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker命令</tag>
       </tags>
   </entry>
   <entry>
@@ -511,6 +511,24 @@
       </tags>
   </entry>
   <entry>
+    <title>JDK8新特性</title>
+    <url>/2020/11/20/JDK8%E6%96%B0%E7%89%B9%E6%80%A7/</url>
+    <content><![CDATA[<h2 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h2><p>代码更少，增加了新的语法</p>
+<p>Lambda表达式的使用</p>
+<p>1.举例：</p>
+<h2 id="函数式（Functional）接口"><a href="#函数式（Functional）接口" class="headerlink" title="函数式（Functional）接口"></a>函数式（Functional）接口</h2><p>3.方法引用与构造器引用</p>
+<p>4.强大的Stream API</p>
+<p>5.Optional类</p>
+<p>最大化的减少空指针异常</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java新特性</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hadoop集群搭建</title>
     <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<blockquote>
@@ -622,24 +640,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>JDK8新特性</title>
-    <url>/2020/11/20/JDK8%E6%96%B0%E7%89%B9%E6%80%A7/</url>
-    <content><![CDATA[<h2 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h2><p>代码更少，增加了新的语法</p>
-<p>Lambda表达式的使用</p>
-<p>1.举例：</p>
-<h2 id="函数式（Functional）接口"><a href="#函数式（Functional）接口" class="headerlink" title="函数式（Functional）接口"></a>函数式（Functional）接口</h2><p>3.方法引用与构造器引用</p>
-<p>4.强大的Stream API</p>
-<p>5.Optional类</p>
-<p>最大化的减少空指针异常</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java新特性</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java多线程</title>
     <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
     <content><![CDATA[<p>Java多线程知识总结</p>
@@ -741,6 +741,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java设计模式</title>
+    <url>/2020/12/06/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Java集合</title>
     <url>/2019/08/05/Java%E9%9B%86%E5%90%88/</url>
     <content><![CDATA[]]></content>
@@ -751,11 +756,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <tag>Java</tag>
         <tag>集合</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Java设计模式</title>
-    <url>/2020/12/06/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>Linux安装配置大全</title>
@@ -815,25 +815,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
     <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
@@ -870,6 +851,25 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+      <tags>
+        <tag>MyBatis缓存</tag>
       </tags>
   </entry>
   <entry>
@@ -1037,8 +1037,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>或者</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ntsysv</span><br></pre></td></tr></table></figure>
 
-
-
 <p><code>chkconfig --list|grep mysql</code></p>
 <p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201122213038046.png" alt="image-20201122213038046"></p>
 <h3 id="1-8-修改配置文件位置"><a href="#1-8-修改配置文件位置" class="headerlink" title="1.8 修改配置文件位置"></a>1.8 修改配置文件位置</h3><p>5.5版本：<code>cp /usr/share/mysql/my-huge.cnf /etc/my.cnf</code></p>
@@ -1066,17 +1064,18 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>Linux：/etc/my.cnf文件</p>
 <h2 id="3-Mysql逻辑架构介绍"><a href="#3-Mysql逻辑架构介绍" class="headerlink" title="3.Mysql逻辑架构介绍"></a>3.Mysql逻辑架构介绍</h2><p>和其它数据库相比，MySQL有点与众不同，它的架构可以在多种不同场景中应用并发挥良好作用。主要体现在存储引擎的架构上，插件式的存储引擎架构将查询处理和其它的系统任务以及数据的存储提取相分离。这种架构可以根据业务的需求和实际需要选择合适的存储引擎。</p>
 <p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201123095017572.png" alt="image-20201123095017572"></p>
-<h3 id="3-1-连接层"><a href="#3-1-连接层" class="headerlink" title="3.1 连接层"></a>3.1 连接层</h3><p>最上层是一些客户端和连接服务，包含本地sock通信和大多数基于客户端/服务端工具实现的类似于tcp/ip的通信。主要完成一些类似于连接处理、授权认证、及相关的安全方案。在该层上引入了线程池的概念，为通过认证安全接入的客户端提供线程。同样在该层上可以实现基于SSL的安全链接。服务器也会为安全接入的每个客户端验证它所具有的操作权限。</p>
+<h3 id="3-1-连接层"><a href="#3-1-连接层" class="headerlink" title="3.1 连接层"></a>3.1 连接层</h3><p>最上层是一些客户端和连接服务，包含本地socket通信和大多数基于客户端/服务端工具实现的类似于tcp/ip的通信。主要完成一些类似于连接处理、授权认证、及相关的安全方案。在该层上引入了线程池的概念，为通过认证安全接入的客户端提供线程。同样在该层上可以实现基于SSL的安全链接。服务器也会为安全接入的每个客户端验证它所具有的操作权限。</p>
 <p><strong>Connectors：</strong>指的是不同语言中与SQL的交互</p>
-<p><strong>Connection Pool</strong>: 连接池<br>管理缓冲用户连接，线程处理等需要缓存的需求。<br>负责监听对 MySQL Server 的各种请求，接收连接请求，转发所有连接请求到线程管理模块。每一个连接上 MySQL Server 的客户端请求都会被分配（或创建）一个连接线程为其单独服务。而连接线程的主要工作就是负责 MySQL Server 与客户端的通信，接受客户端的命令请求，传递 Server 端的结果信息等。线程管理模块则负责管理维护这些连接线程。包括线程的创建，线程的 cache 等。</p>
+<p><strong>Connection Pool</strong>: 连接池<br>管理缓冲用户连接，线程处理等需要缓存的需求。负责监听对 MySQL Server 的各种请求，接收连接请求，转发所有连接请求到线程管理模块。每一个连接上 MySQL Server 的客户端请求都会被分配（或创建）一个连接线程为其单独服务。而连接线程的主要工作就是负责 MySQL Server 与客户端的通信，接受客户端的命令请求，传递 Server 端的结果信息等。线程管理模块则负责管理维护这些连接线程。包括线程的创建，线程的 cache 等。</p>
 <h3 id="3-2-服务层"><a href="#3-2-服务层" class="headerlink" title="3.2 服务层"></a>3.2 服务层</h3><p>第二层架构主要完成大多数的核心服务功能，如SQL接口，并完成缓存的查询，SQL的分析和优化及部分内置函数的执行，所有跨存储引擎的功能也在这一层实现，如过程，函数等。在该层，服务器会解析查询并创建相应的内部解析树，并对其完成相应的优化，如确定查询表的顺序，是否利用索引等，最后生成相应的执行操作。如果是select语句，服务器还会查询内部的缓存，如果缓存空间足够大，这样在解决大量读操作的环境中能够很好的提升系统的性能。</p>
-<p><strong>Management Serveices &amp; Utilities： *<em>系统管理和控制工具<br>*</em>Connection Pool: 连接池</strong>。管理缓冲用户连接，线程处理等需要缓存的需求。<br>负责监听对 MySQL Server 的各种请求，接收连接请求，转发所有连接请求到线程管理模块。每一个连接上 MySQL Server 的客户端请求都会被分配（或创建）一个连接线程为其单独服务。而连接线程的主要工作就是负责 MySQL Server 与客户端的通信，接受客户端的命令请求，传递 Server 端的结果信息等。线程管理模块则负责管理维护这些连接线程。包括线程的创建，线程的 cache 等。<br><strong>SQL Interface: SQL接口</strong><br>接受用户的SQL命令，并且返回用户需要查询的结果。比如select from就是调用SQL Interface<br><strong>Parser: 解析器</strong><br>SQL命令传递到解析器的时候会被解析器验证和解析。解析器是由Lex和YACC实现的，是一个很长的脚本。<br>在 MySQL中我们习惯将所有 Client 端发送给 Server 端的命令都称为 query ，在 MySQL Server 里面，连接线程接收到客户端的一个 Query 后，会直接将该 query 传递给专门负责将各种 Query 进行分类然后转发给各个对应的处理模块。</p>
+<p>*<em>Management Serveices &amp; Utilities： *</em>系统管理和控制工具</p>
+<p><strong>SQL Interface: SQL接口</strong><br>接受用户的SQL命令，并且返回用户需要查询的结果。比如select from就是调用SQL Interface<br><strong>Parser: 解析器</strong><br>SQL命令传递到解析器的时候会被解析器验证和解析。解析器是由Lex和YACC实现的，是一个很长的脚本。<br>在 MySQL中我们习惯将所有 Client 端发送给 Server 端的命令都称为 query ，在 MySQL Server 里面，连接线程接收到客户端的一个 Query 后，会直接将该 query 传递给专门负责将各种 Query 进行分类然后转发给各个对应的处理模块。</p>
 <p>​        主要功能：<br>​        a . 将SQL语句进行语义和语法的分析，分解成数据结构，然后按照不同的操作类型进行分类，然后做出针对性的转发到后续步骤，以后SQL语句的传递和处理就是基于这个结构的。<br>​        b.  如果在分解构成中遇到错误，那么就说明这个sql语句是不合理的</p>
 <p><strong>Optimizer: 查询优化器</strong></p>
 <p>SQL语句在查询之前会使用查询优化器对查询进行优化。就是优化客户端请求的 query（sql语句） ，根据客户端请求的 query 语句，和数据库中的一些统计信息，在一系列算法的基础上进行分析，得出一个最优的策略，告诉后面的程序如何取得这个 query 语句的结果<br>他使用的是“<strong>选取-投影-联接</strong>”策略进行查询。<br>       用一个例子就可以理解： select uid,name from user where gender = 1;<br>       这个select 查询先根据where 语句进行选取，而不是先将表全部查询出来以后再进行gender过滤<br>       这个select查询先根据uid和name进行属性投影，而不是将属性全部取出以后再进行过滤<br>       将这两个查询条件联接起来生成最终查询结果</p>
 <p><strong>Cache和Buffer： 查询缓存</strong><br>他的主要功能是将客户端提交 给MySQL 的 Select 类 query 请求的返回结果集 cache 到内存中，与该 query 的一个 hash 值 做一个对应。该 Query 所取数据的基表发生任何数据的变化之后， MySQL 会自动使该 query 的Cache 失效。在读写比例非常高的应用系统中， Query Cache 对性能的提高是非常显著的。当然它对内存的消耗也是非常大的。<br>如果查询缓存有命中的查询结果，查询语句就可以直接去查询缓存中取数据。这个缓存机制是由一系列小缓存组成的。比如表缓存，记录缓存，key缓存，权限缓存等</p>
 <h3 id="3-3-引擎层"><a href="#3-3-引擎层" class="headerlink" title="3.3 引擎层"></a>3.3 引擎层</h3><p>存储引擎层，存储引擎真正的负责了MySQL中数据的存储和提取，服务器通过API与存储引擎进行通信。不同的存储引擎具有的功能不同，这样我们可以根据自己的实际需要进行选取。</p>
-<p><strong>存储引擎接口模块</strong>：可以说是 MySQL 数据库中最有特色的一点了。目前各种数据库产品中，基本上只有 MySQL 可以实现其底层数据存储引擎的插件式管理。这个模块实际上只是 一个抽象类，但正是因为它成功地将各种数据处理高度抽象化，才成就了今天 MySQL 可插拔存储引擎的特色。<br>     从上图可以看出，MySQL区别于其他数据库的最重要的特点就是其插件式的表存储引擎。MySQL插件式的存储引擎架构提供了一系列标准的管理和服务支持，这些标准与存储引擎本身无关，可能是每个数据库系统本身都必需的，如SQL分析器和优化器等，而存储引擎是底层物理结构的实现，每个存储引擎开发者都可以按照自己的意愿来进行开发。<br>    <strong>注意：</strong>存储引擎是基于表的，而不是数据库。</p>
+<p><strong>存储引擎接口模块</strong>：可以说是 MySQL 数据库中最有特色的一点了。目前各种数据库产品中，基本上只有 MySQL 可以实现其底层数据存储引擎的插件式管理。这个模块实际上只是 一个抽象类，但正是因为它成功地将各种数据处理高度抽象化，才成就了今天 MySQL 可插拔存储引擎的特色。<br>     从上图可以看出，MySQL区别于其他数据库的最重要的特点就是其插件式的表存储引擎。MySQL插件式的存储引擎架构提供了一系列标准的管理和服务支持，这些标准与存储引擎本身无关，可能是每个数据库系统本身都必需的，如SQL分析器和优化器等，而存储引擎是底层物理结构的实现，每个存储引擎开发者都可以按照自己的意愿来进行开发。<br><strong>注意：</strong>存储引擎是基于表的，而不是数据库。</p>
 <h3 id="3-4-存储层"><a href="#3-4-存储层" class="headerlink" title="3.4 存储层"></a>3.4 存储层</h3><p>数据存储层，主要是将数据存储在运行于裸设备的文件系统之上，并完成与存储引擎的交互。</p>
 <p><strong>查询说明：</strong></p>
 <p><strong><img src="https://img2018.cnblogs.com/blog/1491092/201906/1491092-20190604210526387-1627086664.png" alt="img"></strong></p>
@@ -1110,35 +1109,29 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <li><p>服务器调优及各个参数设置(缓冲\线程数等)</p>
 </li>
 </ul>
-<h2 id="2-常见通用的join查询"><a href="#2-常见通用的join查询" class="headerlink" title="2.常见通用的join查询"></a>2.常见通用的join查询</h2><h3 id="2-1-SQL执行顺序"><a href="#2-1-SQL执行顺序" class="headerlink" title="2.1 SQL执行顺序"></a>2.1 SQL执行顺序</h3><p>手写：</p>
+<h2 id="2-常见通用的join查询"><a href="#2-常见通用的join查询" class="headerlink" title="2.常见通用的join查询"></a>2.常见通用的join查询</h2><h3 id="2-1-SQL执行顺序"><a href="#2-1-SQL执行顺序" class="headerlink" title="2.1 SQL执行顺序"></a>2.1 SQL执行顺序</h3><p><strong>手写：</strong></p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> &lt;query_list&gt; <span class="keyword">FROM</span> &lt;left_table&gt;</span><br><span class="line">&lt;<span class="keyword">join</span> <span class="keyword">type</span>&gt; <span class="keyword">JOIN</span> &lt;right_table&gt; <span class="keyword">ON</span> &lt;join_condition&gt;</span><br><span class="line"><span class="keyword">WHERE</span> &lt;wherer_condition&gt;</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> &lt;group_by_list&gt;</span><br><span class="line"><span class="keyword">HAVING</span> &lt;having_condition&gt;</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> &lt;order_by_list&gt;</span><br><span class="line"><span class="keyword">LIMIT</span> &lt;<span class="keyword">limit</span> <span class="built_in">number</span>&gt;</span><br></pre></td></tr></table></figure>
 
-
-
-<p>机读：</p>
+<p><strong>机读：</strong></p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FROM &lt;left_table&gt; </span><br><span class="line">ON &lt;join_condition&gt;</span><br><span class="line">&lt;join_type&gt; JOIN &lt;right_table&gt;</span><br><span class="line">WHERE &lt;where_condition&gt;</span><br><span class="line">GROUP BY &lt;group_by_list&gt;</span><br><span class="line">HAVING &lt;having_condition&gt;</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line"><span class="keyword">DISTINCT</span> &lt;query_list&gt;</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> &lt;order_by_condition&gt;</span><br><span class="line"><span class="keyword">LIMIT</span> &lt;limit_number&gt;</span><br></pre></td></tr></table></figure>
 
-
-
-<p>总结：</p>
+<p><strong>总结：</strong></p>
 <p><img src="https://images2015.cnblogs.com/blog/1054685/201706/1054685-20170626154318664-711238691.jpg" alt="img"></p>
 <p>Join图</p>
 <p><img src="https://images2015.cnblogs.com/blog/1054685/201706/1054685-20170626113414446-2016950911.jpg" alt="img"></p>
-<h3 id="2-2-MySQL数据库实例"><a href="#2-2-MySQL数据库实例" class="headerlink" title="2.2 MySQL数据库实例"></a>2.2 MySQL数据库实例</h3><h4 id="1-创建数据库："><a href="#1-创建数据库：" class="headerlink" title="1.创建数据库："></a>1.创建数据库：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; create database db_test;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-MySQL数据库实例"><a href="#2-2-MySQL数据库实例" class="headerlink" title="2.2 MySQL数据库实例"></a>2.2 MySQL数据库实例</h3><h4 id="1-创建数据库"><a href="#1-创建数据库" class="headerlink" title="1.创建数据库"></a>1.创建数据库</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; create database db_test;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br></pre></td></tr></table></figure>
 
-<h4 id="2-使用数据库："><a href="#2-使用数据库：" class="headerlink" title="2.使用数据库："></a>2.使用数据库：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; use db_test;</span><br><span class="line">Database changed</span><br></pre></td></tr></table></figure>
+<h4 id="2-使用数据库"><a href="#2-使用数据库" class="headerlink" title="2.使用数据库"></a>2.使用数据库</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; use db_test;</span><br><span class="line">Database changed</span><br></pre></td></tr></table></figure>
 
-<h4 id="3-创建表、添加数据："><a href="#3-创建表、添加数据：" class="headerlink" title="3.创建表、添加数据："></a>3.创建表、添加数据：</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_dept`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'部门主键'</span>,</span><br><span class="line">  <span class="string">`deptName`</span> <span class="built_in">varchar</span>(<span class="number">30</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'部门名称'</span>,</span><br><span class="line">  <span class="string">`locAdd`</span> <span class="built_in">varchar</span>(<span class="number">40</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'楼层'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">1</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_emp`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'员工主键'</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'员工姓名'</span>,</span><br><span class="line">  <span class="string">`deptId`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'部门外键'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`fk_dept_id`</span> (<span class="string">`deptId`</span>)</span><br><span class="line">  <span class="comment">#CONSTRAINT `fk_dept_id` FOREIGN KEY (`deptId`) REFERENCES `tb_dept` (`id`) COMMENT '部门外键设置, 已经注释掉。'</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">1</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'RD'</span>, <span class="string">'11'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'2'</span>, <span class="string">'HR'</span>, <span class="string">'12'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'3'</span>, <span class="string">'MK'</span>, <span class="string">'13'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'4'</span>, <span class="string">'MIS'</span>, <span class="string">'14'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'5'</span>, <span class="string">'FD'</span>, <span class="string">'15'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'张三'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'2'</span>, <span class="string">'李四'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'3'</span>, <span class="string">'王二'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'4'</span>, <span class="string">'麻子'</span>, <span class="string">'2'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'5'</span>, <span class="string">'小马'</span>, <span class="string">'2'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'6'</span>, <span class="string">'马旭'</span>, <span class="string">'3'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'7'</span>, <span class="string">'小丁'</span>, <span class="string">'4'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'8'</span>, <span class="string">'小西'</span>, <span class="string">'51'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="3-查看数据库"><a href="#3-查看数据库" class="headerlink" title="3.查看数据库"></a>3.查看数据库</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">mysql&gt;show tables; //返回当前数据库下的所有表的名称</span><br><span class="line">或者也可以直接用以下命令</span><br><span class="line">mysql&gt;show tables from databaseName;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-创建表、添加数据"><a href="#4-创建表、添加数据" class="headerlink" title="4.创建表、添加数据"></a>4.创建表、添加数据</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_dept`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'部门主键'</span>,</span><br><span class="line">  <span class="string">`deptName`</span> <span class="built_in">varchar</span>(<span class="number">30</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'部门名称'</span>,</span><br><span class="line">  <span class="string">`locAdd`</span> <span class="built_in">varchar</span>(<span class="number">40</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'楼层'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">1</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_emp`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'员工主键'</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'员工姓名'</span>,</span><br><span class="line">  <span class="string">`deptId`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'部门外键'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`fk_dept_id`</span> (<span class="string">`deptId`</span>)</span><br><span class="line">  <span class="comment">#CONSTRAINT `fk_dept_id` FOREIGN KEY (`deptId`) REFERENCES `tb_dept` (`id`) COMMENT '部门外键设置, 已经注释掉。'</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">1</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'RD'</span>, <span class="string">'11'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'2'</span>, <span class="string">'HR'</span>, <span class="string">'12'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'3'</span>, <span class="string">'MK'</span>, <span class="string">'13'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'4'</span>, <span class="string">'MIS'</span>, <span class="string">'14'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_dept`</span> <span class="keyword">VALUES</span> (<span class="string">'5'</span>, <span class="string">'FD'</span>, <span class="string">'15'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'张三'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'2'</span>, <span class="string">'李四'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'3'</span>, <span class="string">'王二'</span>, <span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'4'</span>, <span class="string">'麻子'</span>, <span class="string">'2'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'5'</span>, <span class="string">'小马'</span>, <span class="string">'2'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'6'</span>, <span class="string">'马旭'</span>, <span class="string">'3'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'7'</span>, <span class="string">'小丁'</span>, <span class="string">'4'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_emp`</span> <span class="keyword">VALUES</span> (<span class="string">'8'</span>, <span class="string">'小西'</span>, <span class="string">'5'</span>);</span><br></pre></td></tr></table></figure>
 
 <p><strong>tb_emp表数据：</strong></p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp;</span><br><span class="line">+<span class="comment">----+--------+--------+</span></span><br><span class="line">| id | name   | deptId |</span><br><span class="line">+<span class="comment">----+--------+--------+</span></span><br><span class="line">|  1 | 张三   |      1 |</span><br><span class="line">|  2 | 李四   |      1 |</span><br><span class="line">|  3 | 王二   |      1 |</span><br><span class="line">|  4 | 麻子   |      2 |</span><br><span class="line">|  5 | 小马   |      2 |</span><br><span class="line">|  6 | 马旭   |      3 |</span><br><span class="line">|  7 | 小丁   |      4 |</span><br><span class="line">|  8 | 小西   |     51 |</span><br><span class="line">+<span class="comment">----+--------+--------+</span></span><br><span class="line">8 rows in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br></pre></td></tr></table></figure>
 
-
-
 <p><strong>tb_dept表数据：</strong></p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_dept;</span><br><span class="line">+<span class="comment">----+----------+--------+</span></span><br><span class="line">| id | deptName | locAdd |</span><br><span class="line">+<span class="comment">----+----------+--------+</span></span><br><span class="line">|  1 | RD       | 11     |</span><br><span class="line">|  2 | HR       | 12     |</span><br><span class="line">|  3 | MK       | 13     |</span><br><span class="line">|  4 | MIS      | 14     |</span><br><span class="line">|  5 | FD       | 15     |</span><br><span class="line">+<span class="comment">----+----------+--------+</span></span><br><span class="line">5 rows in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br></pre></td></tr></table></figure>
-
-
 
 <p><strong>笛卡儿积：</strong></p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp, tb_dept;</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">| id | name   | deptId | id | deptName | locAdd |</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">|  1 | 张三   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  1 | 张三   |      1 |  2 | HR       | 12     |</span><br><span class="line">|  1 | 张三   |      1 |  3 | MK       | 13     |</span><br><span class="line">|  1 | 张三   |      1 |  4 | MIS      | 14     |</span><br><span class="line">|  1 | 张三   |      1 |  5 | FD       | 15     |</span><br><span class="line">|  2 | 李四   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  2 | 李四   |      1 |  2 | HR       | 12     |</span><br><span class="line">|  2 | 李四   |      1 |  3 | MK       | 13     |</span><br><span class="line">|  2 | 李四   |      1 |  4 | MIS      | 14     |</span><br><span class="line">|  2 | 李四   |      1 |  5 | FD       | 15     |</span><br><span class="line">|  3 | 王二   |      1 |  1 | RD       | 11     |</span><br><span class="line">|  3 | 王二   |      1 |  2 | HR       | 12     |</span><br><span class="line">|  3 | 王二   |      1 |  3 | MK       | 13     |</span><br><span class="line">|  3 | 王二   |      1 |  4 | MIS      | 14     |</span><br><span class="line">|  3 | 王二   |      1 |  5 | FD       | 15     |</span><br><span class="line">|  4 | 麻子   |      2 |  1 | RD       | 11     |</span><br><span class="line">|  4 | 麻子   |      2 |  2 | HR       | 12     |</span><br><span class="line">|  4 | 麻子   |      2 |  3 | MK       | 13     |</span><br><span class="line">|  4 | 麻子   |      2 |  4 | MIS      | 14     |</span><br><span class="line">|  4 | 麻子   |      2 |  5 | FD       | 15     |</span><br><span class="line">|  5 | 小马   |      2 |  1 | RD       | 11     |</span><br><span class="line">|  5 | 小马   |      2 |  2 | HR       | 12     |</span><br><span class="line">|  5 | 小马   |      2 |  3 | MK       | 13     |</span><br><span class="line">|  5 | 小马   |      2 |  4 | MIS      | 14     |</span><br><span class="line">|  5 | 小马   |      2 |  5 | FD       | 15     |</span><br><span class="line">|  6 | 马旭   |      3 |  1 | RD       | 11     |</span><br><span class="line">|  6 | 马旭   |      3 |  2 | HR       | 12     |</span><br><span class="line">|  6 | 马旭   |      3 |  3 | MK       | 13     |</span><br><span class="line">|  6 | 马旭   |      3 |  4 | MIS      | 14     |</span><br><span class="line">|  6 | 马旭   |      3 |  5 | FD       | 15     |</span><br><span class="line">|  7 | 小丁   |      4 |  1 | RD       | 11     |</span><br><span class="line">|  7 | 小丁   |      4 |  2 | HR       | 12     |</span><br><span class="line">|  7 | 小丁   |      4 |  3 | MK       | 13     |</span><br><span class="line">|  7 | 小丁   |      4 |  4 | MIS      | 14     |</span><br><span class="line">|  7 | 小丁   |      4 |  5 | FD       | 15     |</span><br><span class="line">|  8 | 小西   |     51 |  1 | RD       | 11     |</span><br><span class="line">|  8 | 小西   |     51 |  2 | HR       | 12     |</span><br><span class="line">|  8 | 小西   |     51 |  3 | MK       | 13     |</span><br><span class="line">|  8 | 小西   |     51 |  4 | MIS      | 14     |</span><br><span class="line">|  8 | 小西   |     51 |  5 | FD       | 15     |</span><br><span class="line">+<span class="comment">----+--------+--------+----+----------+--------+</span></span><br><span class="line">40 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
@@ -1175,21 +1168,21 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 
 <p>出错原因：mysql 中不支持这种连接方式。</p>
 <p><strong>解决办法：</strong>左连接数据和右连接数据相加，将公共的部分去重。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e </span><br><span class="line">    -&gt; left join tb_dept d on e.deptId &#x3D; d.id</span><br><span class="line">    -&gt; union　　　　　#去重</span><br><span class="line">    -&gt; select * from tb_emp e</span><br><span class="line">    -&gt; right join tb_dept d on e.deptId &#x3D; d.id;</span><br><span class="line">    </span><br><span class="line">#该条数据为 tb_emp 表中独有的数据, tb_dept 表中的字段用 null 占位</span><br><span class="line">#该条数据为 tb_dept 表中独有的数据, tb_emp 表中的字段用 null 占位</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">| id   | name   | deptId | id   | deptName | locAdd |</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">|    1 | 张三   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    2 | 李四   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    3 | 王二   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    4 | 麻子   |      2 |    2 | HR       | 12     |</span><br><span class="line">|    5 | 小马   |      2 |    2 | HR       | 12     |</span><br><span class="line">|    6 | 马旭   |      3 |    3 | MK       | 13     |</span><br><span class="line">|    7 | 小丁   |      4 |    4 | MIS      | 14     |</span><br><span class="line">|    8 | 小西   |     51 | NULL | NULL     | NULL   |　　　　</span><br><span class="line">| NULL | NULL   |   NULL |    5 | FD       | 15     |　　　 </span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e </span><br><span class="line">    -&gt; left join tb_dept d on e.deptId = d.id</span><br><span class="line">    -&gt; union　　　　　#去重</span><br><span class="line">    -&gt; select * from tb_emp e</span><br><span class="line">    -&gt; right join tb_dept d on e.deptId = d.id;</span><br><span class="line">    </span><br><span class="line"><span class="comment">#该条数据为 tb_emp 表中独有的数据, tb_dept 表中的字段用 null 占位</span></span><br><span class="line"><span class="comment">#该条数据为 tb_dept 表中独有的数据, tb_emp 表中的字段用 null 占位</span></span><br><span class="line">+<span class="comment">------+--------+--------+------+----------+--------+</span></span><br><span class="line">| id   | name   | deptId | id   | deptName | locAdd |</span><br><span class="line">+<span class="comment">------+--------+--------+------+----------+--------+</span></span><br><span class="line">|    1 | 张三   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    2 | 李四   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    3 | 王二   |      1 |    1 | RD       | 11     |</span><br><span class="line">|    4 | 麻子   |      2 |    2 | HR       | 12     |</span><br><span class="line">|    5 | 小马   |      2 |    2 | HR       | 12     |</span><br><span class="line">|    6 | 马旭   |      3 |    3 | MK       | 13     |</span><br><span class="line">|    7 | 小丁   |      4 |    4 | MIS      | 14     |</span><br><span class="line">|    8 | 小西   |     51 | NULL | NULL     | NULL   |　　　　</span><br><span class="line">| NULL | NULL   |   NULL |    5 | FD       | 15     |　　　 </span><br><span class="line">+<span class="comment">------+--------+--------+------+----------+--------+</span></span><br><span class="line">9 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
 
 
 
 <p><strong>查询tb_emp和tb_dept表中独有的数据：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; left join tb_dept d on e.deptId &#x3D; d.id</span><br><span class="line">    -&gt; where d.id is null</span><br><span class="line">    -&gt; union</span><br><span class="line">    -&gt; select * from tb_emp e</span><br><span class="line">    -&gt; right join tb_dept d on e.deptId &#x3D; d.id</span><br><span class="line">    -&gt; where e.deptId is null;</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">| id   | name   | deptId | id   | deptName | locAdd |</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">|    8 | 小西   |     51 | NULL | NULL     | NULL   |</span><br><span class="line">| NULL | NULL   |   NULL |    5 | FD       | 15     |</span><br><span class="line">+------+--------+--------+------+----------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from tb_emp e</span><br><span class="line">    -&gt; left join tb_dept d on e.deptId = d.id</span><br><span class="line">    -&gt; where d.id is null</span><br><span class="line">    -&gt; union</span><br><span class="line">    -&gt; select * from tb_emp e</span><br><span class="line">    -&gt; right join tb_dept d on e.deptId = d.id</span><br><span class="line">    -&gt; where e.deptId is null;</span><br><span class="line">+<span class="comment">------+--------+--------+------+----------+--------+</span></span><br><span class="line">| id   | name   | deptId | id   | deptName | locAdd |</span><br><span class="line">+<span class="comment">------+--------+--------+------+----------+--------+</span></span><br><span class="line">|    8 | 小西   |     51 | NULL | NULL     | NULL   |</span><br><span class="line">| NULL | NULL   |   NULL |    5 | FD       | 15     |</span><br><span class="line">+<span class="comment">------+--------+--------+------+----------+--------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
 
 
 
-
-
-<p>7种Join</p>
-<h2 id="3-索引简介"><a href="#3-索引简介" class="headerlink" title="3.索引简介"></a>3.索引简介</h2><p><strong>索引概述：</strong></p>
+<h2 id="3-索引简介"><a href="#3-索引简介" class="headerlink" title="3.索引简介"></a>3.索引简介</h2><h3 id="3-1-索引概述"><a href="#3-1-索引概述" class="headerlink" title="3.1 索引概述"></a>3.1 索引概述</h3><blockquote>
+<p>索引（在 MySQL 中也叫“键key”）是存储引擎快速找到记录的一种数据结构</p>
+<p>​                                                                                                                                                            ——《高性能MySQL》</p>
+</blockquote>
 <ul>
-<li>索引(Index) 是帮助MySQL高效获取数据的数据结构。索引的本质就是数据结构。 索引的目的在于提高查询效率，可以类比字典，可以简单的理解为“排好序的快速查找数据结构”。</li>
+<li>索引(Index) 是帮助MySQL高效获取数据的数据结构。<strong>索引的本质就是数据结构</strong>。 索引的目的在于提高查询效率，可以类比字典，可以简单的理解为“排好序的快速查找数据结构”。</li>
 <li>在数据本身之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用(指向)数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构就是索引。</li>
 <li>一般来说索引本身也很大，不可能全部存储在内存中，因此索引往往以索引文件的形式存储在磁盘上。</li>
 <li>我们平时所说的索引，如果没有特别指明，都是指B树结构组织的索引。</li>
@@ -1197,68 +1190,179 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p><strong>二叉树算法图：</strong></p>
 <p><strong><a href="https://images2015.cnblogs.com/blog/1054685/201706/1054685-20170627085051383-985324526.png" target="_blank" rel="noopener"><img src="https://images2015.cnblogs.com/blog/1054685/201706/1054685-20170627085051383-985324526.png" alt="img"></a></strong></p>
 <p>​    为了加快Col2的查找，可以维护一个右边所示的二叉查找树，每个节点分别包含索引键值和一个指向对应数据记录物理地址的指针，这样就可以运用二叉查找在一定复杂度内获取到相应数据，从而快速的检索出符合条件的记录。</p>
-<p><strong>索引的优势：</strong></p>
-<ol>
+<h3 id="3-2-索引的优势"><a href="#3-2-索引的优势" class="headerlink" title="3.2 索引的优势"></a>3.2 索引的优势</h3><ol>
 <li>创建索引可以提高数据检索的效率，降低数据库的IO成本。</li>
 <li>通过索引列对数据进行排序，降低数据排序的成本，降低了CPU的消耗。</li>
 </ol>
-<p><strong>索引的劣势：</strong></p>
-<ol>
+<h3 id="3-3-索引的劣势"><a href="#3-3-索引的劣势" class="headerlink" title="3.3 索引的劣势"></a>3.3 索引的劣势</h3><ol>
 <li>索引其实也是一张表，该表保存了主键与索引字段，并指向实体的记录，所以索引列也是要占用空间的。</li>
 <li>索引虽然提高了查询速度，同时却会降低更新表的速度，如对表进行INSERT、UPDATE和DELETE。因为更新表时，MySQL不仅要保存数据，还要调整因为更新所带来的键值变化后的索引信息。</li>
 <li>索引只是提高效率的一个因素，如果MySQL有大数据量的表，就需要花时间研究建立最优秀的索引，或优化查询语句。</li>
 </ol>
-<p><strong>MySQL索引分类：</strong></p>
-<ol>
+<h3 id="3-4-MySQL索引分类"><a href="#3-4-MySQL索引分类" class="headerlink" title="3.4 MySQL索引分类"></a>3.4 MySQL索引分类</h3><ol>
 <li>单值索引：一个索引只包含一个单列，一个表可以有多个单列索引。</li>
 <li>唯一索引：索引列的值必须唯一，但允许有空值。</li>
 <li>复合索引：一个索引包含多个列。</li>
 </ol>
-<p><strong>索引的基本语法：</strong></p>
-<ul>
-<li><strong>创建：</strong></li>
-</ul>
-<ol>
-<li>CREATE [UNIQUE] INDEX indexName ON tableName(colName(length));。——如果是CHAR、VARCHAR类型，length可以小于字段实际长度，若是BLOB和TEXT类型，必须指定length。</li>
-<li>ALTER tableName ADD [UNIQUE] INDEX indexName ON (colName(length));。</li>
+<h4 id="1-主键索引-PRIMARY-KEY"><a href="#1-主键索引-PRIMARY-KEY" class="headerlink" title="1.主键索引 PRIMARY KEY"></a>1.主键索引 PRIMARY KEY</h4><p>它是一种特殊的唯一索引，不允许有空值。一般是在建表的时候同时创建主键索引。</p>
+<p><strong>注意：</strong>一个表只能有一个主键</p>
+<p><img src="http://songwenjie.vip/blog/180802/1c7D2F0f76.png?imageslim" alt="mark"></p>
+<h4 id="2-唯一索引-UNIQUE"><a href="#2-唯一索引-UNIQUE" class="headerlink" title="2.唯一索引 UNIQUE"></a>2.唯一索引 UNIQUE</h4><p>唯一索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。</p>
+<p>可以通过<code>ALTER TABLE table_name ADD UNIQUE (column);</code>创建唯一索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/DBdFeKE8Fk.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/L2jl91b6J6.png?imageslim" alt="mark"></p>
+<p>可以通过<code>ALTER TABLE table_name ADD UNIQUE (column1,column2);</code>创建唯一组合索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/mihd7Hm5i6.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/bJbdFA9AcL.png?imageslim" alt="mark"></p>
+<h4 id="3-普通索引-INDEX"><a href="#3-普通索引-INDEX" class="headerlink" title="3.普通索引 INDEX"></a>3.普通索引 INDEX</h4><p>最基本的索引，它没有任何限制。</p>
+<p>可以通过<code>ALTER TABLE table_name ADD INDEX index_name (column);</code>创建普通索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/17CmJIIJhD.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/4fA7L6kBBm.png?imageslim" alt="mark"></p>
+<h4 id="4-组合索引-INDEX"><a href="#4-组合索引-INDEX" class="headerlink" title="4.组合索引 INDEX"></a>4.组合索引 INDEX</h4><p>组合索引，即一个索引包含多个列。多用于避免回表查询。</p>
+<p>可以通过<code>ALTER TABLE table_name ADD INDEX index_name(column1, column2, column3);</code>创建组合索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/CLGIKiAC6J.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/295B9bGi67.png?imageslim" alt="mark"></p>
+<h4 id="5-全文索引-FULLTEXT"><a href="#5-全文索引-FULLTEXT" class="headerlink" title="5.全文索引 FULLTEXT"></a>5.全文索引 FULLTEXT</h4><p>全文索引（也称全文检索）是目前搜索引擎使用的一种关键技术。</p>
+<p>可以通过<code>ALTER TABLE table_name ADD FULLTEXT (column);</code>创建全文索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/AjfLLkhdH1.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/bA1a1m49cL.png?imageslim" alt="mark"></p>
+<p>索引一经创建不能修改，如果要修改索引，只能删除重建。可以使用<code>DROP INDEX index_name ON table_name;</code>删除索引。</p>
+<h3 id="3-5-索引的基本语法"><a href="#3-5-索引的基本语法" class="headerlink" title="3.5 索引的基本语法"></a>3.5 索引的基本语法</h3><h4 id="创建："><a href="#创建：" class="headerlink" title="创建："></a>创建：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE [UNIQUE] INDEX indexName ON tableName(colName(length));。——如果是CHAR、VARCHAR类型，length可以小于字段实际长度，若是BLOB和TEXT类型，必须指定length。</span><br><span class="line"></span><br><span class="line">ALTER tableName ADD [UNIQUE] INDEX indexName ON (colName(length));。</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除："><a href="#删除：" class="headerlink" title="删除："></a>删除：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DROP INDEX [indexName] ON tableName;</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看："><a href="#查看：" class="headerlink" title="查看："></a>查看：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW INDEX FROM tableName;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="使用ALTER命令四种方式添加数据表的索引："><a href="#使用ALTER命令四种方式添加数据表的索引：" class="headerlink" title="使用ALTER命令四种方式添加数据表的索引："></a>使用ALTER命令四种方式添加数据表的索引：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE tableName ADD PRIMARY KEY(column_list); 该语句添加一个主键，这意味着索引值必须唯一，且不能为null。</span><br><span class="line">ALTER TABLE tableName ADD UNIQUE indexName(column_list);该语句创建索引的值必须唯一(null除外，null可能会出现多次)。</span><br><span class="line">ALTER TABLE tableName ADD INDEX indexName(column_list);该语句添加普通索引，索引值可出现多次。</span><br><span class="line">AKTER TABLE tableName ADD FULLTEXT indexName(column_list);该语句指定索引为FULLTEXT，用于全文索引。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-6-MySQL索引结构："><a href="#3-6-MySQL索引结构：" class="headerlink" title="3.6 MySQL索引结构："></a>3.6 MySQL索引结构：</h3><ol>
+<li><p><strong>BTree索引</strong></p>
+<p><a href="https://blog.csdn.net/tongdanping/article/details/79878302#3、BTree索引和B%2BTree索引" target="_blank" rel="noopener">BTree详解</a></p>
+</li>
+<li><p>Hash索引</p>
+</li>
+<li><p>full-text全文索引</p>
+</li>
+<li><p>R-Tree索引 </p>
+</li>
 </ol>
-<ul>
-<li><strong>删除：</strong>DROP INDEX [indexName] ON tableName;　　</li>
-<li><strong>查看：</strong>SHOW INDEX FROM tableName;</li>
-</ul>
-<p><strong>使用ALTER命令四种方式添加数据表的索引：</strong></p>
-<ol>
-<li>ALTER TABLE tableName ADD PRIMARY KEY(column_list); 该语句添加一个主键，这意味着索引值必须唯一，且不能为null。</li>
-<li>ALTER TABLE tableName ADD UNIQUE indexName(column_list);该语句创建索引的值必须唯一(null除外，null可能会出现多次)。</li>
-<li>ALTER TABLE tableName ADD INDEX indexName(column_list);该语句添加普通索引，索引值可出现多次。</li>
-<li>AKTER TABLE tableName ADD FULLTEXT indexName(column_list);该语句指定索引为FULLTEXT，用于全文索引。</li>
-</ol>
-<p><strong>MySQL索引结构：</strong></p>
-<ol>
-<li>BTree索引</li>
-<li>Hash索引</li>
-<li>full-text全文索引</li>
-<li>R-Tree索引</li>
-</ol>
-<p>java工程师掌握BTree就可以。</p>
-<p><strong>哪些情况需要创建索引：</strong></p>
-<ol>
+<h3 id="3-7-哪些情况需要创建索引："><a href="#3-7-哪些情况需要创建索引：" class="headerlink" title="3.7 哪些情况需要创建索引："></a>3.7 哪些情况需要创建索引：</h3><ol>
 <li>主键自动建立唯一索引。</li>
-<li>频繁作为查询条件的字段应该创建索引。</li>
-<li>查询中与其他表关联的字段，外键关系建立索引。</li>
-<li>在高并发下倾向创建组合索引。</li>
+<li>频繁作为查询的条件的字段应该创建索引查询中与其他表关联的字段，外键关系建立索引。</li>
+<li>查询中与其他表关联的字段，外键关系建立索引</li>
 <li>查询中的排序字段适合创建索引，排序字段若通过索引去访问将大大提高排序速率。</li>
 <li>查询中统计或者分组字段适合创建索引。</li>
+<li>频繁更新的字段不适合创建索引，因为每次更新不单单是更新了记录还会更新索引，加重IO负担</li>
+<li>Where条件里用不到的字段不创建索引</li>
+<li>单值/组合索引的选择问题，who？（在高并发下倾向创建组合索引）</li>
 </ol>
-<p><strong>哪些情况不要创建索引：</strong></p>
-<ol>
-<li>where条件里用不到的字段不创建索引。</li>
-<li>表记录太少。</li>
-<li>频繁更新的字段不不适合创建索引。——因为每次更新不仅更新了记录还会更新索引，加重了IO负担。</li>
-<li>经常增删改的表。</li>
-<li>数据重复且平均分录的表字段，建立索引没有太大的实际效果。</li>
+<h3 id="3-8-哪些情况不要创建索引："><a href="#3-8-哪些情况不要创建索引：" class="headerlink" title="3.8 哪些情况不要创建索引："></a>3.8 哪些情况不要创建索引：</h3><ol>
+<li><p>表记录太少。</p>
+</li>
+<li><p>经常增删改的表。</p>
+</li>
+<li><p>数据重复且分布平均的表字段，因此应该只为经常查询和经常排序的数据列建立索引。<br>注意，如果某个数据列包含许多重复的内容，为它建立索引就没有太大的实际效果。</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129201618523.png" alt="image-20201129201618523"></p>
+</li>
 </ol>
-<h2 id="4-性能分析"><a href="#4-性能分析" class="headerlink" title="4.性能分析"></a>4.性能分析</h2><h2 id="5-索引优化"><a href="#5-索引优化" class="headerlink" title="5.索引优化"></a>5.索引优化</h2><h1 id="三-查询截取分析"><a href="#三-查询截取分析" class="headerlink" title="三.查询截取分析"></a>三.查询截取分析</h1><h1 id="四-MySQL锁机制"><a href="#四-MySQL锁机制" class="headerlink" title="四.MySQL锁机制"></a>四.MySQL锁机制</h1><h1 id="五-主从复制"><a href="#五-主从复制" class="headerlink" title="五.主从复制"></a>五.主从复制</h1>]]></content>
+<h2 id="4-性能分析"><a href="#4-性能分析" class="headerlink" title="4.性能分析"></a>4.性能分析</h2><h3 id="4-1-MySQL查询优化器-MySQL-Query-Optimizer"><a href="#4-1-MySQL查询优化器-MySQL-Query-Optimizer" class="headerlink" title="4.1 MySQL查询优化器(MySQL Query Optimizer)"></a>4.1 MySQL查询优化器(MySQL Query Optimizer)</h3><p>1.Mysql中有专门负责优化SELECT语句的优化器模块，主要工作：通过技术分析系统中收集到的统计信息，为客户端请求的Query提供他认为最优的执行计划（他认为最优的数据检索方式，但不见得是DBA认为是最优的，这部分最耗费时间）</p>
+<p>2.当客户端向MySQL请求一条Query，命令解析器模块完成请求分类，区别出是SELECT并转发给MySQL Query Optimizer时，MySQL Query Optimizer首先会对整条Query进行优化，处理掉一些常量表达式的预算，直接换算成常量值。并对Query中的查询条件进行简化和转换，如去掉一些无用或显而易见的条件，结构调整等。然后分析Query中的Hint信息（如果有），看显示Hint信息是否可以完全确定该Query的执行计划。如果没有Hint或Hint信息还不足以完全确定执行计划，则会读取所涉及对象的统计信息，根据Query进行写相应的计算分析，然后再得出最后的执行计划。</p>
+<h3 id="4-2-MySQL常见瓶颈"><a href="#4-2-MySQL常见瓶颈" class="headerlink" title="4.2 MySQL常见瓶颈"></a>4.2 MySQL常见瓶颈</h3><ul>
+<li>CPU:CPU在饱和的时候一般发生在数据装入在内存或从磁盘上读取数据时候</li>
+<li>IO:磁盘I/O瓶颈发生在装入数据远大于内存容量时</li>
+<li>服务器硬件的性能瓶颈：top,free,iostat和vmstat来查看系统的性能状态</li>
+</ul>
+<h3 id="4-3-Explain"><a href="#4-3-Explain" class="headerlink" title="4.3 Explain"></a>4.3 Explain</h3><blockquote>
+<p><a href="https://segmentfault.com/a/1190000008131735" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008131735</a></p>
+</blockquote>
+<h4 id="是什么（查看执行计划）"><a href="#是什么（查看执行计划）" class="headerlink" title="是什么（查看执行计划）"></a>是什么（查看执行计划）</h4><p>使用EXPLAIN关键字可以模拟优化器执行SQL语句，从而知道MySQL是如何处理你的SQL语句的。分析你的查询语句或是结构的性能瓶颈。</p>
+<h4 id="能干嘛"><a href="#能干嘛" class="headerlink" title="能干嘛"></a>能干嘛</h4><p>表的读取顺序</p>
+<p>数据读取操作的操作类型</p>
+<p>哪些索引可以使用</p>
+<p>哪些索引被实际使用</p>
+<p>表之间的引用</p>
+<p>每张表有多少行被优化器查询</p>
+<h4 id="怎么玩"><a href="#怎么玩" class="headerlink" title="怎么玩"></a>怎么玩</h4><p>Explain+SQL语句</p>
+<p>执行计划包含的信息</p>
+<p><img src="https://images2018.cnblogs.com/blog/512541/201808/512541-20180803142201303-545775900.png" alt="img"></p>
+<p>expain出来的信息有10列，分别是id、select_type、table、type、possible_keys、key、key_len、ref、rows、Extra</p>
+<h5 id="概要描述："><a href="#概要描述：" class="headerlink" title="概要描述："></a>概要描述：</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">id:选择标识符</span><br><span class="line">select_type:表示查询的类型。</span><br><span class="line">table:输出结果集的表</span><br><span class="line">partitions:匹配的分区</span><br><span class="line">type:表示表的连接类型</span><br><span class="line">possible_keys:表示查询时，可能使用的索引</span><br><span class="line">key:表示实际使用的索引</span><br><span class="line">key_len:索引字段的长度</span><br><span class="line">ref:列与索引的比较</span><br><span class="line">rows:扫描出的行数(估算的行数)</span><br><span class="line">filtered:按表条件过滤的行百分比</span><br><span class="line">Extra:执行情况的描述和说明</span><br></pre></td></tr></table></figure>
+
+<p><strong>下面对这些字段出现的可能进行解释：</strong></p>
+<h5 id="1-id"><a href="#1-id" class="headerlink" title="1.id"></a>1.id</h5><p>SELECT识别符。这是SELECT的查询序列号</p>
+<p><strong>我的理解是SQL执行的顺序的标识，SQL从大到小的执行</strong></p>
+<p>​        1.id相同时，执行顺序由上至下</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201202131914359.png" alt="image-20201202131914359"></p>
+<p>​        2.如果是子查询，id的序号会递增，id值越大优先级越高，越先被执行</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201202131931919.png" alt="image-20201202131931919"></p>
+<p>​        3.id如果相同，可以认为是一组，从上往下顺序执行；在所有组中，id值越大，优先级越高，越先执行</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201202131954051.png" alt="image-20201202131954051"></p>
+<h5 id="2-select-type"><a href="#2-select-type" class="headerlink" title="2.select_type"></a>2.select_type</h5><p>   <strong><em>\</em>示查询中每个select子句的类型**</strong></p>
+<p>(1) SIMPLE(简单SELECT，不使用UNION或子查询等)</p>
+<p>(2) PRIMARY(子查询中最外层查询，查询中若包含任何复杂的子部分，最外层的select被标记为PRIMARY)</p>
+<p>(3) UNION(UNION中的第二个或后面的SELECT语句)</p>
+<p>(4) DEPENDENT UNION(UNION中的第二个或后面的SELECT语句，取决于外面的查询)</p>
+<p>(5) UNION RESULT(UNION的结果，union语句中第二个select开始后面所有select)</p>
+<p>(6) SUBQUERY(子查询中的第一个SELECT，结果不依赖于外部查询)</p>
+<p>(7) DEPENDENT SUBQUERY(子查询中的第一个SELECT，依赖于外部查询)</p>
+<p>(8) DERIVED(派生表的SELECT, FROM子句的子查询)</p>
+<p>(9) UNCACHEABLE SUBQUERY(一个子查询的结果不能被缓存，必须重新评估外链接的第一行)</p>
+<h5 id="3-table"><a href="#3-table" class="headerlink" title="3.table"></a>3.table</h5><p>显示这一步所访问数据库中表名称（显示这一行的数据是关于哪张表的），有时不是真实的表名字，可能是简称，例如上面的e，d，也可能是第几步执行的结果的简称</p>
+<h5 id="4-type"><a href="#4-type" class="headerlink" title="4.type"></a>4.type</h5><p>对表访问方式，表示MySQL在表中找到所需行的方式，又称<strong>访问类型</strong>。</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201202132947918.png" alt="image-20201202132947918"></p>
+<p>性能从最好到最差依次是：<strong>system&gt;const&gt;eq_ref&gt;ref&gt;range&gt;index&gt;ALL</strong></p>
+<p>system：表只有一行记录（等于系统表），这是const类型的特例，平时不会出现，这个也可以忽略不计</p>
+<p>const：表示通过索引一次就找到了，const用于比较primary key或者unique索引。因为只匹配一行数据，所以很快。如将主键至于where列表中，MySQL就能将该查询转换为一个常量</p>
+<p>eq_ref：唯一性索引，对于每个索引键，表中只有一条记录与之匹配，常见于主键或唯一索引扫描</p>
+<p>ref：非唯一索引扫描，返回匹配某个单独值的所有行。本质上也是一种索引访问，它返回所有匹配某个单独值的行，然而，它可能会找到多个符合条件的行，所以他应该属于查找和扫描的混合体</p>
+<p>NULL：MySQL在优化过程中分解语句，执行时甚至不用访问表或索引，例如从一个索引列里选取最小值可以通过单独索引查找完成。</p>
+<p>range：只检索给定范围的行，使用一个索引来选择行。key列显示使用了哪个索引。一般就是在你的where语句中出现了between、&lt;、&gt;、in等的查询，这种范围扫描索引扫描比全表扫描要好，因为他只需要开始索引的某一点，而结束语另一点，不用扫描全部索引。</p>
+<p>index：Full Index Scan,index与ALL区别为index类型只遍历索引树。这通常比ALL快，因为索引文件通常比数据文件小。（也就是说虽然all和index都是读全表，但index是从索引中读取的，而all是从硬盘中读的）</p>
+<p>ALL：Full Table Scan， MySQL将遍历全表以找到匹配的行</p>
+<p><strong>备注：</strong>一般来说，得保证查询只是达到range级别，最好达到ref</p>
+<h5 id="5-possible-keys"><a href="#5-possible-keys" class="headerlink" title="5.possible_keys"></a>5.possible_keys</h5><p><strong>指出MySQL能使用哪个索引在表中找到记录，查询涉及到的字段上若存在索引，则该索引将被列出，但不一定被查询使用（该查询可以利用的索引，如果没有任何索引显示 null）</strong></p>
+<p>该列完全独立于EXPLAIN输出所示的表的次序。这意味着在possible_keys中的某些键实际上不能按生成的表次序使用。如果该列是NULL，则没有相关的索引。在这种情况下，可以通过检查WHERE子句看是否它引用某些列或适合索引的列来提高你的查询性能。如果是这样，创造一个适当的索引并且再次用EXPLAIN检查查询</p>
+<h5 id="6-Key"><a href="#6-Key" class="headerlink" title="6.Key"></a>6.Key</h5><p><strong>key列显示MySQL实际决定使用的键（索引），必然包含在possible_keys中</strong></p>
+<p>如果没有选择索引，键是NULL。要想强制MySQL使用或忽视possible_keys列中的索引，在查询中使用FORCE INDEX、USE INDEX或者IGNORE INDEX。</p>
+<h5 id="7-key-len"><a href="#7-key-len" class="headerlink" title="7.key_len"></a>7.key_len</h5><p><strong>表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度（key_len显示的值为索引字段的最大可能长度，并非实际使用长度，即key_len是根据表定义计算而得，不是通过表内检索出的）</strong></p>
+<p>不损失精确性的情况下，长度越短越好 </p>
+<h5 id="8-ref"><a href="#8-ref" class="headerlink" title="8.ref"></a>8.ref</h5><p><strong>列与索引的比较，表示上述表的连接匹配条件，即哪些列或常量被用于查找索引列上的值</strong></p>
+<h5 id="9-rows"><a href="#9-rows" class="headerlink" title="9.rows"></a>9.rows</h5><p> <strong>估算出结果集行数，表示MySQL根据表统计信息及索引选用情况，估算的找到所需的记录所需要读取的行数</strong></p>
+<h5 id="10-Extra"><a href="#10-Extra" class="headerlink" title="10.Extra"></a>10.Extra</h5><p><strong>该列包含MySQL解决查询的详细信息。</strong></p>
+<p><strong>有以下几种情况：</strong></p>
+<p>1.Using filesort：说明mysql会对数据使用一个外部的索引排序，而不是按照表内的索引顺序进行读取。MySQL中无法利用索引完成排序操作成为“文件排序”</p>
+<p>2.Using temporary：使用了临时表保存中间结果，MySQL在对查询结果排序时使用临时表。常见于排序order by 和分组查询 group by</p>
+<p>3.Using index：表示相应的select操作中使用了覆盖索引（Coveing Index）,避免访问了表的数据行，效率不错！<br>                        如果同时出现using where，表明索引被用来执行索引键值的查找；<br>                        如果没有同时出现using where，表面索引用来读取数据而非执行查找动作。</p>
+<p>​                        <strong>覆盖索引（Covering Index）</strong></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201202134700929.png" alt="image-20201202134700929"></p>
+<p>4.Using where:不用读取表中所有信息，仅通过索引就可以获取所需数据，这发生在对表的全部的请求列都是同一个索引的部分的时候，表示mysql服务器将在存储引擎检索行后再进行过滤</p>
+<p>5.Using join buffer：改值强调了在获取连接条件时没有使用索引，并且需要连接缓冲区来存储中间结果。如果出现了这个值，那应该注意，根据查询的具体情况可能需要添加索引来改进能。</p>
+<p>6.Impossible where：这个值强调了where语句会导致没有符合条件的行（通过收集统计信息不可能存在结果）。</p>
+<p>7.Select tables optimized away：这个值意味着仅通过使用索引，优化器可能仅从聚合函数结果中返回一行</p>
+<p>8.distinct：优化distinct，在找到第一匹配的元组后即停止找同样值的工作</p>
+<p>9.No tables used：Query语句中使用from dual 或不含任何from子句</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-- explain select now() from dual;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>总结：</strong><br>• EXPLAIN不会告诉你关于触发器、存储过程的信息或用户自定义函数对查询的影响情况<br>• EXPLAIN不考虑各种Cache<br>• EXPLAIN不能显示MySQL在执行查询时所作的优化工作<br>• 部分统计信息是估算的，并非精确值<br>• EXPALIN只能解释SELECT操作，其他操作要重写为SELECT后查看执行计划。**</p>
+<p>通过收集统计信息不可能存在结果</p>
+<p>热身case：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201202134800435.png" alt="image-20201202134800435"></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201202134808051.png" alt="image-20201202134808051"></p>
+<h2 id="5-索引优化"><a href="#5-索引优化" class="headerlink" title="5.索引优化"></a>5.索引优化</h2><h3 id="索引分析"><a href="#索引分析" class="headerlink" title="索引分析"></a>索引分析</h3><h3 id="索引失效（应该避免）"><a href="#索引失效（应该避免）" class="headerlink" title="索引失效（应该避免）"></a>索引失效（应该避免）</h3><h3 id="一般性建议"><a href="#一般性建议" class="headerlink" title="一般性建议"></a>一般性建议</h3><h1 id="三-查询截取分析"><a href="#三-查询截取分析" class="headerlink" title="三.查询截取分析"></a>三.查询截取分析</h1><blockquote>
+<p>联表查询时始终以小结果集驱动大结果集：<a href="https://www.cnblogs.com/shamo89/p/8733025.html" target="_blank" rel="noopener">https://www.cnblogs.com/shamo89/p/8733025.html</a></p>
+<p>MySQL性能调优——Query 的优化：<a href="https://www.cnblogs.com/shamo89/p/8733139.html" target="_blank" rel="noopener">https://www.cnblogs.com/shamo89/p/8733139.html</a></p>
+<p>MySQL索引原理及慢查询优化：<a href="https://tech.meituan.com/2014/06/30/mysql-index.html" target="_blank" rel="noopener">https://tech.meituan.com/2014/06/30/mysql-index.html</a></p>
+</blockquote>
+<h2 id="查询优化"><a href="#查询优化" class="headerlink" title="查询优化"></a>查询优化</h2><h2 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h2><h2 id="批量数据脚本"><a href="#批量数据脚本" class="headerlink" title="批量数据脚本"></a>批量数据脚本</h2><h2 id="Show-profiles"><a href="#Show-profiles" class="headerlink" title="Show profiles"></a>Show profiles</h2><h2 id="全局查询日志"><a href="#全局查询日志" class="headerlink" title="全局查询日志"></a>全局查询日志</h2><h1 id="四-MySQL锁机制"><a href="#四-MySQL锁机制" class="headerlink" title="四.MySQL锁机制"></a>四.MySQL锁机制</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h2 id="三锁"><a href="#三锁" class="headerlink" title="三锁"></a>三锁</h2><h1 id="五-主从复制"><a href="#五-主从复制" class="headerlink" title="五.主从复制"></a>五.主从复制</h1><blockquote>
+<p><a href="https://www.jianshu.com/p/faf0127f1cb2" target="_blank" rel="noopener">https://www.jianshu.com/p/faf0127f1cb2</a></p>
+</blockquote>
+]]></content>
       <categories>
         <category>MySQL</category>
       </categories>
@@ -1352,19 +1456,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -1402,6 +1493,19 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -1545,6 +1649,35 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>UML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git常见错误</title>
+    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>记录git常见错误</p>
+<a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
+<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+<p>2.git Could not read from remote repository</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.error: failed to push some refs to xxx</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git常见错误</tag>
       </tags>
   </entry>
   <entry>
@@ -1772,35 +1905,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Zookeeper</tag>
         <tag>Zookeeper集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git常见错误</title>
-    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>记录git常见错误</p>
-<a id="more"></a>
-
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
-<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-<p>2.git Could not read from remote repository</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3.error: failed to push some refs to xxx</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git常见错误</tag>
       </tags>
   </entry>
   <entry>
@@ -2208,17 +2312,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>反射的理解</title>
-    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实体类的4种类型</title>
     <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p>实体类的4种类型总结</p>
@@ -2236,6 +2329,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Domain Object</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>反射的理解</title>
+    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
       </tags>
   </entry>
   <entry>
@@ -2488,18 +2592,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>短信登录注册功能的实现</title>
-    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>短信服务</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
     <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -2521,18 +2613,15 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>解决idea不显示maven工具栏的问题</title>
-    <url>/2020/08/11/%E8%A7%A3%E5%86%B3Idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
-<a id="more"></a>
-
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
+    <title>短信登录注册功能的实现</title>
+    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
 ]]></content>
       <categories>
-        <category>IntelliJ IDEA</category>
+        <category>Java</category>
       </categories>
       <tags>
-        <tag>Idea小技巧</tag>
+        <tag>短信服务</tag>
       </tags>
   </entry>
   <entry>
@@ -2818,6 +2907,21 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Native支付</tag>
         <tag>支付宝PC支付</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决idea不显示maven工具栏的问题</title>
+    <url>/2020/08/11/%E8%A7%A3%E5%86%B3Idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
+<a id="more"></a>
+
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
+]]></content>
+      <categories>
+        <category>IntelliJ IDEA</category>
+      </categories>
+      <tags>
+        <tag>Idea小技巧</tag>
       </tags>
   </entry>
   <entry>
