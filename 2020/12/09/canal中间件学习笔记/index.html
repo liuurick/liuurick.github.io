@@ -20,13 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="增量索引构建的要求 准实时； 性能； 编程简化；  Canal | 简介 消息管道； source 为 MySQL 数据库； target 为其他存储，比如 ElasticSearch； Canal 伪装成一个 MySQL 主库的备库，感知 MySQL 中 binlog 的变化，并同步出来一个结构化的数据，交给 Canal 管道的消费端；   开启 MySQL 的 binglogUbuntu 用">
+<meta property="og:type" content="article">
 <meta property="og:title" content="canal中间件学习笔记">
 <meta property="og:url" content="http://yoursite.com/2020/12/09/canal%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="增量索引构建的要求 准实时； 性能； 编程简化；  Canal | 简介 消息管道； source 为 MySQL 数据库； target 为其他存储，比如 ElasticSearch； Canal 伪装成一个 MySQL 主库的备库，感知 MySQL 中 binlog 的变化，并同步出来一个结构化的数据，交给 Canal 管道的消费端；   开启 MySQL 的 binglogUbuntu 用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-09T07:05:40.000Z">
-<meta property="article:modified_time" content="2020-12-09T07:07:28.129Z">
+<meta property="article:modified_time" content="2020-12-09T11:32:39.857Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="ElasticSearch7">
 <meta property="article:tag" content="canal">
@@ -239,7 +241,96 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="增量索引构建的要求"><a href="#增量索引构建的要求" class="headerlink" title="增量索引构建的要求"></a>增量索引构建的要求</h1><ul>
+<li>准实时；</li>
+<li>性能；</li>
+<li>编程简化；</li>
+</ul>
+<h1 id="Canal-简介"><a href="#Canal-简介" class="headerlink" title="Canal | 简介"></a>Canal | 简介</h1><ul>
+<li>消息管道；</li>
+<li>source 为 MySQL 数据库；</li>
+<li>target 为其他存储，比如 ElasticSearch；</li>
+<li>Canal 伪装成一个 MySQL 主库的备库，感知 MySQL 中 binlog 的变化，并同步出来一个结构化的数据，交给 Canal 管道的消费端；</li>
+</ul>
+<hr>
+<h1 id="开启-MySQL-的-binglog"><a href="#开启-MySQL-的-binglog" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h1><h6 id="Ubuntu-用-APT-Repository-安装-MySQL-的安装位置"><a href="#Ubuntu-用-APT-Repository-安装-MySQL-的安装位置" class="headerlink" title="Ubuntu 用 APT Repository 安装 MySQL 的安装位置"></a>Ubuntu 用 APT Repository 安装 MySQL 的安装位置</h6><ul>
+<li><code>/etc/mysql</code> - 配置文件</li>
+<li><code>/var/lib/mysql</code> - 数据存放的位置</li>
+<li><code>/usr/bin/mysql</code> - 启动命令</li>
+<li><code>/usr/lib/mysql</code> -  插件</li>
+</ul>
+<h6 id="查看-MySQL-几个变量的值"><a href="#查看-MySQL-几个变量的值" class="headerlink" title="查看 MySQL 几个变量的值"></a>查看 MySQL 几个变量的值</h6><ul>
+<li>要保证 binlog 开启，并且格式是 ROW；</li>
+<li>如果不是上述配置的话，需要修改 <code>/etc/mysql/mysql.conf.d/mysqld.cnf</code>，然后还要给 MySQL 实例起个 <code>server-id = 1</code>；MySQL 8 的话，两个参数默认就是这样的，然后 <code>server-id</code> 给个唯一值就行了；</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否开启 binlog</span></span><br><span class="line">show variables like <span class="string">'log_bin'</span>;</span><br><span class="line"><span class="comment"># binlog 的格式</span></span><br><span class="line">show variables like <span class="string">'binlog_format'</span>;</span><br></pre></td></tr></table></figure>
+
+<h6 id="创建复制用户"><a href="#创建复制用户" class="headerlink" title="创建复制用户"></a>创建复制用户</h6><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create user <span class="string">'canal'</span>@<span class="string">'%'</span> identified <span class="keyword">by</span> <span class="string">'canal'</span>;</span><br><span class="line"></span><br><span class="line">grant replication slave <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant replication client <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant <span class="keyword">select</span> <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<h1 id="canal-配置-1-1-3"><a href="#canal-配置-1-1-3" class="headerlink" title="canal 配置 | 1.1.3"></a>canal 配置 | 1.1.3</h1><h6 id="修改-canal-properties"><a href="#修改-canal-properties" class="headerlink" title="修改 canal.properties"></a>修改 canal.properties</h6><ul>
+<li>文件路径：<code>/home/lixinlei/application/canal/1.1.3/canal.deployer-1.1.3/conf</code>；</li>
+<li>这一行注释掉；</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#canal.instance.tsdb.spring.xml = classpath:spring/tsdb/h2-tsdb.xml</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="修改-instance-properties"><a href="#修改-instance-properties" class="headerlink" title="修改 instance.properties"></a>修改 instance.properties</h6><ul>
+<li>位置：<code>/home/lixinlei/application/canal/1.1.3/canal.deployer-1.1.3/conf/example/instance.properties</code>；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">canal.instance.mysql.slaveId&#x3D;8</span><br><span class="line"></span><br><span class="line">canal.instance.dbUsername&#x3D;canal</span><br><span class="line">canal.instance.dbPassword&#x3D;canal</span><br></pre></td></tr></table></figure>
+
+<h6 id="启动-canal"><a href="#启动-canal" class="headerlink" title="启动 canal"></a>启动 canal</h6><ul>
+<li>JDK 换成 8 才启动起来；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;startup.sh</span><br></pre></td></tr></table></figure>
+
+<h1 id="canal-adapter-1-1-4"><a href="#canal-adapter-1-1-4" class="headerlink" title="canal.adapter | 1.1.4"></a>canal.adapter | 1.1.4</h1><h6 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h6><ul>
+<li>在 IDEA 中打开 client-adapter module；</li>
+<li>修改 <code>/home/lixinlei/project/canal-canal-1.1.4/client-adapter/elasticsearch/pom.xml</code> 中的 ElasticSearch 的依赖版本，改成 7.3.0；</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>transport<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-high-level-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="在总-module-的目录下重新打包-canal"><a href="#在总-module-的目录下重新打包-canal" class="headerlink" title="在总 module 的目录下重新打包 canal"></a>在总 module 的目录下重新打包 canal</h6><ul>
+<li>路径为：<code>/home/lixinlei/project/canal-canal-1.1.4</code>；</li>
+<li>打包命令：<code>mvn clean package -DskipTests</code>；</li>
+<li>报错：<code>[ERROR] /home/lixinlei/project/canal-canal-1.1.4/client-adapter/elasticsearch/src/main/java/com/alibaba/otter/canal/client/adapter/es/support/ESConnection.java:[420,47] 无法将类 org.elasticsearch.client.RestHighLevelClient中的方法 bulk应用到给定类型;</code></li>
+<li>找到指定的 ESConnection.java 的 420 行，解决问题：<code>return restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);</code></li>
+<li>重新打包：<code>mvn clean package -DskipTests</code>；</li>
+<li>报错：<code>/home/lixinlei/project/canal-canal-1.1.4/client-adapter/elasticsearch/src/main/java/com/alibaba/otter/canal/client/adapter/es/ESAdapter.java:[225,56] 不兼容的类型: org.apache.lucene.search.TotalHits无法转换为long</code>；</li>
+<li>找到指定的 ESAdapter.java 的 225 行，解决问题：<code>long rowCount = response.getHits().getTotalHits().value;</code>；</li>
+<li>重新打包：<code>mvn clean package -DskipTests</code>，终于成功了；</li>
+</ul>
+<h6 id="进入编译后生成的目录"><a href="#进入编译后生成的目录" class="headerlink" title="进入编译后生成的目录"></a>进入编译后生成的目录</h6><ul>
+<li><code>/home/lixinlei/project/canal-canal-1.1.4/client-adapter/launcher/target/canal-adapter</code>，里面的内容和直接从 Github 上下载二进制的包是一样的;</li>
+<li>把这个目录拷到正经的目录下，并改个名字 <code>/home/lixinlei/application/canal/1.1.4/canal-adapter-es7</code>；</li>
+</ul>
+<h6 id="修改配置文件-application-yml"><a href="#修改配置文件-application-yml" class="headerlink" title="修改配置文件 application.yml"></a>修改配置文件 application.yml</h6><ul>
+<li>文件路径：<code>/home/lixinlei/application/canal/1.1.4/canal-adapter-es7/conf/application.yml</code>；</li>
+<li>这个配置主要是指明管道两端的 MySQL 和 ElasticSearch；</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">server:</span></span><br><span class="line">  <span class="symbol">port:</span> <span class="number">8081</span></span><br><span class="line"><span class="symbol">spring:</span></span><br><span class="line">  <span class="symbol">jackson:</span></span><br><span class="line">    date-<span class="symbol">format:</span> yyyy-MM-dd <span class="symbol">HH:</span><span class="symbol">mm:</span>ss</span><br><span class="line">    time-<span class="symbol">zone:</span> GMT+<span class="number">8</span></span><br><span class="line">    default-property-<span class="symbol">inclusion:</span> non_null</span><br><span class="line"></span><br><span class="line">canal.<span class="symbol">conf:</span></span><br><span class="line">  <span class="symbol">mode:</span> tcp </span><br><span class="line">  <span class="symbol">canalServerHost:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">11111</span></span><br><span class="line">  <span class="symbol">batchSize:</span> <span class="number">500</span></span><br><span class="line">  <span class="symbol">syncBatchSize:</span> <span class="number">1000</span></span><br><span class="line">  <span class="symbol">retries:</span> <span class="number">0</span></span><br><span class="line">  <span class="symbol">timeout:</span></span><br><span class="line">  <span class="symbol">accessKey:</span></span><br><span class="line">  <span class="symbol">secretKey:</span></span><br><span class="line">  <span class="symbol">srcDataSources:</span></span><br><span class="line">    <span class="symbol">defaultDS:</span></span><br><span class="line">      <span class="symbol">url:</span> <span class="symbol">jdbc:</span><span class="symbol">mysql:</span>/<span class="regexp">/127.0.0.1:3306/dianping</span>?useUnicode=<span class="literal">true</span>&amp;useSSL=<span class="literal">false</span></span><br><span class="line">      <span class="symbol">username:</span> canal</span><br><span class="line">      <span class="symbol">password:</span> canal</span><br><span class="line">  <span class="symbol">canalAdapters:</span></span><br><span class="line">  - <span class="symbol">instance:</span> example </span><br><span class="line">    <span class="symbol">groups:</span></span><br><span class="line">    - <span class="symbol">groupId:</span> g1</span><br><span class="line">      <span class="symbol">outerAdapters:</span></span><br><span class="line">      - <span class="symbol">name:</span> logger</span><br><span class="line">      - <span class="symbol">name:</span> es</span><br><span class="line">        <span class="symbol">hosts:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">9300</span></span><br><span class="line">        <span class="symbol">properties:</span></span><br><span class="line">          cluster.<span class="symbol">name:</span> dianping-app</span><br></pre></td></tr></table></figure>
+
+<h6 id="创建文件-shop-yml"><a href="#创建文件-shop-yml" class="headerlink" title="创建文件 shop.yml"></a>创建文件 shop.yml</h6><ul>
+<li>文件路径：<code>/home/lixinlei/application/canal/1.1.4/canal-adapter-es7/conf/es/shop.yml</code>；</li>
+<li>其中 <code>defaultDS</code> 和   <code>example</code> 分别对应 application.yml 中的 <code>defaultDS</code> 和   <code>example</code>；</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dataSourceKey: defaultDS</span><br><span class="line">destination: example</span><br><span class="line">groupId: </span><br><span class="line">esMapping:</span><br><span class="line">  _index: shop</span><br><span class="line">  _type: _doc</span><br><span class="line">  _<span class="keyword">id</span>: <span class="keyword">id</span></span><br><span class="line">  upsert: <span class="literal">true</span></span><br><span class="line">  sql: <span class="string">"select a.id,a.name,a.tags,concat(a.latitude,',',a.longitude) as location,a.remark_score,a.price_per_man,a.category_id,b.name as category_name,a.seller_id,c.remark_score as seller_remark_score,c.disabled_flag as seller_disabled_flag from shop a inner join category b on a.category_id = b.id inner join seller c on c.id = a.seller_id"</span></span><br><span class="line">  commitBatch: <span class="number">3000</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="启动-canal-adapter-es7"><a href="#启动-canal-adapter-es7" class="headerlink" title="启动 canal-adapter-es7"></a>启动 canal-adapter-es7</h6><ul>
+<li>MySQL 8 要把 <code>/home/lixinlei/application/canal/1.1.4/canal-adapter-es7/lib</code> 下的驱动换一下；</li>
+<li>启动命令：<code>bin/startup.sh</code>；</li>
+</ul>
+<h6 id="启动编译好的-canal-deployer-es7"><a href="#启动编译好的-canal-deployer-es7" class="headerlink" title="启动编译好的 canal-deployer-es7"></a>启动编译好的 canal-deployer-es7</h6><ul>
+<li>canal.adapter-1.1.4 和 canal.deployer-1.1.3 是不兼容的，所以要把之前启动的 canal.deployer-1.1.3 换成 Maven 编译好的 canal.deployer-1.1.4；</li>
+<li>编译好的原路径：<code>/home/lixinlei/project/canal-canal-1.1.4/deployer/target/canal</code>，更改到新路径：<code>/home/lixinlei/application/canal/1.1.4/canal-deployer-es7</code>；</li>
+<li>先关停 canal.deployer-1.1.3：<code>bin/stop.sh</code>；</li>
+<li>把 canal.deployer-1.1.3 的 canal.properties 和 example/ 拷贝到 canal-deployer-es7 中；</li>
+<li>启动 canal-deployer-es7：<code>bin/startup.sh</code>；</li>
+</ul>
+<h6 id="更新-MySQL-中-dianping-库的-shop-表"><a href="#更新-MySQL-中-dianping-库的-shop-表" class="headerlink" title="更新 MySQL 中 dianping 库的 shop 表"></a>更新 MySQL 中 dianping 库的 shop 表</h6><ul>
+<li>日志文件 <code>canal-adapter-es7/logs/adapter/adapter.log</code> 立马可以感知到；</li>
+<li>在 ElasticSearch 中查询，也可以立马感知到；</li>
+</ul>
+
     </div>
 
     
@@ -258,10 +349,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/09/%E7%9B%B8%E5%85%B3%E6%80%A7%E9%87%8D%E5%A1%91/" rel="prev" title="相关性重塑">
-      <i class="fa fa-chevron-left"></i> 相关性重塑
+    <a href="/2020/12/08/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" rel="prev" title="推荐系统算法整理">
+      <i class="fa fa-chevron-left"></i> 推荐系统算法整理
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/" rel="next" title="ElasticSearch搜索优化">
+      ElasticSearch搜索优化 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -320,6 +414,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#增量索引构建的要求"><span class="nav-number">1.</span> <span class="nav-text">增量索引构建的要求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Canal-简介"><span class="nav-number">2.</span> <span class="nav-text">Canal | 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开启-MySQL-的-binglog"><span class="nav-number">3.</span> <span class="nav-text">开启 MySQL 的 binglog</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Ubuntu-用-APT-Repository-安装-MySQL-的安装位置"><span class="nav-number">3.0.0.0.0.1.</span> <span class="nav-text">Ubuntu 用 APT Repository 安装 MySQL 的安装位置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#查看-MySQL-几个变量的值"><span class="nav-number">3.0.0.0.0.2.</span> <span class="nav-text">查看 MySQL 几个变量的值</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建复制用户"><span class="nav-number">3.0.0.0.0.3.</span> <span class="nav-text">创建复制用户</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#canal-配置-1-1-3"><span class="nav-number">4.</span> <span class="nav-text">canal 配置 | 1.1.3</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#修改-canal-properties"><span class="nav-number">4.0.0.0.0.1.</span> <span class="nav-text">修改 canal.properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改-instance-properties"><span class="nav-number">4.0.0.0.0.2.</span> <span class="nav-text">修改 instance.properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动-canal"><span class="nav-number">4.0.0.0.0.3.</span> <span class="nav-text">启动 canal</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#canal-adapter-1-1-4"><span class="nav-number">5.</span> <span class="nav-text">canal.adapter | 1.1.4</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#下载源码"><span class="nav-number">5.0.0.0.0.1.</span> <span class="nav-text">下载源码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#在总-module-的目录下重新打包-canal"><span class="nav-number">5.0.0.0.0.2.</span> <span class="nav-text">在总 module 的目录下重新打包 canal</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#进入编译后生成的目录"><span class="nav-number">5.0.0.0.0.3.</span> <span class="nav-text">进入编译后生成的目录</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改配置文件-application-yml"><span class="nav-number">5.0.0.0.0.4.</span> <span class="nav-text">修改配置文件 application.yml</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建文件-shop-yml"><span class="nav-number">5.0.0.0.0.5.</span> <span class="nav-text">创建文件 shop.yml</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动-canal-adapter-es7"><span class="nav-number">5.0.0.0.0.6.</span> <span class="nav-text">启动 canal-adapter-es7</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动编译好的-canal-deployer-es7"><span class="nav-number">5.0.0.0.0.7.</span> <span class="nav-text">启动编译好的 canal-deployer-es7</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#更新-MySQL-中-dianping-库的-shop-表"><span class="nav-number">5.0.0.0.0.8.</span> <span class="nav-text">更新 MySQL 中 dianping 库的 shop 表</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -335,7 +430,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
