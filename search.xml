@@ -1,88 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Docker搭建MySQL集群-PXC方案</title>
-    <url>/2020/08/21/Docker%E6%90%AD%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>尝试通过Dcoekr搭建MySQL集群</p>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
 <a id="more"></a>
 
-<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
-<blockquote>
-<p>MySQL主从复制：<a href="https://www.jianshu.com/p/faf0127f1cb2" target="_blank" rel="noopener">https://www.jianshu.com/p/faf0127f1cb2</a></p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Replication</th>
-<th>PXC</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
-<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
-</tr>
-<tr>
-<td>异步复制，从和主无法保证数据的一致性</td>
-<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
-</tr>
-</tbody></table>
-<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
-<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
-<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>Docker的安装与配置非常简单。</p>
-<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
-<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
-<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
-<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
-
-<p>查看docker卷信息：<code>docker inspect v1</code></p>
-<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
-
-<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
-<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
-<p>在DB1中新建test数据库并创建student表：</p>
-<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
-<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
-<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
-<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
-<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
-<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
-<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
-<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><blockquote>
-<p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
-</blockquote>
-<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
-<p>haproxy.cfg</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
-
-<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
-<p>首页展示：</p>
-<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
 ]]></content>
       <categories>
         <category>MySQL</category>
       </categories>
       <tags>
-        <tag>MySQL集群</tag>
-        <tag>Docker</tag>
+        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -103,47 +38,6 @@
       </categories>
       <tags>
         <tag>Docker命令</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker设置镜像自启动</title>
-    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>Docker便捷小技巧：</p>
-<a id="more"></a>
-
-<p>1.发现没启动</p>
-<p><code>docker ps</code></p>
-<p>2.查看所有安装的镜像</p>
-<p><code>docker ps -a</code></p>
-<p>3.设置总是自动启动</p>
-<p><code>docker update 镜像id --restart=always</code></p>
-<p>4.重启测试一下</p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -485,6 +379,27 @@
       </categories>
       <tags>
         <tag>ElasticSearch7</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker设置镜像自启动</title>
+    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
+    <content><![CDATA[<p>Docker便捷小技巧：</p>
+<a id="more"></a>
+
+<p>1.发现没启动</p>
+<p><code>docker ps</code></p>
+<p>2.查看所有安装的镜像</p>
+<p><code>docker ps -a</code></p>
+<p>3.设置总是自动启动</p>
+<p><code>docker update 镜像id --restart=always</code></p>
+<p>4.重启测试一下</p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -853,9 +768,110 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Docker搭建MySQL集群-PXC方案</title>
+    <url>/2020/08/21/Docker%E6%90%AD%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>尝试通过Dcoekr搭建MySQL集群</p>
+<a id="more"></a>
+
+<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
+<blockquote>
+<p>MySQL主从复制：<a href="https://www.jianshu.com/p/faf0127f1cb2" target="_blank" rel="noopener">https://www.jianshu.com/p/faf0127f1cb2</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Replication</th>
+<th>PXC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
+<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
+</tr>
+<tr>
+<td>异步复制，从和主无法保证数据的一致性</td>
+<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
+</tr>
+</tbody></table>
+<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
+<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
+<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>Docker的安装与配置非常简单。</p>
+<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
+<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
+<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
+<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
+
+<p>查看docker卷信息：<code>docker inspect v1</code></p>
+<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
+<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
+<p>在DB1中新建test数据库并创建student表：</p>
+<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
+<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
+<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
+<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
+<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
+<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
+<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
+<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><blockquote>
+<p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
+</blockquote>
+<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
+<p>haproxy.cfg</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
+<p>首页展示：</p>
+<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>MySQL集群</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java设计模式</title>
     <url>/2020/12/06/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Linux安装配置大全</title>
+    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
+    <content><![CDATA[<p>Linux各种版本安装配置</p>
+<a id="more"></a>
+
+<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
+<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
   </entry>
   <entry>
     <title>Java集合</title>
@@ -911,19 +927,42 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Linux安装配置大全</title>
-    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
-    <content><![CDATA[<p>Linux各种版本安装配置</p>
+    <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
+    <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
 <a id="more"></a>
 
-<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
-<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
+<blockquote>
+<p>COUNT(column_name) 函数返回指定列的值的数目（NULL 不计入）</p>
+</blockquote>
+<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是 NULL，累计值就加 1，否则不加。最后返回累计值。</p>
+<p>所以，count(*)、count(1)和count(主键 id) 都表示返回满足条件的结果集的总行数；而 count(字段），则表示返回满足条件的数据行里面，参数“字段”不为 NULL 的总个数。</p>
+<p>至于分析性能差别的时候，记住这么几个原则：</p>
+<ul>
+<li>server 层要什么就给什么；</li>
+<li>InnoDB 只给必要的值；</li>
+<li>现在的优化器只优化了 count(*) 的语义为“取行数”，其他“显而易见”的优化并没有做。</li>
+</ul>
+<p><strong>count(可空字段)</strong></p>
+<p>扫描全表，读到server层，判断字段可空，拿出该字段所有值，判断每一个值是否为空，不为空则累加</p>
+<p><strong>count(非空字段)与count(主键 id)</strong></p>
+<p>扫描全表，读到server层，判断字段不可空，按行累加。</p>
+<p><strong>count(1)</strong></p>
+<p>扫描全表，但不取值，server层收到的每一行都是1，判断不可能是null，按值累加。</p>
+<p><strong>注意：</strong>count(1)执行速度比count(主键 id)快的原因：从引擎返回 id 会涉及到解析数据行，以及拷贝字段值的操作。</p>
+<p><strong>count(*)</strong></p>
+<p>MySQL 执行count(<em>)在优化器做了专门优化。因为count(</em>)返回的行一定不是空。扫描全表，但是不取值，按行累加。</p>
+<blockquote>
+<p>看到这里，你会说优化器就不能自己判断一下吗，主键 id 肯定是非空的，为什么不能按照 count(<em>) 来处理，多么简单的优化。当然 MySQL 专门针对这个语句进行优化也不是不可以。但是这种需要专门优化的情况太多了，而且 MySQL 已经优化过 count(</em>) 了，你直接使用这种语句就可以了。</p>
+</blockquote>
+<p><strong>性能对比结论</strong></p>
+<p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>MySQL</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -968,45 +1007,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL日期类型</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
-    <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
-<a id="more"></a>
-
-<blockquote>
-<p>COUNT(column_name) 函数返回指定列的值的数目（NULL 不计入）</p>
-</blockquote>
-<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是 NULL，累计值就加 1，否则不加。最后返回累计值。</p>
-<p>所以，count(*)、count(1)和count(主键 id) 都表示返回满足条件的结果集的总行数；而 count(字段），则表示返回满足条件的数据行里面，参数“字段”不为 NULL 的总个数。</p>
-<p>至于分析性能差别的时候，记住这么几个原则：</p>
-<ul>
-<li>server 层要什么就给什么；</li>
-<li>InnoDB 只给必要的值；</li>
-<li>现在的优化器只优化了 count(*) 的语义为“取行数”，其他“显而易见”的优化并没有做。</li>
-</ul>
-<p><strong>count(可空字段)</strong></p>
-<p>扫描全表，读到server层，判断字段可空，拿出该字段所有值，判断每一个值是否为空，不为空则累加</p>
-<p><strong>count(非空字段)与count(主键 id)</strong></p>
-<p>扫描全表，读到server层，判断字段不可空，按行累加。</p>
-<p><strong>count(1)</strong></p>
-<p>扫描全表，但不取值，server层收到的每一行都是1，判断不可能是null，按值累加。</p>
-<p><strong>注意：</strong>count(1)执行速度比count(主键 id)快的原因：从引擎返回 id 会涉及到解析数据行，以及拷贝字段值的操作。</p>
-<p><strong>count(*)</strong></p>
-<p>MySQL 执行count(<em>)在优化器做了专门优化。因为count(</em>)返回的行一定不是空。扫描全表，但是不取值，按行累加。</p>
-<blockquote>
-<p>看到这里，你会说优化器就不能自己判断一下吗，主键 id 肯定是非空的，为什么不能按照 count(<em>) 来处理，多么简单的优化。当然 MySQL 专门针对这个语句进行优化也不是不可以。但是这种需要专门优化的情况太多了，而且 MySQL 已经优化过 count(</em>) 了，你直接使用这种语句就可以了。</p>
-</blockquote>
-<p><strong>性能对比结论</strong></p>
-<p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -1487,8 +1487,8 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>MySQL</category>
       </categories>
       <tags>
-        <tag>MySQL集群</tag>
         <tag>Docker</tag>
+        <tag>MySQL集群</tag>
       </tags>
   </entry>
   <entry>
@@ -3067,6 +3067,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>推荐系统算法整理</title>
     <url>/2020/12/08/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/</url>
     <content><![CDATA[<p>推荐系统算法整理</p>
@@ -3099,30 +3123,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>在线指标：点击率，交易转化率等</p>
 <p>A/B测试</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
-
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>JVM</tag>
-      </tags>
   </entry>
   <entry>
     <title>添加系统调用</title>
@@ -3641,24 +3641,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>防火墙管理</title>
-    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<p>防火墙常用命令</p>
-<a id="more"></a>
-
-<h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
-
-<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>（转）重定向与转发</title>
     <url>/2018/04/21/%EF%BC%88%E8%BD%AC%EF%BC%89%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -3681,6 +3663,24 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Java Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>防火墙管理</title>
+    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<p>防火墙常用命令</p>
+<a id="more"></a>
+
+<h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>firewall</tag>
       </tags>
   </entry>
 </search>
