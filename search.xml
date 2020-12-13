@@ -254,73 +254,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch搜索优化</title>
-    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
-<ol>
-<li>定制化分词器</li>
-<li>同义词扩展</li>
-<li>相关性重塑</li>
-</ol>
-<a id="more"></a>
-
-<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
-<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
-<p>然后将文件复制到其余的两个节点</p>
-<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
-
-<p>将文件复制到其余的两个节点</p>
-<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Http请求需要返回两个头部，last-modified和etag</p>
-<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
-</blockquote>
-<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
-<blockquote>
-<p>语义相近或相同</p>
-<p>品牌类目关联</p>
-<p>搜索它等于搜索它</p>
-</blockquote>
-<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201209164003792.png" alt="image-20201209164003792"></p>
-<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>索引测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
-<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
-</blockquote>
-<p>相关性搜索</p>
-<p>让搜索引擎理解语义</p>
-<p>影响召回及排序</p>
-]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch7</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ElasticSearch7进阶</title>
     <url>/2020/12/06/ElasticSearch7%E8%BF%9B%E9%98%B6/</url>
     <content><![CDATA[<p>ElasticSearch的进阶学习主要有两种分别是通读文档和案例学习。这里我选择的是通过案例来深入学习es。</p>
@@ -552,6 +485,73 @@
       </tags>
   </entry>
   <entry>
+    <title>ElasticSearch搜索优化</title>
+    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
+<ol>
+<li>定制化分词器</li>
+<li>同义词扩展</li>
+<li>相关性重塑</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
+<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
+<p>然后将文件复制到其余的两个节点</p>
+<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将文件复制到其余的两个节点</p>
+<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Http请求需要返回两个头部，last-modified和etag</p>
+<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
+</blockquote>
+<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
+<blockquote>
+<p>语义相近或相同</p>
+<p>品牌类目关联</p>
+<p>搜索它等于搜索它</p>
+</blockquote>
+<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201209164003792.png" alt="image-20201209164003792"></p>
+<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>索引测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
+<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
+</blockquote>
+<p>相关性搜索</p>
+<p>让搜索引擎理解语义</p>
+<p>影响召回及排序</p>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch7</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ElasticSearch集群搭建</title>
     <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
@@ -749,16 +749,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Idea快捷键</title>
-    <url>/2020/12/11/Idea%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<p>Idea快捷键记录</p>
-<a id="more"></a>
-
-<h1 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line"></span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
     <title>JDK8新特性</title>
     <url>/2020/11/20/JDK8%E6%96%B0%E7%89%B9%E6%80%A7/</url>
     <content><![CDATA[<h2 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h2><p>代码更少，增加了新的语法</p>
@@ -775,6 +765,16 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Java新特性</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Idea快捷键</title>
+    <url>/2020/12/11/Idea%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<p>Idea快捷键记录</p>
+<a id="more"></a>
+
+<h1 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line"></span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
+
+]]></content>
   </entry>
   <entry>
     <title>JSP页面El表达式不起作用</title>
@@ -974,25 +974,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
     <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
@@ -1029,6 +1010,25 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+      <tags>
+        <tag>MyBatis缓存</tag>
       </tags>
   </entry>
   <entry>
@@ -1538,6 +1538,422 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>PXC脚本命令</title>
+    <url>/2020/12/13/PXC%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<p>MySQL集群脚本命令</p>
+<a id="more"></a>
+
+<p>[TOC]</p>
+<h1 id="一、安装Percona数据库"><a href="#一、安装Percona数据库" class="headerlink" title="一、安装Percona数据库"></a>一、安装Percona数据库</h1><h2 id="1-离线安装Percona"><a href="#1-离线安装Percona" class="headerlink" title="1. 离线安装Percona"></a>1. 离线安装Percona</h2><ul>
+<li><p>进入RPM安装文件目录，执行下面的脚本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum localinstall *.rpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>管理MySQL服务</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl start mysqld</span><br><span class="line">systemctl stop mysqld</span><br><span class="line">systemctl restart mysqld</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="2-在线安装Percona"><a href="#2-在线安装Percona" class="headerlink" title="2. 在线安装Percona"></a>2. 在线安装Percona</h2><ul>
+<li><p>使用yum命令安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm</span><br><span class="line">yum  install  Percona-Server-server-57</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>管理MySQL服务</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">service mysql start</span><br><span class="line">service mysql stop</span><br><span class="line">service mysql restart</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="3-开放防火墙端口"><a href="#3-开放防火墙端口" class="headerlink" title="3. 开放防火墙端口"></a>3. 开放防火墙端口</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=3306/tcp --permanent</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-修改MySQL配置文件"><a href="#4-修改MySQL配置文件" class="headerlink" title="4. 修改MySQL配置文件"></a>4. 修改MySQL配置文件</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="attr">character_set_server</span> = utf8</span><br><span class="line"><span class="attr">bind-address</span> = <span class="number">0.0</span>.<span class="number">0.0</span></span><br><span class="line"><span class="comment">#跳过DNS解析</span></span><br><span class="line">skip-name-resolve</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">service mysql restart</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-禁止开机启动MySQL"><a href="#5-禁止开机启动MySQL" class="headerlink" title="5. 禁止开机启动MySQL"></a>5. 禁止开机启动MySQL</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chkconfig mysqld off</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-初始化MySQL数据库"><a href="#6-初始化MySQL数据库" class="headerlink" title="6. 初始化MySQL数据库"></a>6. 初始化MySQL数据库</h2><ul>
+<li><p>查看MySQL初始密码</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat /var/log/mysqld.log | grep "A temporary password"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改MySQL密码</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建远程管理员账户</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'admin'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'Abc_123456'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">all</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'admin'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h1 id="二、创建PXC集群"><a href="#二、创建PXC集群" class="headerlink" title="二、创建PXC集群"></a>二、创建PXC集群</h1><h2 id="1-删除MariaDB程序包"><a href="#1-删除MariaDB程序包" class="headerlink" title="1. 删除MariaDB程序包"></a>1. 删除MariaDB程序包</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum -y remove mari*</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-开放防火墙端口"><a href="#2-开放防火墙端口" class="headerlink" title="2. 开放防火墙端口"></a>2. 开放防火墙端口</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=3306/tcp --permanent</span><br><span class="line">firewall-cmd --zone=public --add-port=4444/tcp --permanent</span><br><span class="line">firewall-cmd --zone=public --add-port=4567/tcp --permanent</span><br><span class="line">firewall-cmd --zone=public --add-port=4568/tcp --permanent</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-关闭SELINUX"><a href="#3-关闭SELINUX" class="headerlink" title="3. 关闭SELINUX"></a>3. 关闭SELINUX</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/selinux/config</span><br></pre></td></tr></table></figure>
+
+<p>把SELINUX属性值设置成disabled</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-离线安装PXC"><a href="#4-离线安装PXC" class="headerlink" title="4. 离线安装PXC"></a>4. 离线安装PXC</h2><ul>
+<li><p>进入RPM文件目录，执行安装命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum localinstall *.rpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>参考第一章内容，修改MySQL配置文件、创建账户等操作</p>
+</li>
+</ul>
+<h2 id="5-创建PXC集群"><a href="#5-创建PXC集群" class="headerlink" title="5. 创建PXC集群"></a>5. 创建PXC集群</h2><ul>
+<li><p>停止MySQL服务</p>
+</li>
+<li><p>修改每个PXC节点的/etc/my.cnf文件（在不同节点上，注意调整文件内容）</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">server-id</span>=<span class="number">1</span>  <span class="comment">#PXC集群中MySQL实例的唯一ID，不能重复，必须是数字</span></span><br><span class="line"><span class="attr">wsrep_provider</span>=/usr/lib64/galera3/libgalera_smm.so</span><br><span class="line"><span class="attr">wsrep_cluster_name</span>=pxc-cluster  <span class="comment">#PXC集群的名称</span></span><br><span class="line"><span class="attr">wsrep_cluster_address</span>=gcomm://<span class="number">192.168</span>.<span class="number">99.151</span>,<span class="number">192.168</span>.<span class="number">99.159</span>,<span class="number">192.168</span>.<span class="number">99.215</span></span><br><span class="line"><span class="attr">wsrep_node_name</span>=pxc1  <span class="comment">#当前节点的名称</span></span><br><span class="line"><span class="attr">wsrep_node_address</span>=<span class="number">192.168</span>.<span class="number">99.151</span>  <span class="comment">#当前节点的IP</span></span><br><span class="line"><span class="attr">wsrep_sst_method</span>=xtrabackup-v2  <span class="comment">#同步方法（mysqldump、rsync、xtrabackup）</span></span><br><span class="line"><span class="attr">wsrep_sst_auth</span>= admin:Abc_123456  <span class="comment">#同步使用的帐户</span></span><br><span class="line"><span class="attr">pxc_strict_mode</span>=ENFORCING  <span class="comment">#同步严厉模式</span></span><br><span class="line"><span class="attr">binlog_format</span>=ROW  <span class="comment">#基于ROW复制（安全可靠）</span></span><br><span class="line"><span class="attr">default_storage_engine</span>=InnoDB  <span class="comment">#默认引擎</span></span><br><span class="line"><span class="attr">innodb_autoinc_lock_mode</span>=<span class="number">2</span>  <span class="comment">#主键自增长不锁表</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>主节点的管理命令（第一个启动的PXC节点）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl start mysql@bootstrap.service</span><br><span class="line">systemctl stop mysql@bootstrap.service</span><br><span class="line">systemctl restart mysql@bootstrap.service</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非主节点的管理命令（非第一个启动的PXC节点）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">service start mysql</span><br><span class="line">service stop mysql</span><br><span class="line">service restart mysql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看PXC集群状态信息</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show status like &#39;wsrep_cluster%&#39; ;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>按照上述配置方法，创建两组PXC集群</strong></p>
+</li>
+</ul>
+<h2 id="6-PXC节点启动与关闭"><a href="#6-PXC节点启动与关闭" class="headerlink" title="6. PXC节点启动与关闭"></a>6. PXC节点启动与关闭</h2><ul>
+<li>如果最后关闭的PXC节点是安全退出的，那么下次启动要最先启动这个节点，而且要以主节点启动</li>
+<li>如果最后关闭的PXC节点不是安全退出的，那么要先修改<code>/var/lib/mysql/grastate.dat</code> 文件，把其中的<code>safe_to_bootstrap</code>属性值设置为1，再安装主节点启动</li>
+</ul>
+<h1 id="三、安装MyCat"><a href="#三、安装MyCat" class="headerlink" title="三、安装MyCat"></a>三、安装MyCat</h1><h2 id="1-JDK安装与配置"><a href="#1-JDK安装与配置" class="headerlink" title="1. JDK安装与配置"></a>1. JDK安装与配置</h2><ul>
+<li><p>安装JDK</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">搜索JDK版本</span></span><br><span class="line">yum search jdk </span><br><span class="line"><span class="meta">#</span><span class="bash">安装JDK1.8开发版</span></span><br><span class="line">yum install java-1.8.0-openjdk-devel.x86_64</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置环境变量</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看JDK安装路径</span></span><br><span class="line">ls -lrt /etc/alternatives/java</span><br><span class="line">vi /etc/profile</span><br><span class="line"><span class="meta">#</span><span class="bash">在文件结尾加上JDK路径，例如<span class="built_in">export</span>  JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64/</span></span><br><span class="line">source  /etc/profile</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="2-创建数据表"><a href="#2-创建数据表" class="headerlink" title="2. 创建数据表"></a>2. 创建数据表</h2><ul>
+<li><p>在两组PXC集群中分别创建t_user数据表</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE t_user(</span><br><span class="line">	id INT UNSIGNED PRIMARY KEY,</span><br><span class="line">    username VARCHAR(200) NOT NULL,</span><br><span class="line">    password VARCHAR(2000) NOT NULL,</span><br><span class="line">    tel CHAR(11) NOT NULL,</span><br><span class="line">    locked TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,</span><br><span class="line">    INDEX idx_username(username) USING BTREE,</span><br><span class="line">    UNIQUE INDEX unq_username(username) USING BTREE</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h2 id="3-MyCat安装与配置"><a href="#3-MyCat安装与配置" class="headerlink" title="3. MyCat安装与配置"></a>3. MyCat安装与配置</h2><ol>
+<li><p>下载MyCat</p>
+<p><a href="http://dl.mycat.io/1.6.5/Mycat-server-1.6.5-release-20180122220033-linux.tar.gz" target="_blank" rel="noopener">http://dl.mycat.io/1.6.5/Mycat-server-1.6.5-release-20180122220033-linux.tar.</a><a href="http://dl.mycat.io/1.6.5/Mycat-server-1.6.5-release-20180122220033-linux.tar.gz" target="_blank" rel="noopener">gz</a></p>
+</li>
+<li><p>上传MyCat压缩包到虚拟机</p>
+</li>
+<li><p>安装unzip程序包，解压缩MyCat</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install unzip</span><br><span class="line">unzip MyCAT压缩包名称</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开放防火墙8066和9066端口，关闭SELINUX</p>
+</li>
+<li><p>修改MyCat的bin目录中所有.sh文件的权限</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod -R 777 .&#x2F;*.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MyCat启动与关闭</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">cd</span> MyCat的bin目录</span></span><br><span class="line">./startup_nowrap.sh #启动MyCat</span><br><span class="line">ps -aux #查看系统进程</span><br><span class="line">kill -9 MyCat进程编号</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改server.xml文件，设置MyCat帐户和虚拟逻辑库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line">&lt;!DOCTYPE mycat:server SYSTEM "server.dtd"&gt;</span><br><span class="line">&lt;mycat:server xmlns:mycat="http://io.mycat/"&gt;</span><br><span class="line">  	&lt;system&gt;</span><br><span class="line">  		&lt;property name="nonePasswordLogin"&gt;0&lt;/property&gt;</span><br><span class="line">  		&lt;property name="useHandshakeV10"&gt;1&lt;/property&gt;</span><br><span class="line">  		&lt;property name="useSqlStat"&gt;0&lt;/property&gt;</span><br><span class="line">  		&lt;property name="useGlobleTableCheck"&gt;0&lt;/property&gt;</span><br><span class="line">  		&lt;property name="sequnceHandlerType"&gt;2&lt;/property&gt;</span><br><span class="line">  		&lt;property name="subqueryRelationshipCheck"&gt;false&lt;/property&gt;</span><br><span class="line">  		&lt;property name="processorBufferPoolType"&gt;0&lt;/property&gt;</span><br><span class="line">  		&lt;property name="handleDistributedTransactions"&gt;0&lt;/property&gt;</span><br><span class="line">  		&lt;property name="useOffHeapForMerge"&gt;1&lt;/property&gt;</span><br><span class="line">      	&lt;property name="memoryPageSize"&gt;64k&lt;/property&gt;</span><br><span class="line">  		&lt;property name="spillsFileBufferSize"&gt;1k&lt;/property&gt;</span><br><span class="line">  		&lt;property name="useStreamOutput"&gt;0&lt;/property&gt;</span><br><span class="line">  		&lt;property name="systemReserveMemorySize"&gt;384m&lt;/property&gt;</span><br><span class="line">  		&lt;property name="useZKSwitch"&gt;false&lt;/property&gt;</span><br><span class="line">  	&lt;/system&gt;</span><br><span class="line">    &lt;!--这里是设置的admin用户和虚拟逻辑库--&gt;</span><br><span class="line">  	&lt;user name="admin" defaultAccount="true"&gt;</span><br><span class="line">  		&lt;property name="password"&gt;Abc_123456&lt;/property&gt;</span><br><span class="line">  		&lt;property name="schemas"&gt;test&lt;/property&gt;</span><br><span class="line">  	&lt;/user&gt;</span><br><span class="line">&lt;/mycat:server&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="8">
+<li><p>修改schema.xml文件，设置数据库连接和虚拟数据表</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&lt;?xml version="1.0"?&gt;</span><br><span class="line">&lt;!DOCTYPE mycat:schema SYSTEM "schema.dtd"&gt;</span><br><span class="line">&lt;mycat:schema xmlns:mycat="http://io.mycat/"&gt;</span><br><span class="line">  	&lt;!--配置数据表--&gt;</span><br><span class="line">  	&lt;schema name="test" checkSQLschema="false" sqlMaxLimit="100"&gt;</span><br><span class="line">  		&lt;table name="t_user" dataNode="dn1,dn2" rule="mod-long" /&gt;</span><br><span class="line">  	&lt;/schema&gt;</span><br><span class="line">  	&lt;!--配置分片关系--&gt;</span><br><span class="line">  	&lt;dataNode name="dn1" dataHost="cluster1" database="test" /&gt;</span><br><span class="line">  	&lt;dataNode name="dn2" dataHost="cluster2" database="test" /&gt;</span><br><span class="line">  	&lt;!--配置连接信息--&gt;</span><br><span class="line">  	&lt;dataHost name="cluster1" maxCon="1000" minCon="10" balance="2" </span><br><span class="line">                writeType="1" dbType="mysql" dbDriver="native" switchType="1"  </span><br><span class="line">                slaveThreshold="100"&gt;</span><br><span class="line">  		&lt;heartbeat&gt;select user()&lt;/heartbeat&gt;</span><br><span class="line">  		&lt;writeHost host="W1" url="192.168.99.151:3306" user="admin" </span><br><span class="line">                     password="Abc_123456"&gt;</span><br><span class="line">  			&lt;readHost host="W1R1" url="192.168.99.159:3306" user="admin" </span><br><span class="line">                        password="Abc_123456" /&gt;</span><br><span class="line">  			&lt;readHost host="W1R2" url="192.168.99.215:3306" user="admin" </span><br><span class="line">                        password="Abc_123456" /&gt;</span><br><span class="line">  		&lt;/writeHost&gt;</span><br><span class="line">  		&lt;writeHost host="W2" url="192.168.99.159:3306" user="admin" </span><br><span class="line">                     password="Abc_123456"&gt;</span><br><span class="line">  			&lt;readHost host="W2R1" url="192.168.99.151:3306" user="admin" </span><br><span class="line">                        password="Abc_123456" /&gt;</span><br><span class="line">  			&lt;readHost host="W2R2" url="192.168.99.215:3306" user="admin" </span><br><span class="line">                        password="Abc_123456" /&gt;</span><br><span class="line">  		&lt;/writeHost&gt;</span><br><span class="line">  	&lt;/dataHost&gt;</span><br><span class="line">  	&lt;dataHost name="cluster2" maxCon="1000" minCon="10" balance="2" </span><br><span class="line">                writeType="1" dbType="mysql" dbDriver="native" switchType="1"  </span><br><span class="line">                slaveThreshold="100"&gt;</span><br><span class="line">  		&lt;heartbeat&gt;select user()&lt;/heartbeat&gt;</span><br><span class="line">  		&lt;writeHost host="W1" url="192.168.99.121:3306" user="admin"</span><br><span class="line">  				   password="Abc_123456"&gt;</span><br><span class="line">  			&lt;readHost host="W1R1" url="192.168.99.122:3306" user="admin" </span><br><span class="line">                        password="Abc_123456" /&gt;</span><br><span class="line">  			&lt;readHost host="W1R2" url="192.168.99.123:3306" user="admin" </span><br><span class="line">                        password="Abc_123456" /&gt;</span><br><span class="line">  		&lt;/writeHost&gt;</span><br><span class="line">  		&lt;writeHost host="W2" url="192.168.99.122:3306" user="admin"</span><br><span class="line">  				   password="Abc_123456"&gt;</span><br><span class="line">  			&lt;readHost host="W2R1" url="192.168.99.121:3306" user="admin" </span><br><span class="line">                        password="Abc_123456" /&gt;</span><br><span class="line">  			&lt;readHost host="W2R2" url="192.168.99.123:3306" user="admin" </span><br><span class="line">                        password="Abc_123456" /&gt;</span><br><span class="line">  		&lt;/writeHost&gt;</span><br><span class="line">  	&lt;/dataHost&gt;</span><br><span class="line">&lt;/mycat:schema&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改rule.xml文件，把mod-long的count值修改成2</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&lt;function name="mod-long" class="io.mycat.route.function.PartitionByMod"&gt;</span><br><span class="line">	&lt;property name="count"&gt;2&lt;/property&gt;</span><br><span class="line">&lt;/function&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启MyCat</p>
+</li>
+<li><p>向t_user表写入数据，感受数据的切分</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">USE test;</span><br><span class="line">#第一条记录被切分到第二个分片</span><br><span class="line">INSERT INTO t_user(id,username,password,tel,locked) VALUES(1,&quot;A&quot;,HEX(AES_ENCRYPT(&#39;123456&#39;,&#39;HelloWorld&#39;)));</span><br><span class="line">#第二条记录被切分到第一个分片</span><br><span class="line">INSERT INTO t_user(id,username,password,tel,locked) VALUES(2,&quot;B&quot;,HEX(AES_ENCRYPT(&#39;123456&#39;,&#39;HelloWorld&#39;)));</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="4-配置父子表"><a href="#4-配置父子表" class="headerlink" title="4. 配置父子表"></a>4. 配置父子表</h2><ol>
+<li><p>在conf目录下创建<code>customer-hash-int</code>文件，内容如下：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">101</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">102</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">103</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">104</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">105</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">106</span>=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在rule.xml文件中加入自定义<function>和<tableRule></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">function</span> <span class="attr">name</span>=<span class="string">"customer-hash-int"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">class</span>=<span class="string">"io.mycat.route.function.PartitionByFileMap"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapFile"</span>&gt;</span>customer-hash-int.txt<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">function</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">tableRule</span> <span class="attr">name</span>=<span class="string">"sharding-customer"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">rule</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">columns</span>&gt;</span>sharding_id<span class="tag">&lt;/<span class="name">columns</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">algorithm</span>&gt;</span>customer-hash-int<span class="tag">&lt;/<span class="name">algorithm</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">rule</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tableRule</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改schema.xml文件，添加父子表定义</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">"t_customer"</span> <span class="attr">dataNode</span>=<span class="string">"dn1,dn2"</span> <span class="attr">rule</span>=<span class="string">"sharding-customer"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">childTable</span> <span class="attr">name</span>=<span class="string">"t_orders"</span> <span class="attr">primaryKey</span>=<span class="string">"ID"</span> <span class="attr">joinKey</span>=<span class="string">"customer_id"</span> 	</span></span><br><span class="line"><span class="tag">                <span class="attr">parentKey</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在MyCat上执行如下SQL：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">USE test;</span><br><span class="line">CREATE TABLE t_customer(</span><br><span class="line">	id INT UNSIGNED PRIMARY KEY,</span><br><span class="line">    username VARCHAR(200) NOT NULL,</span><br><span class="line">    sharding_id INT NOT NULL</span><br><span class="line">);</span><br><span class="line">CREATE TABLE t_orders(</span><br><span class="line">	id INT UNSIGNED PRIMARY KEY,</span><br><span class="line">    customer_id INT NOT NULL,</span><br><span class="line">    datetime TIMESTAMP DEFAULT CURRENT_TIMSTAMP</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>向t_customer表和t_orders表写入数据，查看字表数据跟随父表切分到同一个分片</p>
+</li>
+</ol>
+<h2 id="5-创建双机热备的MyCat集群"><a href="#5-创建双机热备的MyCat集群" class="headerlink" title="5. 创建双机热备的MyCat集群"></a>5. 创建双机热备的MyCat集群</h2><ol>
+<li><p>用两个虚拟机实例，各自部署MyCat</p>
+</li>
+<li><p>用一个虚拟机实例部署Haproxy</p>
+<ul>
+<li><p>安装Haproxy</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y haproxy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/haproxy/haproxy.cfg</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">    log         127.0.0.1 local2</span><br><span class="line">    chroot      &#x2F;var&#x2F;lib&#x2F;haproxy</span><br><span class="line">    pidfile     &#x2F;var&#x2F;run&#x2F;haproxy.pid</span><br><span class="line">    maxconn     4000</span><br><span class="line">    user        haproxy</span><br><span class="line">    group       haproxy</span><br><span class="line">    daemon</span><br><span class="line">    # turn on stats unix socket</span><br><span class="line">    stats socket &#x2F;var&#x2F;lib&#x2F;haproxy&#x2F;stats</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    mode                    http</span><br><span class="line">    log                     global</span><br><span class="line">    option                  httplog</span><br><span class="line">    option                  dontlognull</span><br><span class="line">    option http-server-close</span><br><span class="line">    option forwardfor       except 127.0.0.0&#x2F;8</span><br><span class="line">    option                  redispatch</span><br><span class="line">    retries                 3</span><br><span class="line">    timeout http-request    10s</span><br><span class="line">    timeout queue           1m</span><br><span class="line">    timeout connect         10s</span><br><span class="line">    timeout client          1m</span><br><span class="line">    timeout server          1m</span><br><span class="line">    timeout http-keep-alive 10s</span><br><span class="line">    timeout check           10s</span><br><span class="line">    maxconn                 3000</span><br><span class="line"></span><br><span class="line">listen   admin_stats  </span><br><span class="line">    bind    0.0.0.0:4001</span><br><span class="line">    mode  http</span><br><span class="line">    stats uri       &#x2F;dbs</span><br><span class="line">    stats realm  Global\ statistics</span><br><span class="line">    stats auth    admin:abc123456</span><br><span class="line">listen   proxy-mysql</span><br><span class="line">    bind    0.0.0.0:3306  </span><br><span class="line">    mode  tcp </span><br><span class="line">    balance  roundrobin</span><br><span class="line">    option  tcplog       #日志格式</span><br><span class="line">    server   mycat_1  192.168.99.131:3306  check  port  8066  maxconn  2000  </span><br><span class="line">    server   mycat_2  192.168.99.132:3306  check  port  8066  maxconn  2000  </span><br><span class="line">    option  tcpka        #使用keepalive检测死链</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动Haproxy</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">service haproxy start</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问Haproxy监控画面</p>
+<p><a href="http://192.168.99.131:4001/dbs" target="_blank" rel="noopener">http://192.168.99.131:4001/dbs</a></p>
+</li>
+</ul>
+</li>
+<li><p>用另外一个虚拟机同样按照上述操作安装Haproxy</p>
+</li>
+<li><p>在某个Haproxy虚拟机实例上部署Keepalived</p>
+<ul>
+<li><p>开启防火墙的VRRP协议</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">开启VRRP</span></span><br><span class="line">firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 --protocol  vrrp -j ACCEPT</span><br><span class="line"><span class="meta">#</span><span class="bash">应用设置</span></span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装Keepalived</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y keepalived</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim /etc/keepalived/keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  ens33</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.99.133</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动Keepalived</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">service keepalived start</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ping 192.168.99.133</p>
+</li>
+</ul>
+</li>
+<li><p>在另外一个Haproxy虚拟机上，按照上述方法部署Keepalived</p>
+</li>
+<li><p>使用MySQL客户端连接192.168.99.133，执行增删改查数据</p>
+</li>
+</ol>
+<h1 id="四、Sysbench基准测试"><a href="#四、Sysbench基准测试" class="headerlink" title="四、Sysbench基准测试"></a>四、Sysbench基准测试</h1><h2 id="1-安装Sysbench"><a href="#1-安装Sysbench" class="headerlink" title="1. 安装Sysbench"></a>1. 安装Sysbench</h2><ul>
+<li><p>在线安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/</span><br><span class="line">repositories/akopytov/sysbench/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum -y install sysbench</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>本地安装</p>
+<ul>
+<li><p>下载压缩文件</p>
+<p><a href="https://codeload.github.com/akopytov/sysbench/zip/1.0" target="_blank" rel="noopener">https://</a><a href="https://codeload.github.com/akopytov/sysbench/zip/1.0" target="_blank" rel="noopener">codeload.github.com/akopytov/sysbench/zip/1.0</a></p>
+</li>
+<li><p>安装依赖包</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y automake libtool</span><br><span class="line">yum install -y mysql-devel</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">cd</span> sysbench</span></span><br><span class="line">./autogen.sh </span><br><span class="line">./configure </span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line">sysbench --version</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-执行测试"><a href="#2-执行测试" class="headerlink" title="2. 执行测试"></a>2. 执行测试</h2><ul>
+<li><p>准备测试库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sysbench  /usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --mysql-host=192.168.99.131 --mysql-port=3306 --mysql-user=admin --mysql-password=Abc_123456 --oltp-tables-count=10 --oltp-table-size=100000 prepare</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行测试</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sysbench  /usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --mysql-host=192.168.99.131 --mysql-port=3306 --mysql-user=admin --mysql-password=Abc_123456 --oltp-test-mode=complex --threads=10 --time=300 --report-interval=10 run &gt;&gt; /home/mysysbench.log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>清理数据</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sysbench /usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --mysql-host=192.168.99.131 --mysql-port=3306 --mysql-user=admin --mysql-password=Abc_123456 --oltp-tables-count=10 cleanup</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h1 id="五、tpcc-mysql-压力测试"><a href="#五、tpcc-mysql-压力测试" class="headerlink" title="五、tpcc-mysql 压力测试"></a>五、tpcc-mysql 压力测试</h1><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h2><ul>
+<li><p>修改my.cnf配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure>
+
+<p>pxc_strict_mode=DISABLED</p>
+</li>
+<li><p>修改某个Haproxy的配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server   mysql_1  192.168.99.151:3306  check  port  3306  weight  1  maxconn  2000</span><br><span class="line">server   mysql_2  192.168.99.159:3306  check  port  3306  weight  1  maxconn  2000</span><br><span class="line">server   mysql_3  192.168.99.215:3306  check  port  3306  weight  1  maxconn  2000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新启动Haproxy</p>
+</li>
+<li><p>安装依赖程序包</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y gcc</span><br><span class="line">yum install -y mysql-devel</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="2-安装tpcc-mysql"><a href="#2-安装tpcc-mysql" class="headerlink" title="2. 安装tpcc-mysql"></a>2. 安装tpcc-mysql</h2><ul>
+<li><p>下载压缩包</p>
+<p><a href="https://codeload.github.com/Percona-Lab/tpcc-mysql/zip/master" target="_blank" rel="noopener">https://codeload.github.com/Percona-Lab/tpcc-mysql/zip/</a><a href="https://codeload.github.com/Percona-Lab/tpcc-mysql/zip/master" target="_blank" rel="noopener">master</a></p>
+</li>
+<li><p>执行安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">cd</span> tpcc的src目录</span></span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行<code>create_table.sql</code>和<code>add_fkey_idx.sql</code>两个文件</p>
+</li>
+<li><p>执行数据初始化</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./tpcc_load -h 192.168.99.131 -d tpcc -u admin -p Abc_123456 -w</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行压力测试</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./tpcc_start -h 192.168.99.131 -d tpcc -u admin -p Abc_123456 -w 1 -c 5 -r 300 -l 600 -&gt;tpcc-output-log</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="六、导入数据"><a href="#六、导入数据" class="headerlink" title="六、导入数据"></a>六、导入数据</h1><h2 id="1-生成1000万条数据"><a href="#1-生成1000万条数据" class="headerlink" title="1. 生成1000万条数据"></a>1. 生成1000万条数据</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.FileWriter</span><br><span class="line"><span class="keyword">import</span> java.io.BufferedWriter</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function">def <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">var</span> writer=<span class="keyword">new</span> FileWriter(<span class="string">"D:/data.txt"</span>)</span><br><span class="line">		<span class="keyword">var</span> buff=<span class="keyword">new</span> BufferedWriter(writer)</span><br><span class="line">		<span class="keyword">for</span>(i:<span class="number">1</span>..<span class="number">10000000</span>)&#123;</span><br><span class="line">			buff.write(i+<span class="string">",测试数据\n"</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		buff.close</span><br><span class="line">		writer.close</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-执行文件切分"><a href="#2-执行文件切分" class="headerlink" title="2. 执行文件切分"></a>2. 执行文件切分</h2><ul>
+<li><p>上传data.txt文件到linux</p>
+</li>
+<li><p>执行文件切分</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">split -l 1000000 -d data.txt</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="3-准备数据库"><a href="#3-准备数据库" class="headerlink" title="3. 准备数据库"></a>3. 准备数据库</h2><ul>
+<li><p>每个PXC分片只开启一个节点</p>
+</li>
+<li><p>修改PXC节点文件，然后重启PXC服务</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">innodb_flush_log_at_trx_commit</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">innodb_flush_method</span> = O_DIRECT</span><br><span class="line"><span class="attr">innodb_buffer_pool_size</span> = <span class="number">200</span>M</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建t_test数据表</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE t_test(</span><br><span class="line">	id INT UNSIGNED PRIMARY KEY,</span><br><span class="line">    name VARCHAR(200) NOT NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置MyCat</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">"t_test"</span> <span class="attr">dataNode</span>=<span class="string">"dn1,dn2"</span> <span class="attr">rule</span>=<span class="string">"mod-long"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dataHost</span> <span class="attr">name</span>=<span class="string">"cluster1"</span> <span class="attr">maxCon</span>=<span class="string">"1000"</span> <span class="attr">minCon</span>=<span class="string">"10"</span> <span class="attr">balance</span>=<span class="string">"0"</span> <span class="attr">writeType</span>=<span class="string">"1"</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">dbType</span>=<span class="string">"mysql"</span> <span class="attr">dbDriver</span>=<span class="string">"native"</span> <span class="attr">switchType</span>=<span class="string">"1"</span> <span class="attr">slaveThreshold</span>=<span class="string">"100"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">heartbeat</span>&gt;</span>select user()<span class="tag">&lt;/<span class="name">heartbeat</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">writeHost</span> <span class="attr">host</span>=<span class="string">"W1"</span> <span class="attr">url</span>=<span class="string">"192.168.99.151:3306"</span> <span class="attr">user</span>=<span class="string">"admin"</span> </span></span><br><span class="line"><span class="tag">               <span class="attr">password</span>=<span class="string">"Abc_123456"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dataHost</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dataHost</span> <span class="attr">name</span>=<span class="string">"cluster2"</span> <span class="attr">maxCon</span>=<span class="string">"1000"</span> <span class="attr">minCon</span>=<span class="string">"10"</span> <span class="attr">balance</span>=<span class="string">"0"</span> <span class="attr">writeType</span>=<span class="string">"1"</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">dbType</span>=<span class="string">"mysql"</span> <span class="attr">dbDriver</span>=<span class="string">"native"</span> <span class="attr">switchType</span>=<span class="string">"1"</span> <span class="attr">slaveThreshold</span>=<span class="string">"100"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">heartbeat</span>&gt;</span>select user()<span class="tag">&lt;/<span class="name">heartbeat</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">writeHost</span> <span class="attr">host</span>=<span class="string">"W1"</span> <span class="attr">url</span>=<span class="string">"192.168.99.121:3306"</span> <span class="attr">user</span>=<span class="string">"admin"</span> </span></span><br><span class="line"><span class="tag">               <span class="attr">password</span>=<span class="string">"Abc_123456"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dataHost</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h2 id="4-执行Java程序，多线程导入数据"><a href="#4-执行Java程序，多线程导入数据" class="headerlink" title="4. 执行Java程序，多线程导入数据"></a>4. 执行Java程序，多线程导入数据</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.eclipse.xtend.lib.annotations.Accessors</span><br><span class="line"><span class="keyword">import</span> java.io.File</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">	<span class="meta">@Accessors</span></span><br><span class="line">	File file;</span><br><span class="line">	</span><br><span class="line">	<span class="function">override <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">var</span> url=<span class="string">"jdbc:mysql://192.168.99.131:8066/test"</span></span><br><span class="line">		<span class="keyword">var</span> username=<span class="string">"admin"</span></span><br><span class="line">		<span class="keyword">var</span> password=<span class="string">"Abc_123456"</span></span><br><span class="line">		<span class="keyword">var</span> con=DriverManager.getConnection(url,username,password)</span><br><span class="line">		<span class="keyword">var</span> sql=<span class="string">''</span><span class="string">'</span></span><br><span class="line"><span class="string">			load data local intfile '</span>/home/data/«file.name»<span class="string">' ignore into table t_test </span></span><br><span class="line"><span class="string">			character set '</span>utf8<span class="string">' </span></span><br><span class="line"><span class="string">			fields terminated by '</span>,<span class="string">' optionally enclosed by '</span>\<span class="string">"' </span></span><br><span class="line"><span class="string">			lines terminated by '\n' (id,name);</span></span><br><span class="line"><span class="string">		'''</span></span><br><span class="line"><span class="string">		var pst=con.prepareStatement(sql);</span></span><br><span class="line"><span class="string">		pst.execute</span></span><br><span class="line"><span class="string">		con.close</span></span><br><span class="line"><span class="string">		LoadData.updateNum();</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> com.mysql.jdbc.Driver</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.LinkedBlockingQueue</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ThreadPoolExecutor</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit</span><br><span class="line"><span class="keyword">import</span> java.io.File</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoadData</span> </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> <span class="keyword">static</span> <span class="keyword">int</span> num=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">var</span> <span class="keyword">static</span> <span class="keyword">int</span> end=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">var</span> <span class="keyword">static</span> pool=<span class="keyword">new</span> ThreadPoolExecutor(<span class="number">1</span>,<span class="number">5</span>,<span class="number">60</span>,TimeUnit.SECONDS,<span class="keyword">new</span> LinkedBlockingQueue(<span class="number">200</span>))</span><br><span class="line">	<span class="function">def <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		DriverManager.registerDriver(<span class="keyword">new</span> Driver)</span><br><span class="line">		<span class="keyword">var</span> folder=<span class="keyword">new</span> File(<span class="string">"/home/data"</span>)</span><br><span class="line">		<span class="keyword">var</span> files=folder.listFiles</span><br><span class="line">		end=files.length <span class="comment">//线程池结束条件</span></span><br><span class="line">		files.forEach[one|</span><br><span class="line">			<span class="keyword">var</span> task=<span class="keyword">new</span> Task();</span><br><span class="line">			task.file=one;</span><br><span class="line">			pool.execute(task)</span><br><span class="line">		]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">synchronized</span> def <span class="keyword">static</span> <span class="title">updateNum</span><span class="params">()</span></span>&#123;</span><br><span class="line">		num++;</span><br><span class="line">		<span class="keyword">if</span>(num==end)&#123;</span><br><span class="line">			pool.shutdown();</span><br><span class="line">			println(<span class="string">"执行结束"</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="七、大数据归档"><a href="#七、大数据归档" class="headerlink" title="七、大数据归档"></a>七、大数据归档</h1><h2 id="1-安装TokuDB"><a href="#1-安装TokuDB" class="headerlink" title="1. 安装TokuDB"></a>1. 安装TokuDB</h2><ul>
+<li><p>安装jemlloc</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y jemalloc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">……</span><br><span class="line"><span class="section">[mysqld_safe]</span></span><br><span class="line"><span class="attr">malloc-lib</span>=/usr/lib64/libjemalloc.so.<span class="number">1</span></span><br><span class="line">……</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启MySQL</p>
+</li>
+<li><p>开启Linux大页内存</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled</span><br><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装TokuDB</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y Percona-Server-tokudb-57.x86_64</span><br><span class="line">ps-admin --enable -uroot -p</span><br><span class="line">service mysql restart</span><br><span class="line">ps-admin --enable -uroot -p</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看安装结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show engines ;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="2-配置Replication集群"><a href="#2-配置Replication集群" class="headerlink" title="2. 配置Replication集群"></a>2. 配置Replication集群</h2><ul>
+<li><p>在两个TokuDB数据库上创建用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE USER &#39;backup&#39;@&#39;%&#39; IDENTIFIED BY &#39;Abc_123456&#39; ;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GRANT super, reload, replication slave ON *.* TO &#39;backup&#39;@&#39;%&#39; ;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">FLUSH  PRIVILEGES ;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改两个TokuDB的配置文件，如下：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="attr">server_id</span> = <span class="number">101</span></span><br><span class="line"><span class="attr">log_bin</span> = mysql_bin</span><br><span class="line"><span class="attr">relay_log</span> = relay_bin</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="attr">server_id</span> = <span class="number">102</span></span><br><span class="line"><span class="attr">log_bin</span> = mysql_bin</span><br><span class="line"><span class="attr">relay_log</span> = relay_bin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新启动两个TokuDB节点</p>
+</li>
+<li><p>分别在两个TokuDB上执行下面4句SQL</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#关闭同步服务</span><br><span class="line">stop slave;</span><br><span class="line">#设置同步的Master节点</span><br><span class="line">change master to master_host&#x3D;&quot;192.168.99.155&quot;,master_port&#x3D;3306,master_user&#x3D;&quot;backup&quot;,</span><br><span class="line">master_password&#x3D;&quot;Abc_123456&quot;;</span><br><span class="line">#启动同步服务</span><br><span class="line">start slave;</span><br><span class="line">#查看同步状态</span><br><span class="line">show slave status;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#关闭同步服务</span><br><span class="line">stop slave;</span><br><span class="line">#设置同步的Master节点</span><br><span class="line">change master to master_host&#x3D;&quot;192.168.99.102&quot;,master_port&#x3D;3306,master_user&#x3D;&quot;backup&quot;,</span><br><span class="line">master_password&#x3D;&quot;Abc_123456&quot;;</span><br><span class="line">#启动同步服务</span><br><span class="line">start slave;</span><br><span class="line">#查看同步状态</span><br><span class="line">show slave status;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="3-创建归档表"><a href="#3-创建归档表" class="headerlink" title="3. 创建归档表"></a>3. 创建归档表</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE t_purchase (</span><br><span class="line">	id INT UNSIGNED PRIMARY KEY,</span><br><span class="line">	purchase_price DECIMAL(10,2) NOT NULL,</span><br><span class="line">	purchase_num INT UNSIGNED NOT NULL,</span><br><span class="line">	purchase_sum DECIMAL (10,2) NOT NULL,</span><br><span class="line">	purchase_buyer INT UNSIGNED NOT NULL,</span><br><span class="line">	purchase_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,</span><br><span class="line">	company_id INT UNSIGNED NOT NULL,</span><br><span class="line">	goods_id INT UNSIGNED NOT NULL,</span><br><span class="line">	KEY idx_company_id(company_id),</span><br><span class="line">	KEY idx_goods_id(goods_id)</span><br><span class="line">)engine&#x3D;TokuDB;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-配置Haproxy-Keepalived双机热备"><a href="#4-配置Haproxy-Keepalived双机热备" class="headerlink" title="4. 配置Haproxy+Keepalived双机热备"></a>4. 配置Haproxy+Keepalived双机热备</h2><ul>
+<li><p>在两个节点上安装Haproxy</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y haproxy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/haproxy/haproxy.cfg</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">    log         127.0.0.1 local2</span><br><span class="line">    chroot      /var/lib/haproxy</span><br><span class="line">    pidfile     /var/run/haproxy.pid</span><br><span class="line">    maxconn     4000</span><br><span class="line">    user        haproxy</span><br><span class="line">    group       haproxy</span><br><span class="line">    daemon</span><br><span class="line">    # turn on stats unix socket</span><br><span class="line">    stats socket /var/lib/haproxy/stats</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    mode                    http</span><br><span class="line">    log                     global</span><br><span class="line">    option                  httplog</span><br><span class="line">    option                  dontlognull</span><br><span class="line">    option http-server-close</span><br><span class="line">    option forwardfor       except 127.0.0.0/8</span><br><span class="line">    option                  redispatch</span><br><span class="line">    retries                 3</span><br><span class="line">    timeout http-request    10s</span><br><span class="line">    timeout queue           1m</span><br><span class="line">    timeout connect         10s</span><br><span class="line">    timeout client          1m</span><br><span class="line">    timeout server          1m</span><br><span class="line">    timeout http-keep-alive 10s</span><br><span class="line">    timeout check           10s</span><br><span class="line">    maxconn                 3000</span><br><span class="line"></span><br><span class="line">listen   admin_stats  </span><br><span class="line">    bind    0.0.0.0:4001</span><br><span class="line">    mode  http</span><br><span class="line">    stats uri       /dbs</span><br><span class="line">    stats realm  Global\ statistics</span><br><span class="line">    stats auth    admin:abc123456</span><br><span class="line">listen   proxy-mysql</span><br><span class="line">    bind    0.0.0.0:4002  </span><br><span class="line">    mode  tcp </span><br><span class="line">    balance  roundrobin</span><br><span class="line">    option  tcplog       #日志格式</span><br><span class="line">    server   backup_1  192.168.99.102:3306  check  port  3306  maxconn  2000  </span><br><span class="line">    server   backup_2  192.168.99.155:3306  check  port  3306  maxconn  2000  </span><br><span class="line">    option  tcpka        #使用keepalive检测死链</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启Haproxy</p>
+</li>
+<li><p>开启防火墙的VRRP协议</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 --protocol vrrp -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在两个节点上安装Keepalived</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y keepalived</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑Keepalived配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim /etc/keepalived/keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  ens33</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.99.211</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启Keepalived</p>
+</li>
+</ul>
+<h2 id="5-准备归档数据"><a href="#5-准备归档数据" class="headerlink" title="5. 准备归档数据"></a>5. 准备归档数据</h2><ul>
+<li><p>在两个PXC分片上创建进货表</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE t_purchase (</span><br><span class="line">	id INT UNSIGNED PRIMARY KEY,</span><br><span class="line">	purchase_price DECIMAL(10,2) NOT NULL,</span><br><span class="line">	purchase_num INT UNSIGNED NOT NULL,</span><br><span class="line">	purchase_sum DECIMAL (10,2) NOT NULL,</span><br><span class="line">	purchase_buyer INT UNSIGNED NOT NULL,</span><br><span class="line">	purchase_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,</span><br><span class="line">	company_id INT UNSIGNED NOT NULL,</span><br><span class="line">	goods_id INT UNSIGNED NOT NULL,</span><br><span class="line">	KEY idx_company_id(company_id),</span><br><span class="line">	KEY idx_goods_id(goods_id)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置MyCat的schema.xml文件，并重启MyCat</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">"t_purchase"</span> <span class="attr">dataNode</span>=<span class="string">"dn1,dn2"</span> <span class="attr">rule</span>=<span class="string">"mod-long"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="6-执行数据归档"><a href="#6-执行数据归档" class="headerlink" title="6. 执行数据归档"></a>6. 执行数据归档</h2><ul>
+<li><p>安装pt-archiver</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install percona-toolkit</span><br><span class="line">pt-archiver --version</span><br><span class="line">pt-archiver --help</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行数据归档</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pt-archiver --source h=192.168.99.102,P=8066,u=admin,p=Abc_123456,D=test,t=t_purchase --dest h=192.168.99.102,P=3306,u=admin,p=Abc_123456,D=test,t=t_purchase --no-check-charset --where 'purchase_date&lt;"2018-09"' --progress 5000 --bulk-delete --bulk-insert --limit=10000 --statistics</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL集群</tag>
+        <tag>PXC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -1609,41 +2025,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
-    <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，这里就分开总结了。。。</p>
-<h2 id="Spring集成PageHelper："><a href="#Spring集成PageHelper：" class="headerlink" title="Spring集成PageHelper："></a>Spring集成PageHelper：</h2><p><strong>第一步：pom文件引入依赖</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第二步：MyBatis的核心配置文件中引入配置项</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"com.liuurick.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第三步：业务逻辑实现分页功能，我们只需将当前查询的页数page和每页显示的总条数rows传进去，然后Pagehelper已经帮我们分好数据了，只需在web层获取数据即可。</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分页查询商品列表：</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DatagridResult <span class="title">itemList</span><span class="params">(Integer page, Integer rows)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//为了程序的严谨性，判断非空：</span></span><br><span class="line">    <span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;   <span class="comment">//设置默认当前页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(page &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(rows == <span class="keyword">null</span>)&#123;</span><br><span class="line">        rows = <span class="number">30</span>;    <span class="comment">//设置默认每页显示的商品数(因为jsp页面上默认写的就是30条)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1、设置分页信息，包括当前页数和每页显示的总计数</span></span><br><span class="line">    PageHelper.startPage(page, rows);</span><br><span class="line">    <span class="comment">//2、执行查询</span></span><br><span class="line">    TbItemExample example = <span class="keyword">new</span> TbItemExample();</span><br><span class="line">    List&lt;TbItem&gt; list = tbItemMapper.selectByExample(example);</span><br><span class="line">    <span class="comment">//3、获取分页查询后的数据</span></span><br><span class="line">    PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    <span class="comment">//4、封装需要返回的分页实体</span></span><br><span class="line">    DatagridResult result = <span class="keyword">new</span> DatagridResult();</span><br><span class="line">    <span class="comment">//设置获取到的总记录数total：</span></span><br><span class="line">    result.setTotal(pageInfo.getTotal());</span><br><span class="line">    <span class="comment">//设置数据集合rows：</span></span><br><span class="line">    result.setRows(list);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="springboot集成PageHelper："><a href="#springboot集成PageHelper：" class="headerlink" title="springboot集成PageHelper："></a>springboot集成PageHelper：</h2><p><strong>第一步：pom文件还是需要引入依赖</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第二步：这次直接是在项目的入口类application.java中直接设置PageHelper插件即可</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//配置mybatis的分页插件pageHelper</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PageHelper <span class="title">pageHelper</span><span class="params">()</span></span>&#123;</span><br><span class="line">    PageHelper pageHelper = <span class="keyword">new</span> PageHelper();</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.setProperty(<span class="string">"offsetAsPageNum"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"rowBoundsWithCount"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"reasonable"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"dialect"</span>,<span class="string">"mysql"</span>);    <span class="comment">//配置mysql数据库的方言</span></span><br><span class="line">    pageHelper.setProperties(properties);</span><br><span class="line">    <span class="keyword">return</span> pageHelper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>第三步：同理，使用插件实现分页功能，方式还是一样，只需将当前查询的页数和每页显示的条数穿进去即可，直接源码</strong></p>
-<p>这是需要用到的分页实体，各位可以直接享用。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.riemann.utils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页bean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 当前页</span></span><br><span class="line">    <span class="keyword">private</span> Integer currentPage = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 每页显示的总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer pageSize = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">// 总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalNum;</span><br><span class="line">    <span class="comment">// 是否有下一页</span></span><br><span class="line">    <span class="keyword">private</span> Integer isMore;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalPage;</span><br><span class="line">    <span class="comment">// 开始索引</span></span><br><span class="line">    <span class="keyword">private</span> Integer startIndex;</span><br><span class="line">    <span class="comment">// 分页结果</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;T&gt; items;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">(Integer currentPage, Integer pageSize, Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = (<span class="keyword">this</span>.totalNum+<span class="keyword">this</span>.pageSize-<span class="number">1</span>)/<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = (<span class="keyword">this</span>.currentPage-<span class="number">1</span>)*<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.isMore = <span class="keyword">this</span>.currentPage &gt;= <span class="keyword">this</span>.totalPage?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getCurrentPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCurrentPage</span><span class="params">(Integer currentPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getPageSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageSize</span><span class="params">(Integer pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalNum</span><span class="params">(Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getIsMore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsMore</span><span class="params">(Integer isMore)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isMore = isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalPage</span><span class="params">(Integer totalPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStartIndex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartIndex</span><span class="params">(Integer startIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">getItems</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> items;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItems</span><span class="params">(List&lt;T&gt; items)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.items = items;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>分页功能源码(web层和service层)。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">findItemByPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】</span></span><br><span class="line">    PageHelper.startPage(currentPage, pageSize);</span><br><span class="line">    </span><br><span class="line">    List&lt;Item&gt; allItems = itemMapper.findAll();        <span class="comment">//全部商品</span></span><br><span class="line">    <span class="keyword">int</span> countNums = itemMapper.countItem();            <span class="comment">//总记录数</span></span><br><span class="line">    PageBean&lt;Item&gt; pageData = <span class="keyword">new</span> PageBean&lt;&gt;(currentPage, pageSize, countNums);</span><br><span class="line">    pageData.setItems(allItems);</span><br><span class="line">    <span class="keyword">return</span> pageData.getItems();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 商品分页功能(集成mybatis的分页插件pageHelper实现)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> currentPage    :当前页数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize        :每页显示的总记录数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/itemsPage"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">itemsPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> itemService.findItemByPage(currentPage, pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>分页功能</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot实现邮件发送功能</title>
     <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
     <content><![CDATA[<p>SpringBoot实现邮件发送功能</p>
@@ -1682,6 +2063,41 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>邮件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
+    <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，这里就分开总结了。。。</p>
+<h2 id="Spring集成PageHelper："><a href="#Spring集成PageHelper：" class="headerlink" title="Spring集成PageHelper："></a>Spring集成PageHelper：</h2><p><strong>第一步：pom文件引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：MyBatis的核心配置文件中引入配置项</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"com.liuurick.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：业务逻辑实现分页功能，我们只需将当前查询的页数page和每页显示的总条数rows传进去，然后Pagehelper已经帮我们分好数据了，只需在web层获取数据即可。</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分页查询商品列表：</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DatagridResult <span class="title">itemList</span><span class="params">(Integer page, Integer rows)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//为了程序的严谨性，判断非空：</span></span><br><span class="line">    <span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;   <span class="comment">//设置默认当前页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(page &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(rows == <span class="keyword">null</span>)&#123;</span><br><span class="line">        rows = <span class="number">30</span>;    <span class="comment">//设置默认每页显示的商品数(因为jsp页面上默认写的就是30条)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1、设置分页信息，包括当前页数和每页显示的总计数</span></span><br><span class="line">    PageHelper.startPage(page, rows);</span><br><span class="line">    <span class="comment">//2、执行查询</span></span><br><span class="line">    TbItemExample example = <span class="keyword">new</span> TbItemExample();</span><br><span class="line">    List&lt;TbItem&gt; list = tbItemMapper.selectByExample(example);</span><br><span class="line">    <span class="comment">//3、获取分页查询后的数据</span></span><br><span class="line">    PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    <span class="comment">//4、封装需要返回的分页实体</span></span><br><span class="line">    DatagridResult result = <span class="keyword">new</span> DatagridResult();</span><br><span class="line">    <span class="comment">//设置获取到的总记录数total：</span></span><br><span class="line">    result.setTotal(pageInfo.getTotal());</span><br><span class="line">    <span class="comment">//设置数据集合rows：</span></span><br><span class="line">    result.setRows(list);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="springboot集成PageHelper："><a href="#springboot集成PageHelper：" class="headerlink" title="springboot集成PageHelper："></a>springboot集成PageHelper：</h2><p><strong>第一步：pom文件还是需要引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：这次直接是在项目的入口类application.java中直接设置PageHelper插件即可</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//配置mybatis的分页插件pageHelper</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PageHelper <span class="title">pageHelper</span><span class="params">()</span></span>&#123;</span><br><span class="line">    PageHelper pageHelper = <span class="keyword">new</span> PageHelper();</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.setProperty(<span class="string">"offsetAsPageNum"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"rowBoundsWithCount"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"reasonable"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"dialect"</span>,<span class="string">"mysql"</span>);    <span class="comment">//配置mysql数据库的方言</span></span><br><span class="line">    pageHelper.setProperties(properties);</span><br><span class="line">    <span class="keyword">return</span> pageHelper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：同理，使用插件实现分页功能，方式还是一样，只需将当前查询的页数和每页显示的条数穿进去即可，直接源码</strong></p>
+<p>这是需要用到的分页实体，各位可以直接享用。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.riemann.utils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页bean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 当前页</span></span><br><span class="line">    <span class="keyword">private</span> Integer currentPage = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 每页显示的总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer pageSize = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">// 总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalNum;</span><br><span class="line">    <span class="comment">// 是否有下一页</span></span><br><span class="line">    <span class="keyword">private</span> Integer isMore;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalPage;</span><br><span class="line">    <span class="comment">// 开始索引</span></span><br><span class="line">    <span class="keyword">private</span> Integer startIndex;</span><br><span class="line">    <span class="comment">// 分页结果</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;T&gt; items;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">(Integer currentPage, Integer pageSize, Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = (<span class="keyword">this</span>.totalNum+<span class="keyword">this</span>.pageSize-<span class="number">1</span>)/<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = (<span class="keyword">this</span>.currentPage-<span class="number">1</span>)*<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.isMore = <span class="keyword">this</span>.currentPage &gt;= <span class="keyword">this</span>.totalPage?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getCurrentPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCurrentPage</span><span class="params">(Integer currentPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getPageSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageSize</span><span class="params">(Integer pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalNum</span><span class="params">(Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getIsMore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsMore</span><span class="params">(Integer isMore)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isMore = isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalPage</span><span class="params">(Integer totalPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStartIndex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartIndex</span><span class="params">(Integer startIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">getItems</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> items;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItems</span><span class="params">(List&lt;T&gt; items)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.items = items;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分页功能源码(web层和service层)。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">findItemByPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】</span></span><br><span class="line">    PageHelper.startPage(currentPage, pageSize);</span><br><span class="line">    </span><br><span class="line">    List&lt;Item&gt; allItems = itemMapper.findAll();        <span class="comment">//全部商品</span></span><br><span class="line">    <span class="keyword">int</span> countNums = itemMapper.countItem();            <span class="comment">//总记录数</span></span><br><span class="line">    PageBean&lt;Item&gt; pageData = <span class="keyword">new</span> PageBean&lt;&gt;(currentPage, pageSize, countNums);</span><br><span class="line">    pageData.setItems(allItems);</span><br><span class="line">    <span class="keyword">return</span> pageData.getItems();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 商品分页功能(集成mybatis的分页插件pageHelper实现)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> currentPage    :当前页数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize        :每页显示的总记录数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/itemsPage"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">itemsPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> itemService.findItemByPage(currentPage, pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>分页功能</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>SpringBoot</tag>
       </tags>
   </entry>
   <entry>
@@ -1961,35 +2377,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git常见错误</title>
-    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>记录git常见错误</p>
-<a id="more"></a>
-
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
-<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-<p>2.git Could not read from remote repository</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3.error: failed to push some refs to xxx</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git常见错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>canal中间件学习笔记</title>
     <url>/2020/12/09/canal%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>es准时性索引的构建</p>
@@ -2169,6 +2556,35 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>ElasticSearch7</tag>
         <tag>canal</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git常见错误</title>
+    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>记录git常见错误</p>
+<a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
+<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+<p>2.git Could not read from remote repository</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.error: failed to push some refs to xxx</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git常见错误</tag>
       </tags>
   </entry>
   <entry>
@@ -2805,6 +3221,18 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
+    <title>短信登录注册功能的实现</title>
+    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>短信服务</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<p>操作系统课设</p>
@@ -2895,18 +3323,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>短信登录注册功能的实现</title>
-    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>短信服务</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
     <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -2992,6 +3408,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>解读基金</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>通用型支付系统接入商城</title>
+    <url>/2020/12/13/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E5%95%86%E5%9F%8E/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>通用型支付系统</title>
@@ -3226,11 +3647,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <tag>Native支付</tag>
         <tag>支付宝PC支付</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>通用型支付系统接入商城</title>
-    <url>/2020/12/13/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E5%95%86%E5%9F%8E/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>防火墙管理</title>
