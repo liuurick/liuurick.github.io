@@ -27,12 +27,27 @@
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="es准时性索引的构建">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121201.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121202.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121203.png">
+<meta property="og:image" content="https://csdnimg.cn/release/blogv2/dist/pc/img/original.png">
+<meta property="og:image" content="https://csdnimg.cn/release/blogv2/dist/pc/img/articleReadEyes.png">
+<meta property="og:image" content="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollect.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020092416455914.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200924164738904.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200924165111748.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200924165447283.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020092417075439.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200924165501499.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200924165512428.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200924165520193.png#pic_center">
 <meta property="article:published_time" content="2020-12-09T07:05:40.000Z">
-<meta property="article:modified_time" content="2020-12-10T03:14:39.487Z">
+<meta property="article:modified_time" content="2020-12-12T14:07:09.124Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="ElasticSearch7">
 <meta property="article:tag" content="canal">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121201.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/09/canal%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
@@ -249,14 +264,71 @@
 <li>性能；</li>
 <li>编程简化；</li>
 </ul>
-<h1 id="Canal-简介"><a href="#Canal-简介" class="headerlink" title="Canal | 简介"></a>Canal | 简介</h1><ul>
+<h1 id="canal-简介"><a href="#canal-简介" class="headerlink" title="canal 简介"></a>canal 简介</h1><blockquote>
+<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
+</blockquote>
+<ul>
 <li>消息管道；</li>
 <li>source 为 MySQL 数据库；</li>
 <li>target 为其他存储，比如 ElasticSearch；</li>
-<li>Canal 伪装成一个 MySQL 主库的备库，感知 MySQL 中 binlog 的变化，并同步出来一个结构化的数据，交给 Canal 管道的消费端；</li>
+<li>Canal 借鉴了MySQL主从复制的原理，伪装成一个 MySQL 主库的备库，感知 MySQL 中 binlog 的变化，并同步出来一个结构化的数据，交给 Canal 管道的消费端；</li>
 </ul>
-<hr>
-<h1 id="开启-MySQL-的-binglog"><a href="#开启-MySQL-的-binglog" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h1><h6 id="Ubuntu-用-APT-Repository-安装-MySQL-的安装位置"><a href="#Ubuntu-用-APT-Repository-安装-MySQL-的安装位置" class="headerlink" title="Ubuntu 用 APT Repository 安装 MySQL 的安装位置"></a>Ubuntu 用 APT Repository 安装 MySQL 的安装位置</h6><ul>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121201.png" alt="img"></p>
+<h1 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h1><h4 id="MySQL主备复制原理"><a href="#MySQL主备复制原理" class="headerlink" title="MySQL主备复制原理"></a>MySQL主备复制原理</h4><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121202.png" alt="img"></p>
+<ul>
+<li>MySQL master 将数据变更写入二进制日志( binary log, 其中记录叫做二进制日志事件binary log events，可以通过 show binlog events 进行查看)</li>
+<li>MySQL slave 将 master 的 binary log events 拷贝到它的中继日志(relay log)</li>
+<li>MySQL slave 重放 relay log 中事件，将数据变更反映它自己的数据</li>
+</ul>
+<h4 id="canal-工作原理"><a href="#canal-工作原理" class="headerlink" title="canal 工作原理"></a>canal 工作原理</h4><ul>
+<li>canal 模拟 MySQL slave 的交互协议，伪装自己为 MySQL slave ，向 MySQL master 发送dump 协议</li>
+<li>MySQL master 收到 dump 请求，开始推送 binary log 给 slave (即 canal )</li>
+<li>canal 解析 binary log 对象(原始为 byte 流)</li>
+</ul>
+<h1 id="Windows下安装canal"><a href="#Windows下安装canal" class="headerlink" title="Windows下安装canal"></a>Windows下安装canal</h1><h2 id="开启-MySQL-的-binglog"><a href="#开启-MySQL-的-binglog" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h2><p>1.查看mysql的<code>log_bin</code>是否开启。</p>
+<p>因为canal是通过<code>log_bin</code>监听更新的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &#39;%log_bin%&#39;</span><br></pre></td></tr></table></figure>
+
+<p>如果value为off需要修改my.ini文件</p>
+<p><strong>注意</strong>：可能会出现MySQL目录下找不到 my.ini 的问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.在Windows窗口栏查看-》勾选隐藏的项目</span><br><span class="line">2.找到ProgramData目录</span><br><span class="line">3.在ProgramData目录中找到MySQL</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.修改my.ini文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server_id&#x3D;1 ###代表集群模式第一台机器</span><br><span class="line">binlog_format&#x3D;ROW ###行模式</span><br><span class="line">log_bin&#x3D;mysql_bin.log ###binlog的文件名称</span><br><span class="line">expire-logs-days&#x3D;14 ###失效日期为14天（可不配置）</span><br><span class="line">max-binlog-size&#x3D;500M ###最大存储500MB（可不配置）</span><br></pre></td></tr></table></figure>
+
+
+
+<p>重启MySQL之后再次查询：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121203.png" alt="image-20201212190859514"></p>
+<p>编译canal-adapter</p>
+<p>ESAdapter类中的类型错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">long rowCount &#x3D; response.getHits().getTotalHits().value;</span><br></pre></td></tr></table></figure>
+
+<p>ESConnection</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public BulkResponse bulk() &#123;</span><br><span class="line">            if (mode &#x3D;&#x3D; ESClientMode.TRANSPORT) &#123;</span><br><span class="line">                return bulkRequestBuilder.execute().actionGet();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    return restHighLevelClient.bulk(bulkRequest,RequestOptions.DEFAULT);</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    throw new RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="安装canal-adapter"><a href="#安装canal-adapter" class="headerlink" title="安装canal-adapter"></a>安装canal-adapter</h2><p>1.修改conf文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">srcDataSources:</span><br><span class="line">    defaultDS:</span><br><span class="line">    url: jdbc:mysql:&#x2F;&#x2F;127.0.0.1:3306&#x2F;dianpingdb?useUnicode&#x3D;true</span><br><span class="line">    username: root</span><br><span class="line">    password: 123456</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- name: es</span><br><span class="line">        hosts: 127.0.0.1:9300 # 127.0.0.1:9200 for rest mode</span><br><span class="line">        properties:</span><br><span class="line">          mode: transport # or rest</span><br><span class="line">          # security.auth: test:123456 #  only used for rest mode</span><br><span class="line">          cluster.name: elasticsearch</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.修改es目录下的文件</p>
+<p>创建shop.yml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dataSourceKey: defaultDS</span><br><span class="line">destination: example</span><br><span class="line">groupId: </span><br><span class="line">esMapping:</span><br><span class="line">  _index: shop</span><br><span class="line">  _type: _doc</span><br><span class="line">  _id: id</span><br><span class="line">  upsert: true</span><br><span class="line">  sql: &quot;select a.id,a.name,a.tags,concat(a.latitude,&#39;,&#39;,a.longitude) as location,a.remark_score,a.price_per_man,a.category_id,b.name as category_name,a.seller_id,c.remark_score as seller_remark_score,c.disabled_flag as seller_disabled_flag from shop a inner join category b on a.category_id &#x3D; b.id inner join seller c on c.id &#x3D; a.seller_id&quot;</span><br><span class="line">  commitBatch: 3000</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="Linux下安装canal"><a href="#Linux下安装canal" class="headerlink" title="Linux下安装canal"></a>Linux下安装canal</h1><h2 id="开启-MySQL-的-binglog-1"><a href="#开启-MySQL-的-binglog-1" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h2><h6 id="Ubuntu-用-APT-Repository-安装-MySQL-的安装位置"><a href="#Ubuntu-用-APT-Repository-安装-MySQL-的安装位置" class="headerlink" title="Ubuntu 用 APT Repository 安装 MySQL 的安装位置"></a>Ubuntu 用 APT Repository 安装 MySQL 的安装位置</h6><ul>
 <li><code>/etc/mysql</code> - 配置文件</li>
 <li><code>/var/lib/mysql</code> - 数据存放的位置</li>
 <li><code>/usr/bin/mysql</code> - 启动命令</li>
@@ -270,7 +342,7 @@
 
 <h6 id="创建复制用户"><a href="#创建复制用户" class="headerlink" title="创建复制用户"></a>创建复制用户</h6><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create user <span class="string">'canal'</span>@<span class="string">'%'</span> identified <span class="keyword">by</span> <span class="string">'canal'</span>;</span><br><span class="line"></span><br><span class="line">grant replication slave <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant replication client <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant <span class="keyword">select</span> <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
 
-<h1 id="canal-配置-1-1-3"><a href="#canal-配置-1-1-3" class="headerlink" title="canal 配置 | 1.1.3"></a>canal 配置 | 1.1.3</h1><h6 id="修改-canal-properties"><a href="#修改-canal-properties" class="headerlink" title="修改 canal.properties"></a>修改 canal.properties</h6><ul>
+<h2 id="canal-配置-1-1-3"><a href="#canal-配置-1-1-3" class="headerlink" title="canal 配置 | 1.1.3"></a>canal 配置 | 1.1.3</h2><h6 id="修改-canal-properties"><a href="#修改-canal-properties" class="headerlink" title="修改 canal.properties"></a>修改 canal.properties</h6><ul>
 <li>文件路径：<code>/home/lixinlei/application/canal/1.1.3/canal.deployer-1.1.3/conf</code>；</li>
 <li>这一行注释掉；</li>
 </ul>
@@ -286,7 +358,7 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;startup.sh</span><br></pre></td></tr></table></figure>
 
-<h1 id="canal-adapter-1-1-4"><a href="#canal-adapter-1-1-4" class="headerlink" title="canal.adapter | 1.1.4"></a>canal.adapter | 1.1.4</h1><h6 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h6><ul>
+<h2 id="canal-adapter-1-1-4"><a href="#canal-adapter-1-1-4" class="headerlink" title="canal.adapter | 1.1.4"></a>canal.adapter | 1.1.4</h2><h6 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h6><ul>
 <li>在 IDEA 中打开 client-adapter module；</li>
 <li>修改 <code>/home/lixinlei/project/canal-canal-1.1.4/client-adapter/elasticsearch/pom.xml</code> 中的 ElasticSearch 的依赖版本，改成 7.3.0；</li>
 </ul>
@@ -333,6 +405,27 @@
 <li>日志文件 <code>canal-adapter-es7/logs/adapter/adapter.log</code> 立马可以感知到；</li>
 <li>在 ElasticSearch 中查询，也可以立马感知到；</li>
 </ul>
+<p>Windows下安装配置Canal</p>
+<h1 id="Canal安装说明-Windows版"><a href="#Canal安装说明-Windows版" class="headerlink" title="Canal安装说明(Windows版)"></a>Canal安装说明(Windows版)</h1><p><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/original.png" alt="img"></p>
+<p><a href="https://blog.csdn.net/weixin_42640512" target="_blank" rel="noopener">四眼肥仔明</a> 2020-09-24 17:00:59 <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/articleReadEyes.png" alt="img"> 210 <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollect.png" alt="img"> 收藏 1</p>
+<p>文章标签： <a href="https://www.csdn.net/tags/NtTaIg5sMzYyLWJsb2cO0O0O.html" target="_blank" rel="noopener">java</a> <a href="https://www.csdn.net/tags/MtTaEg5sOTYwNC1ibG9n.html" target="_blank" rel="noopener">mysql</a> [spring boot](<a href="https://so.csdn.net/so/search/s.do?q=spring" target="_blank" rel="noopener">https://so.csdn.net/so/search/s.do?q=spring</a> boot&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=)</p>
+<p>版权</p>
+<p><strong>第一步：开启MySQL的binlog日志</strong></p>
+<p>（1）连接MySQL 键入命令：<code>show variables like &#39;log_%&#39;;</code> 查看binlog是否开启<br><img src="https://img-blog.csdnimg.cn/2020092416455914.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>若log_bin的值为OFF,则需要对配置文件my.ini进行修改，加入如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">log</span>-bin=<span class="built_in">log</span>-bin</span><br><span class="line">binlog-format=ROW</span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20200924164738904.png#pic_center" alt="在这里插入图片描述"></p>
+<p>注意：my.ini的路径的路径为C:\ProgramData\MySQL\MySQL Server 5.7\my.ini<br>保存修改后，使用命令 <code>net stop\start mysql57</code> 重启MySQL服务(也可在任务管理器重启)，连接上后再次查看就会发现binlog已经开启。</p>
+<p>（2）添加canal用户并赋予replication权限<br>#创建canal用户#<br><code>create user canal identified by &#39;password&#39;;</code> # 用户密码password可自行设置<br>#授权#<br><code>grant all privileges on *.* TO &#39;canal&#39;@&#39;%&#39;;</code></p>
+<p>此时可查看canal的权限：<br><img src="https://img-blog.csdnimg.cn/20200924165111748.png#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>第二步：安装Canal</strong><br>（1）下载安装包并解压（canal.deployer-1.1.5-SNAPSHOT.tar.gz） <a href="https://github.com/alibaba/canal/releases" target="_blank" rel="noopener">https://github.com/alibaba/canal/releases/</a></p>
+<p>（2）修改conf /canal.properties配置文件，注册地址为本机IP<br><img src="https://img-blog.csdnimg.cn/20200924165447283.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>（3）修改conf/example/instance.properties配置文件，配置数据库信息<br><img src="https://img-blog.csdnimg.cn/2020092417075439.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>（4）启动服务<br>Windows下使用startup.bat<br><img src="https://img-blog.csdnimg.cn/20200924165501499.png#pic_center" alt="在这里插入图片描述"></p>
+<p>启动成功：<br><img src="https://img-blog.csdnimg.cn/20200924165512428.png#pic_center" alt="在这里插入图片描述"></p>
+<p>查看：canal.log<br><img src="https://img-blog.csdnimg.cn/20200924165520193.png#pic_center" alt="在这里插入图片描述"></p>
+<p>ps.使用前检查端口是否成功打开！！</p>
 
     </div>
 
@@ -417,7 +510,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#增量索引构建的要求"><span class="nav-number">1.</span> <span class="nav-text">增量索引构建的要求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Canal-简介"><span class="nav-number">2.</span> <span class="nav-text">Canal | 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开启-MySQL-的-binglog"><span class="nav-number">3.</span> <span class="nav-text">开启 MySQL 的 binglog</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Ubuntu-用-APT-Repository-安装-MySQL-的安装位置"><span class="nav-number">3.0.0.0.0.1.</span> <span class="nav-text">Ubuntu 用 APT Repository 安装 MySQL 的安装位置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#查看-MySQL-几个变量的值"><span class="nav-number">3.0.0.0.0.2.</span> <span class="nav-text">查看 MySQL 几个变量的值</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建复制用户"><span class="nav-number">3.0.0.0.0.3.</span> <span class="nav-text">创建复制用户</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#canal-配置-1-1-3"><span class="nav-number">4.</span> <span class="nav-text">canal 配置 | 1.1.3</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#修改-canal-properties"><span class="nav-number">4.0.0.0.0.1.</span> <span class="nav-text">修改 canal.properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改-instance-properties"><span class="nav-number">4.0.0.0.0.2.</span> <span class="nav-text">修改 instance.properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动-canal"><span class="nav-number">4.0.0.0.0.3.</span> <span class="nav-text">启动 canal</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#canal-adapter-1-1-4"><span class="nav-number">5.</span> <span class="nav-text">canal.adapter | 1.1.4</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#下载源码"><span class="nav-number">5.0.0.0.0.1.</span> <span class="nav-text">下载源码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#在总-module-的目录下重新打包-canal"><span class="nav-number">5.0.0.0.0.2.</span> <span class="nav-text">在总 module 的目录下重新打包 canal</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#进入编译后生成的目录"><span class="nav-number">5.0.0.0.0.3.</span> <span class="nav-text">进入编译后生成的目录</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改配置文件-application-yml"><span class="nav-number">5.0.0.0.0.4.</span> <span class="nav-text">修改配置文件 application.yml</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建文件-shop-yml"><span class="nav-number">5.0.0.0.0.5.</span> <span class="nav-text">创建文件 shop.yml</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动-canal-adapter-es7"><span class="nav-number">5.0.0.0.0.6.</span> <span class="nav-text">启动 canal-adapter-es7</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动编译好的-canal-deployer-es7"><span class="nav-number">5.0.0.0.0.7.</span> <span class="nav-text">启动编译好的 canal-deployer-es7</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#更新-MySQL-中-dianping-库的-shop-表"><span class="nav-number">5.0.0.0.0.8.</span> <span class="nav-text">更新 MySQL 中 dianping 库的 shop 表</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#增量索引构建的要求"><span class="nav-number">1.</span> <span class="nav-text">增量索引构建的要求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#canal-简介"><span class="nav-number">2.</span> <span class="nav-text">canal 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工作原理"><span class="nav-number">3.</span> <span class="nav-text">工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL主备复制原理"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">MySQL主备复制原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#canal-工作原理"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">canal 工作原理</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows下安装canal"><span class="nav-number">4.</span> <span class="nav-text">Windows下安装canal</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开启-MySQL-的-binglog"><span class="nav-number">4.1.</span> <span class="nav-text">开启 MySQL 的 binglog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装canal-adapter"><span class="nav-number">4.2.</span> <span class="nav-text">安装canal-adapter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下安装canal"><span class="nav-number">5.</span> <span class="nav-text">Linux下安装canal</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开启-MySQL-的-binglog-1"><span class="nav-number">5.1.</span> <span class="nav-text">开启 MySQL 的 binglog</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Ubuntu-用-APT-Repository-安装-MySQL-的安装位置"><span class="nav-number">5.1.0.0.0.1.</span> <span class="nav-text">Ubuntu 用 APT Repository 安装 MySQL 的安装位置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#查看-MySQL-几个变量的值"><span class="nav-number">5.1.0.0.0.2.</span> <span class="nav-text">查看 MySQL 几个变量的值</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建复制用户"><span class="nav-number">5.1.0.0.0.3.</span> <span class="nav-text">创建复制用户</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#canal-配置-1-1-3"><span class="nav-number">5.2.</span> <span class="nav-text">canal 配置 | 1.1.3</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#修改-canal-properties"><span class="nav-number">5.2.0.0.0.1.</span> <span class="nav-text">修改 canal.properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改-instance-properties"><span class="nav-number">5.2.0.0.0.2.</span> <span class="nav-text">修改 instance.properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动-canal"><span class="nav-number">5.2.0.0.0.3.</span> <span class="nav-text">启动 canal</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#canal-adapter-1-1-4"><span class="nav-number">5.3.</span> <span class="nav-text">canal.adapter | 1.1.4</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#下载源码"><span class="nav-number">5.3.0.0.0.1.</span> <span class="nav-text">下载源码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#在总-module-的目录下重新打包-canal"><span class="nav-number">5.3.0.0.0.2.</span> <span class="nav-text">在总 module 的目录下重新打包 canal</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#进入编译后生成的目录"><span class="nav-number">5.3.0.0.0.3.</span> <span class="nav-text">进入编译后生成的目录</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改配置文件-application-yml"><span class="nav-number">5.3.0.0.0.4.</span> <span class="nav-text">修改配置文件 application.yml</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建文件-shop-yml"><span class="nav-number">5.3.0.0.0.5.</span> <span class="nav-text">创建文件 shop.yml</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动-canal-adapter-es7"><span class="nav-number">5.3.0.0.0.6.</span> <span class="nav-text">启动 canal-adapter-es7</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动编译好的-canal-deployer-es7"><span class="nav-number">5.3.0.0.0.7.</span> <span class="nav-text">启动编译好的 canal-deployer-es7</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#更新-MySQL-中-dianping-库的-shop-表"><span class="nav-number">5.3.0.0.0.8.</span> <span class="nav-text">更新 MySQL 中 dianping 库的 shop 表</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Canal安装说明-Windows版"><span class="nav-number">6.</span> <span class="nav-text">Canal安装说明(Windows版)</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -433,7 +526,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
