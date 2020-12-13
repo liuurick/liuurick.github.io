@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker命令</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker搭建MySQL集群-PXC方案</title>
     <url>/2020/08/21/Docker%E6%90%AD%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<p>尝试通过Dcoekr搭建MySQL集群</p>
@@ -124,6 +104,26 @@
       </categories>
       <tags>
         <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
       </tags>
   </entry>
   <entry>
@@ -254,73 +254,6 @@
       </categories>
       <tags>
         <tag>MySQL错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch搜索优化</title>
-    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
-<ol>
-<li>定制化分词器</li>
-<li>同义词扩展</li>
-<li>相关性重塑</li>
-</ol>
-<a id="more"></a>
-
-<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
-<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
-<p>然后将文件复制到其余的两个节点</p>
-<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
-
-<p>将文件复制到其余的两个节点</p>
-<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Http请求需要返回两个头部，last-modified和etag</p>
-<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
-</blockquote>
-<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
-<blockquote>
-<p>语义相近或相同</p>
-<p>品牌类目关联</p>
-<p>搜索它等于搜索它</p>
-</blockquote>
-<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201209164003792.png" alt="image-20201209164003792"></p>
-<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>索引测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
-<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
-</blockquote>
-<p>相关性搜索</p>
-<p>让搜索引擎理解语义</p>
-<p>影响召回及排序</p>
-]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch7</tag>
       </tags>
   </entry>
   <entry>
@@ -546,6 +479,73 @@
 <h1 id="相关性排序调整"><a href="#相关性排序调整" class="headerlink" title="相关性排序调整"></a>相关性排序调整</h1><blockquote>
 <p><a href="https://www.cnblogs.com/orzlin/p/10496869.html" target="_blank" rel="noopener">https://www.cnblogs.com/orzlin/p/10496869.html</a></p>
 </blockquote>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch7</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch搜索优化</title>
+    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
+<ol>
+<li>定制化分词器</li>
+<li>同义词扩展</li>
+<li>相关性重塑</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
+<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
+<p>然后将文件复制到其余的两个节点</p>
+<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将文件复制到其余的两个节点</p>
+<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Http请求需要返回两个头部，last-modified和etag</p>
+<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
+</blockquote>
+<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
+<blockquote>
+<p>语义相近或相同</p>
+<p>品牌类目关联</p>
+<p>搜索它等于搜索它</p>
+</blockquote>
+<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201209164003792.png" alt="image-20201209164003792"></p>
+<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>索引测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
+<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
+</blockquote>
+<p>相关性搜索</p>
+<p>让搜索引擎理解语义</p>
+<p>影响召回及排序</p>
 ]]></content>
       <categories>
         <category>ElasticSearch</category>
@@ -786,6 +786,28 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>JSP页面El表达式不起作用</title>
+    <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
+<a id="more"></a>
+
+<p>头文件中</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
+<p>jsp约束：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>JSP</category>
+      </categories>
+      <tags>
+        <tag>JSP</tag>
+        <tag>session</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java多线程</title>
     <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
     <content><![CDATA[<p>Java多线程知识总结</p>
@@ -892,6 +914,18 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
     <content><![CDATA[]]></content>
   </entry>
   <entry>
+    <title>Java集合</title>
+    <url>/2019/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux安装配置大全</title>
     <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
     <content><![CDATA[<p>Linux各种版本安装配置</p>
@@ -905,18 +939,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java集合</title>
-    <url>/2019/08/05/Java%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -958,28 +980,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <tag>Mybatis-generator</tag>
         <tag>Mybatis-plugin</tag>
         <tag>Mybatis-PageHelper</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JSP页面El表达式不起作用</title>
-    <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
-<a id="more"></a>
-
-<p>头文件中</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
-<p>jsp约束：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>JSP</category>
-      </categories>
-      <tags>
-        <tag>JSP</tag>
-        <tag>session</tag>
       </tags>
   </entry>
   <entry>
@@ -1549,7 +1549,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   </entry>
   <entry>
     <title>PXC脚本命令</title>
-    <url>/2020/12/13/PXC%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/</url>
+    <url>/2020/12/20/PXC%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p>MySQL集群脚本命令</p>
 <a id="more"></a>
 
@@ -2035,41 +2035,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
-    <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，这里就分开总结了。。。</p>
-<h2 id="Spring集成PageHelper："><a href="#Spring集成PageHelper：" class="headerlink" title="Spring集成PageHelper："></a>Spring集成PageHelper：</h2><p><strong>第一步：pom文件引入依赖</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第二步：MyBatis的核心配置文件中引入配置项</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"com.liuurick.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第三步：业务逻辑实现分页功能，我们只需将当前查询的页数page和每页显示的总条数rows传进去，然后Pagehelper已经帮我们分好数据了，只需在web层获取数据即可。</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分页查询商品列表：</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DatagridResult <span class="title">itemList</span><span class="params">(Integer page, Integer rows)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//为了程序的严谨性，判断非空：</span></span><br><span class="line">    <span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;   <span class="comment">//设置默认当前页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(page &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(rows == <span class="keyword">null</span>)&#123;</span><br><span class="line">        rows = <span class="number">30</span>;    <span class="comment">//设置默认每页显示的商品数(因为jsp页面上默认写的就是30条)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1、设置分页信息，包括当前页数和每页显示的总计数</span></span><br><span class="line">    PageHelper.startPage(page, rows);</span><br><span class="line">    <span class="comment">//2、执行查询</span></span><br><span class="line">    TbItemExample example = <span class="keyword">new</span> TbItemExample();</span><br><span class="line">    List&lt;TbItem&gt; list = tbItemMapper.selectByExample(example);</span><br><span class="line">    <span class="comment">//3、获取分页查询后的数据</span></span><br><span class="line">    PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    <span class="comment">//4、封装需要返回的分页实体</span></span><br><span class="line">    DatagridResult result = <span class="keyword">new</span> DatagridResult();</span><br><span class="line">    <span class="comment">//设置获取到的总记录数total：</span></span><br><span class="line">    result.setTotal(pageInfo.getTotal());</span><br><span class="line">    <span class="comment">//设置数据集合rows：</span></span><br><span class="line">    result.setRows(list);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="springboot集成PageHelper："><a href="#springboot集成PageHelper：" class="headerlink" title="springboot集成PageHelper："></a>springboot集成PageHelper：</h2><p><strong>第一步：pom文件还是需要引入依赖</strong></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>第二步：这次直接是在项目的入口类application.java中直接设置PageHelper插件即可</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//配置mybatis的分页插件pageHelper</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PageHelper <span class="title">pageHelper</span><span class="params">()</span></span>&#123;</span><br><span class="line">    PageHelper pageHelper = <span class="keyword">new</span> PageHelper();</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.setProperty(<span class="string">"offsetAsPageNum"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"rowBoundsWithCount"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"reasonable"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"dialect"</span>,<span class="string">"mysql"</span>);    <span class="comment">//配置mysql数据库的方言</span></span><br><span class="line">    pageHelper.setProperties(properties);</span><br><span class="line">    <span class="keyword">return</span> pageHelper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>第三步：同理，使用插件实现分页功能，方式还是一样，只需将当前查询的页数和每页显示的条数穿进去即可，直接源码</strong></p>
-<p>这是需要用到的分页实体，各位可以直接享用。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.riemann.utils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页bean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 当前页</span></span><br><span class="line">    <span class="keyword">private</span> Integer currentPage = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 每页显示的总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer pageSize = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">// 总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalNum;</span><br><span class="line">    <span class="comment">// 是否有下一页</span></span><br><span class="line">    <span class="keyword">private</span> Integer isMore;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalPage;</span><br><span class="line">    <span class="comment">// 开始索引</span></span><br><span class="line">    <span class="keyword">private</span> Integer startIndex;</span><br><span class="line">    <span class="comment">// 分页结果</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;T&gt; items;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">(Integer currentPage, Integer pageSize, Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = (<span class="keyword">this</span>.totalNum+<span class="keyword">this</span>.pageSize-<span class="number">1</span>)/<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = (<span class="keyword">this</span>.currentPage-<span class="number">1</span>)*<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.isMore = <span class="keyword">this</span>.currentPage &gt;= <span class="keyword">this</span>.totalPage?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getCurrentPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCurrentPage</span><span class="params">(Integer currentPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getPageSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageSize</span><span class="params">(Integer pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalNum</span><span class="params">(Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getIsMore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsMore</span><span class="params">(Integer isMore)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isMore = isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalPage</span><span class="params">(Integer totalPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStartIndex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartIndex</span><span class="params">(Integer startIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">getItems</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> items;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItems</span><span class="params">(List&lt;T&gt; items)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.items = items;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>分页功能源码(web层和service层)。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">findItemByPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】</span></span><br><span class="line">    PageHelper.startPage(currentPage, pageSize);</span><br><span class="line">    </span><br><span class="line">    List&lt;Item&gt; allItems = itemMapper.findAll();        <span class="comment">//全部商品</span></span><br><span class="line">    <span class="keyword">int</span> countNums = itemMapper.countItem();            <span class="comment">//总记录数</span></span><br><span class="line">    PageBean&lt;Item&gt; pageData = <span class="keyword">new</span> PageBean&lt;&gt;(currentPage, pageSize, countNums);</span><br><span class="line">    pageData.setItems(allItems);</span><br><span class="line">    <span class="keyword">return</span> pageData.getItems();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 商品分页功能(集成mybatis的分页插件pageHelper实现)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> currentPage    :当前页数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize        :每页显示的总记录数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/itemsPage"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">itemsPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> itemService.findItemByPage(currentPage, pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>分页功能</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot实现邮件发送功能</title>
     <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
     <content><![CDATA[<p>SpringBoot实现邮件发送功能</p>
@@ -2111,41 +2076,38 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Spring源码的下载与编译</title>
-    <url>/2020/10/19/Spring%E6%BA%90%E7%A0%81%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%BC%96%E8%AF%91/</url>
-    <content><![CDATA[<p>Spring学了很久了，但是一直没有深入到源码，希望在接下来的源码学习中有所收获。。。</p>
-<a id="more"></a>
+    <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
+    <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
 
-<h3 id="一、环境安装"><a href="#一、环境安装" class="headerlink" title="一、环境安装"></a>一、环境安装</h3><p>安装Idea，JDK，maven并完成相应的配置<br><img src="/images/2020101901.png" alt="image-20201019191945647"></p>
-<p><strong>注意：</strong>当前官方Spring最新版本为5.3.0，文档要求JDK版本需要在 <code>JDK 8 update 262 or later</code>。</p>
-<p>因为JDK官网只能下载到1.8_261，所以我使用的Spring-5.2.9</p>
-<p><img src="/images/2020101902.png" alt="image-20201019192232952"></p>
-<h3 id="二、下载和编译"><a href="#二、下载和编译" class="headerlink" title="二、下载和编译"></a>二、下载和编译</h3><h4 id="2-1-下载并解压"><a href="#2-1-下载并解压" class="headerlink" title="2.1 下载并解压"></a>2.1 下载并解压</h4><p><img src="/images/2020101903.png" alt="image-20201019192816197"></p>
-<h4 id="2-2-修改build-gradle"><a href="#2-2-修改build-gradle" class="headerlink" title="2.2 修改build.gradle"></a>2.2 修改build.gradle</h4><p>在build.gradle添加阿里云的中央仓库地址，提高依赖文件的下载速度</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			mavenCentral()</span><br><span class="line">			maven &#123; url <span class="string">"https://repo.spring.io/libs-spring-framework-build"</span> &#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<p>首先说说MyBatis框架的PageHelper插件吧，它是一个非常好用的分页插件，通常我们的项目中如果集成了MyBatis的话，几乎都会用到它，因为分页的业务逻辑说复杂也不复杂，但是有插件我们何乐而不为？通常引入它们只需三步骤，不管是Spring集成还是SpringBoot集成都是老套路，这里就分开总结了。。。</p>
+<h2 id="Spring集成PageHelper："><a href="#Spring集成PageHelper：" class="headerlink" title="Spring集成PageHelper："></a>Spring集成PageHelper：</h2><p><strong>第一步：pom文件引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis的分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/2020101904.png" alt="image-20201019195803623"></p>
-<p><strong>查看阿里云Maven中央仓库：</strong><a href="https://maven.aliyun.com/mvn/guide" target="_blank" rel="noopener">https://maven.aliyun.com/mvn/guide</a></p>
-<h4 id="2-3-安装官方文档进行配置"><a href="#2-3-安装官方文档进行配置" class="headerlink" title="2.3 安装官方文档进行配置"></a>2.3 安装官方文档进行配置</h4><p><img src="/images/2020101906.png" alt="image-20201019200051103"></p>
-<p>1.Precompile <code>spring-oxm</code> with <code>./gradlew :spring-oxm:compileTestJava</code></p>
-<p><img src="/images/2020101907.png" alt="image-20201019201845436"></p>
-<p>2.Import into IntelliJ (File -&gt; New -&gt; Project from Existing Sources -&gt; Navigate to directory -&gt; Select build.gradle)</p>
-<p>导入项目</p>
-<p><img src="/images/2020101908.png" alt="image-20201019211425497"></p>
-<p>3.When prompted exclude the <code>spring-aspects</code> module (or after the import via File-&gt; Project Structure -&gt; Modules)</p>
-<p>因为<code>spring-aspects</code>有自己的编译器(AJC)，AJC会影响JVM的加载，所以需要排除出去</p>
-<p>这里右键项目–》Load/Unload Modules–》选择spring-aspects–》unload–》重新加载即可</p>
-<p><img src="/images/2020101909.png" alt="image-20201019212036285"></p>
-<p>4.Code away</p>
-<p>到这里就完成Spring源码的下载与编译</p>
-<h3 id="三、通过一个小demo来测试一下"><a href="#三、通过一个小demo来测试一下" class="headerlink" title="三、通过一个小demo来测试一下"></a>三、通过一个小demo来测试一下</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/01-spring-framework-5.2.9.RELEASE/spring-demo" target="_blank" rel="noopener">spring-demo代码链接</a></p>
-<h3 id="四、简易自研框架的编写"><a href="#四、简易自研框架的编写" class="headerlink" title="四、简易自研框架的编写"></a>四、简易自研框架的编写</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/02-simpleframework" target="_blank" rel="noopener">02-simpleframework</a></p>
-]]></content>
+<p><strong>第二步：MyBatis的核心配置文件中引入配置项</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 【mybatis的核心配置文件】 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 批量设置别名(可以不配) 作用：就是在mapper.xml文件中直接写类名，也可以不用写全路径名。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"com.liuurick.manager.po"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置mybatis的分页插件PageHelper --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置数据库类型Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：业务逻辑实现分页功能，我们只需将当前查询的页数page和每页显示的总条数rows传进去，然后Pagehelper已经帮我们分好数据了，只需在web层获取数据即可。</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分页查询商品列表：</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DatagridResult <span class="title">itemList</span><span class="params">(Integer page, Integer rows)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//为了程序的严谨性，判断非空：</span></span><br><span class="line">    <span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;   <span class="comment">//设置默认当前页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(page &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(rows == <span class="keyword">null</span>)&#123;</span><br><span class="line">        rows = <span class="number">30</span>;    <span class="comment">//设置默认每页显示的商品数(因为jsp页面上默认写的就是30条)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1、设置分页信息，包括当前页数和每页显示的总计数</span></span><br><span class="line">    PageHelper.startPage(page, rows);</span><br><span class="line">    <span class="comment">//2、执行查询</span></span><br><span class="line">    TbItemExample example = <span class="keyword">new</span> TbItemExample();</span><br><span class="line">    List&lt;TbItem&gt; list = tbItemMapper.selectByExample(example);</span><br><span class="line">    <span class="comment">//3、获取分页查询后的数据</span></span><br><span class="line">    PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    <span class="comment">//4、封装需要返回的分页实体</span></span><br><span class="line">    DatagridResult result = <span class="keyword">new</span> DatagridResult();</span><br><span class="line">    <span class="comment">//设置获取到的总记录数total：</span></span><br><span class="line">    result.setTotal(pageInfo.getTotal());</span><br><span class="line">    <span class="comment">//设置数据集合rows：</span></span><br><span class="line">    result.setRows(list);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="springboot集成PageHelper："><a href="#springboot集成PageHelper：" class="headerlink" title="springboot集成PageHelper："></a>springboot集成PageHelper：</h2><p><strong>第一步：pom文件还是需要引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：这次直接是在项目的入口类application.java中直接设置PageHelper插件即可</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//配置mybatis的分页插件pageHelper</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PageHelper <span class="title">pageHelper</span><span class="params">()</span></span>&#123;</span><br><span class="line">    PageHelper pageHelper = <span class="keyword">new</span> PageHelper();</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.setProperty(<span class="string">"offsetAsPageNum"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"rowBoundsWithCount"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"reasonable"</span>,<span class="string">"true"</span>);</span><br><span class="line">    properties.setProperty(<span class="string">"dialect"</span>,<span class="string">"mysql"</span>);    <span class="comment">//配置mysql数据库的方言</span></span><br><span class="line">    pageHelper.setProperties(properties);</span><br><span class="line">    <span class="keyword">return</span> pageHelper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：同理，使用插件实现分页功能，方式还是一样，只需将当前查询的页数和每页显示的条数穿进去即可，直接源码</strong></p>
+<p>这是需要用到的分页实体，各位可以直接享用。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.riemann.utils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页bean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 当前页</span></span><br><span class="line">    <span class="keyword">private</span> Integer currentPage = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 每页显示的总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer pageSize = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">// 总条数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalNum;</span><br><span class="line">    <span class="comment">// 是否有下一页</span></span><br><span class="line">    <span class="keyword">private</span> Integer isMore;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    <span class="keyword">private</span> Integer totalPage;</span><br><span class="line">    <span class="comment">// 开始索引</span></span><br><span class="line">    <span class="keyword">private</span> Integer startIndex;</span><br><span class="line">    <span class="comment">// 分页结果</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;T&gt; items;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PageBean</span><span class="params">(Integer currentPage, Integer pageSize, Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = (<span class="keyword">this</span>.totalNum+<span class="keyword">this</span>.pageSize-<span class="number">1</span>)/<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = (<span class="keyword">this</span>.currentPage-<span class="number">1</span>)*<span class="keyword">this</span>.pageSize;</span><br><span class="line">        <span class="keyword">this</span>.isMore = <span class="keyword">this</span>.currentPage &gt;= <span class="keyword">this</span>.totalPage?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getCurrentPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCurrentPage</span><span class="params">(Integer currentPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentPage = currentPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getPageSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageSize</span><span class="params">(Integer pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalNum</span><span class="params">(Integer totalNum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalNum = totalNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getIsMore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsMore</span><span class="params">(Integer isMore)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isMore = isMore;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getTotalPage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalPage</span><span class="params">(Integer totalPage)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.totalPage = totalPage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStartIndex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartIndex</span><span class="params">(Integer startIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startIndex = startIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">getItems</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> items;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItems</span><span class="params">(List&lt;T&gt; items)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.items = items;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分页功能源码(web层和service层)。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">findItemByPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】</span></span><br><span class="line">    PageHelper.startPage(currentPage, pageSize);</span><br><span class="line">    </span><br><span class="line">    List&lt;Item&gt; allItems = itemMapper.findAll();        <span class="comment">//全部商品</span></span><br><span class="line">    <span class="keyword">int</span> countNums = itemMapper.countItem();            <span class="comment">//总记录数</span></span><br><span class="line">    PageBean&lt;Item&gt; pageData = <span class="keyword">new</span> PageBean&lt;&gt;(currentPage, pageSize, countNums);</span><br><span class="line">    pageData.setItems(allItems);</span><br><span class="line">    <span class="keyword">return</span> pageData.getItems();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 商品分页功能(集成mybatis的分页插件pageHelper实现)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> currentPage    :当前页数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize        :每页显示的总记录数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/itemsPage"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Item&gt; <span class="title">itemsPage</span><span class="params">(<span class="keyword">int</span> currentPage,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> itemService.findItemByPage(currentPage, pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>Spring</category>
+        <category>分页功能</category>
       </categories>
       <tags>
-        <tag>Spring源码</tag>
+        <tag>Java</tag>
+        <tag>SpringBoot</tag>
       </tags>
   </entry>
   <entry>
@@ -2384,6 +2346,73 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Zookeeper</tag>
         <tag>Zookeeper集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring源码的下载与编译</title>
+    <url>/2020/10/19/Spring%E6%BA%90%E7%A0%81%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%BC%96%E8%AF%91/</url>
+    <content><![CDATA[<p>Spring学了很久了，但是一直没有深入到源码，希望在接下来的源码学习中有所收获。。。</p>
+<a id="more"></a>
+
+<h3 id="一、环境安装"><a href="#一、环境安装" class="headerlink" title="一、环境安装"></a>一、环境安装</h3><p>安装Idea，JDK，maven并完成相应的配置<br><img src="/images/2020101901.png" alt="image-20201019191945647"></p>
+<p><strong>注意：</strong>当前官方Spring最新版本为5.3.0，文档要求JDK版本需要在 <code>JDK 8 update 262 or later</code>。</p>
+<p>因为JDK官网只能下载到1.8_261，所以我使用的Spring-5.2.9</p>
+<p><img src="/images/2020101902.png" alt="image-20201019192232952"></p>
+<h3 id="二、下载和编译"><a href="#二、下载和编译" class="headerlink" title="二、下载和编译"></a>二、下载和编译</h3><h4 id="2-1-下载并解压"><a href="#2-1-下载并解压" class="headerlink" title="2.1 下载并解压"></a>2.1 下载并解压</h4><p><img src="/images/2020101903.png" alt="image-20201019192816197"></p>
+<h4 id="2-2-修改build-gradle"><a href="#2-2-修改build-gradle" class="headerlink" title="2.2 修改build.gradle"></a>2.2 修改build.gradle</h4><p>在build.gradle添加阿里云的中央仓库地址，提高依赖文件的下载速度</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			mavenCentral()</span><br><span class="line">			maven &#123; url <span class="string">"https://repo.spring.io/libs-spring-framework-build"</span> &#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2020101904.png" alt="image-20201019195803623"></p>
+<p><strong>查看阿里云Maven中央仓库：</strong><a href="https://maven.aliyun.com/mvn/guide" target="_blank" rel="noopener">https://maven.aliyun.com/mvn/guide</a></p>
+<h4 id="2-3-安装官方文档进行配置"><a href="#2-3-安装官方文档进行配置" class="headerlink" title="2.3 安装官方文档进行配置"></a>2.3 安装官方文档进行配置</h4><p><img src="/images/2020101906.png" alt="image-20201019200051103"></p>
+<p>1.Precompile <code>spring-oxm</code> with <code>./gradlew :spring-oxm:compileTestJava</code></p>
+<p><img src="/images/2020101907.png" alt="image-20201019201845436"></p>
+<p>2.Import into IntelliJ (File -&gt; New -&gt; Project from Existing Sources -&gt; Navigate to directory -&gt; Select build.gradle)</p>
+<p>导入项目</p>
+<p><img src="/images/2020101908.png" alt="image-20201019211425497"></p>
+<p>3.When prompted exclude the <code>spring-aspects</code> module (or after the import via File-&gt; Project Structure -&gt; Modules)</p>
+<p>因为<code>spring-aspects</code>有自己的编译器(AJC)，AJC会影响JVM的加载，所以需要排除出去</p>
+<p>这里右键项目–》Load/Unload Modules–》选择spring-aspects–》unload–》重新加载即可</p>
+<p><img src="/images/2020101909.png" alt="image-20201019212036285"></p>
+<p>4.Code away</p>
+<p>到这里就完成Spring源码的下载与编译</p>
+<h3 id="三、通过一个小demo来测试一下"><a href="#三、通过一个小demo来测试一下" class="headerlink" title="三、通过一个小demo来测试一下"></a>三、通过一个小demo来测试一下</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/01-spring-framework-5.2.9.RELEASE/spring-demo" target="_blank" rel="noopener">spring-demo代码链接</a></p>
+<h3 id="四、简易自研框架的编写"><a href="#四、简易自研框架的编写" class="headerlink" title="四、简易自研框架的编写"></a>四、简易自研框架的编写</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/02-simpleframework" target="_blank" rel="noopener">02-simpleframework</a></p>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring源码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git常见错误</title>
+    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>记录git常见错误</p>
+<a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
+<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+<p>2.git Could not read from remote repository</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.error: failed to push some refs to xxx</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git常见错误</tag>
       </tags>
   </entry>
   <entry>
@@ -2890,32 +2919,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git常见错误</title>
-    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>记录git常见错误</p>
+    <title>人民日报给90后的理财计划</title>
+    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>人民日报给90后的理财计划</p>
 <a id="more"></a>
 
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
-<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-<p>2.git Could not read from remote repository</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3.error: failed to push some refs to xxx</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
+<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="6609c93d70cf3bc7295a8603c088c1a6cc112a12 (1)"></p>
+<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="faf2b2119313b07e200a895e195fea2496dd8c45"></p>
+<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="500fd9f9d72a6059f1733a1a3bbc4f9c023bbadb"></p>
+<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="0b46f21fbe096b6379df433618bbfc43eaf8ac25"></p>
+<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="5fdf8db1cb13495443971a8c42c6e95fd3094ad8"></p>
 ]]></content>
       <categories>
-        <category>git</category>
+        <category>理财</category>
       </categories>
       <tags>
-        <tag>git常见错误</tag>
+        <tag>理财</tag>
       </tags>
   </entry>
   <entry>
@@ -2939,23 +2958,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>人民日报给90后的理财计划</title>
-    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
-    <content><![CDATA[<p>人民日报给90后的理财计划</p>
-<a id="more"></a>
-
-<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="6609c93d70cf3bc7295a8603c088c1a6cc112a12 (1)"></p>
-<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="faf2b2119313b07e200a895e195fea2496dd8c45"></p>
-<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="500fd9f9d72a6059f1733a1a3bbc4f9c023bbadb"></p>
-<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="0b46f21fbe096b6379df433618bbfc43eaf8ac25"></p>
-<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="5fdf8db1cb13495443971a8c42c6e95fd3094ad8"></p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>理财</tag>
-      </tags>
+    <title>单点登录</title>
+    <url>/2020/12/09/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>反射的理解</title>
@@ -2967,11 +2972,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>反射</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>单点登录</title>
-    <url>/2020/12/09/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>实体类的4种类型</title>
@@ -3319,6 +3319,72 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>记一个小小的强迫症</title>
+    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
+    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
+
+<p>在idea中经常会碰到这样的问题</p>
+<blockquote>
+<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
+</blockquote>
+<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
+<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
+]]></content>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>读《解读基金：我的投资观与实践》</title>
+    <url>/2020/12/07/%E8%AF%BB%E3%80%8A%E8%A7%A3%E8%AF%BB%E5%9F%BA%E9%87%91%EF%BC%9A%E6%88%91%E7%9A%84%E6%8A%95%E8%B5%84%E8%A7%82%E4%B8%8E%E5%AE%9E%E8%B7%B5%E3%80%8B/</url>
+    <content><![CDATA[<p>读《解读基金：我的投资观与实践》总结</p>
+<a id="more"></a>
+
+<h1 id="第一章：投资的准备"><a href="#第一章：投资的准备" class="headerlink" title="第一章：投资的准备"></a>第一章：投资的准备</h1><p>1.咱们该投资吗</p>
+<p>2.什么是开放式基金</p>
+<p>3.态度决定一切</p>
+<h1 id="第二章-三部曲之一：投资目标的确定"><a href="#第二章-三部曲之一：投资目标的确定" class="headerlink" title="第二章 三部曲之一：投资目标的确定"></a>第二章 三部曲之一：投资目标的确定</h1><p>1.基金的风险是什么</p>
+<p>2.拿多少钱来投资</p>
+<p>3.让时间成为朋友</p>
+<p>4.复利计算的“72法则”</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">“72法则”是计算翻番的时间</span><br><span class="line">“115法则”是计算3倍所耗费的时间</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+<p>5.风险心理承受能力测试</p>
+<p>6.结论：选择基金的关键</p>
+<h1 id="第三章-“三部曲”之二：基金品种的选择"><a href="#第三章-“三部曲”之二：基金品种的选择" class="headerlink" title="第三章 “三部曲”之二：基金品种的选择"></a>第三章 “三部曲”之二：基金品种的选择</h1>]]></content>
+      <categories>
+        <category>基金</category>
+      </categories>
+      <tags>
+        <tag>解读基金</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>防火墙管理</title>
+    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>通用型支付系统</title>
     <url>/2020/11/19/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<p>通用型支付系统的实现</p>
@@ -3553,57 +3619,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>记一个小小的强迫症</title>
-    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
-    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
-
-<p>在idea中经常会碰到这样的问题</p>
-<blockquote>
-<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
-</blockquote>
-<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
-<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
-]]></content>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>读《解读基金：我的投资观与实践》</title>
-    <url>/2020/12/07/%E8%AF%BB%E3%80%8A%E8%A7%A3%E8%AF%BB%E5%9F%BA%E9%87%91%EF%BC%9A%E6%88%91%E7%9A%84%E6%8A%95%E8%B5%84%E8%A7%82%E4%B8%8E%E5%AE%9E%E8%B7%B5%E3%80%8B/</url>
-    <content><![CDATA[<p>读《解读基金：我的投资观与实践》总结</p>
-<a id="more"></a>
-
-<h1 id="第一章：投资的准备"><a href="#第一章：投资的准备" class="headerlink" title="第一章：投资的准备"></a>第一章：投资的准备</h1><p>1.咱们该投资吗</p>
-<p>2.什么是开放式基金</p>
-<p>3.态度决定一切</p>
-<h1 id="第二章-三部曲之一：投资目标的确定"><a href="#第二章-三部曲之一：投资目标的确定" class="headerlink" title="第二章 三部曲之一：投资目标的确定"></a>第二章 三部曲之一：投资目标的确定</h1><p>1.基金的风险是什么</p>
-<p>2.拿多少钱来投资</p>
-<p>3.让时间成为朋友</p>
-<p>4.复利计算的“72法则”</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">“72法则”是计算翻番的时间</span><br><span class="line">“115法则”是计算3倍所耗费的时间</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-<p>5.风险心理承受能力测试</p>
-<p>6.结论：选择基金的关键</p>
-<h1 id="第三章-“三部曲”之二：基金品种的选择"><a href="#第三章-“三部曲”之二：基金品种的选择" class="headerlink" title="第三章 “三部曲”之二：基金品种的选择"></a>第三章 “三部曲”之二：基金品种的选择</h1>]]></content>
-      <categories>
-        <category>基金</category>
-      </categories>
-      <tags>
-        <tag>解读基金</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>通用型支付系统接入电商平台</title>
     <url>/2020/12/13/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</url>
     <content><![CDATA[]]></content>
@@ -3612,21 +3627,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>电商平台</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>防火墙管理</title>
-    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
-
-<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>firewall</tag>
       </tags>
   </entry>
   <entry>
