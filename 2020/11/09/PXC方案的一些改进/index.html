@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进： 主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110902.png">
+<meta property="og:image" content="http://yoursite.com/images/2020110901.png">
+<meta property="og:image" content="http://yoursite.com/images/2020110902.png">
 <meta property="article:published_time" content="2020-11-09T13:35:39.000Z">
-<meta property="article:modified_time" content="2020-11-30T09:15:35.357Z">
+<meta property="article:modified_time" content="2020-12-13T11:31:28.546Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="MySQL集群">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png">
+<meta name="twitter:image" content="http://yoursite.com/images/2020110901.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/">
 
@@ -263,8 +263,8 @@
 <li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
 </ul>
 <h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110901.png" alt="image-20201109224438458"></p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020110902.png" alt="image-20201109225321905"></p>
+<p><img src="/images/2020110901.png" alt="image-20201109224438458"></p>
+<p><img src="/images/2020110902.png" alt="image-20201109225321905"></p>
 <h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
 <p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
 <p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
@@ -417,20 +417,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
