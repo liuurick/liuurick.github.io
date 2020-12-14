@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker设置镜像自启动</title>
+    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
+    <content><![CDATA[<p>Docker便捷小技巧：</p>
+<a id="more"></a>
+
+<p>1.发现没启动</p>
+<p><code>docker ps</code></p>
+<p>2.查看所有安装的镜像</p>
+<p><code>docker ps -a</code></p>
+<p>3.设置总是自动启动</p>
+<p><code>docker update 镜像id --restart=always</code></p>
+<p>4.重启测试一下</p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
     <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
     <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
@@ -38,6 +59,196 @@
       </categories>
       <tags>
         <tag>Docker命令</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
+<a id="more"></a>
+
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
+</ul>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
+
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
+
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
+<p><img src="/images/2020101102.png" alt="node1"></p>
+<p>node2:</p>
+<p><img src="/images/2020101103.png" alt="node2"></p>
+<p>node3:</p>
+<p><img src="/images/2020101104.png" alt="node3"></p>
+<p>总览：</p>
+<p><img src="/images/2020101105.png" alt="nodes"></p>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker搭建MySQL集群-PXC方案</title>
+    <url>/2020/08/21/Docker%E6%90%AD%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>尝试通过Dcoekr搭建MySQL集群</p>
+<a id="more"></a>
+
+<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
+<blockquote>
+<p>MySQL主从复制：<a href="https://www.jianshu.com/p/faf0127f1cb2" target="_blank" rel="noopener">https://www.jianshu.com/p/faf0127f1cb2</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Replication</th>
+<th>PXC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
+<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
+</tr>
+<tr>
+<td>异步复制，从和主无法保证数据的一致性</td>
+<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
+</tr>
+</tbody></table>
+<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
+<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
+<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>Docker的安装与配置非常简单。</p>
+<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
+<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
+<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
+<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
+
+<p>查看docker卷信息：<code>docker inspect v1</code></p>
+<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
+<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
+<p>在DB1中新建test数据库并创建student表：</p>
+<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
+<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
+<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
+<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
+<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
+<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
+<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
+<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><blockquote>
+<p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
+</blockquote>
+<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
+<p>haproxy.cfg</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
+<p>首页展示：</p>
+<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>MySQL集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch搜索优化</title>
+    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
+<ol>
+<li>定制化分词器</li>
+<li>同义词扩展</li>
+<li>相关性重塑</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
+<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
+<p>然后将文件复制到其余的两个节点</p>
+<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将文件复制到其余的两个节点</p>
+<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Http请求需要返回两个头部，last-modified和etag</p>
+<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
+</blockquote>
+<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
+<blockquote>
+<p>语义相近或相同</p>
+<p>品牌类目关联</p>
+<p>搜索它等于搜索它</p>
+</blockquote>
+<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201209164003792.png" alt="image-20201209164003792"></p>
+<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>索引测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
+<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
+</blockquote>
+<p>相关性搜索</p>
+<p>让搜索引擎理解语义</p>
+<p>影响召回及排序</p>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch7</tag>
       </tags>
   </entry>
   <entry>
@@ -148,6 +359,22 @@
       </categories>
       <tags>
         <tag>ElasticSearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Idea快捷键</title>
+    <url>/2020/09/11/Idea%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<p>Idea快捷键记录</p>
+<a id="more"></a>
+
+<h1 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Idea</category>
+      </categories>
+      <tags>
+        <tag>Idea快捷键</tag>
       </tags>
   </entry>
   <entry>
@@ -382,132 +609,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker设置镜像自启动</title>
-    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>Docker便捷小技巧：</p>
-<a id="more"></a>
-
-<p>1.发现没启动</p>
-<p><code>docker ps</code></p>
-<p>2.查看所有安装的镜像</p>
-<p><code>docker ps -a</code></p>
-<p>3.设置总是自动启动</p>
-<p><code>docker update 镜像id --restart=always</code></p>
-<p>4.重启测试一下</p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch搜索优化</title>
-    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
-<ol>
-<li>定制化分词器</li>
-<li>同义词扩展</li>
-<li>相关性重塑</li>
-</ol>
-<a id="more"></a>
-
-<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
-<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
-<p>然后将文件复制到其余的两个节点</p>
-<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
-
-<p>将文件复制到其余的两个节点</p>
-<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Http请求需要返回两个头部，last-modified和etag</p>
-<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
-</blockquote>
-<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
-<blockquote>
-<p>语义相近或相同</p>
-<p>品牌类目关联</p>
-<p>搜索它等于搜索它</p>
-</blockquote>
-<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201209164003792.png" alt="image-20201209164003792"></p>
-<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>索引测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
-<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
-</blockquote>
-<p>相关性搜索</p>
-<p>让搜索引擎理解语义</p>
-<p>影响召回及排序</p>
-]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch7</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
-<a id="more"></a>
-
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
-
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
-<p><img src="/images/2020101102.png" alt="node1"></p>
-<p>node2:</p>
-<p><img src="/images/2020101103.png" alt="node2"></p>
-<p>node3:</p>
-<p><img src="/images/2020101104.png" alt="node3"></p>
-<p>总览：</p>
-<p><img src="/images/2020101105.png" alt="nodes"></p>
-]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch集群</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hadoop运行环境搭建</title>
     <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>Hadoop运行环境搭建</p>
@@ -575,6 +676,108 @@
       </categories>
       <tags>
         <tag>Hadoop集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java设计模式</title>
+    <url>/2020/12/06/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>JSP页面El表达式不起作用</title>
+    <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
+<a id="more"></a>
+
+<p>头文件中</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
+<p>jsp约束：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>JSP</category>
+      </categories>
+      <tags>
+        <tag>JSP</tag>
+        <tag>session</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java集合</title>
+    <url>/2019/08/05/Java%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java多线程</title>
+    <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[<p>Java多线程知识总结</p>
+<a id="more"></a>
+
+<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
+<blockquote>
+<p>如：运行的QQ，运行中的MP3播放器<br>程序是静态的，进程是动态的<br>进程作为资源分配的单位，系统在运行时会为每个进程不同的内存区域。</p>
+</blockquote>
+<p>线程(thread)：进程可以进一步细化为线程，是一个程序内部的一条执行路径。</p>
+<blockquote>
+<p>若一个进程同一时间并行执行多个线程，就是支持多线程的。<br>线程作为调度和执行的单位，每个线程拥有独立的运行栈和程序计数器(PC)，线程切换的开销小<br>一个进程中的多个线程共享相同的内存单元/内存地址空间-&gt;它们从同一堆中分配对象，可以访问相同的变量和对象。这就使得线程间通信更简便、高效。但多个线程操作共享的系统资源可能带来安全的隐患。</p>
+</blockquote>
+<p><strong>单核CPU与多核CPU的理解</strong></p>
+<p>单核CPU，其实是一种假的多线程，因为在一个时间单元内，也只能执行一个线程的任务。例如：虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果有某个人不想交钱，那么收费人员可以把他“挂起”。但是因为CPU时间单元特别短，所以感觉不出来。</p>
+<p>多核CPU</p>
+<p><strong>并发与并行</strong></p>
+<p>并行：多个CPU同时执行多个任务。例如：多个人同时做不同的事情。</p>
+<p>并发：一个CPU（采用时间片）同时执行多个任务。例如：秒杀，多个人做一件事。</p>
+<p><strong>多线程的优点</strong></p>
+<p>1.提高应用程序的响应。对图形化界面更有意义，可以增强用户体验。</p>
+<p>2.提高计算机系统CPU的利用率</p>
+<p>3.改善程序结构。将既长又复杂的进程分为多个线程，独立运行，利于理解和修改</p>
+<h3 id="二-线程的创建和使用"><a href="#二-线程的创建和使用" class="headerlink" title="二.线程的创建和使用"></a>二.线程的创建和使用</h3><p>多线程的创建，方式一：继承与Thread类</p>
+<p>1.创建一个类继承于Thread类的子类</p>
+<p>2.重写Thread类的run()  ——》将此线程执行的操作声明在run()中</p>
+<p>3.创建Thread类的子类的对象</p>
+<p>4.通过此对象调用start()</p>
+<p><strong>线程的调度</strong>：</p>
+<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
+<ul>
+<li>创建状态 </li>
+</ul>
+<p>在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时它已经有了相应的内存空间和其他资源，但还处于不可运行状态。新建一个线程对象可采用Thread 类的构造方法来实现，例如 “Thread thread=new Thread()”。</p>
+<ul>
+<li>就绪状态 </li>
+</ul>
+<p>新建线程对象后，调用该线程的 start() 方法就可以启动线程。当线程启动时，线程进入就绪状态。此时，线程将进入线程队列排队，等待 CPU 服务，这表明它已经具备了运行条件。</p>
+<ul>
+<li>运行状态 </li>
+</ul>
+<p>当就绪状态被调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的 run() 方法。run() 方法定义该线程的操作和功能。</p>
+<ul>
+<li>阻塞状态 </li>
+</ul>
+<p>一个正在执行的线程在某些特殊情况下，如被人为挂起或需要执行耗时的输入/输出操作，会让 CPU 暂时中止自己的执行，进入阻塞状态。在可执行状态下，如果调用sleep(),suspend(),wait() 等方法，线程都将进入阻塞状态，发生阻塞时线程不能进入排队队列，只有当引起阻塞的原因被消除后，线程才可以转入就绪状态。</p>
+<ul>
+<li>死亡状态 </li>
+</ul>
+<p>线程调用 stop() 方法时或 run() 方法执行结束后，即处于死亡状态。处于死亡状态的线程不具有继续运行的能力。</p>
+<p>在此提出一个问题，Java 程序每次运行至少启动几个线程？</p>
+<p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
+<h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>多线程</tag>
+        <tag>JavaSE</tag>
       </tags>
   </entry>
   <entry>
@@ -667,197 +870,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Idea快捷键</title>
-    <url>/2020/09/11/Idea%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<p>Idea快捷键记录</p>
-<a id="more"></a>
-
-<h1 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Idea</category>
-      </categories>
-      <tags>
-        <tag>Idea快捷键</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JSP页面El表达式不起作用</title>
-    <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
-<a id="more"></a>
-
-<p>头文件中</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
-<p>jsp约束：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>JSP</category>
-      </categories>
-      <tags>
-        <tag>JSP</tag>
-        <tag>session</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java多线程</title>
-    <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[<p>Java多线程知识总结</p>
-<a id="more"></a>
-
-<h3 id="一-基本概念：程序、进程、线程"><a href="#一-基本概念：程序、进程、线程" class="headerlink" title="一.基本概念：程序、进程、线程"></a>一.基本概念：程序、进程、线程</h3><p>程序(program)是为完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。<br>进程(process)是程序的一次执行过程，或是正在运行的一个程序。是一个动态的过程：有它自身的产生、存在和消亡的过程。也就是生命周期</p>
-<blockquote>
-<p>如：运行的QQ，运行中的MP3播放器<br>程序是静态的，进程是动态的<br>进程作为资源分配的单位，系统在运行时会为每个进程不同的内存区域。</p>
-</blockquote>
-<p>线程(thread)：进程可以进一步细化为线程，是一个程序内部的一条执行路径。</p>
-<blockquote>
-<p>若一个进程同一时间并行执行多个线程，就是支持多线程的。<br>线程作为调度和执行的单位，每个线程拥有独立的运行栈和程序计数器(PC)，线程切换的开销小<br>一个进程中的多个线程共享相同的内存单元/内存地址空间-&gt;它们从同一堆中分配对象，可以访问相同的变量和对象。这就使得线程间通信更简便、高效。但多个线程操作共享的系统资源可能带来安全的隐患。</p>
-</blockquote>
-<p><strong>单核CPU与多核CPU的理解</strong></p>
-<p>单核CPU，其实是一种假的多线程，因为在一个时间单元内，也只能执行一个线程的任务。例如：虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果有某个人不想交钱，那么收费人员可以把他“挂起”。但是因为CPU时间单元特别短，所以感觉不出来。</p>
-<p>多核CPU</p>
-<p><strong>并发与并行</strong></p>
-<p>并行：多个CPU同时执行多个任务。例如：多个人同时做不同的事情。</p>
-<p>并发：一个CPU（采用时间片）同时执行多个任务。例如：秒杀，多个人做一件事。</p>
-<p><strong>多线程的优点</strong></p>
-<p>1.提高应用程序的响应。对图形化界面更有意义，可以增强用户体验。</p>
-<p>2.提高计算机系统CPU的利用率</p>
-<p>3.改善程序结构。将既长又复杂的进程分为多个线程，独立运行，利于理解和修改</p>
-<h3 id="二-线程的创建和使用"><a href="#二-线程的创建和使用" class="headerlink" title="二.线程的创建和使用"></a>二.线程的创建和使用</h3><p>多线程的创建，方式一：继承与Thread类</p>
-<p>1.创建一个类继承于Thread类的子类</p>
-<p>2.重写Thread类的run()  ——》将此线程执行的操作声明在run()中</p>
-<p>3.创建Thread类的子类的对象</p>
-<p>4.通过此对象调用start()</p>
-<p><strong>线程的调度</strong>：</p>
-<h3 id="三-线程的生命周期"><a href="#三-线程的生命周期" class="headerlink" title="三.线程的生命周期"></a>三.线程的生命周期</h3><p>要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：</p>
-<ul>
-<li>创建状态 </li>
-</ul>
-<p>在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时它已经有了相应的内存空间和其他资源，但还处于不可运行状态。新建一个线程对象可采用Thread 类的构造方法来实现，例如 “Thread thread=new Thread()”。</p>
-<ul>
-<li>就绪状态 </li>
-</ul>
-<p>新建线程对象后，调用该线程的 start() 方法就可以启动线程。当线程启动时，线程进入就绪状态。此时，线程将进入线程队列排队，等待 CPU 服务，这表明它已经具备了运行条件。</p>
-<ul>
-<li>运行状态 </li>
-</ul>
-<p>当就绪状态被调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的 run() 方法。run() 方法定义该线程的操作和功能。</p>
-<ul>
-<li>阻塞状态 </li>
-</ul>
-<p>一个正在执行的线程在某些特殊情况下，如被人为挂起或需要执行耗时的输入/输出操作，会让 CPU 暂时中止自己的执行，进入阻塞状态。在可执行状态下，如果调用sleep(),suspend(),wait() 等方法，线程都将进入阻塞状态，发生阻塞时线程不能进入排队队列，只有当引起阻塞的原因被消除后，线程才可以转入就绪状态。</p>
-<ul>
-<li>死亡状态 </li>
-</ul>
-<p>线程调用 stop() 方法时或 run() 方法执行结束后，即处于死亡状态。处于死亡状态的线程不具有继续运行的能力。</p>
-<p>在此提出一个问题，Java 程序每次运行至少启动几个线程？</p>
-<p>回答：至少启动两个线程，每当使用 Java 命令执行一个类时，实际上都会启动一个 JVM，每一个JVM实际上就是在操作系统中启动一个线程，Java 本身具备了垃圾的收集机制。所以在 Java 运行时至少会启动两个线程，一个是 main 线程，另外一个是垃圾收集线程。</p>
-<h3 id="四-线程的同步"><a href="#四-线程的同步" class="headerlink" title="四.线程的同步"></a>四.线程的同步</h3><h3 id="五-线程的通信"><a href="#五-线程的通信" class="headerlink" title="五.线程的通信"></a>五.线程的通信</h3><h3 id="六-JDK5-0新增线程创建方式"><a href="#六-JDK5-0新增线程创建方式" class="headerlink" title="六.JDK5.0新增线程创建方式"></a>六.JDK5.0新增线程创建方式</h3>]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>多线程</tag>
-        <tag>JavaSE</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker搭建MySQL集群-PXC方案</title>
-    <url>/2020/08/21/Docker%E6%90%AD%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>尝试通过Dcoekr搭建MySQL集群</p>
-<a id="more"></a>
-
-<p>常见的集群方案包括：Replication，Percona XtraDB Cluster（PXC）</p>
-<blockquote>
-<p>MySQL主从复制：<a href="https://www.jianshu.com/p/faf0127f1cb2" target="_blank" rel="noopener">https://www.jianshu.com/p/faf0127f1cb2</a></p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Replication</th>
-<th>PXC</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据同步是单向的，master负责写，然后异步复制给slave；如果slave写入数据，不会复制给master。</td>
-<td>数据同步时双向的，任何一个mysql节点写入数据，都会同步到集群中其它的节点。</td>
-</tr>
-<tr>
-<td>异步复制，从和主无法保证数据的一致性</td>
-<td>同步复制，事务在所有集群节点要么同时提交，要么同时不提交</td>
-</tr>
-</tbody></table>
-<p>Replication方案适用于日志，博客这样的网站，存储一些价值较低的内容。</p>
-<p>而PXC具备强一致性，数据同步是双向的特点，另外PerconaServer是MySQL改进版，性能提升很大。所以这里我选择的是PXC方案搭建Mysql集群。</p>
-<h3 id="一、搭建准备"><a href="#一、搭建准备" class="headerlink" title="一、搭建准备"></a>一、搭建准备</h3><p>Docker的安装与配置非常简单。</p>
-<h4 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1.安装docker"></a>1.安装docker</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-配置docker镜像加速器"><a href="#2-配置docker镜像加速器" class="headerlink" title="2.配置docker镜像加速器"></a>2.配置docker镜像加速器</h4><p>这里我使用的阿里云的加速器</p>
-<h4 id="3-docker常用命令"><a href="#3-docker常用命令" class="headerlink" title="3.docker常用命令"></a>3.docker常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker search   #查找镜像</span><br><span class="line">docker images	#查看所有镜像</span><br><span class="line">docker pull		#下载镜像</span><br><span class="line">docker rmi		#删除镜像</span><br><span class="line">docker ps -a	#查看正在运行的实例</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="二、Mysql-PXC集群环境部署"><a href="#二、Mysql-PXC集群环境部署" class="headerlink" title="二、Mysql PXC集群环境部署"></a>二、Mysql PXC集群环境部署</h3><h4 id="1-下载镜像"><a href="#1-下载镜像" class="headerlink" title="1.下载镜像"></a>1.下载镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull docker.io&#x2F;percona&#x2F;percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong>可以使用<code>docker tag</code>改名，这里我将 docker.io/percona/percona-xtradb-cluster更名为pxc</p>
-<h4 id="2-创建内部网络"><a href="#2-创建内部网络" class="headerlink" title="2.创建内部网络"></a>2.创建内部网络</h4><p>出于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
-<p>这里我搭建集群使用的是<strong>5节点</strong>，网段可以自己规定</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.10.0.0&#x2F;24 net1</span><br><span class="line">docker network inspect net1</span><br><span class="line">docker network rm net1</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-创建Docker卷"><a href="#3-创建Docker卷" class="headerlink" title="3.创建Docker卷"></a>3.创建Docker卷</h4><p>容器中的PXC节点映射数据目录的解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create --name v1</span><br><span class="line">docker volume create --name v2</span><br><span class="line">docker volume create --name v3</span><br><span class="line">docker volume create --name v4</span><br><span class="line">docker volume create --name v5</span><br></pre></td></tr></table></figure>
-
-<p>查看docker卷信息：<code>docker inspect v1</code></p>
-<h4 id="4-创建PXC容器"><a href="#4-创建PXC容器" class="headerlink" title="4.创建PXC容器"></a>4.创建PXC容器</h4><p>5个PXC容器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.10.0.2 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v2:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node2 --net&#x3D;net1 --ip 172.10.0.3 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v3:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node3 --net&#x3D;net1 --ip 172.10.0.4 pxc </span><br><span class="line"></span><br><span class="line">docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v4:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node4 --net&#x3D;net1 --ip 172.10.0.5 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;123456 -e CLUSTER_JOIN&#x3D;node1 -v v5:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node5 --net&#x3D;net1 --ip 172.10.0.6 pxc</span><br></pre></td></tr></table></figure>
-
-<h3 id="三、验证是否创建成功PCX集群"><a href="#三、验证是否创建成功PCX集群" class="headerlink" title="三、验证是否创建成功PCX集群"></a>三、验证是否创建成功PCX集群</h3><p>在数据库中创建5个DB：</p>
-<p><img src="/images/2020110201.png" alt="image-20201102100706388"></p>
-<p>在DB1中新建test数据库并创建student表：</p>
-<p><img src="/images/2020110202.png" alt="image-20201102100820614"></p>
-<p>刷新之后，可以看到DB2,DB3,DB4,DB5全部同步到与DB1一致</p>
-<p><img src="/images/2020110203.png" alt="image-20201102100858654"></p>
-<h3 id="四、数据库负载的配置"><a href="#四、数据库负载的配置" class="headerlink" title="四、数据库负载的配置"></a>四、数据库负载的配置</h3><p>数据库负载均衡的必要性：</p>
-<p>虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，会暴露负载高，性能差的问题</p>
-<p>这里可以使用<strong>Haproxy</strong>做负载均衡，将请求均匀的分发给每个节点，单节点负载会轻松很多。</p>
-<h4 id="1-haproxy的下载"><a href="#1-haproxy的下载" class="headerlink" title="1.haproxy的下载"></a>1.haproxy的下载</h4><p><code>docker pull haproxy</code></p>
-<h4 id="2-创建haproxy配置文件"><a href="#2-创建haproxy配置文件" class="headerlink" title="2.创建haproxy配置文件"></a>2.创建haproxy配置文件</h4><blockquote>
-<p>配置参考：<a href="http://zhangge.net/5125.html" target="_blank" rel="noopener">http://zhangge.net/5125.html</a></p>
-</blockquote>
-<p>在/home/soft/haproxy/目录下创建haproxy.cfg文件</p>
-<p>haproxy.cfg</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">global</span><br><span class="line">	#工作目录</span><br><span class="line">	chroot /usr/local/etc/haproxy</span><br><span class="line">	#日志文件，使用rsyslog服务中local5日志设备（/var/log/local5），等级info</span><br><span class="line">	log 127.0.0.1 local5 info</span><br><span class="line">	#守护进程运行</span><br><span class="line">	daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">	log global</span><br><span class="line">	mode http</span><br><span class="line">	#日志格式</span><br><span class="line">	option httplog</span><br><span class="line">	#日志中不记录负载均衡的心跳检测记录</span><br><span class="line">	option dontlognull</span><br><span class="line">	#连接超时（毫秒）</span><br><span class="line">	timeout connect 5000</span><br><span class="line">	#客户端超时（毫秒）</span><br><span class="line">	timeout client 50000</span><br><span class="line">	#服务器超时（毫秒）</span><br><span class="line">	timeout server 50000</span><br><span class="line"></span><br><span class="line">#监控界面</span><br><span class="line">listen admin_stats</span><br><span class="line">	#监控界面的访问的IP和端口</span><br><span class="line">	bind 0.0.0.0:8888</span><br><span class="line">	#访问协议</span><br><span class="line">	mode http</span><br><span class="line">	#URI相对地址</span><br><span class="line">	stats uri /dbs</span><br><span class="line">	#统计报告格式</span><br><span class="line">	stats realm     Global\ statistics</span><br><span class="line">	#登陆帐户信息</span><br><span class="line">	stats auth  admin:123456</span><br><span class="line"> #数据库负载均衡</span><br><span class="line"> listen  proxy-mysql</span><br><span class="line">	#访问的IP和端口</span><br><span class="line">	bind  0.0.0.0:3306</span><br><span class="line">	#网络协议</span><br><span class="line">	mode  tcp</span><br><span class="line">	#负载均衡算法（轮询算法）</span><br><span class="line">	#轮询算法：roundrobin</span><br><span class="line">	#权重算法：static-rr</span><br><span class="line">	#最少连接算法：leastconn</span><br><span class="line">	#请求源IP算法：source</span><br><span class="line">	balance  roundrobin</span><br><span class="line">	#日志格式</span><br><span class="line">	option  tcplog</span><br><span class="line">   	#在MySQL中创建一个没有权限的haproxy用户，密码为空。Haproxy使用这个账户对MySQL数据库心跳检测</span><br><span class="line">        option  mysql-check user haproxy</span><br><span class="line">        server  MySQL_1 172.10.1.2:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_2 172.10.1.3:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_3 172.10.1.4:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_4 172.10.1.5:3306 check weight 1 maxconn 2000</span><br><span class="line">        server  MySQL_5 172.10.1.6:3306 check weight 1 maxconn 2000</span><br><span class="line">	#使用keepalive检测死链</span><br><span class="line">	option  tcpka</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="4-实例化haproxy"><a href="#4-实例化haproxy" class="headerlink" title="4.实例化haproxy"></a>4.实例化haproxy</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">docker run -it -d -p 4001:8888 -p 4002:3306 -v /home/soft/haproxy:/usr/local/etc/haproxy --name h1 --privileged --net=net1 --ip 172.10.0.7 haproxy</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-登陆到交互容器里"><a href="#5-登陆到交互容器里" class="headerlink" title="5.登陆到交互容器里"></a>5.登陆到交互容器里</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
-
-<h4 id="6-测试"><a href="#6-测试" class="headerlink" title="6.测试"></a>6.测试</h4><p><img src="/images/2020110204.png" alt="image-20201102120345130"></p>
-<p>首页展示：</p>
-<p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>MySQL集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java设计模式</title>
-    <url>/2020/12/06/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>Linux安装配置大全</title>
     <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
     <content><![CDATA[<p>Linux各种版本安装配置</p>
@@ -874,15 +886,116 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java集合</title>
-    <url>/2019/08/05/Java%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[]]></content>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<p>记录一个小细节</p>
+<a id="more"></a>
+
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
+]]></content>
       <categories>
-        <category>Java</category>
+        <category>MyBatis</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
+        <tag>MyBatis缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL数据库集群-PXC方案</title>
+    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.percona.com/downloads/Percona-Server-5.7/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/</a></p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>PXC方案的一些改进</title>
+    <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
+<p>主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据</p>
+<a id="more"></a>
+
+<h3 id="1-负载均衡的高可用方案"><a href="#1-负载均衡的高可用方案" class="headerlink" title="1.负载均衡的高可用方案"></a>1.负载均衡的高可用方案</h3><p>虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。</p>
+<h4 id="1-1-安装Keepalived"><a href="#1-1-安装Keepalived" class="headerlink" title="1.1 安装Keepalived"></a>1.1 安装Keepalived</h4><p>进入容器<br><code>docker exec -it h1 bash</code><br>在容器中安装<br><code>apt-get update</code><br><code>apt-get install keepalived</code></p>
+<h4 id="1-2-Keepalived配置文件"><a href="#1-2-Keepalived配置文件" class="headerlink" title="1.2 Keepalived配置文件"></a>1.2 Keepalived配置文件</h4><p>在容器中<br><code>vim /etc/keepalived/keepalived.conf</code><br>如果容器没有安装vim，请输入命令：<code>apt-get install vim</code><br>然后在文件里贴上配置</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.10.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>state 是keepalived的身份（MASTER主服务，BACKUP备服务器）。主服务要抢占虚拟IP，备用服务器不会抢占IP</li>
+<li>interface 网卡设备</li>
+<li>virtual_router_id 虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是 0 ～ 255</li>
+<li>priority 权重</li>
+<li>advert_int 心跳检测秒，MASTER与BACKUP节点间同步检查的时间间。主备之间必须一致。</li>
+<li>authentication 主从服务器验证方式。主备必须使用相同的密码才能正常通信</li>
+<li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
+</ul>
+<h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
+<p><img src="/images/2020110901.png" alt="image-20201109224438458"></p>
+<p><img src="/images/2020110902.png" alt="image-20201109225321905"></p>
+<h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
+<p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
+<p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
+<h4 id="2-2-热备份："><a href="#2-2-热备份：" class="headerlink" title="2.2 热备份："></a>2.2 热备份：</h4><p>热备份是在系统运行的状态下备份数据，也是难度最大的备份，Mysql常见的热备份有LVM和XtraBackup两种方案。<br>这里我使用的是XtraBackup方案实现热备份，XtraBackup是一款基于InnoDB的在线热备工具，具有开源免费，支持在线热备，占用磁盘空间小，能够非常快速地备份与恢复Mysql数据库等特点</p>
+<p><strong>优势：</strong></p>
+<ul>
+<li><p>备份过程中不锁表、快速可靠</p>
+</li>
+<li><p>备份过程中不会打断正在执行的事务</p>
+</li>
+<li><p>能够基于压缩等功能节约磁盘空间和流量</p>
+</li>
+</ul>
+<p><strong>每天进行一次增量备份，每周进行一次全量备份</strong></p>
+<p><strong>全量备份：</strong>备份全部数据。备份过程时间长，占用空间大</p>
+<p><strong>增量备份：</strong>只备份变化的数据。备份时间短，占用空间小</p>
+<h4 id="2-3-全量数据热备份"><a href="#2-3-全量数据热备份" class="headerlink" title="2.3 全量数据热备份"></a>2.3 全量数据热备份</h4><p>1.创建数据卷</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
+
+<p>2.选择数据节点映射数据卷</p>
+<p>​    先停止节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
+
+<p>​    删除node1重新创建</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker rm node1</span><br></pre></td></tr></table></figure>
+
+<p>​    创建node1</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">docker run -d -p <span class="number">3306</span>:<span class="number">3306</span> -e MYSQL_ROOT_PASSWORD=<span class="number">123456</span> -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=<span class="number">123456</span> -v v1:/<span class="keyword">var</span>/lib/mysql -v backup:/<span class="keyword">data</span> --privileged -e CLUSTER_JOIN=node2 --name=node1 --net=net1 --ip <span class="number">172.10</span><span class="number">.0</span><span class="number">.2</span> pxc</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>PXC容器中安装XtraBackup，并执行备份</strong></p>
+<p>进入节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it node1 bash</span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install percona-xtrabackup<span class="number">-24</span></span><br></pre></td></tr></table></figure>
+
+<p>全量备份</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> /<span class="keyword">data</span>/backup/full</span><br></pre></td></tr></table></figure>
+
+<p>容器内备份数据</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;data&#x2F;backup&#x2F;full</span><br><span class="line">退出容器</span><br><span class="line">exit</span><br><span class="line">查看数据卷目录</span><br><span class="line">docker inspect backup</span><br><span class="line">进入备份目录</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-全量数据冷还原"><a href="#2-4-全量数据冷还原" class="headerlink" title="2.4 全量数据冷还原"></a>2.4 全量数据冷还原</h4><p>数据库可以热备份，但是不能热还原。为了避免恢复过程中的数据同步。我们采用空白的MySQL还原数据，然后再建立PXC集群；还原数据前要将未提交的事务回滚，还原数据之后重启MySQL。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">rm -rf /<span class="keyword">var</span>/lib/mysql<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
+
+<p>事务回滚</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --apply-back /<span class="keyword">data</span>/backup/full/</span><br></pre></td></tr></table></figure>
+
+<p>全量数据冷还原</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>MySQL集群</tag>
       </tags>
   </entry>
   <entry>
@@ -966,26 +1079,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<p>记录一个小细节</p>
-<a id="more"></a>
-
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
     <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
@@ -1010,9 +1103,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MySQL数据库集群-PXC方案</title>
-    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[]]></content>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
+      </tags>
   </entry>
   <entry>
     <title>MySQL高级</title>
@@ -1404,91 +1505,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PXC方案的一些改进</title>
-    <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
-    <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
-<p>主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据</p>
-<a id="more"></a>
-
-<h3 id="1-负载均衡的高可用方案"><a href="#1-负载均衡的高可用方案" class="headerlink" title="1.负载均衡的高可用方案"></a>1.负载均衡的高可用方案</h3><p>虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。</p>
-<h4 id="1-1-安装Keepalived"><a href="#1-1-安装Keepalived" class="headerlink" title="1.1 安装Keepalived"></a>1.1 安装Keepalived</h4><p>进入容器<br><code>docker exec -it h1 bash</code><br>在容器中安装<br><code>apt-get update</code><br><code>apt-get install keepalived</code></p>
-<h4 id="1-2-Keepalived配置文件"><a href="#1-2-Keepalived配置文件" class="headerlink" title="1.2 Keepalived配置文件"></a>1.2 Keepalived配置文件</h4><p>在容器中<br><code>vim /etc/keepalived/keepalived.conf</code><br>如果容器没有安装vim，请输入命令：<code>apt-get install vim</code><br>然后在文件里贴上配置</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.10.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>state 是keepalived的身份（MASTER主服务，BACKUP备服务器）。主服务要抢占虚拟IP，备用服务器不会抢占IP</li>
-<li>interface 网卡设备</li>
-<li>virtual_router_id 虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是 0 ～ 255</li>
-<li>priority 权重</li>
-<li>advert_int 心跳检测秒，MASTER与BACKUP节点间同步检查的时间间。主备之间必须一致。</li>
-<li>authentication 主从服务器验证方式。主备必须使用相同的密码才能正常通信</li>
-<li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
-</ul>
-<h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
-<p><img src="/images/2020110901.png" alt="image-20201109224438458"></p>
-<p><img src="/images/2020110902.png" alt="image-20201109225321905"></p>
-<h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
-<p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
-<p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
-<h4 id="2-2-热备份："><a href="#2-2-热备份：" class="headerlink" title="2.2 热备份："></a>2.2 热备份：</h4><p>热备份是在系统运行的状态下备份数据，也是难度最大的备份，Mysql常见的热备份有LVM和XtraBackup两种方案。<br>这里我使用的是XtraBackup方案实现热备份，XtraBackup是一款基于InnoDB的在线热备工具，具有开源免费，支持在线热备，占用磁盘空间小，能够非常快速地备份与恢复Mysql数据库等特点</p>
-<p><strong>优势：</strong></p>
-<ul>
-<li><p>备份过程中不锁表、快速可靠</p>
-</li>
-<li><p>备份过程中不会打断正在执行的事务</p>
-</li>
-<li><p>能够基于压缩等功能节约磁盘空间和流量</p>
-</li>
-</ul>
-<p><strong>每天进行一次增量备份，每周进行一次全量备份</strong></p>
-<p><strong>全量备份：</strong>备份全部数据。备份过程时间长，占用空间大</p>
-<p><strong>增量备份：</strong>只备份变化的数据。备份时间短，占用空间小</p>
-<h4 id="2-3-全量数据热备份"><a href="#2-3-全量数据热备份" class="headerlink" title="2.3 全量数据热备份"></a>2.3 全量数据热备份</h4><p>1.创建数据卷</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
-
-<p>2.选择数据节点映射数据卷</p>
-<p>​    先停止节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
-
-<p>​    删除node1重新创建</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker rm node1</span><br></pre></td></tr></table></figure>
-
-<p>​    创建node1</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">docker run -d -p <span class="number">3306</span>:<span class="number">3306</span> -e MYSQL_ROOT_PASSWORD=<span class="number">123456</span> -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=<span class="number">123456</span> -v v1:/<span class="keyword">var</span>/lib/mysql -v backup:/<span class="keyword">data</span> --privileged -e CLUSTER_JOIN=node2 --name=node1 --net=net1 --ip <span class="number">172.10</span><span class="number">.0</span><span class="number">.2</span> pxc</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>PXC容器中安装XtraBackup，并执行备份</strong></p>
-<p>进入节点</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it node1 bash</span><br></pre></td></tr></table></figure>
-
-<p>执行</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install percona-xtrabackup<span class="number">-24</span></span><br></pre></td></tr></table></figure>
-
-<p>全量备份</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> /<span class="keyword">data</span>/backup/full</span><br></pre></td></tr></table></figure>
-
-<p>容器内备份数据</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;data&#x2F;backup&#x2F;full</span><br><span class="line">退出容器</span><br><span class="line">exit</span><br><span class="line">查看数据卷目录</span><br><span class="line">docker inspect backup</span><br><span class="line">进入备份目录</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-4-全量数据冷还原"><a href="#2-4-全量数据冷还原" class="headerlink" title="2.4 全量数据冷还原"></a>2.4 全量数据冷还原</h4><p>数据库可以热备份，但是不能热还原。为了避免恢复过程中的数据同步。我们采用空白的MySQL还原数据，然后再建立PXC集群；还原数据前要将未提交的事务回滚，还原数据之后重启MySQL。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">rm -rf /<span class="keyword">var</span>/lib/mysql<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
-
-<p>事务回滚</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --apply-back /<span class="keyword">data</span>/backup/full/</span><br></pre></td></tr></table></figure>
-
-<p>全量数据冷还原</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>MySQL集群</tag>
       </tags>
   </entry>
   <entry>
@@ -1908,6 +1924,24 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot启动时找不到或无法加载主类</title>
+    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
+<blockquote>
+<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
+</blockquote>
+<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -1945,37 +1979,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot启动时找不到或无法加载主类</title>
-    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
-<blockquote>
-<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
-</blockquote>
-<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -2017,6 +2020,198 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>邮件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UML学习笔记</title>
+    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>UML</category>
+      </categories>
+      <tags>
+        <tag>UML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>canal-adapter启动失败问题记录</title>
+    <url>/2020/12/14/canal-adapter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<blockquote>
+<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h1><p>canal-1.4 </p>
+<p>elasticsearch-7.7.1</p>
+<p>jdk1.8</p>
+<p>mysql-5.7.30</p>
+<h1 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2020-12-13 09:39:06.006 [main] INFO  o.s.c.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131: startup date [Sun Dec 13 09:39:05 GMT+08:00 2020]; root of context hierarchy</span><br><span class="line">2020-12-13 09:39:06.521 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;configurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:06.852 [main] INFO  c.a.otter.canal.adapter.launcher.CanalAdapterApplication - No active profile set, falling back to default profiles: default</span><br><span class="line">2020-12-13 09:39:06.884 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@796d3c9f: startup date [Sun Dec 13 09:39:06 GMT+08:00 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131</span><br><span class="line">2020-12-13 09:39:07.640 [main] INFO  org.springframework.cloud.context.scope.GenericScope - BeanFactory id&#x3D;ba9c0aec-0105-3f1f-b89e-e85c68567039</span><br><span class="line">2020-12-13 09:39:07.724 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:09.358 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)</span><br><span class="line">2020-12-13 09:39:09.382 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler [&quot;http-nio-8081&quot;]</span><br><span class="line">2020-12-13 09:39:09.402 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]</span><br><span class="line">2020-12-13 09:39:09.404 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat&#x2F;8.5.29</span><br><span class="line">2020-12-13 09:39:09.421 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;&quot;.;C:\Program Files\Java\jdk-11.0.9\\bin;E:\tomcat\apache-tomcat-8.5.59\bin;&quot;;C:\Program Files\VanDyke Software\Clients\;E:\Python\python3\Scripts\;E:\Python\python3\;E:\Java\maven\apache-maven-3.6.3\bin;E:\IDEA\gradle\gradle-5.4.1\bin;E:\app\admin\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\;rogram Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;人网站\Git\bin;:\;人网站\Git\cmd;it;cmd;D:\;C:\WINDOWS\System32\OpenSSH\;&quot;E:\tomcat\apache-tomcat-8.5.59\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\&quot;;E:\Coding\winhadoop\bin;E:\Git\cmd;E:\node\;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Program Files (x86)\CADSeePlus;E:\tomcat\apache-tomcat-8.5.34\bin;C:\Program Files\Java\jdk1.8.0_261\bin;C:\Program Files\Java\jdk-11.0.9\bin;E:\Python\python3\Scripts\;E:\Python\python3\;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files (x86)\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools;C:\Program Files (x86)\Microsoft Visual Studio\VC98\bin;C:\Qt\Qt5.6.2\5.6\msvc2013\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\个人网站\Git\bin;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;&quot;E:\IDEA\gradle\gradle-5.4.1\bin;&quot;;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\IDEA\IntelliJ IDEA 2019.3.4\bin;;C:\Users\admin\AppData\Local\Pandoc\;C:\Users\admin\AppData\Roaming\npm;E:\vscode\Microsoft VS Code\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;E:\WebStorm\WebStorm 2020.2\bin;;C:\Program Files\Bandizip\;C:\Program Files\JetBrains\PyCharm 2020.1.4\bin;;;.]</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  o.a.catalina.core.ContainerBase.[Tomcat].[localhost].[&#x2F;] - Initializing Spring embedded WebApplicationContext</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2766 ms</span><br><span class="line">2020-12-13 09:39:09.902 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [&#x2F;]</span><br><span class="line">2020-12-13 09:39:09.910 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;characterEncodingFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.913 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;hiddenHttpMethodFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.914 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;httpPutFormContentFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.915 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;requestContextFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:10.094 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">2020-12-13 09:39:10.098 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]</span><br><span class="line">2020-12-13 09:39:10.321 [localhost-startStop-1] WARN  org.apache.catalina.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.Object.wait(Native Method)</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)</span><br><span class="line"> app&#x2F;&#x2F;com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)</span><br><span class="line">2020-12-13 09:39:10.341 [main] INFO  o.s.b.a.logging.ConditionEvaluationReportLoggingListener - </span><br><span class="line"></span><br><span class="line">Error starting ApplicationContext. To display the conditions report re-run your application with &#39;debug&#39; enabled.</span><br><span class="line">2020-12-13 09:39:10.347 [main] ERROR org.springframework.boot.SpringApplication - Application run failed</span><br><span class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:138)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1694)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:579)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:501)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:760)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:869)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)</span><br><span class="line">	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395)</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.CanalAdapterApplication.main(CanalAdapterApplication.java:19)</span><br><span class="line">Caused by: java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:105)</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:85)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.monitor.ApplicationConfigMonitor.init(ApplicationConfigMonitor.java:41)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.base&#x2F;java.lang.reflect.Method.invoke(Method.java:566)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:365)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:308)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:135)</span><br><span class="line">	... 16 common frames omitted</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>canal</category>
+      </categories>
+      <tags>
+        <tag>canal</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>canal中间件学习笔记</title>
+    <url>/2020/12/09/canal%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>es准时性索引的构建</p>
+<a id="more"></a>
+
+<h1 id="增量索引构建的要求"><a href="#增量索引构建的要求" class="headerlink" title="增量索引构建的要求"></a>增量索引构建的要求</h1><ul>
+<li>准实时；</li>
+<li>性能；</li>
+<li>编程简化；</li>
+</ul>
+<h1 id="canal-简介"><a href="#canal-简介" class="headerlink" title="canal 简介"></a>canal 简介</h1><blockquote>
+<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
+</blockquote>
+<ul>
+<li>消息管道；</li>
+<li>source 为 MySQL 数据库；</li>
+<li>target 为其他存储，比如 ElasticSearch；</li>
+<li>Canal 借鉴了MySQL主从复制的原理，伪装成一个 MySQL 主库的备库，感知 MySQL 中 binlog 的变化，并同步出来一个结构化的数据，交给 Canal 管道的消费端；</li>
+</ul>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121201.png" alt="img"></p>
+<h1 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h1><h2 id="MySQL主备复制原理"><a href="#MySQL主备复制原理" class="headerlink" title="MySQL主备复制原理"></a>MySQL主备复制原理</h2><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121202.png" alt="img"></p>
+<ul>
+<li>MySQL master 将数据变更写入二进制日志( binary log, 其中记录叫做二进制日志事件binary log events，可以通过 show binlog events 进行查看)</li>
+<li>MySQL slave 将 master 的 binary log events 拷贝到它的中继日志(relay log)</li>
+<li>MySQL slave 重放 relay log 中事件，将数据变更反映它自己的数据</li>
+</ul>
+<h2 id="canal-工作原理"><a href="#canal-工作原理" class="headerlink" title="canal 工作原理"></a>canal 工作原理</h2><ul>
+<li>canal 模拟 MySQL slave 的交互协议，伪装自己为 MySQL slave ，向 MySQL master 发送dump 协议</li>
+<li>MySQL master 收到 dump 请求，开始推送 binary log 给 slave (即 canal )</li>
+<li>canal 解析 binary log 对象(原始为 byte 流)</li>
+</ul>
+<blockquote>
+<p>canal快速启动：<a href="https://github.com/alibaba/canal/wiki/QuickStart" target="_blank" rel="noopener">https://github.com/alibaba/canal/wiki/QuickStart</a></p>
+</blockquote>
+<h1 id="Linux下安装canal"><a href="#Linux下安装canal" class="headerlink" title="Linux下安装canal"></a>Linux下安装canal</h1><h2 id="开启-MySQL-的-binglog"><a href="#开启-MySQL-的-binglog" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h2><h6 id="Ubuntu-用-APT-Repository-安装-MySQL-的安装位置"><a href="#Ubuntu-用-APT-Repository-安装-MySQL-的安装位置" class="headerlink" title="Ubuntu 用 APT Repository 安装 MySQL 的安装位置"></a>Ubuntu 用 APT Repository 安装 MySQL 的安装位置</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;mysql - 配置文件</span><br><span class="line">&#x2F;var&#x2F;lib&#x2F;mysql - 数据存放的位置</span><br><span class="line">&#x2F;usr&#x2F;bin&#x2F;mysql - 启动命令</span><br><span class="line">&#x2F;usr&#x2F;lib&#x2F;mysql -  插件</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="查看-MySQL-几个变量的值"><a href="#查看-MySQL-几个变量的值" class="headerlink" title="查看 MySQL 几个变量的值"></a>查看 MySQL 几个变量的值</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">要保证 binlog 开启，并且格式是 ROW；</span><br><span class="line"></span><br><span class="line">如果不是上述配置的话，需要修改 &#96;&#x2F;etc&#x2F;mysql&#x2F;mysql.conf.d&#x2F;mysqld.cnf&#96;，然后还要给 MySQL 实例起个 &#96;server-id &#x3D; 1&#96;；MySQL 8 的话，两个参数默认就是这样的，然后 &#96;server-id&#96; 给个唯一值就行了；</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 是否开启 binlog</span></span><br><span class="line">show variables like <span class="string">'log_bin'</span>;</span><br><span class="line"><span class="comment"># binlog 的格式</span></span><br><span class="line">show variables like <span class="string">'binlog_format'</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="创建复制用户"><a href="#创建复制用户" class="headerlink" title="创建复制用户"></a>创建复制用户</h6><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">create user <span class="string">'canal'</span>@<span class="string">'%'</span> identified <span class="keyword">by</span> <span class="string">'canal'</span>;</span><br><span class="line"></span><br><span class="line">grant replication slave <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant replication client <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant <span class="keyword">select</span> <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="canal-配置-1-1-3"><a href="#canal-配置-1-1-3" class="headerlink" title="canal 配置 | 1.1.3"></a>canal 配置 | 1.1.3</h2><h6 id="修改-canal-properties"><a href="#修改-canal-properties" class="headerlink" title="修改 canal.properties"></a>修改 canal.properties</h6><ul>
+<li>文件路径：<code>/canal/1.1.3/canal.deployer-1.1.3/conf</code>；</li>
+<li>这一行注释掉；</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#canal.instance.tsdb.spring.xml = classpath:spring/tsdb/h2-tsdb.xml</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="修改-instance-properties"><a href="#修改-instance-properties" class="headerlink" title="修改 instance.properties"></a>修改 instance.properties</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">位置：&#x2F;canal&#x2F;1.1.3&#x2F;canal.deployer-1.1.3&#x2F;conf&#x2F;example&#x2F;instance.properties；</span><br></pre></td></tr></table></figure>
+
+<p>修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canal.instance.mysql.slaveId&#x3D;8</span><br><span class="line"></span><br><span class="line">canal.instance.dbUsername&#x3D;canal</span><br><span class="line">canal.instance.dbPassword&#x3D;canal</span><br></pre></td></tr></table></figure>
+
+<h6 id="启动-canal"><a href="#启动-canal" class="headerlink" title="启动 canal"></a>启动 canal</h6><p>JDK 换成 8 才启动起来；</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;startup.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="canal-adapter-1-1-4"><a href="#canal-adapter-1-1-4" class="headerlink" title="canal.adapter | 1.1.4"></a>canal.adapter | 1.1.4</h2><h6 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 IDEA 中打开 client-adapter module；</span><br><span class="line"></span><br><span class="line">修改 &#x2F;canal-canal-1.1.4&#x2F;client-adapter&#x2F;elasticsearch&#x2F;pom.xml&#96; 中的 ElasticSearch 的依赖版本，改成 7.3.0；</span><br></pre></td></tr></table></figure>
+
+<p>pom.xml:</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>transport<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-high-level-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="在总-module-的目录下重新打包-canal"><a href="#在总-module-的目录下重新打包-canal" class="headerlink" title="在总 module 的目录下重新打包 canal"></a>在总 module 的目录下重新打包 canal</h6><ul>
+<li>路径为：<code>canal-canal-1.1.4</code>；</li>
+<li>打包命令：<code>mvn clean package -DskipTests</code>；</li>
+<li>报错：<code>[ERROR] /canal-canal-1.1.4/client-adapter/elasticsearch/src/main/java/com/alibaba/otter/canal/client/adapter/es/support/ESConnection.java:[420,47] 无法将类 org.elasticsearch.client.RestHighLevelClient中的方法 bulk应用到给定类型;</code></li>
+<li>找到指定的 ESConnection.java 的 420 行，解决问题：<code>return restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);</code></li>
+<li>重新打包：<code>mvn clean package -DskipTests</code>；</li>
+<li>报错：<code>/canal-canal-1.1.4/client-adapter/elasticsearch/src/main/java/com/alibaba/otter/canal/client/adapter/es/ESAdapter.java:[225,56] 不兼容的类型: org.apache.lucene.search.TotalHits无法转换为long</code>；</li>
+<li>找到指定的 ESAdapter.java 的 225 行，解决问题：<code>long rowCount = response.getHits().getTotalHits().value;</code>；</li>
+<li>重新打包：<code>mvn clean package -DskipTests</code>，终于成功了；</li>
+</ul>
+<h6 id="进入编译后生成的目录"><a href="#进入编译后生成的目录" class="headerlink" title="进入编译后生成的目录"></a>进入编译后生成的目录</h6><ul>
+<li><code>/canal-canal-1.1.4/client-adapter/launcher/target/canal-adapter</code>，里面的内容和直接从 Github 上下载二进制的包是一样的;</li>
+<li>把这个目录拷到正经的目录下，并改个名字 <code>/canal/1.1.4/canal-adapter-es7</code>；</li>
+</ul>
+<h6 id="修改配置文件-application-yml"><a href="#修改配置文件-application-yml" class="headerlink" title="修改配置文件 application.yml"></a>修改配置文件 application.yml</h6><ul>
+<li>文件路径：<code>/canal/1.1.4/canal-adapter-es7/conf/application.yml</code>；</li>
+<li>这个配置主要是指明管道两端的 MySQL 和 ElasticSearch；</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="symbol">server:</span></span><br><span class="line">  <span class="symbol">port:</span> <span class="number">8081</span></span><br><span class="line"><span class="symbol">spring:</span></span><br><span class="line">  <span class="symbol">jackson:</span></span><br><span class="line">    date-<span class="symbol">format:</span> yyyy-MM-dd <span class="symbol">HH:</span><span class="symbol">mm:</span>ss</span><br><span class="line">    time-<span class="symbol">zone:</span> GMT+<span class="number">8</span></span><br><span class="line">    default-property-<span class="symbol">inclusion:</span> non_null</span><br><span class="line"></span><br><span class="line">canal.<span class="symbol">conf:</span></span><br><span class="line">  <span class="symbol">mode:</span> tcp </span><br><span class="line">  <span class="symbol">canalServerHost:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">11111</span></span><br><span class="line">  <span class="symbol">batchSize:</span> <span class="number">500</span></span><br><span class="line">  <span class="symbol">syncBatchSize:</span> <span class="number">1000</span></span><br><span class="line">  <span class="symbol">retries:</span> <span class="number">0</span></span><br><span class="line">  <span class="symbol">timeout:</span></span><br><span class="line">  <span class="symbol">accessKey:</span></span><br><span class="line">  <span class="symbol">secretKey:</span></span><br><span class="line">  <span class="symbol">srcDataSources:</span></span><br><span class="line">    <span class="symbol">defaultDS:</span></span><br><span class="line">      <span class="symbol">url:</span> <span class="symbol">jdbc:</span><span class="symbol">mysql:</span>/<span class="regexp">/127.0.0.1:3306/dianping</span>?useUnicode=<span class="literal">true</span>&amp;useSSL=<span class="literal">false</span></span><br><span class="line">      <span class="symbol">username:</span> canal</span><br><span class="line">      <span class="symbol">password:</span> canal</span><br><span class="line">  <span class="symbol">canalAdapters:</span></span><br><span class="line">  - <span class="symbol">instance:</span> example </span><br><span class="line">    <span class="symbol">groups:</span></span><br><span class="line">    - <span class="symbol">groupId:</span> g1</span><br><span class="line">      <span class="symbol">outerAdapters:</span></span><br><span class="line">      - <span class="symbol">name:</span> logger</span><br><span class="line">      - <span class="symbol">name:</span> es</span><br><span class="line">        <span class="symbol">hosts:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">9300</span></span><br><span class="line">        <span class="symbol">properties:</span></span><br><span class="line">          cluster.<span class="symbol">name:</span> dianping-app</span><br></pre></td></tr></table></figure>
+
+<h6 id="创建文件-shop-yml"><a href="#创建文件-shop-yml" class="headerlink" title="创建文件 shop.yml"></a>创建文件 shop.yml</h6><ul>
+<li>文件路径：<code>/canal/1.1.4/canal-adapter-es7/conf/es/shop.yml</code>；</li>
+<li>其中 <code>defaultDS</code> 和   <code>example</code> 分别对应 application.yml 中的 <code>defaultDS</code> 和   <code>example</code>；</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="code"><pre><span class="line">dataSourceKey: defaultDS</span><br><span class="line">destination: example</span><br><span class="line">groupId: </span><br><span class="line">esMapping:</span><br><span class="line">  _index: shop</span><br><span class="line">  _type: _doc</span><br><span class="line">  _<span class="keyword">id</span>: <span class="keyword">id</span></span><br><span class="line">  upsert: <span class="literal">true</span></span><br><span class="line">  sql: <span class="string">"select a.id,a.name,a.tags,concat(a.latitude,',',a.longitude) as location,a.remark_score,a.price_per_man,a.category_id,b.name as category_name,a.seller_id,c.remark_score as seller_remark_score,c.disabled_flag as seller_disabled_flag from shop a inner join category b on a.category_id = b.id inner join seller c on c.id = a.seller_id"</span></span><br><span class="line">  commitBatch: <span class="number">3000</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="启动-canal-adapter-es7"><a href="#启动-canal-adapter-es7" class="headerlink" title="启动 canal-adapter-es7"></a>启动 canal-adapter-es7</h6><ul>
+<li>MySQL 8 要把 <code>/canal/1.1.4/canal-adapter-es7/lib</code> 下的驱动换一下；</li>
+<li>启动命令：<code>bin/startup.sh</code>；</li>
+</ul>
+<h6 id="启动编译好的-canal-deployer-es7"><a href="#启动编译好的-canal-deployer-es7" class="headerlink" title="启动编译好的 canal-deployer-es7"></a>启动编译好的 canal-deployer-es7</h6><ul>
+<li>canal.adapter-1.1.4 和 canal.deployer-1.1.3 是不兼容的，所以要把之前启动的 canal.deployer-1.1.3 换成 Maven 编译好的 canal.deployer-1.1.4；</li>
+<li>编译好的原路径：<code>/canal-canal-1.1.4/deployer/target/canal</code>，更改到新路径：<code>/canal/1.1.4/canal-deployer-es7</code>；</li>
+<li>先关停 canal.deployer-1.1.3：<code>bin/stop.sh</code>；</li>
+<li>把 canal.deployer-1.1.3 的 canal.properties 和 example/ 拷贝到 canal-deployer-es7 中；</li>
+<li>启动 canal-deployer-es7：<code>bin/startup.sh</code>；</li>
+</ul>
+<h6 id="更新-MySQL-中-dianping-库的-shop-表"><a href="#更新-MySQL-中-dianping-库的-shop-表" class="headerlink" title="更新 MySQL 中 dianping 库的 shop 表"></a>更新 MySQL 中 dianping 库的 shop 表</h6><ul>
+<li>日志文件 <code>canal-adapter-es7/logs/adapter/adapter.log</code> 立马可以感知到；</li>
+<li>在 ElasticSearch 中查询，也可以立马感知到；</li>
+</ul>
+<h1 id="Windows下安装canal"><a href="#Windows下安装canal" class="headerlink" title="Windows下安装canal"></a>Windows下安装canal</h1><h2 id="开启-MySQL-的-binglog-1"><a href="#开启-MySQL-的-binglog-1" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h2><p>1.查看mysql的<code>log_bin</code>是否开启。</p>
+<p>因为canal是通过<code>log_bin</code>监听更新的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show variables like &#39;%log_bin%&#39;</span><br></pre></td></tr></table></figure>
+
+<p>如果value为off需要修改my.ini文件</p>
+<p><strong>注意</strong>：可能会出现MySQL目录下找不到 my.ini 的问题</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.在Windows窗口栏查看-》勾选隐藏的项目</span><br><span class="line">2.找到ProgramData目录</span><br><span class="line">3.在ProgramData目录中找到MySQL</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.修改my.ini文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server_id&#x3D;1 ###代表集群模式第一台机器</span><br><span class="line">binlog_format&#x3D;ROW ###行模式</span><br><span class="line">log_bin&#x3D;mysql_bin.log ###binlog的文件名称</span><br><span class="line">expire-logs-days&#x3D;14 ###失效日期为14天（可不配置）</span><br><span class="line">max-binlog-size&#x3D;500M ###最大存储500MB（可不配置）</span><br></pre></td></tr></table></figure>
+
+
+
+<p>重启MySQL之后再次查询：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121203.png" alt="image-20201212190859514"></p>
+<h2 id="编译canal-adapter"><a href="#编译canal-adapter" class="headerlink" title="编译canal-adapter"></a>编译canal-adapter</h2><p>因为canal的es默认版本并不匹配,所以需要重新编译</p>
+<p><strong>ESAdapter类中的类型错误</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">long rowCount &#x3D; response.getHits().getTotalHits().value;</span><br></pre></td></tr></table></figure>
+
+<p><strong>ESConnection</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public BulkResponse bulk() &#123;</span><br><span class="line">            if (mode &#x3D;&#x3D; ESClientMode.TRANSPORT) &#123;</span><br><span class="line">                return bulkRequestBuilder.execute().actionGet();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    return restHighLevelClient.bulk(bulkRequest,RequestOptions.DEFAULT);</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    throw new RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="安装canal-adapter"><a href="#安装canal-adapter" class="headerlink" title="安装canal-adapter"></a>安装canal-adapter</h2><p>1.修改conf文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">srcDataSources:</span><br><span class="line">    defaultDS:</span><br><span class="line">    url: jdbc:mysql:&#x2F;&#x2F;127.0.0.1:3306&#x2F;dianpingdb?useUnicode&#x3D;true</span><br><span class="line">    username: root</span><br><span class="line">    password: 123456</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- name: es</span><br><span class="line">        hosts: 127.0.0.1:9300 # 127.0.0.1:9200 for rest mode</span><br><span class="line">        properties:</span><br><span class="line">          mode: transport # or rest</span><br><span class="line">          # security.auth: test:123456 #  only used for rest mode</span><br><span class="line">          cluster.name: elasticsearch</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.修改es目录下的文件</p>
+<p>创建shop.yml文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dataSourceKey: defaultDS</span><br><span class="line">destination: example</span><br><span class="line">groupId: </span><br><span class="line">esMapping:</span><br><span class="line">  _index: shop</span><br><span class="line">  _type: _doc</span><br><span class="line">  _id: id</span><br><span class="line">  upsert: true</span><br><span class="line">  sql: &quot;select a.id,a.name,a.tags,concat(a.latitude,&#39;,&#39;,a.longitude) as location,a.remark_score,a.price_per_man,a.category_id,b.name as category_name,a.seller_id,c.remark_score as seller_remark_score,c.disabled_flag as seller_disabled_flag from shop a inner join category b on a.category_id &#x3D; b.id inner join seller c on c.id &#x3D; a.seller_id&quot;</span><br><span class="line">  commitBatch: 3000</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>canal</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch7</tag>
+        <tag>canal</tag>
       </tags>
   </entry>
   <entry>
@@ -2093,14 +2288,23 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>UML学习笔记</title>
-    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
+    <title>ubuntu安装VMware Tools</title>
+    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
+    <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
+<a id="more"></a>
+
+<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
+<blockquote>
+<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
+</blockquote>
+<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
+<p>解压完成之后即可运行安装文件安装wmware tools</p>
+]]></content>
       <categories>
-        <category>UML</category>
+        <category>Ubuntu</category>
       </categories>
       <tags>
-        <tag>UML</tag>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -2331,186 +2535,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>canal中间件学习笔记</title>
-    <url>/2020/12/09/canal%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>es准时性索引的构建</p>
-<a id="more"></a>
-
-<h1 id="增量索引构建的要求"><a href="#增量索引构建的要求" class="headerlink" title="增量索引构建的要求"></a>增量索引构建的要求</h1><ul>
-<li>准实时；</li>
-<li>性能；</li>
-<li>编程简化；</li>
-</ul>
-<h1 id="canal-简介"><a href="#canal-简介" class="headerlink" title="canal 简介"></a>canal 简介</h1><blockquote>
-<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
-</blockquote>
-<ul>
-<li>消息管道；</li>
-<li>source 为 MySQL 数据库；</li>
-<li>target 为其他存储，比如 ElasticSearch；</li>
-<li>Canal 借鉴了MySQL主从复制的原理，伪装成一个 MySQL 主库的备库，感知 MySQL 中 binlog 的变化，并同步出来一个结构化的数据，交给 Canal 管道的消费端；</li>
-</ul>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121201.png" alt="img"></p>
-<h1 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h1><h4 id="MySQL主备复制原理"><a href="#MySQL主备复制原理" class="headerlink" title="MySQL主备复制原理"></a>MySQL主备复制原理</h4><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121202.png" alt="img"></p>
-<ul>
-<li>MySQL master 将数据变更写入二进制日志( binary log, 其中记录叫做二进制日志事件binary log events，可以通过 show binlog events 进行查看)</li>
-<li>MySQL slave 将 master 的 binary log events 拷贝到它的中继日志(relay log)</li>
-<li>MySQL slave 重放 relay log 中事件，将数据变更反映它自己的数据</li>
-</ul>
-<h4 id="canal-工作原理"><a href="#canal-工作原理" class="headerlink" title="canal 工作原理"></a>canal 工作原理</h4><ul>
-<li>canal 模拟 MySQL slave 的交互协议，伪装自己为 MySQL slave ，向 MySQL master 发送dump 协议</li>
-<li>MySQL master 收到 dump 请求，开始推送 binary log 给 slave (即 canal )</li>
-<li>canal 解析 binary log 对象(原始为 byte 流)</li>
-</ul>
-<h1 id="Windows下安装canal"><a href="#Windows下安装canal" class="headerlink" title="Windows下安装canal"></a>Windows下安装canal</h1><h2 id="开启-MySQL-的-binglog"><a href="#开启-MySQL-的-binglog" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h2><p>1.查看mysql的<code>log_bin</code>是否开启。</p>
-<p>因为canal是通过<code>log_bin</code>监听更新的</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show variables like &#39;%log_bin%&#39;</span><br></pre></td></tr></table></figure>
-
-<p>如果value为off需要修改my.ini文件</p>
-<p><strong>注意</strong>：可能会出现MySQL目录下找不到 my.ini 的问题</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.在Windows窗口栏查看-》勾选隐藏的项目</span><br><span class="line">2.找到ProgramData目录</span><br><span class="line">3.在ProgramData目录中找到MySQL</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.修改my.ini文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server_id&#x3D;1 ###代表集群模式第一台机器</span><br><span class="line">binlog_format&#x3D;ROW ###行模式</span><br><span class="line">log_bin&#x3D;mysql_bin.log ###binlog的文件名称</span><br><span class="line">expire-logs-days&#x3D;14 ###失效日期为14天（可不配置）</span><br><span class="line">max-binlog-size&#x3D;500M ###最大存储500MB（可不配置）</span><br></pre></td></tr></table></figure>
-
-
-
-<p>重启MySQL之后再次查询：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121203.png" alt="image-20201212190859514"></p>
-<p>编译canal-adapter</p>
-<p>ESAdapter类中的类型错误</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">long rowCount &#x3D; response.getHits().getTotalHits().value;</span><br></pre></td></tr></table></figure>
-
-<p>ESConnection</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public BulkResponse bulk() &#123;</span><br><span class="line">            if (mode &#x3D;&#x3D; ESClientMode.TRANSPORT) &#123;</span><br><span class="line">                return bulkRequestBuilder.execute().actionGet();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    return restHighLevelClient.bulk(bulkRequest,RequestOptions.DEFAULT);</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    throw new RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="安装canal-adapter"><a href="#安装canal-adapter" class="headerlink" title="安装canal-adapter"></a>安装canal-adapter</h2><p>1.修改conf文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">srcDataSources:</span><br><span class="line">    defaultDS:</span><br><span class="line">    url: jdbc:mysql:&#x2F;&#x2F;127.0.0.1:3306&#x2F;dianpingdb?useUnicode&#x3D;true</span><br><span class="line">    username: root</span><br><span class="line">    password: 123456</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- name: es</span><br><span class="line">        hosts: 127.0.0.1:9300 # 127.0.0.1:9200 for rest mode</span><br><span class="line">        properties:</span><br><span class="line">          mode: transport # or rest</span><br><span class="line">          # security.auth: test:123456 #  only used for rest mode</span><br><span class="line">          cluster.name: elasticsearch</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.修改es目录下的文件</p>
-<p>创建shop.yml文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dataSourceKey: defaultDS</span><br><span class="line">destination: example</span><br><span class="line">groupId: </span><br><span class="line">esMapping:</span><br><span class="line">  _index: shop</span><br><span class="line">  _type: _doc</span><br><span class="line">  _id: id</span><br><span class="line">  upsert: true</span><br><span class="line">  sql: &quot;select a.id,a.name,a.tags,concat(a.latitude,&#39;,&#39;,a.longitude) as location,a.remark_score,a.price_per_man,a.category_id,b.name as category_name,a.seller_id,c.remark_score as seller_remark_score,c.disabled_flag as seller_disabled_flag from shop a inner join category b on a.category_id &#x3D; b.id inner join seller c on c.id &#x3D; a.seller_id&quot;</span><br><span class="line">  commitBatch: 3000</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="Linux下安装canal"><a href="#Linux下安装canal" class="headerlink" title="Linux下安装canal"></a>Linux下安装canal</h1><h2 id="开启-MySQL-的-binglog-1"><a href="#开启-MySQL-的-binglog-1" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h2><h6 id="Ubuntu-用-APT-Repository-安装-MySQL-的安装位置"><a href="#Ubuntu-用-APT-Repository-安装-MySQL-的安装位置" class="headerlink" title="Ubuntu 用 APT Repository 安装 MySQL 的安装位置"></a>Ubuntu 用 APT Repository 安装 MySQL 的安装位置</h6><ul>
-<li><code>/etc/mysql</code> - 配置文件</li>
-<li><code>/var/lib/mysql</code> - 数据存放的位置</li>
-<li><code>/usr/bin/mysql</code> - 启动命令</li>
-<li><code>/usr/lib/mysql</code> -  插件</li>
-</ul>
-<h6 id="查看-MySQL-几个变量的值"><a href="#查看-MySQL-几个变量的值" class="headerlink" title="查看 MySQL 几个变量的值"></a>查看 MySQL 几个变量的值</h6><ul>
-<li>要保证 binlog 开启，并且格式是 ROW；</li>
-<li>如果不是上述配置的话，需要修改 <code>/etc/mysql/mysql.conf.d/mysqld.cnf</code>，然后还要给 MySQL 实例起个 <code>server-id = 1</code>；MySQL 8 的话，两个参数默认就是这样的，然后 <code>server-id</code> 给个唯一值就行了；</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 是否开启 binlog</span></span><br><span class="line">show variables like <span class="string">'log_bin'</span>;</span><br><span class="line"><span class="comment"># binlog 的格式</span></span><br><span class="line">show variables like <span class="string">'binlog_format'</span>;</span><br></pre></td></tr></table></figure>
-
-<h6 id="创建复制用户"><a href="#创建复制用户" class="headerlink" title="创建复制用户"></a>创建复制用户</h6><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">create user <span class="string">'canal'</span>@<span class="string">'%'</span> identified <span class="keyword">by</span> <span class="string">'canal'</span>;</span><br><span class="line"></span><br><span class="line">grant replication slave <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant replication client <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant <span class="keyword">select</span> <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-
-<h2 id="canal-配置-1-1-3"><a href="#canal-配置-1-1-3" class="headerlink" title="canal 配置 | 1.1.3"></a>canal 配置 | 1.1.3</h2><h6 id="修改-canal-properties"><a href="#修改-canal-properties" class="headerlink" title="修改 canal.properties"></a>修改 canal.properties</h6><ul>
-<li>文件路径：<code>/home/lixinlei/application/canal/1.1.3/canal.deployer-1.1.3/conf</code>；</li>
-<li>这一行注释掉；</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#canal.instance.tsdb.spring.xml = classpath:spring/tsdb/h2-tsdb.xml</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="修改-instance-properties"><a href="#修改-instance-properties" class="headerlink" title="修改 instance.properties"></a>修改 instance.properties</h6><ul>
-<li>位置：<code>/home/lixinlei/application/canal/1.1.3/canal.deployer-1.1.3/conf/example/instance.properties</code>；</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canal.instance.mysql.slaveId&#x3D;8</span><br><span class="line"></span><br><span class="line">canal.instance.dbUsername&#x3D;canal</span><br><span class="line">canal.instance.dbPassword&#x3D;canal</span><br></pre></td></tr></table></figure>
-
-<h6 id="启动-canal"><a href="#启动-canal" class="headerlink" title="启动 canal"></a>启动 canal</h6><ul>
-<li>JDK 换成 8 才启动起来；</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;startup.sh</span><br></pre></td></tr></table></figure>
-
-<h2 id="canal-adapter-1-1-4"><a href="#canal-adapter-1-1-4" class="headerlink" title="canal.adapter | 1.1.4"></a>canal.adapter | 1.1.4</h2><h6 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h6><ul>
-<li>在 IDEA 中打开 client-adapter module；</li>
-<li>修改 <code>/home/lixinlei/project/canal-canal-1.1.4/client-adapter/elasticsearch/pom.xml</code> 中的 ElasticSearch 的依赖版本，改成 7.3.0；</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>transport<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-high-level-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="在总-module-的目录下重新打包-canal"><a href="#在总-module-的目录下重新打包-canal" class="headerlink" title="在总 module 的目录下重新打包 canal"></a>在总 module 的目录下重新打包 canal</h6><ul>
-<li>路径为：<code>/home/lixinlei/project/canal-canal-1.1.4</code>；</li>
-<li>打包命令：<code>mvn clean package -DskipTests</code>；</li>
-<li>报错：<code>[ERROR] /home/lixinlei/project/canal-canal-1.1.4/client-adapter/elasticsearch/src/main/java/com/alibaba/otter/canal/client/adapter/es/support/ESConnection.java:[420,47] 无法将类 org.elasticsearch.client.RestHighLevelClient中的方法 bulk应用到给定类型;</code></li>
-<li>找到指定的 ESConnection.java 的 420 行，解决问题：<code>return restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);</code></li>
-<li>重新打包：<code>mvn clean package -DskipTests</code>；</li>
-<li>报错：<code>/home/lixinlei/project/canal-canal-1.1.4/client-adapter/elasticsearch/src/main/java/com/alibaba/otter/canal/client/adapter/es/ESAdapter.java:[225,56] 不兼容的类型: org.apache.lucene.search.TotalHits无法转换为long</code>；</li>
-<li>找到指定的 ESAdapter.java 的 225 行，解决问题：<code>long rowCount = response.getHits().getTotalHits().value;</code>；</li>
-<li>重新打包：<code>mvn clean package -DskipTests</code>，终于成功了；</li>
-</ul>
-<h6 id="进入编译后生成的目录"><a href="#进入编译后生成的目录" class="headerlink" title="进入编译后生成的目录"></a>进入编译后生成的目录</h6><ul>
-<li><code>/home/lixinlei/project/canal-canal-1.1.4/client-adapter/launcher/target/canal-adapter</code>，里面的内容和直接从 Github 上下载二进制的包是一样的;</li>
-<li>把这个目录拷到正经的目录下，并改个名字 <code>/home/lixinlei/application/canal/1.1.4/canal-adapter-es7</code>；</li>
-</ul>
-<h6 id="修改配置文件-application-yml"><a href="#修改配置文件-application-yml" class="headerlink" title="修改配置文件 application.yml"></a>修改配置文件 application.yml</h6><ul>
-<li>文件路径：<code>/home/lixinlei/application/canal/1.1.4/canal-adapter-es7/conf/application.yml</code>；</li>
-<li>这个配置主要是指明管道两端的 MySQL 和 ElasticSearch；</li>
-</ul>
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="symbol">server:</span></span><br><span class="line">  <span class="symbol">port:</span> <span class="number">8081</span></span><br><span class="line"><span class="symbol">spring:</span></span><br><span class="line">  <span class="symbol">jackson:</span></span><br><span class="line">    date-<span class="symbol">format:</span> yyyy-MM-dd <span class="symbol">HH:</span><span class="symbol">mm:</span>ss</span><br><span class="line">    time-<span class="symbol">zone:</span> GMT+<span class="number">8</span></span><br><span class="line">    default-property-<span class="symbol">inclusion:</span> non_null</span><br><span class="line"></span><br><span class="line">canal.<span class="symbol">conf:</span></span><br><span class="line">  <span class="symbol">mode:</span> tcp </span><br><span class="line">  <span class="symbol">canalServerHost:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">11111</span></span><br><span class="line">  <span class="symbol">batchSize:</span> <span class="number">500</span></span><br><span class="line">  <span class="symbol">syncBatchSize:</span> <span class="number">1000</span></span><br><span class="line">  <span class="symbol">retries:</span> <span class="number">0</span></span><br><span class="line">  <span class="symbol">timeout:</span></span><br><span class="line">  <span class="symbol">accessKey:</span></span><br><span class="line">  <span class="symbol">secretKey:</span></span><br><span class="line">  <span class="symbol">srcDataSources:</span></span><br><span class="line">    <span class="symbol">defaultDS:</span></span><br><span class="line">      <span class="symbol">url:</span> <span class="symbol">jdbc:</span><span class="symbol">mysql:</span>/<span class="regexp">/127.0.0.1:3306/dianping</span>?useUnicode=<span class="literal">true</span>&amp;useSSL=<span class="literal">false</span></span><br><span class="line">      <span class="symbol">username:</span> canal</span><br><span class="line">      <span class="symbol">password:</span> canal</span><br><span class="line">  <span class="symbol">canalAdapters:</span></span><br><span class="line">  - <span class="symbol">instance:</span> example </span><br><span class="line">    <span class="symbol">groups:</span></span><br><span class="line">    - <span class="symbol">groupId:</span> g1</span><br><span class="line">      <span class="symbol">outerAdapters:</span></span><br><span class="line">      - <span class="symbol">name:</span> logger</span><br><span class="line">      - <span class="symbol">name:</span> es</span><br><span class="line">        <span class="symbol">hosts:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">9300</span></span><br><span class="line">        <span class="symbol">properties:</span></span><br><span class="line">          cluster.<span class="symbol">name:</span> dianping-app</span><br></pre></td></tr></table></figure>
-
-<h6 id="创建文件-shop-yml"><a href="#创建文件-shop-yml" class="headerlink" title="创建文件 shop.yml"></a>创建文件 shop.yml</h6><ul>
-<li>文件路径：<code>/home/lixinlei/application/canal/1.1.4/canal-adapter-es7/conf/es/shop.yml</code>；</li>
-<li>其中 <code>defaultDS</code> 和   <code>example</code> 分别对应 application.yml 中的 <code>defaultDS</code> 和   <code>example</code>；</li>
-</ul>
-<figure class="highlight objectivec"><table><tr><td class="code"><pre><span class="line">dataSourceKey: defaultDS</span><br><span class="line">destination: example</span><br><span class="line">groupId: </span><br><span class="line">esMapping:</span><br><span class="line">  _index: shop</span><br><span class="line">  _type: _doc</span><br><span class="line">  _<span class="keyword">id</span>: <span class="keyword">id</span></span><br><span class="line">  upsert: <span class="literal">true</span></span><br><span class="line">  sql: <span class="string">"select a.id,a.name,a.tags,concat(a.latitude,',',a.longitude) as location,a.remark_score,a.price_per_man,a.category_id,b.name as category_name,a.seller_id,c.remark_score as seller_remark_score,c.disabled_flag as seller_disabled_flag from shop a inner join category b on a.category_id = b.id inner join seller c on c.id = a.seller_id"</span></span><br><span class="line">  commitBatch: <span class="number">3000</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="启动-canal-adapter-es7"><a href="#启动-canal-adapter-es7" class="headerlink" title="启动 canal-adapter-es7"></a>启动 canal-adapter-es7</h6><ul>
-<li>MySQL 8 要把 <code>/home/lixinlei/application/canal/1.1.4/canal-adapter-es7/lib</code> 下的驱动换一下；</li>
-<li>启动命令：<code>bin/startup.sh</code>；</li>
-</ul>
-<h6 id="启动编译好的-canal-deployer-es7"><a href="#启动编译好的-canal-deployer-es7" class="headerlink" title="启动编译好的 canal-deployer-es7"></a>启动编译好的 canal-deployer-es7</h6><ul>
-<li>canal.adapter-1.1.4 和 canal.deployer-1.1.3 是不兼容的，所以要把之前启动的 canal.deployer-1.1.3 换成 Maven 编译好的 canal.deployer-1.1.4；</li>
-<li>编译好的原路径：<code>/home/lixinlei/project/canal-canal-1.1.4/deployer/target/canal</code>，更改到新路径：<code>/home/lixinlei/application/canal/1.1.4/canal-deployer-es7</code>；</li>
-<li>先关停 canal.deployer-1.1.3：<code>bin/stop.sh</code>；</li>
-<li>把 canal.deployer-1.1.3 的 canal.properties 和 example/ 拷贝到 canal-deployer-es7 中；</li>
-<li>启动 canal-deployer-es7：<code>bin/startup.sh</code>；</li>
-</ul>
-<h6 id="更新-MySQL-中-dianping-库的-shop-表"><a href="#更新-MySQL-中-dianping-库的-shop-表" class="headerlink" title="更新 MySQL 中 dianping 库的 shop 表"></a>更新 MySQL 中 dianping 库的 shop 表</h6><ul>
-<li>日志文件 <code>canal-adapter-es7/logs/adapter/adapter.log</code> 立马可以感知到；</li>
-<li>在 ElasticSearch 中查询，也可以立马感知到；</li>
-</ul>
-<p>Windows下安装配置Canal</p>
-<h1 id="Canal安装说明-Windows版"><a href="#Canal安装说明-Windows版" class="headerlink" title="Canal安装说明(Windows版)"></a>Canal安装说明(Windows版)</h1><p><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/original.png" alt="img"></p>
-<p><a href="https://blog.csdn.net/weixin_42640512" target="_blank" rel="noopener">四眼肥仔明</a> 2020-09-24 17:00:59 <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/articleReadEyes.png" alt="img"> 210 <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollect.png" alt="img"> 收藏 1</p>
-<p>文章标签： <a href="https://www.csdn.net/tags/NtTaIg5sMzYyLWJsb2cO0O0O.html" target="_blank" rel="noopener">java</a> <a href="https://www.csdn.net/tags/MtTaEg5sOTYwNC1ibG9n.html" target="_blank" rel="noopener">mysql</a> [spring boot](<a href="https://so.csdn.net/so/search/s.do?q=spring" target="_blank" rel="noopener">https://so.csdn.net/so/search/s.do?q=spring</a> boot&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=)</p>
-<p>版权</p>
-<p><strong>第一步：开启MySQL的binlog日志</strong></p>
-<p>（1）连接MySQL 键入命令：<code>show variables like &#39;log_%&#39;;</code> 查看binlog是否开启<br><img src="https://img-blog.csdnimg.cn/2020092416455914.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<p>若log_bin的值为OFF,则需要对配置文件my.ini进行修改，加入如下代码：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">log</span>-bin=<span class="built_in">log</span>-bin</span><br><span class="line">binlog-format=ROW</span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img-blog.csdnimg.cn/20200924164738904.png#pic_center" alt="在这里插入图片描述"></p>
-<p>注意：my.ini的路径的路径为C:\ProgramData\MySQL\MySQL Server 5.7\my.ini<br>保存修改后，使用命令 <code>net stop\start mysql57</code> 重启MySQL服务(也可在任务管理器重启)，连接上后再次查看就会发现binlog已经开启。</p>
-<p>（2）添加canal用户并赋予replication权限<br>#创建canal用户#<br><code>create user canal identified by &#39;password&#39;;</code> # 用户密码password可自行设置<br>#授权#<br><code>grant all privileges on *.* TO &#39;canal&#39;@&#39;%&#39;;</code></p>
-<p>此时可查看canal的权限：<br><img src="https://img-blog.csdnimg.cn/20200924165111748.png#pic_center" alt="在这里插入图片描述"></p>
-<p><strong>第二步：安装Canal</strong><br>（1）下载安装包并解压（canal.deployer-1.1.5-SNAPSHOT.tar.gz） <a href="https://github.com/alibaba/canal/releases" target="_blank" rel="noopener">https://github.com/alibaba/canal/releases/</a></p>
-<p>（2）修改conf /canal.properties配置文件，注册地址为本机IP<br><img src="https://img-blog.csdnimg.cn/20200924165447283.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<p>（3）修改conf/example/instance.properties配置文件，配置数据库信息<br><img src="https://img-blog.csdnimg.cn/2020092417075439.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjY0MDUxMg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<p>（4）启动服务<br>Windows下使用startup.bat<br><img src="https://img-blog.csdnimg.cn/20200924165501499.png#pic_center" alt="在这里插入图片描述"></p>
-<p>启动成功：<br><img src="https://img-blog.csdnimg.cn/20200924165512428.png#pic_center" alt="在这里插入图片描述"></p>
-<p>查看：canal.log<br><img src="https://img-blog.csdnimg.cn/20200924165520193.png#pic_center" alt="在这里插入图片描述"></p>
-<p>ps.使用前检查端口是否成功打开！！</p>
-]]></content>
-      <categories>
-        <category>canal</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch7</tag>
-        <tag>canal</tag>
-      </tags>
+    <title>单点登录</title>
+    <url>/2020/12/09/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>git常见错误</title>
@@ -2539,6 +2566,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>git常见错误</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>反射的理解</title>
+    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
       </tags>
   </entry>
   <entry>
@@ -2863,26 +2901,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>ubuntu安装VMware Tools</title>
-    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
-    <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
-<a id="more"></a>
-
-<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
-<blockquote>
-<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
-</blockquote>
-<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
-<p>解压完成之后即可运行安装文件安装wmware tools</p>
-]]></content>
-      <categories>
-        <category>Ubuntu</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>人民日报给90后的理财计划</title>
     <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
     <content><![CDATA[<p>人民日报给90后的理财计划</p>
@@ -2899,42 +2917,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>理财</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>单点登录</title>
-    <url>/2020/12/09/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>反射的理解</title>
-    <url>/2020/10/23/%E5%8F%8D%E5%B0%84%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实体类的4种类型</title>
-    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>实体类的4种类型总结</p>
-<a id="more"></a>
-
-<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
-<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
-<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
-<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
-<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
-<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-      </categories>
-      <tags>
-        <tag>Domain Object</tag>
       </tags>
   </entry>
   <entry>
@@ -2996,6 +2978,60 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Java Web</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>实体类的4种类型</title>
+    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>实体类的4种类型总结</p>
+<a id="more"></a>
+
+<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
+<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
+<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
+<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
+<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
+<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>Domain Object</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>推荐系统算法整理</title>
+    <url>/2020/12/08/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<p>推荐系统算法整理</p>
+<a id="more"></a>
+
+<p>个性化召回als算法原理：</p>
+<blockquote>
+<p><a href="https://github.com/huangyueranbbc/Spark_ALS" target="_blank" rel="noopener">https://github.com/huangyueranbbc/Spark_ALS</a></p>
+</blockquote>
+<p>个性化排序lr算法原理</p>
+<blockquote>
+<p><a href="https://github.com/wuxinping1992/cf_gbdt_lr" target="_blank" rel="noopener">https://github.com/wuxinping1992/cf_gbdt_lr</a></p>
+</blockquote>
+<p>点击率预估模型算法</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/63973457" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/63973457</a></p>
+</blockquote>
+<p>GBDT算法</p>
+<p>随机森林算法</p>
+<h1 id="个性化推荐"><a href="#个性化推荐" class="headerlink" title="个性化推荐"></a>个性化推荐</h1><p>千人前面</p>
+<p>场景决定推荐规则</p>
+<h2 id="基于规则的推荐"><a href="#基于规则的推荐" class="headerlink" title="基于规则的推荐"></a>基于规则的推荐</h2><p>规则模型：规则定义，简单的算术公式</p>
+<h2 id="基于传统机器学习的推荐"><a href="#基于传统机器学习的推荐" class="headerlink" title="基于传统机器学习的推荐"></a>基于传统机器学习的推荐</h2><p>协调过滤</p>
+<p>als</p>
+<p>推荐算法的好坏取决于用户历史数据</p>
+<p>机器学习模型训练：数据训练后的算术公式</p>
+<p>机器学习模型预测：待预测数据经过训练模型算术公式后的结果</p>
+<h2 id="基于深度学习的推荐"><a href="#基于深度学习的推荐" class="headerlink" title="基于深度学习的推荐"></a>基于深度学习的推荐</h2><p>神经网络</p>
+<p>模型评价指标：查全率，差准率，auc等</p>
+<p>在线指标：点击率，交易转化率等</p>
+<p>A/B测试</p>
+]]></content>
   </entry>
   <entry>
     <title>快速构建SSM开发环境</title>
@@ -3067,6 +3103,18 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>短信登录注册功能的实现</title>
+    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>短信服务</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>浅析Java平台无关性的实现</title>
     <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
@@ -3091,38 +3139,56 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>推荐系统算法整理</title>
-    <url>/2020/12/08/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<p>推荐系统算法整理</p>
+    <title>解决idea不显示maven工具栏的问题</title>
+    <url>/2020/08/11/%E8%A7%A3%E5%86%B3Idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
 <a id="more"></a>
 
-<p>个性化召回als算法原理：</p>
-<blockquote>
-<p><a href="https://github.com/huangyueranbbc/Spark_ALS" target="_blank" rel="noopener">https://github.com/huangyueranbbc/Spark_ALS</a></p>
-</blockquote>
-<p>个性化排序lr算法原理</p>
-<blockquote>
-<p><a href="https://github.com/wuxinping1992/cf_gbdt_lr" target="_blank" rel="noopener">https://github.com/wuxinping1992/cf_gbdt_lr</a></p>
-</blockquote>
-<p>点击率预估模型算法</p>
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/63973457" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/63973457</a></p>
-</blockquote>
-<p>GBDT算法</p>
-<p>随机森林算法</p>
-<h1 id="个性化推荐"><a href="#个性化推荐" class="headerlink" title="个性化推荐"></a>个性化推荐</h1><p>千人前面</p>
-<p>场景决定推荐规则</p>
-<h2 id="基于规则的推荐"><a href="#基于规则的推荐" class="headerlink" title="基于规则的推荐"></a>基于规则的推荐</h2><p>规则模型：规则定义，简单的算术公式</p>
-<h2 id="基于传统机器学习的推荐"><a href="#基于传统机器学习的推荐" class="headerlink" title="基于传统机器学习的推荐"></a>基于传统机器学习的推荐</h2><p>协调过滤</p>
-<p>als</p>
-<p>推荐算法的好坏取决于用户历史数据</p>
-<p>机器学习模型训练：数据训练后的算术公式</p>
-<p>机器学习模型预测：待预测数据经过训练模型算术公式后的结果</p>
-<h2 id="基于深度学习的推荐"><a href="#基于深度学习的推荐" class="headerlink" title="基于深度学习的推荐"></a>基于深度学习的推荐</h2><p>神经网络</p>
-<p>模型评价指标：查全率，差准率，auc等</p>
-<p>在线指标：点击率，交易转化率等</p>
-<p>A/B测试</p>
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
 ]]></content>
+      <categories>
+        <category>IntelliJ IDEA</category>
+      </categories>
+      <tags>
+        <tag>Idea小技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一个小小的强迫症</title>
+    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
+    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
+
+<p>在idea中经常会碰到这样的问题</p>
+<blockquote>
+<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
+</blockquote>
+<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
+<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
+]]></content>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
+    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
+<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
+<p>2.进入RabbitMQ　　</p>
+<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
+<p>3.开启　</p>
+<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
+]]></content>
+      <categories>
+        <category>RabbitMQ</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>RabbitMQ</tag>
+      </tags>
   </entry>
   <entry>
     <title>添加系统调用</title>
@@ -3215,70 +3281,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>短信登录注册功能的实现</title>
-    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>短信服务</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决Docker上安装RabbitMQ后Web管理页面打不开的问题</title>
-    <url>/2020/07/27/%E8%A7%A3%E5%86%B3Docker%E4%B8%8A%E5%AE%89%E8%A3%85RabbitMQ%E5%90%8EWeb%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>首先确保RabbitMQ的端口等配置正确，进入RabbitMQ中，开启一项配置。</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>1.开启RabbitMQ  　　</p>
-<p><code>docker run -itd --name myrabbitmq -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
-<p>2.进入RabbitMQ　　</p>
-<p><code>docker exec -it myrabbitmq /bin/bash</code></p>
-<p>3.开启　</p>
-<p><code>rabbitmq-plugins enable rabbitmq_management</code></p>
-]]></content>
-      <categories>
-        <category>RabbitMQ</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>RabbitMQ</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决idea不显示maven工具栏的问题</title>
-    <url>/2020/08/11/%E8%A7%A3%E5%86%B3Idea%E4%B8%8D%E6%98%BE%E7%A4%BAmaven%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>启动idea发现maven并没有显示，hhh,莫名其妙的问题？？？</p>
-<a id="more"></a>
-
-<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p><img src="/images/2020081101.png" alt="报错问题"></p>
-]]></content>
-      <categories>
-        <category>IntelliJ IDEA</category>
-      </categories>
-      <tags>
-        <tag>Idea小技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一个小小的强迫症</title>
-    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
-    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
-
-<p>在idea中经常会碰到这样的问题</p>
-<blockquote>
-<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
-</blockquote>
-<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
-<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
-]]></content>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>读《解读基金：我的投资观与实践》</title>
     <url>/2020/12/07/%E8%AF%BB%E3%80%8A%E8%A7%A3%E8%AF%BB%E5%9F%BA%E9%87%91%EF%BC%9A%E6%88%91%E7%9A%84%E6%8A%95%E8%B5%84%E8%A7%82%E4%B8%8E%E5%AE%9E%E8%B7%B5%E3%80%8B/</url>
     <content><![CDATA[<p>读《解读基金：我的投资观与实践》总结</p>
@@ -3311,6 +3313,99 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>解读基金</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通用型支付系统接入电商平台</title>
+    <url>/2020/12/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</url>
+    <content><![CDATA[<p>一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统</p>
+<p>主要分为以下5个模块</p>
+<ol>
+<li>用户模块</li>
+<li>分类模块</li>
+<li>购物车模块</li>
+<li>收货地址模块</li>
+<li>订单模块</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="用户模块"><a href="#用户模块" class="headerlink" title="用户模块"></a>用户模块</h1><p>本章实战用户模块，详解注册、登录、MD5安全。在学习过程中，首先，知道什么是cookie和session？其次，需要清楚两者差异和应用场景；最后，小伙伴通过自身努力能上升到原理，即为什么？推荐高效学习路线：是什么？什么场景用？怎么用？为什么？…</p>
+<p>共 15 节 (182分钟) 收起列表</p>
+<ul>
+<li>8-1 理论介绍 (14:11)</li>
+<li>8-2 Service-完成注册功能 (15:04)</li>
+<li>8-3 Service-注册功能单测 (08:39)</li>
+<li>8-4 Mybatis打印SQL (06:06)</li>
+<li>8-5 Controller接收参数 (09:39)</li>
+<li>8-6 Controller返回Json (07:22)</li>
+<li>8-7 错误状态码使用枚举 (07:55)</li>
+<li>8-8 表单验证 (12:37)</li>
+<li>8-9 接入service完成注册功能 (16:34)</li>
+<li>8-10 登录功能的实现-上 (17:20)</li>
+<li>8-11 登录功能的实现-下 (11:53)</li>
+<li>8-12 session和cookie (16:25)</li>
+<li>8-13 退出登录 (10:04)</li>
+<li>8-14 统一判断登录状态-拦截器 (17:24)</li>
+<li>8-15 单元测试 (10:43)</li>
+</ul>
+<h1 id="分类模块"><a href="#分类模块" class="headerlink" title="分类模块"></a>分类模块</h1><p>本章将带大家完成分类管理模块功能的开发，并讲解递归分类，并且支持分类无限层级树状结构。按照dao-&gt;service-&gt;api的顺序开发。贯穿单元测试。这样的流程是完全契合生产实际，对于咱们学习过程也理当养成这样清晰的工作模式，和严谨的工匠精神。…</p>
+<p>共 3 节 (51分钟) 收起列表</p>
+<ul>
+<li>9-1 类目功能介绍与开发 (22:37)</li>
+<li>9-2 商品分类之类目查询功能 (13:01)</li>
+<li>9-3 商品类目之子类目 (15:07</li>
+</ul>
+<h1 id="商品模块"><a href="#商品模块" class="headerlink" title="商品模块"></a>商品模块</h1><p>本章实践商品模块开发，核心是完成商品列表、详情页、分页的开发。Get新技能是：基于SpringBoot集成的mybatis-pagehelper进行分页实践。小伙伴如果在项目面试中能清晰的表达利用何种技术实现某项具体功能，将为你闯关提升竞争力。…</p>
+<p>共 5 节 (64分钟) 收起列表</p>
+<ul>
+<li>10-1 商品列表-上 (11:47)</li>
+<li>10-2 商品列表-中 (16:41)</li>
+<li>10-3 商品列表-下 (07:35)</li>
+<li>10-4 商品列表分页 (13:30)</li>
+<li>10-5 商品详情 (14:23)</li>
+</ul>
+<h1 id="购物车模块"><a href="#购物车模块" class="headerlink" title="购物车模块"></a>购物车模块</h1><p>本章核心是基于Redis完成购物车开发，采用对比式教学，首先基于传统的String结构完成购物车开发，然后，进行优化重构，基于Hashset数据结构替换，最终实现高性能购物车，且重构优化历史代码是“码农”与”工程师”的差异。…</p>
+<p>共 8 节 (126分钟) 收起列表</p>
+<ul>
+<li>11-1 Redis和可视化管理软件的安装 (16:13)</li>
+<li>11-2 表单统一验证处理 (18:36)</li>
+<li>11-3 购物车-添加商品-1 (23:21)</li>
+<li>11-4 购物车-添加商品-2 (12:34)</li>
+<li>11-5 购物车-列表 (19:26)</li>
+<li>11-6 购物车-更新&amp;删除 (13:24)</li>
+<li>11-7 购物车-全选&amp;全不选&amp;总数量 (15:17)</li>
+<li>11-8 购物车-联通controller (06:58)</li>
+</ul>
+<h1 id="收货地址模块"><a href="#收货地址模块" class="headerlink" title="收货地址模块"></a>收货地址模块</h1><p>本章将带大家一起完成收货地址是增删改查的功能，同时会讲解到Spring数据绑定中的对象绑定。</p>
+<p>共 3 节 (47分钟) 收起列表</p>
+<ul>
+<li>12-1 新增收货地址 (20:42)</li>
+<li>12-2 删除&amp;更新收货地址 (12:07)</li>
+<li>12-3 收货地址列表 (13:39)</li>
+</ul>
+<h1 id="订单模块"><a href="#订单模块" class="headerlink" title="订单模块"></a>订单模块</h1><p>本章精讲订单模块，干货满满，相信能让新手学的懂，老手有收获，高手有启发。对于新手必须学懂订单模块开发，对于老手相信订单生单过程让你清楚事务的应用场景；对于高手订单模块接收支付发送的MQ消息，让你秒懂MQ在业务解耦上所带来的优越感。…</p>
+<p>共 15 节 (194分钟) 收起列表</p>
+<p> 13-1 创建订单-流程分析 (17:34)</p>
+<p> 13-2 创建订单-购物车 (24:46)</p>
+<p> 13-3 创建订单-构造OrderItem (13:24)</p>
+<p> 13-4 创建订单-Order数据写入数据库 (14:31)</p>
+<p> 13-5 创建订单-完成数据库的写入 (14:21)</p>
+<p> 13-6 创建订单-扣库存&amp;更新购物车 (12:12)</p>
+<p> 13-7 创建订单-单测 (06:01)</p>
+<p> 13-8 订单列表-1 (12:20)</p>
+<p> 13-9 订单列表-2 (13:56)</p>
+<p> 13-10 订单详情 (12:27)</p>
+<p> 13-11 取消订单 (07:22)</p>
+<p> 13-12 OrderController (06:30)</p>
+<p> 13-13 RabbitMQ的安装 (07:33)</p>
+<p> 13-14 mq消息-发送&amp;接受 (12:04)</p>
+<p> 13-15 完成支付和订单对接 (18:43)</p>
+]]></content>
+      <categories>
+        <category>电商平台</category>
+      </categories>
+      <tags>
+        <tag>电商平台</tag>
       </tags>
   </entry>
   <entry>
@@ -3548,96 +3643,21 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>通用型支付系统接入电商平台</title>
-    <url>/2020/12/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</url>
-    <content><![CDATA[<p>一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统</p>
-<p>主要分为以下5个模块</p>
-<ol>
-<li>用户模块</li>
-<li>分类模块</li>
-<li>购物车模块</li>
-<li>收货地址模块</li>
-<li>订单模块</li>
-</ol>
+    <title>防火墙管理</title>
+    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<p>防火墙常用命令</p>
 <a id="more"></a>
 
-<h1 id="用户模块"><a href="#用户模块" class="headerlink" title="用户模块"></a>用户模块</h1><p>本章实战用户模块，详解注册、登录、MD5安全。在学习过程中，首先，知道什么是cookie和session？其次，需要清楚两者差异和应用场景；最后，小伙伴通过自身努力能上升到原理，即为什么？推荐高效学习路线：是什么？什么场景用？怎么用？为什么？…</p>
-<p>共 15 节 (182分钟) 收起列表</p>
-<ul>
-<li>8-1 理论介绍 (14:11)</li>
-<li>8-2 Service-完成注册功能 (15:04)</li>
-<li>8-3 Service-注册功能单测 (08:39)</li>
-<li>8-4 Mybatis打印SQL (06:06)</li>
-<li>8-5 Controller接收参数 (09:39)</li>
-<li>8-6 Controller返回Json (07:22)</li>
-<li>8-7 错误状态码使用枚举 (07:55)</li>
-<li>8-8 表单验证 (12:37)</li>
-<li>8-9 接入service完成注册功能 (16:34)</li>
-<li>8-10 登录功能的实现-上 (17:20)</li>
-<li>8-11 登录功能的实现-下 (11:53)</li>
-<li>8-12 session和cookie (16:25)</li>
-<li>8-13 退出登录 (10:04)</li>
-<li>8-14 统一判断登录状态-拦截器 (17:24)</li>
-<li>8-15 单元测试 (10:43)</li>
-</ul>
-<h1 id="分类模块"><a href="#分类模块" class="headerlink" title="分类模块"></a>分类模块</h1><p>本章将带大家完成分类管理模块功能的开发，并讲解递归分类，并且支持分类无限层级树状结构。按照dao-&gt;service-&gt;api的顺序开发。贯穿单元测试。这样的流程是完全契合生产实际，对于咱们学习过程也理当养成这样清晰的工作模式，和严谨的工匠精神。…</p>
-<p>共 3 节 (51分钟) 收起列表</p>
-<ul>
-<li>9-1 类目功能介绍与开发 (22:37)</li>
-<li>9-2 商品分类之类目查询功能 (13:01)</li>
-<li>9-3 商品类目之子类目 (15:07</li>
-</ul>
-<h1 id="商品模块"><a href="#商品模块" class="headerlink" title="商品模块"></a>商品模块</h1><p>本章实践商品模块开发，核心是完成商品列表、详情页、分页的开发。Get新技能是：基于SpringBoot集成的mybatis-pagehelper进行分页实践。小伙伴如果在项目面试中能清晰的表达利用何种技术实现某项具体功能，将为你闯关提升竞争力。…</p>
-<p>共 5 节 (64分钟) 收起列表</p>
-<ul>
-<li>10-1 商品列表-上 (11:47)</li>
-<li>10-2 商品列表-中 (16:41)</li>
-<li>10-3 商品列表-下 (07:35)</li>
-<li>10-4 商品列表分页 (13:30)</li>
-<li>10-5 商品详情 (14:23)</li>
-</ul>
-<h1 id="购物车模块"><a href="#购物车模块" class="headerlink" title="购物车模块"></a>购物车模块</h1><p>本章核心是基于Redis完成购物车开发，采用对比式教学，首先基于传统的String结构完成购物车开发，然后，进行优化重构，基于Hashset数据结构替换，最终实现高性能购物车，且重构优化历史代码是“码农”与”工程师”的差异。…</p>
-<p>共 8 节 (126分钟) 收起列表</p>
-<ul>
-<li>11-1 Redis和可视化管理软件的安装 (16:13)</li>
-<li>11-2 表单统一验证处理 (18:36)</li>
-<li>11-3 购物车-添加商品-1 (23:21)</li>
-<li>11-4 购物车-添加商品-2 (12:34)</li>
-<li>11-5 购物车-列表 (19:26)</li>
-<li>11-6 购物车-更新&amp;删除 (13:24)</li>
-<li>11-7 购物车-全选&amp;全不选&amp;总数量 (15:17)</li>
-<li>11-8 购物车-联通controller (06:58)</li>
-</ul>
-<h1 id="收货地址模块"><a href="#收货地址模块" class="headerlink" title="收货地址模块"></a>收货地址模块</h1><p>本章将带大家一起完成收货地址是增删改查的功能，同时会讲解到Spring数据绑定中的对象绑定。</p>
-<p>共 3 节 (47分钟) 收起列表</p>
-<ul>
-<li>12-1 新增收货地址 (20:42)</li>
-<li>12-2 删除&amp;更新收货地址 (12:07)</li>
-<li>12-3 收货地址列表 (13:39)</li>
-</ul>
-<h1 id="订单模块"><a href="#订单模块" class="headerlink" title="订单模块"></a>订单模块</h1><p>本章精讲订单模块，干货满满，相信能让新手学的懂，老手有收获，高手有启发。对于新手必须学懂订单模块开发，对于老手相信订单生单过程让你清楚事务的应用场景；对于高手订单模块接收支付发送的MQ消息，让你秒懂MQ在业务解耦上所带来的优越感。…</p>
-<p>共 15 节 (194分钟) 收起列表</p>
-<p> 13-1 创建订单-流程分析 (17:34)</p>
-<p> 13-2 创建订单-购物车 (24:46)</p>
-<p> 13-3 创建订单-构造OrderItem (13:24)</p>
-<p> 13-4 创建订单-Order数据写入数据库 (14:31)</p>
-<p> 13-5 创建订单-完成数据库的写入 (14:21)</p>
-<p> 13-6 创建订单-扣库存&amp;更新购物车 (12:12)</p>
-<p> 13-7 创建订单-单测 (06:01)</p>
-<p> 13-8 订单列表-1 (12:20)</p>
-<p> 13-9 订单列表-2 (13:56)</p>
-<p> 13-10 订单详情 (12:27)</p>
-<p> 13-11 取消订单 (07:22)</p>
-<p> 13-12 OrderController (06:30)</p>
-<p> 13-13 RabbitMQ的安装 (07:33)</p>
-<p> 13-14 mq消息-发送&amp;接受 (12:04)</p>
-<p> 13-15 完成支付和订单对接 (18:43)</p>
+<h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
-        <category>电商平台</category>
+        <category>Linux</category>
       </categories>
       <tags>
-        <tag>电商平台</tag>
+        <tag>firewall</tag>
       </tags>
   </entry>
   <entry>
@@ -3663,24 +3683,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Java Web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>防火墙管理</title>
-    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<p>防火墙常用命令</p>
-<a id="more"></a>
-
-<h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
-
-<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>firewall</tag>
       </tags>
   </entry>
 </search>
