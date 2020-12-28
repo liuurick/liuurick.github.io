@@ -1,6 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Centos7上安装docker</title>
+    <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
+    <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
+<a id="more"></a>
+
+<h2 id="一、安装docker"><a href="#一、安装docker" class="headerlink" title="一、安装docker"></a>一、安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
+<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019121701.png" alt="image-20201217213427007"></p>
+<p>2.使用 <code>root</code> 权限登录 Centos。确保 yum 包更新到最新。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum update</span><br></pre></td></tr></table></figure>
+
+<p>3.卸载旧版本(如果安装过旧版本的话)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum remove docker  docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
+
+<p>4.安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+
+<p>5.设置yum源</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019121702.png" alt="image-20201217213649924"></p>
+<p>6.可以查看所有仓库中所有docker版本，并选择特定版本安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
+
+<p>7.安装docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce  #由于repo中默认只开启stable仓库，故这里安装的是最新稳定版</span><br><span class="line"># sudo yum install &lt;FQPN&gt;  # 例如：sudo yum install docker-ce-17.12.0.ce</span><br></pre></td></tr></table></figure>
+
+<p>8.启动docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<p>9.设置开机自启动</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
+
+<p>10.验证安装是否成功(有client和service两部分表示docker安装启动都成功了)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># docker version</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="二、配置镜像加速"><a href="#二、配置镜像加速" class="headerlink" title="二、配置镜像加速"></a>二、配置镜像加速</h2><blockquote>
+<p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
+</blockquote>
+<p>Docker客户端版本需要大于 1.10.0 </p>
+<p>可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;26udi78a.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="三、问题"><a href="#三、问题" class="headerlink" title="三、问题"></a>三、问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>2.卸载旧版本的包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum erase docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>3.再次安装docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.yum安装的时候遇到公钥尚未安装的问题解决</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 yum install xxxx 命令之后添加 --nogpgcheck 进行跳过公钥检查安装</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<p>导入密钥重新安装Docker</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker安装RabbitMQ</title>
     <url>/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</url>
     <content><![CDATA[<p> RabbitMQ是基于AMQP的一款消息管理系统。AMQP(Advanced Message Queuing Protocol)，是一个提供消息服务的应用层标准高级消息队列协议，其中RabbitMQ就是基于这种协议的一种实现。</p>
@@ -53,6 +129,27 @@
       </categories>
       <tags>
         <tag>Docker命令</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker设置镜像自启动</title>
+    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
+    <content><![CDATA[<p>Docker便捷小技巧：</p>
+<a id="more"></a>
+
+<p>1.发现没启动</p>
+<p><code>docker ps</code></p>
+<p>2.查看所有安装的镜像</p>
+<p><code>docker ps -a</code></p>
+<p>3.设置总是自动启动</p>
+<p><code>docker update 镜像id --restart=always</code></p>
+<p>4.重启测试一下</p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -141,103 +238,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker设置镜像自启动</title>
-    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>Docker便捷小技巧：</p>
-<a id="more"></a>
-
-<p>1.发现没启动</p>
-<p><code>docker ps</code></p>
-<p>2.查看所有安装的镜像</p>
-<p><code>docker ps -a</code></p>
-<p>3.设置总是自动启动</p>
-<p><code>docker update 镜像id --restart=always</code></p>
-<p>4.重启测试一下</p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos7上安装docker</title>
-    <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
-    <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
-<a id="more"></a>
-
-<h2 id="一、安装docker"><a href="#一、安装docker" class="headerlink" title="一、安装docker"></a>一、安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
-<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2019121701.png" alt="image-20201217213427007"></p>
-<p>2.使用 <code>root</code> 权限登录 Centos。确保 yum 包更新到最新。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum update</span><br></pre></td></tr></table></figure>
-
-<p>3.卸载旧版本(如果安装过旧版本的话)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum remove docker  docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
-
-<p>4.安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
-
-<p>5.设置yum源</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2019121702.png" alt="image-20201217213649924"></p>
-<p>6.可以查看所有仓库中所有docker版本，并选择特定版本安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
-
-<p>7.安装docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce  #由于repo中默认只开启stable仓库，故这里安装的是最新稳定版</span><br><span class="line"># sudo yum install &lt;FQPN&gt;  # 例如：sudo yum install docker-ce-17.12.0.ce</span><br></pre></td></tr></table></figure>
-
-<p>8.启动docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-
-<p>9.设置开机自启动</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
-
-<p>10.验证安装是否成功(有client和service两部分表示docker安装启动都成功了)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># docker version</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="二、配置镜像加速"><a href="#二、配置镜像加速" class="headerlink" title="二、配置镜像加速"></a>二、配置镜像加速</h2><blockquote>
-<p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
-</blockquote>
-<p>Docker客户端版本需要大于 1.10.0 </p>
-<p>可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;26udi78a.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="三、问题"><a href="#三、问题" class="headerlink" title="三、问题"></a>三、问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
-
-<p>2.卸载旧版本的包</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum erase docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
-
-<p>3.再次安装docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.yum安装的时候遇到公钥尚未安装的问题解决</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 yum install xxxx 命令之后添加 --nogpgcheck 进行跳过公钥检查安装</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<p>导入密钥重新安装Docker</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
     <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
     <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
@@ -255,6 +255,188 @@
       </categories>
       <tags>
         <tag>MySQL错误</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch7笔记</title>
+    <url>/2020/12/02/ElasticSearch7%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>ElasticSearch7学习笔记</p>
+<a id="more"></a>
+
+<h1 id="ElasticSearch原理及部署"><a href="#ElasticSearch原理及部署" class="headerlink" title="ElasticSearch原理及部署"></a>ElasticSearch原理及部署</h1><blockquote>
+<p>中文官网：<a href="https://www.elastic.co/cn/elasticsearch/" target="_blank" rel="noopener">https://www.elastic.co/cn/elasticsearch/</a></p>
+<p>阮一峰：<a href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
+</blockquote>
+<h2 id="搜索原理"><a href="#搜索原理" class="headerlink" title="搜索原理"></a>搜索原理</h2><p>ElasticSearch是独立的网络上的一个或一组进程节点，对外提供搜索服务（http/transport协议），对内就是一个搜索数据库。</p>
+<p>对于搜索，是以词为单位做最基本的搜索单元，依靠分词器构造分词（其中英文分词器有空格分词器），然后用分词构建倒排索引。</p>
+<p><img src="/images/2020120401.png" alt="image-20201204152921640"></p>
+<p>正向索引</p>
+<p><img src="/images/2020120402.png" alt="image-20201204193628122"></p>
+<p>倒排索引</p>
+<p><img src="/images/2020120403.png" alt="image-20201204193651906"></p>
+<p>试想根据某个词查找，查找出一堆文档，那到底是哪个匹配度更高呢，这时候就需要打分的逻辑</p>
+<ul>
+<li>TF：词频，这个document文档包含了多少个这个词，包含越多表明越相关</li>
+<li>DF：文档频率，包含该词的文档总数目</li>
+<li>IDF：DF取倒数</li>
+<li>打分常用计算公式：TF * IDF</li>
+</ul>
+<h2 id="名词定义"><a href="#名词定义" class="headerlink" title="名词定义"></a>名词定义</h2><p>关系型数据库MySQL对应ElasticSearch：</p>
+<ol>
+<li>MySQL 中的数据库（DataBase），等价于 ES 中的索引（Index）。</li>
+<li>MySQL 中一个数据库下面有 N 张表（Table），等价于1个索引 Index 下面有 N 多类型（Type）。</li>
+<li>MySQL 中一个数据库表（Table）下的数据由多行（Row）多列（column，属性）组成，等价于1个 Type 由多个文档（Document）和多 Field 组成。</li>
+<li>MySQL 中定义表结构、设定字段类型等价于 ES 中的 Mapping。举例说明，在一个关系型数据库里面，Schema 定义了表、每个表的字段，还有表和字段之间的关系。与之对应的，在 ES 中，Mapping 定义索引下的 Type 的字段处理规则，即索引如何建立、索引类型、是否保存原始索引 JSON 文档、是否压缩原始 JSON 文档、是否需要分词处理、如何进行分词处理等。</li>
+<li>MySQL 中的增 insert、删 delete、改 update、查 search 操作等价于 ES 中的增 PUT/POST、删 Delete、改 _update、查 GET。其中的修改指定条件的更新 update 等价于 ES 中的 update_by_query，指定条件的删除等价于 ES 中的 delete_by_query。</li>
+<li>MySQL 中的 group by、avg、sum 等函数类似于 ES 中的 Aggregations 的部分特性。</li>
+<li>MySQL 中的去重 distinct 类似 ES 中的 cardinality 操作。</li>
+<li>MySQL 中的数据迁移等价于 ES 中的 reindex 操作。</li>
+</ol>
+<p><img src="/images/2020120404.png" alt="img"></p>
+<h2 id="分布式原理"><a href="#分布式原理" class="headerlink" title="分布式原理"></a>分布式原理</h2><p><a href="https://www.cnblogs.com/jajian/p/10176604.html" target="_blank" rel="noopener">https://www.cnblogs.com/jajian/p/10176604.html</a></p>
+<h2 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h2><p><a href="https://liuurick.github.io/2020/10/11/ElasticSearch集群搭建/" target="_blank" rel="noopener">https://liuurick.github.io/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</a></p>
+<h1 id="ElasticSearch基础语法及应用"><a href="#ElasticSearch基础语法及应用" class="headerlink" title="ElasticSearch基础语法及应用"></a>ElasticSearch基础语法及应用</h1><h2 id="索引创建，更新，删除"><a href="#索引创建，更新，删除" class="headerlink" title="索引创建，更新，删除"></a>索引创建，更新，删除</h2><blockquote>
+<p>结构化索引，类似MySQL，我们会对索引结构做预定义，包括字段名，字段类型等；</p>
+<p>非结构化索引，就类似Mongo，索引结构未知，根据具体的数据来update索引的mapping。</p>
+<p>那么如何选择两种索引呢，还是跟具体的使用场景有关，结构化相比非结构化，更易优化，性能好些，非结构化相较灵活，只是频繁update索引mapping会有一定的性能损耗。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#1.索引创建</span><br><span class="line">PUT &#x2F;mytest</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#2.索引删除</span><br><span class="line">DELETE &#x2F;mytest</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="索引简单语句"><a href="#索引简单语句" class="headerlink" title="索引简单语句"></a>索引简单语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#3.非结构化方式新建索引</span><br><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;name&quot;: &quot;liubin&quot;,</span><br><span class="line">  &quot;age&quot;: 24</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#4.获取索引记录</span><br><span class="line">GET &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#5.指定字段修改</span><br><span class="line">POST &#x2F;employee&#x2F;_update&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;:&#123;</span><br><span class="line">    &quot;name&quot;: &quot;刘斌&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#6.强制指定创建，若已经存在，则失败</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;123&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#7.删除某个文档</span><br><span class="line">DELETE &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#8.查询全部文档</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#9.使用结构化的方式创建索引</span><br><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line"> &quot;settings&quot;: &#123;</span><br><span class="line">   &quot;number_of_shards&quot;: 1,</span><br><span class="line">   &quot;number_of_replicas&quot;: 1</span><br><span class="line"> &#125; ,</span><br><span class="line"> &quot;mappings&quot;: &#123;</span><br><span class="line">   &quot;properties&quot;: &#123;</span><br><span class="line">     &quot;name&quot;:&#123;&quot;type&quot;: &quot;text&quot;&#125;,</span><br><span class="line">     &quot;age&quot;:&#123;&quot;type&quot;: &quot;integer&quot;&#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#10.添加数据</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;我是打工人&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#11.不带条件查询所有记录</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line"></span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#12.分页查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="索引复杂语句"><a href="#索引复杂语句" class="headerlink" title="索引复杂语句"></a>索引复杂语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#13.带关键字条件的查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#14.带排序</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#15.带filter </span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: [</span><br><span class="line">        &#123;&quot;term&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &quot;30&quot;</span><br><span class="line">        &#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#16.带聚合</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_age&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;age&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>match和term区别：<a href="https://www.cnblogs.com/yjf512/p/4897294.html" target="_blank" rel="noopener">https://www.cnblogs.com/yjf512/p/4897294.html</a></p>
+<p>match 分词查询<br>term 整体查询</p>
+</blockquote>
+<h1 id="ElasticSearch高级语法及应用"><a href="#ElasticSearch高级语法及应用" class="headerlink" title="ElasticSearch高级语法及应用"></a>ElasticSearch高级语法及应用</h1><p>更着重于分词相关的操作</p>
+<h2 id="analyze分析过程"><a href="#analyze分析过程" class="headerlink" title="analyze分析过程"></a>analyze分析过程</h2><p><code>analyse分析=分词的过程：字符过滤器--&gt;字符处理--&gt;分词过滤（分词转换，词干转化）</code></p>
+<ul>
+<li>字符过滤：使用字符过滤器转变字符。</li>
+<li>文本切分为分词：将文本（档）分为单个或多个分词。</li>
+<li>分词过滤：使用分词过滤器转变每个分词。</li>
+<li>分词索引：最终将分词存储在Lucene倒排索引中。</li>
+</ul>
+<p><img src="/images/2020120405.png" alt="20190824003615611858"></p>
+<p>利用analyze api搜索</p>
+<p>先建立索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Eating an apple a day &amp; keeps the doctor away&quot;, </span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后搜索</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;: &#123;&quot;name&quot;:&quot;eat&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>没搜到后使用analyze api查看分析处理结果，可以看到没有分出eat，所以搜不到，改成用english分词器做索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>重新创建索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">   &quot;number_of_shards&quot; : 1,</span><br><span class="line">   &quot;number_of_replicas&quot; : 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot; : &#123;</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">      &quot;name&quot; : &#123; </span><br><span class="line">        &quot;type&quot; : &quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;,</span><br><span class="line">        &quot;age&quot; : &#123;&quot;type&quot;:&quot;integer&quot;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在用<code>analyze api</code>，可以看到eat</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关性查询手段"><a href="#相关性查询手段" class="headerlink" title="相关性查询手段"></a>相关性查询手段</h2><p>类型：</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/chengyuqiang/article/details/79048800" target="_blank" rel="noopener">https://blog.csdn.net/chengyuqiang/article/details/79048800</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch搜索优化</title>
+    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
+<ol>
+<li>定制化分词器</li>
+<li>同义词扩展</li>
+<li>相关性重塑</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
+<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
+<p>然后将文件复制到其余的两个节点</p>
+<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将文件复制到其余的两个节点</p>
+<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Http请求需要返回两个头部，last-modified和etag</p>
+<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
+</blockquote>
+<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
+<blockquote>
+<p>语义相近或相同</p>
+<p>品牌类目关联</p>
+<p>搜索它等于搜索它</p>
+</blockquote>
+<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
+<p><img src="/images/202012091601.png" alt="image-20201209164003792"></p>
+<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>索引测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
+<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
+</blockquote>
+<p>相关性搜索</p>
+<p>让搜索引擎理解语义</p>
+<p>影响召回及排序</p>
+<h2 id="重新构建es索引"><a href="#重新构建es索引" class="headerlink" title="重新构建es索引"></a>重新构建es索引</h2><p>采取词性影响召回策略模型 通过category_id</p>
+<h2 id="引入Java代码："><a href="#引入Java代码：" class="headerlink" title="引入Java代码："></a>引入Java代码：</h2><p>构造分类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Integer <span class="title">getCategoryIdByToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer key : categoryWorkMap.keySet()) &#123;</span><br><span class="line">        List&lt;String&gt; tokenList = categoryWorkMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (tokenList.contains(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> key;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; categoryWorkMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    categoryWorkMap.put(<span class="number">1</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    categoryWorkMap.put(<span class="number">2</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"吃饭"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"下午茶"</span>);</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"休息"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"睡觉"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"住宿"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch7</tag>
       </tags>
   </entry>
   <entry>
@@ -489,113 +671,41 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch7笔记</title>
-    <url>/2020/12/02/ElasticSearch7%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>ElasticSearch7学习笔记</p>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
 <a id="more"></a>
 
-<h1 id="ElasticSearch原理及部署"><a href="#ElasticSearch原理及部署" class="headerlink" title="ElasticSearch原理及部署"></a>ElasticSearch原理及部署</h1><blockquote>
-<p>中文官网：<a href="https://www.elastic.co/cn/elasticsearch/" target="_blank" rel="noopener">https://www.elastic.co/cn/elasticsearch/</a></p>
-<p>阮一峰：<a href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
-</blockquote>
-<h2 id="搜索原理"><a href="#搜索原理" class="headerlink" title="搜索原理"></a>搜索原理</h2><p>ElasticSearch是独立的网络上的一个或一组进程节点，对外提供搜索服务（http/transport协议），对内就是一个搜索数据库。</p>
-<p>对于搜索，是以词为单位做最基本的搜索单元，依靠分词器构造分词（其中英文分词器有空格分词器），然后用分词构建倒排索引。</p>
-<p><img src="/images/2020120401.png" alt="image-20201204152921640"></p>
-<p>正向索引</p>
-<p><img src="/images/2020120402.png" alt="image-20201204193628122"></p>
-<p>倒排索引</p>
-<p><img src="/images/2020120403.png" alt="image-20201204193651906"></p>
-<p>试想根据某个词查找，查找出一堆文档，那到底是哪个匹配度更高呢，这时候就需要打分的逻辑</p>
-<ul>
-<li>TF：词频，这个document文档包含了多少个这个词，包含越多表明越相关</li>
-<li>DF：文档频率，包含该词的文档总数目</li>
-<li>IDF：DF取倒数</li>
-<li>打分常用计算公式：TF * IDF</li>
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
 </ul>
-<h2 id="名词定义"><a href="#名词定义" class="headerlink" title="名词定义"></a>名词定义</h2><p>关系型数据库MySQL对应ElasticSearch：</p>
-<ol>
-<li>MySQL 中的数据库（DataBase），等价于 ES 中的索引（Index）。</li>
-<li>MySQL 中一个数据库下面有 N 张表（Table），等价于1个索引 Index 下面有 N 多类型（Type）。</li>
-<li>MySQL 中一个数据库表（Table）下的数据由多行（Row）多列（column，属性）组成，等价于1个 Type 由多个文档（Document）和多 Field 组成。</li>
-<li>MySQL 中定义表结构、设定字段类型等价于 ES 中的 Mapping。举例说明，在一个关系型数据库里面，Schema 定义了表、每个表的字段，还有表和字段之间的关系。与之对应的，在 ES 中，Mapping 定义索引下的 Type 的字段处理规则，即索引如何建立、索引类型、是否保存原始索引 JSON 文档、是否压缩原始 JSON 文档、是否需要分词处理、如何进行分词处理等。</li>
-<li>MySQL 中的增 insert、删 delete、改 update、查 search 操作等价于 ES 中的增 PUT/POST、删 Delete、改 _update、查 GET。其中的修改指定条件的更新 update 等价于 ES 中的 update_by_query，指定条件的删除等价于 ES 中的 delete_by_query。</li>
-<li>MySQL 中的 group by、avg、sum 等函数类似于 ES 中的 Aggregations 的部分特性。</li>
-<li>MySQL 中的去重 distinct 类似 ES 中的 cardinality 操作。</li>
-<li>MySQL 中的数据迁移等价于 ES 中的 reindex 操作。</li>
-</ol>
-<p><img src="/images/2020120404.png" alt="img"></p>
-<h2 id="分布式原理"><a href="#分布式原理" class="headerlink" title="分布式原理"></a>分布式原理</h2><p><a href="https://www.cnblogs.com/jajian/p/10176604.html" target="_blank" rel="noopener">https://www.cnblogs.com/jajian/p/10176604.html</a></p>
-<h2 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h2><p><a href="https://liuurick.github.io/2020/10/11/ElasticSearch集群搭建/" target="_blank" rel="noopener">https://liuurick.github.io/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</a></p>
-<h1 id="ElasticSearch基础语法及应用"><a href="#ElasticSearch基础语法及应用" class="headerlink" title="ElasticSearch基础语法及应用"></a>ElasticSearch基础语法及应用</h1><h2 id="索引创建，更新，删除"><a href="#索引创建，更新，删除" class="headerlink" title="索引创建，更新，删除"></a>索引创建，更新，删除</h2><blockquote>
-<p>结构化索引，类似MySQL，我们会对索引结构做预定义，包括字段名，字段类型等；</p>
-<p>非结构化索引，就类似Mongo，索引结构未知，根据具体的数据来update索引的mapping。</p>
-<p>那么如何选择两种索引呢，还是跟具体的使用场景有关，结构化相比非结构化，更易优化，性能好些，非结构化相较灵活，只是频繁update索引mapping会有一定的性能损耗。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#1.索引创建</span><br><span class="line">PUT &#x2F;mytest</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#2.索引删除</span><br><span class="line">DELETE &#x2F;mytest</span><br></pre></td></tr></table></figure>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
 
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
 
-
-<h2 id="索引简单语句"><a href="#索引简单语句" class="headerlink" title="索引简单语句"></a>索引简单语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#3.非结构化方式新建索引</span><br><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;name&quot;: &quot;liubin&quot;,</span><br><span class="line">  &quot;age&quot;: 24</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#4.获取索引记录</span><br><span class="line">GET &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#5.指定字段修改</span><br><span class="line">POST &#x2F;employee&#x2F;_update&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;:&#123;</span><br><span class="line">    &quot;name&quot;: &quot;刘斌&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#6.强制指定创建，若已经存在，则失败</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;123&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#7.删除某个文档</span><br><span class="line">DELETE &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#8.查询全部文档</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#9.使用结构化的方式创建索引</span><br><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line"> &quot;settings&quot;: &#123;</span><br><span class="line">   &quot;number_of_shards&quot;: 1,</span><br><span class="line">   &quot;number_of_replicas&quot;: 1</span><br><span class="line"> &#125; ,</span><br><span class="line"> &quot;mappings&quot;: &#123;</span><br><span class="line">   &quot;properties&quot;: &#123;</span><br><span class="line">     &quot;name&quot;:&#123;&quot;type&quot;: &quot;text&quot;&#125;,</span><br><span class="line">     &quot;age&quot;:&#123;&quot;type&quot;: &quot;integer&quot;&#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#10.添加数据</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;我是打工人&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#11.不带条件查询所有记录</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line"></span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#12.分页查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="索引复杂语句"><a href="#索引复杂语句" class="headerlink" title="索引复杂语句"></a>索引复杂语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#13.带关键字条件的查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#14.带排序</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#15.带filter </span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: [</span><br><span class="line">        &#123;&quot;term&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &quot;30&quot;</span><br><span class="line">        &#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#16.带聚合</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_age&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;age&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>match和term区别：<a href="https://www.cnblogs.com/yjf512/p/4897294.html" target="_blank" rel="noopener">https://www.cnblogs.com/yjf512/p/4897294.html</a></p>
-<p>match 分词查询<br>term 整体查询</p>
-</blockquote>
-<h1 id="ElasticSearch高级语法及应用"><a href="#ElasticSearch高级语法及应用" class="headerlink" title="ElasticSearch高级语法及应用"></a>ElasticSearch高级语法及应用</h1><p>更着重于分词相关的操作</p>
-<h2 id="analyze分析过程"><a href="#analyze分析过程" class="headerlink" title="analyze分析过程"></a>analyze分析过程</h2><p><code>analyse分析=分词的过程：字符过滤器--&gt;字符处理--&gt;分词过滤（分词转换，词干转化）</code></p>
-<ul>
-<li>字符过滤：使用字符过滤器转变字符。</li>
-<li>文本切分为分词：将文本（档）分为单个或多个分词。</li>
-<li>分词过滤：使用分词过滤器转变每个分词。</li>
-<li>分词索引：最终将分词存储在Lucene倒排索引中。</li>
-</ul>
-<p><img src="/images/2020120405.png" alt="20190824003615611858"></p>
-<p>利用analyze api搜索</p>
-<p>先建立索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Eating an apple a day &amp; keeps the doctor away&quot;, </span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>然后搜索</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;: &#123;&quot;name&quot;:&quot;eat&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>没搜到后使用analyze api查看分析处理结果，可以看到没有分出eat，所以搜不到，改成用english分词器做索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>重新创建索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">   &quot;number_of_shards&quot; : 1,</span><br><span class="line">   &quot;number_of_replicas&quot; : 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot; : &#123;</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">      &quot;name&quot; : &#123; </span><br><span class="line">        &quot;type&quot; : &quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;,</span><br><span class="line">        &quot;age&quot; : &#123;&quot;type&quot;:&quot;integer&quot;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>在用<code>analyze api</code>，可以看到eat</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="相关性查询手段"><a href="#相关性查询手段" class="headerlink" title="相关性查询手段"></a>相关性查询手段</h2><p>类型：</p>
-<blockquote>
-<p><a href="https://blog.csdn.net/chengyuqiang/article/details/79048800" target="_blank" rel="noopener">https://blog.csdn.net/chengyuqiang/article/details/79048800</a></p>
-</blockquote>
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
+<p><img src="/images/2020101102.png" alt="node1"></p>
+<p>node2:</p>
+<p><img src="/images/2020101103.png" alt="node2"></p>
+<p>node3:</p>
+<p><img src="/images/2020101104.png" alt="node3"></p>
+<p>总览：</p>
+<p><img src="/images/2020101105.png" alt="nodes"></p>
 ]]></content>
       <categories>
         <category>ElasticSearch</category>
       </categories>
       <tags>
-        <tag>ElasticSearch</tag>
+        <tag>ElasticSearch集群</tag>
       </tags>
   </entry>
   <entry>
@@ -666,78 +776,6 @@
       </categories>
       <tags>
         <tag>Hadoop集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch搜索优化</title>
-    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
-<ol>
-<li>定制化分词器</li>
-<li>同义词扩展</li>
-<li>相关性重塑</li>
-</ol>
-<a id="more"></a>
-
-<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
-<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
-<p>然后将文件复制到其余的两个节点</p>
-<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
-
-<p>将文件复制到其余的两个节点</p>
-<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Http请求需要返回两个头部，last-modified和etag</p>
-<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
-</blockquote>
-<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
-<blockquote>
-<p>语义相近或相同</p>
-<p>品牌类目关联</p>
-<p>搜索它等于搜索它</p>
-</blockquote>
-<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
-<p><img src="/images/202012091601.png" alt="image-20201209164003792"></p>
-<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>索引测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
-<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
-</blockquote>
-<p>相关性搜索</p>
-<p>让搜索引擎理解语义</p>
-<p>影响召回及排序</p>
-<h2 id="重新构建es索引"><a href="#重新构建es索引" class="headerlink" title="重新构建es索引"></a>重新构建es索引</h2><p>采取词性影响召回策略模型 通过category_id</p>
-<h2 id="引入Java代码："><a href="#引入Java代码：" class="headerlink" title="引入Java代码："></a>引入Java代码：</h2><p>构造分类：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Integer <span class="title">getCategoryIdByToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer key : categoryWorkMap.keySet()) &#123;</span><br><span class="line">        List&lt;String&gt; tokenList = categoryWorkMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (tokenList.contains(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> key;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; categoryWorkMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    categoryWorkMap.put(<span class="number">1</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    categoryWorkMap.put(<span class="number">2</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"吃饭"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"下午茶"</span>);</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"休息"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"睡觉"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"住宿"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch7</tag>
       </tags>
   </entry>
   <entry>
@@ -1057,20 +1095,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
-    <title>Java注解详解</title>
-    <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java泛型详解</title>
     <url>/2020/12/27/Java%E6%B3%9B%E5%9E%8B%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1082,6 +1106,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>泛型</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java注解详解</title>
+    <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -1130,6 +1168,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Jenkins笔记</title>
+    <url>/2020/12/28/Jenkins%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Linux安装配置大全</title>
     <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
     <content><![CDATA[<p>Linux各种版本安装配置</p>
@@ -1155,11 +1198,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Linux</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Jenkins笔记</title>
-    <url>/2020/12/28/Jenkins%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>MyBatis三剑客</title>
@@ -1203,41 +1241,62 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<p>记录一个小细节</p>
 <a id="more"></a>
 
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
-<p><img src="/images/2020101102.png" alt="node1"></p>
-<p>node2:</p>
-<p><img src="/images/2020101103.png" alt="node2"></p>
-<p>node3:</p>
-<p><img src="/images/2020101104.png" alt="node3"></p>
-<p>总览：</p>
-<p><img src="/images/2020101105.png" alt="nodes"></p>
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
 ]]></content>
       <categories>
-        <category>ElasticSearch</category>
+        <category>MyBatis</category>
       </categories>
       <tags>
-        <tag>ElasticSearch集群</tag>
+        <tag>MyBatis缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
+    <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
+<a id="more"></a>
+
+<blockquote>
+<p>COUNT(column_name) 函数返回指定列的值的数目（NULL 不计入）</p>
+</blockquote>
+<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是 NULL，累计值就加 1，否则不加。最后返回累计值。</p>
+<p>所以，count(*)、count(1)和count(主键 id) 都表示返回满足条件的结果集的总行数；而 count(字段），则表示返回满足条件的数据行里面，参数“字段”不为 NULL 的总个数。</p>
+<p>至于分析性能差别的时候，记住这么几个原则：</p>
+<ul>
+<li>server 层要什么就给什么；</li>
+<li>InnoDB 只给必要的值；</li>
+<li>现在的优化器只优化了 count(*) 的语义为“取行数”，其他“显而易见”的优化并没有做。</li>
+</ul>
+<p><strong>count(可空字段)</strong></p>
+<p>扫描全表，读到server层，判断字段可空，拿出该字段所有值，判断每一个值是否为空，不为空则累加</p>
+<p><strong>count(非空字段)与count(主键 id)</strong></p>
+<p>扫描全表，读到server层，判断字段不可空，按行累加。</p>
+<p><strong>count(1)</strong></p>
+<p>扫描全表，但不取值，server层收到的每一行都是1，判断不可能是null，按值累加。</p>
+<p><strong>注意：</strong>count(1)执行速度比count(主键 id)快的原因：从引擎返回 id 会涉及到解析数据行，以及拷贝字段值的操作。</p>
+<p><strong>count(*)</strong></p>
+<p>MySQL 执行count(<em>)在优化器做了专门优化。因为count(</em>)返回的行一定不是空。扫描全表，但是不取值，按行累加。</p>
+<blockquote>
+<p>看到这里，你会说优化器就不能自己判断一下吗，主键 id 肯定是非空的，为什么不能按照 count(<em>) 来处理，多么简单的优化。当然 MySQL 专门针对这个语句进行优化也不是不可以。但是这种需要专门优化的情况太多了，而且 MySQL 已经优化过 count(</em>) 了，你直接使用这种语句就可以了。</p>
+</blockquote>
+<p><strong>性能对比结论</strong></p>
+<p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -1285,42 +1344,14 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
-    <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
-<a id="more"></a>
-
-<blockquote>
-<p>COUNT(column_name) 函数返回指定列的值的数目（NULL 不计入）</p>
-</blockquote>
-<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是 NULL，累计值就加 1，否则不加。最后返回累计值。</p>
-<p>所以，count(*)、count(1)和count(主键 id) 都表示返回满足条件的结果集的总行数；而 count(字段），则表示返回满足条件的数据行里面，参数“字段”不为 NULL 的总个数。</p>
-<p>至于分析性能差别的时候，记住这么几个原则：</p>
-<ul>
-<li>server 层要什么就给什么；</li>
-<li>InnoDB 只给必要的值；</li>
-<li>现在的优化器只优化了 count(*) 的语义为“取行数”，其他“显而易见”的优化并没有做。</li>
-</ul>
-<p><strong>count(可空字段)</strong></p>
-<p>扫描全表，读到server层，判断字段可空，拿出该字段所有值，判断每一个值是否为空，不为空则累加</p>
-<p><strong>count(非空字段)与count(主键 id)</strong></p>
-<p>扫描全表，读到server层，判断字段不可空，按行累加。</p>
-<p><strong>count(1)</strong></p>
-<p>扫描全表，但不取值，server层收到的每一行都是1，判断不可能是null，按值累加。</p>
-<p><strong>注意：</strong>count(1)执行速度比count(主键 id)快的原因：从引擎返回 id 会涉及到解析数据行，以及拷贝字段值的操作。</p>
-<p><strong>count(*)</strong></p>
-<p>MySQL 执行count(<em>)在优化器做了专门优化。因为count(</em>)返回的行一定不是空。扫描全表，但是不取值，按行累加。</p>
-<blockquote>
-<p>看到这里，你会说优化器就不能自己判断一下吗，主键 id 肯定是非空的，为什么不能按照 count(<em>) 来处理，多么简单的优化。当然 MySQL 专门针对这个语句进行优化也不是不可以。但是这种需要专门优化的情况太多了，而且 MySQL 已经优化过 count(</em>) 了，你直接使用这种语句就可以了。</p>
-</blockquote>
-<p><strong>性能对比结论</strong></p>
-<p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
-]]></content>
+    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
+    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>MySQL</category>
+        <category>Spring</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
+        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -1713,17 +1744,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
-    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -2418,23 +2438,14 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<p>记录一个小细节</p>
-<a id="more"></a>
-
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
+    <title>UML学习笔记</title>
+    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
       <categories>
-        <category>MyBatis</category>
+        <category>UML</category>
       </categories>
       <tags>
-        <tag>MyBatis缓存</tag>
+        <tag>UML</tag>
       </tags>
   </entry>
   <entry>
@@ -2668,46 +2679,25 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>UML学习笔记</title>
-    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>UML</category>
-      </categories>
-      <tags>
-        <tag>UML</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git命令操作笔记</title>
-    <url>/2020/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>今天看到公众号上一篇非常</p>
-<blockquote>
-<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
-<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
-<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
-<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
+    <title>canal-adapter启动失败问题记录</title>
+    <url>/2020/12/14/canal-adapter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<blockquote>
+<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
 </blockquote>
 <a id="more"></a>
 
+<h1 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h1><p>canal-1.4 </p>
+<p>elasticsearch-7.7.1</p>
+<p>jdk1.8</p>
+<p>mysql-5.7.30</p>
+<h1 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2020-12-13 09:39:06.006 [main] INFO  o.s.c.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131: startup date [Sun Dec 13 09:39:05 GMT+08:00 2020]; root of context hierarchy</span><br><span class="line">2020-12-13 09:39:06.521 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;configurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:06.852 [main] INFO  c.a.otter.canal.adapter.launcher.CanalAdapterApplication - No active profile set, falling back to default profiles: default</span><br><span class="line">2020-12-13 09:39:06.884 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@796d3c9f: startup date [Sun Dec 13 09:39:06 GMT+08:00 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131</span><br><span class="line">2020-12-13 09:39:07.640 [main] INFO  org.springframework.cloud.context.scope.GenericScope - BeanFactory id&#x3D;ba9c0aec-0105-3f1f-b89e-e85c68567039</span><br><span class="line">2020-12-13 09:39:07.724 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:09.358 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)</span><br><span class="line">2020-12-13 09:39:09.382 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler [&quot;http-nio-8081&quot;]</span><br><span class="line">2020-12-13 09:39:09.402 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]</span><br><span class="line">2020-12-13 09:39:09.404 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat&#x2F;8.5.29</span><br><span class="line">2020-12-13 09:39:09.421 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;&quot;.;C:\Program Files\Java\jdk-11.0.9\\bin;E:\tomcat\apache-tomcat-8.5.59\bin;&quot;;C:\Program Files\VanDyke Software\Clients\;E:\Python\python3\Scripts\;E:\Python\python3\;E:\Java\maven\apache-maven-3.6.3\bin;E:\IDEA\gradle\gradle-5.4.1\bin;E:\app\admin\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\;rogram Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;人网站\Git\bin;:\;人网站\Git\cmd;it;cmd;D:\;C:\WINDOWS\System32\OpenSSH\;&quot;E:\tomcat\apache-tomcat-8.5.59\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\&quot;;E:\Coding\winhadoop\bin;E:\Git\cmd;E:\node\;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Program Files (x86)\CADSeePlus;E:\tomcat\apache-tomcat-8.5.34\bin;C:\Program Files\Java\jdk1.8.0_261\bin;C:\Program Files\Java\jdk-11.0.9\bin;E:\Python\python3\Scripts\;E:\Python\python3\;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files (x86)\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools;C:\Program Files (x86)\Microsoft Visual Studio\VC98\bin;C:\Qt\Qt5.6.2\5.6\msvc2013\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\个人网站\Git\bin;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;&quot;E:\IDEA\gradle\gradle-5.4.1\bin;&quot;;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\IDEA\IntelliJ IDEA 2019.3.4\bin;;C:\Users\admin\AppData\Local\Pandoc\;C:\Users\admin\AppData\Roaming\npm;E:\vscode\Microsoft VS Code\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;E:\WebStorm\WebStorm 2020.2\bin;;C:\Program Files\Bandizip\;C:\Program Files\JetBrains\PyCharm 2020.1.4\bin;;;.]</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  o.a.catalina.core.ContainerBase.[Tomcat].[localhost].[&#x2F;] - Initializing Spring embedded WebApplicationContext</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2766 ms</span><br><span class="line">2020-12-13 09:39:09.902 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [&#x2F;]</span><br><span class="line">2020-12-13 09:39:09.910 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;characterEncodingFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.913 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;hiddenHttpMethodFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.914 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;httpPutFormContentFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.915 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;requestContextFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:10.094 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">2020-12-13 09:39:10.098 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]</span><br><span class="line">2020-12-13 09:39:10.321 [localhost-startStop-1] WARN  org.apache.catalina.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.Object.wait(Native Method)</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)</span><br><span class="line"> app&#x2F;&#x2F;com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)</span><br><span class="line">2020-12-13 09:39:10.341 [main] INFO  o.s.b.a.logging.ConditionEvaluationReportLoggingListener - </span><br><span class="line"></span><br><span class="line">Error starting ApplicationContext. To display the conditions report re-run your application with &#39;debug&#39; enabled.</span><br><span class="line">2020-12-13 09:39:10.347 [main] ERROR org.springframework.boot.SpringApplication - Application run failed</span><br><span class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:138)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1694)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:579)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:501)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:760)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:869)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)</span><br><span class="line">	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395)</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.CanalAdapterApplication.main(CanalAdapterApplication.java:19)</span><br><span class="line">Caused by: java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:105)</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:85)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.monitor.ApplicationConfigMonitor.init(ApplicationConfigMonitor.java:41)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.base&#x2F;java.lang.reflect.Method.invoke(Method.java:566)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:365)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:308)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:135)</span><br><span class="line">	... 16 common frames omitted</span><br></pre></td></tr></table></figure>
 
-
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2018062701.png" alt="image"></p>
-<p>创建一个目录用于存放仓库，或在有内容的目录下操作。<br>然后切换到此目录下初始化：git –bare init<br>git status 查看仓库状态<br>branches 分支目录<br>config 定义项目特有的配置选项<br>description 仅供git web使用<br>HEAD 当前分支<br>hooks 包含git钩子文件<br>info 包含一个全局排除文件<br>objects 存放所有数据内容，有info、pack两个子文件夹<br>refs 存放只想数据（分支）的提交对象的指针<br>index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成<br>工作目录 暂存区 本地仓库 远程仓库<br>git add git commit git push</p>
-<p>git add FILE 添加file到暂存区<br>git add . 添加目录中所有改动过的文件到暂存区<br>git rm –cached FILE 将暂存区的FILE 撤回到工作区<br>git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）<br>git commit -m “add newfile a” 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）<br>【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m “输入的备注”添加到本地仓库】<br>修改文件名两种方式：<br>1、 mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）<br>git rm –cached a<br>git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）<br>git commit -m “modified a a.txt” a改名a.txt并提交<br>2、git mv old new 直接更改文件名，改完直接git commit提交即可</p>
-<p>git diff 比对工作目录与缓存区有什么不同<br>git diff –cached 比对暂存区与本地仓库有什么不同</p>
-<p>ls检查下当前目录下是否有仓库信息，<br>git remote add origin <a href="mailto:git@10.0.0.227">git@10.0.0.227</a>:web/control.git 创建远程仓库origin<br>git remote 查看当前远程仓库的名称<br>git remote remove origin 删除远程仓库origin</p>
-<p>git log 查看历史提交信息<br>git log –online 查看历史提交信息的哈希值<br>git log –online –decorate 历史提交信息并查看当前指针位置<br>git log -p 展示具体变化内容<br>git log -1 展示一条提交信息的内容<br>git log -1 -p 展示详细具体的最后一条变更的信息内容</p>
-<p>git reset –hard haxizhi 恢复到从前的haxizhi位置<br>git reflog 查看所有历史提交信息，包括回复到指定位置之前的<br>git reset –hard haxizhi 前后都能回滚 来回滚</p>
-<p>git branch 查看分支<br>git branch fenzhi 创建分支fenzhi<br>git checkout fenzhi 切换分支fenzhi<br>git checkout -b testing 创建并切换到分支testing<br>删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复<br>git branch -d testing 删除分支testing<br>git merge testing 合并分支<br>冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</p>
-<p>git tag -a v1.0 -m “hehe” 当前状态打标签为V1.0<br>git tag -a V1.0 haxizhi -m “hehe” 把某个哈希状态的状态打标签<br>git show v1.0 查看某个标签的信息<br>git reset –hard v2.0 回滚数据到V2.0<br>git tag -d v2.0 删除V2.0标签的数据</p>
-<p>git remote add origin <a href="mailto:git@10.0.0.227">git@10.0.0.227</a>:web/hehe.git 添加远程仓库<br>git push -u origin master<br>gitlab :git服务器的公钥放到gitlab里即可不用输入密码推送代码<br>git pull origin master 把origin分支拉到本地与master分支合并</p>
 ]]></content>
       <categories>
-        <category>git</category>
+        <category>canal</category>
       </categories>
       <tags>
-        <tag>git常见命令</tag>
+        <tag>canal</tag>
       </tags>
   </entry>
   <entry>
@@ -2871,6 +2861,52 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>git命令操作笔记</title>
+    <url>/2020/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>今天看到公众号上一篇非常</p>
+<blockquote>
+<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
+<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
+<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
+<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
+</blockquote>
+<a id="more"></a>
+
+
+
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2018062701.png" alt="image"></p>
+<p>创建一个目录用于存放仓库，或在有内容的目录下操作。<br>然后切换到此目录下初始化：git –bare init<br>git status 查看仓库状态<br>branches 分支目录<br>config 定义项目特有的配置选项<br>description 仅供git web使用<br>HEAD 当前分支<br>hooks 包含git钩子文件<br>info 包含一个全局排除文件<br>objects 存放所有数据内容，有info、pack两个子文件夹<br>refs 存放只想数据（分支）的提交对象的指针<br>index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成<br>工作目录 暂存区 本地仓库 远程仓库<br>git add git commit git push</p>
+<p>git add FILE 添加file到暂存区<br>git add . 添加目录中所有改动过的文件到暂存区<br>git rm –cached FILE 将暂存区的FILE 撤回到工作区<br>git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）<br>git commit -m “add newfile a” 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）<br>【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m “输入的备注”添加到本地仓库】<br>修改文件名两种方式：<br>1、 mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）<br>git rm –cached a<br>git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）<br>git commit -m “modified a a.txt” a改名a.txt并提交<br>2、git mv old new 直接更改文件名，改完直接git commit提交即可</p>
+<p>git diff 比对工作目录与缓存区有什么不同<br>git diff –cached 比对暂存区与本地仓库有什么不同</p>
+<p>ls检查下当前目录下是否有仓库信息，<br>git remote add origin <a href="mailto:git@10.0.0.227">git@10.0.0.227</a>:web/control.git 创建远程仓库origin<br>git remote 查看当前远程仓库的名称<br>git remote remove origin 删除远程仓库origin</p>
+<p>git log 查看历史提交信息<br>git log –online 查看历史提交信息的哈希值<br>git log –online –decorate 历史提交信息并查看当前指针位置<br>git log -p 展示具体变化内容<br>git log -1 展示一条提交信息的内容<br>git log -1 -p 展示详细具体的最后一条变更的信息内容</p>
+<p>git reset –hard haxizhi 恢复到从前的haxizhi位置<br>git reflog 查看所有历史提交信息，包括回复到指定位置之前的<br>git reset –hard haxizhi 前后都能回滚 来回滚</p>
+<p>git branch 查看分支<br>git branch fenzhi 创建分支fenzhi<br>git checkout fenzhi 切换分支fenzhi<br>git checkout -b testing 创建并切换到分支testing<br>删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复<br>git branch -d testing 删除分支testing<br>git merge testing 合并分支<br>冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</p>
+<p>git tag -a v1.0 -m “hehe” 当前状态打标签为V1.0<br>git tag -a V1.0 haxizhi -m “hehe” 把某个哈希状态的状态打标签<br>git show v1.0 查看某个标签的信息<br>git reset –hard v2.0 回滚数据到V2.0<br>git tag -d v2.0 删除V2.0标签的数据</p>
+<p>git remote add origin <a href="mailto:git@10.0.0.227">git@10.0.0.227</a>:web/hehe.git 添加远程仓库<br>git push -u origin master<br>gitlab :git服务器的公钥放到gitlab里即可不用输入密码推送代码<br>git pull origin master 把origin分支拉到本地与master分支合并</p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git常见命令</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客高级操作</title>
+    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<blockquote>
+<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
+</blockquote>
+<a id="more"></a>]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git常见错误</title>
     <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
     <content><![CDATA[<p>记录git常见错误</p>
@@ -2897,20 +2933,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>git常见错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo博客高级操作</title>
-    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<blockquote>
-<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
-</blockquote>
-<a id="more"></a>]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>next</tag>
       </tags>
   </entry>
   <entry>
@@ -4153,28 +4175,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Java Web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>canal-adapter启动失败问题记录</title>
-    <url>/2020/12/14/canal-adapter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<blockquote>
-<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
-</blockquote>
-<a id="more"></a>
-
-<h1 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h1><p>canal-1.4 </p>
-<p>elasticsearch-7.7.1</p>
-<p>jdk1.8</p>
-<p>mysql-5.7.30</p>
-<h1 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2020-12-13 09:39:06.006 [main] INFO  o.s.c.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131: startup date [Sun Dec 13 09:39:05 GMT+08:00 2020]; root of context hierarchy</span><br><span class="line">2020-12-13 09:39:06.521 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;configurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:06.852 [main] INFO  c.a.otter.canal.adapter.launcher.CanalAdapterApplication - No active profile set, falling back to default profiles: default</span><br><span class="line">2020-12-13 09:39:06.884 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@796d3c9f: startup date [Sun Dec 13 09:39:06 GMT+08:00 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131</span><br><span class="line">2020-12-13 09:39:07.640 [main] INFO  org.springframework.cloud.context.scope.GenericScope - BeanFactory id&#x3D;ba9c0aec-0105-3f1f-b89e-e85c68567039</span><br><span class="line">2020-12-13 09:39:07.724 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:09.358 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)</span><br><span class="line">2020-12-13 09:39:09.382 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler [&quot;http-nio-8081&quot;]</span><br><span class="line">2020-12-13 09:39:09.402 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]</span><br><span class="line">2020-12-13 09:39:09.404 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat&#x2F;8.5.29</span><br><span class="line">2020-12-13 09:39:09.421 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;&quot;.;C:\Program Files\Java\jdk-11.0.9\\bin;E:\tomcat\apache-tomcat-8.5.59\bin;&quot;;C:\Program Files\VanDyke Software\Clients\;E:\Python\python3\Scripts\;E:\Python\python3\;E:\Java\maven\apache-maven-3.6.3\bin;E:\IDEA\gradle\gradle-5.4.1\bin;E:\app\admin\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\;rogram Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;人网站\Git\bin;:\;人网站\Git\cmd;it;cmd;D:\;C:\WINDOWS\System32\OpenSSH\;&quot;E:\tomcat\apache-tomcat-8.5.59\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\&quot;;E:\Coding\winhadoop\bin;E:\Git\cmd;E:\node\;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Program Files (x86)\CADSeePlus;E:\tomcat\apache-tomcat-8.5.34\bin;C:\Program Files\Java\jdk1.8.0_261\bin;C:\Program Files\Java\jdk-11.0.9\bin;E:\Python\python3\Scripts\;E:\Python\python3\;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files (x86)\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools;C:\Program Files (x86)\Microsoft Visual Studio\VC98\bin;C:\Qt\Qt5.6.2\5.6\msvc2013\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\个人网站\Git\bin;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;&quot;E:\IDEA\gradle\gradle-5.4.1\bin;&quot;;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\IDEA\IntelliJ IDEA 2019.3.4\bin;;C:\Users\admin\AppData\Local\Pandoc\;C:\Users\admin\AppData\Roaming\npm;E:\vscode\Microsoft VS Code\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;E:\WebStorm\WebStorm 2020.2\bin;;C:\Program Files\Bandizip\;C:\Program Files\JetBrains\PyCharm 2020.1.4\bin;;;.]</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  o.a.catalina.core.ContainerBase.[Tomcat].[localhost].[&#x2F;] - Initializing Spring embedded WebApplicationContext</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2766 ms</span><br><span class="line">2020-12-13 09:39:09.902 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [&#x2F;]</span><br><span class="line">2020-12-13 09:39:09.910 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;characterEncodingFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.913 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;hiddenHttpMethodFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.914 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;httpPutFormContentFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.915 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;requestContextFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:10.094 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">2020-12-13 09:39:10.098 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]</span><br><span class="line">2020-12-13 09:39:10.321 [localhost-startStop-1] WARN  org.apache.catalina.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.Object.wait(Native Method)</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)</span><br><span class="line"> app&#x2F;&#x2F;com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)</span><br><span class="line">2020-12-13 09:39:10.341 [main] INFO  o.s.b.a.logging.ConditionEvaluationReportLoggingListener - </span><br><span class="line"></span><br><span class="line">Error starting ApplicationContext. To display the conditions report re-run your application with &#39;debug&#39; enabled.</span><br><span class="line">2020-12-13 09:39:10.347 [main] ERROR org.springframework.boot.SpringApplication - Application run failed</span><br><span class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:138)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1694)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:579)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:501)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:760)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:869)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)</span><br><span class="line">	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395)</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.CanalAdapterApplication.main(CanalAdapterApplication.java:19)</span><br><span class="line">Caused by: java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:105)</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:85)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.monitor.ApplicationConfigMonitor.init(ApplicationConfigMonitor.java:41)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.base&#x2F;java.lang.reflect.Method.invoke(Method.java:566)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:365)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:308)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:135)</span><br><span class="line">	... 16 common frames omitted</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>canal</category>
-      </categories>
-      <tags>
-        <tag>canal</tag>
       </tags>
   </entry>
 </search>
