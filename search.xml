@@ -1,41 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Docker安装RabbitMQ</title>
-    <url>/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</url>
-    <content><![CDATA[<p> RabbitMQ是基于AMQP的一款消息管理系统。AMQP(Advanced Message Queuing Protocol)，是一个提供消息服务的应用层标准高级消息队列协议，其中RabbitMQ就是基于这种协议的一种实现。</p>
-<a id="more"></a>
-
-<h1 id="Docker快速安装"><a href="#Docker快速安装" class="headerlink" title="Docker快速安装"></a>Docker快速安装</h1><p>1.docker search选择版本</p>
-<p>2.docker pull 下载镜像</p>
-<p>3.docker运行即可</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 5672:5672 -p 15672:15672 rabbitmq:版本号</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020072701.png" alt="image-20201219141443802"></p>
-<h1 id="安装问题"><a href="#安装问题" class="headerlink" title="安装问题"></a>安装问题</h1><p><strong>可能出现的问题</strong>：Windows环境下浏览器无法访问虚拟机开的rabbitmq服务</p>
-<p>安装首先确保RabbitMQ的端口等配置正确，另外开放linux防火墙端口。如果依旧不能访问web界面，那么可能是rabbitmq没有开启web管理。</p>
-<p>只需要通过<code>rabbitmq-plugins list</code>命令列出插件的启用和禁用状态。然后再修改即可。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>1.开启RabbitMQ  　　</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 5672:5672 -p 15672:15672 rabbitmq</span><br></pre></td></tr></table></figure>
-
-<p>2.进入RabbitMQ命令界面　　</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it rabbitmq &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
-
-<p>3.开启　</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>RabbitMQ</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>RabbitMQ</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Centos7上安装docker</title>
     <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
     <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
@@ -109,6 +74,41 @@
       </categories>
       <tags>
         <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker安装RabbitMQ</title>
+    <url>/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</url>
+    <content><![CDATA[<p> RabbitMQ是基于AMQP的一款消息管理系统。AMQP(Advanced Message Queuing Protocol)，是一个提供消息服务的应用层标准高级消息队列协议，其中RabbitMQ就是基于这种协议的一种实现。</p>
+<a id="more"></a>
+
+<h1 id="Docker快速安装"><a href="#Docker快速安装" class="headerlink" title="Docker快速安装"></a>Docker快速安装</h1><p>1.docker search选择版本</p>
+<p>2.docker pull 下载镜像</p>
+<p>3.docker运行即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 5672:5672 -p 15672:15672 rabbitmq:版本号</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020072701.png" alt="image-20201219141443802"></p>
+<h1 id="安装问题"><a href="#安装问题" class="headerlink" title="安装问题"></a>安装问题</h1><p><strong>可能出现的问题</strong>：Windows环境下浏览器无法访问虚拟机开的rabbitmq服务</p>
+<p>安装首先确保RabbitMQ的端口等配置正确，另外开放linux防火墙端口。如果依旧不能访问web界面，那么可能是rabbitmq没有开启web管理。</p>
+<p>只需要通过<code>rabbitmq-plugins list</code>命令列出插件的启用和禁用状态。然后再修改即可。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>1.开启RabbitMQ  　　</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d -p 5672:5672 -p 15672:15672 rabbitmq</span><br></pre></td></tr></table></figure>
+
+<p>2.进入RabbitMQ命令界面　　</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it rabbitmq &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<p>3.开启　</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>RabbitMQ</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>RabbitMQ</tag>
       </tags>
   </entry>
   <entry>
@@ -217,26 +217,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker设置镜像自启动</title>
     <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
     <content><![CDATA[<p>Docker便捷小技巧：</p>
@@ -255,6 +235,26 @@
       </categories>
       <tags>
         <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -671,6 +671,44 @@
       </tags>
   </entry>
   <entry>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
+<a id="more"></a>
+
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
+</ul>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
+
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
+
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
+<p><img src="/images/2020101102.png" alt="node1"></p>
+<p>node2:</p>
+<p><img src="/images/2020101103.png" alt="node2"></p>
+<p>node3:</p>
+<p><img src="/images/2020101104.png" alt="node3"></p>
+<p>总览：</p>
+<p><img src="/images/2020101105.png" alt="nodes"></p>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch集群</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hadoop运行环境搭建</title>
     <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>Hadoop运行环境搭建</p>
@@ -738,44 +776,6 @@
       </categories>
       <tags>
         <tag>Hadoop集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
-<a id="more"></a>
-
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
-
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
-<p><img src="/images/2020101102.png" alt="node1"></p>
-<p>node2:</p>
-<p><img src="/images/2020101103.png" alt="node2"></p>
-<p>node3:</p>
-<p><img src="/images/2020101104.png" alt="node3"></p>
-<p>总览：</p>
-<p><img src="/images/2020101105.png" alt="nodes"></p>
-]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch集群</tag>
       </tags>
   </entry>
   <entry>
@@ -1076,22 +1076,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java异常详解</title>
-    <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
-<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
-</blockquote>
-<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
-]]></content>
-      <categories>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>异常</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java容器详解</title>
     <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1105,6 +1089,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java异常详解</title>
+    <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
+<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
+</blockquote>
+<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
+]]></content>
+      <categories>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>异常</tag>
       </tags>
   </entry>
   <entry>
@@ -1331,26 +1331,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MySQL数据库集群-PXC方案</title>
-    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>docker中安装pxc集群比较简单，这里尝试在centos7安装MySQL集群</p>
-<a id="more"></a>
-
-<h1 id="一-安装环境"><a href="#一-安装环境" class="headerlink" title="一.安装环境"></a>一.安装环境</h1><p>Centos7</p>
-<p>MySQL：5.7.22</p>
-<p>Mycat</p>
-<h1 id="二-创建PXC集群"><a href="#二-创建PXC集群" class="headerlink" title="二.创建PXC集群"></a>二.创建PXC集群</h1><h2 id="2-1-CentOS安装PerconaServer数据库"><a href="#2-1-CentOS安装PerconaServer数据库" class="headerlink" title="2.1 CentOS安装PerconaServer数据库"></a>2.1 CentOS安装PerconaServer数据库</h2><blockquote>
-<p>官网下载网址：<a href="https://www.percona.com/downloads/Percona-Server-5.7/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/LATEST/</a></p>
-</blockquote>
-<h2 id="2-2-安装PXC组建集群"><a href="#2-2-安装PXC组建集群" class="headerlink" title="2.2 安装PXC组建集群"></a>2.2 安装PXC组建集群</h2><h2 id="2-3-PXC集群的常用管理-数据库集群使用"><a href="#2-3-PXC集群的常用管理-数据库集群使用" class="headerlink" title="2.3 PXC集群的常用管理-数据库集群使用"></a>2.3 PXC集群的常用管理-数据库集群使用</h2><h2 id="2-4-PXC集群的常用管理-状态参数"><a href="#2-4-PXC集群的常用管理-状态参数" class="headerlink" title="2.4 PXC集群的常用管理-状态参数"></a>2.4 PXC集群的常用管理-状态参数</h2><h2 id="2-5-PXC节点的上线与关闭"><a href="#2-5-PXC节点的上线与关闭" class="headerlink" title="2.5 PXC节点的上线与关闭"></a>2.5 PXC节点的上线与关闭</h2><h2 id="2-6-MySQL集群中间件比较"><a href="#2-6-MySQL集群中间件比较" class="headerlink" title="2.6 MySQL集群中间件比较"></a>2.6 MySQL集群中间件比较</h2><h2 id="2-7-配置MyCat负载均衡"><a href="#2-7-配置MyCat负载均衡" class="headerlink" title="2.7 配置MyCat负载均衡"></a>2.7 配置MyCat负载均衡</h2><h2 id="2-8-数据切分"><a href="#2-8-数据切分" class="headerlink" title="2.8 数据切分"></a>2.8 数据切分</h2><h2 id="2-9-父子表"><a href="#2-9-父子表" class="headerlink" title="2.9 父子表"></a>2.9 父子表</h2><h2 id="2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群"><a href="#2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群" class="headerlink" title="2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群"></a>2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群</h2><h2 id="2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"><a href="#2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP" class="headerlink" title="2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"></a>2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP</h2><h2 id="2-12-Sysbench基准测试-安装Sysbench"><a href="#2-12-Sysbench基准测试-安装Sysbench" class="headerlink" title="2.12 Sysbench基准测试-安装Sysbench"></a>2.12 Sysbench基准测试-安装Sysbench</h2><h2 id="2-13-Sysbench基准测试-使用Sysbench"><a href="#2-13-Sysbench基准测试-使用Sysbench" class="headerlink" title="2.13 Sysbench基准测试-使用Sysbench"></a>2.13 Sysbench基准测试-使用Sysbench</h2><h2 id="2-14-tpcc-mysql压力测试"><a href="#2-14-tpcc-mysql压力测试" class="headerlink" title="2.14 tpcc-mysql压力测试"></a>2.14 tpcc-mysql压力测试</h2><h1 id="三-PXC集群原理"><a href="#三-PXC集群原理" class="headerlink" title="三.PXC集群原理"></a>三.PXC集群原理</h1><h2 id="3-1-binlog日志"><a href="#3-1-binlog日志" class="headerlink" title="3.1 binlog日志"></a>3.1 binlog日志</h2><h2 id="3-2-PXC同步原理"><a href="#3-2-PXC同步原理" class="headerlink" title="3.2 PXC同步原理"></a>3.2 PXC同步原理</h2><h1 id="四-业务需求与MySQL架构设计"><a href="#四-业务需求与MySQL架构设计" class="headerlink" title="四. 业务需求与MySQL架构设计"></a>四. 业务需求与MySQL架构设计</h1><h2 id="4-1-MySQL的5种特殊架构设计"><a href="#4-1-MySQL的5种特殊架构设计" class="headerlink" title="4.1 MySQL的5种特殊架构设计"></a>4.1 MySQL的5种特殊架构设计</h2><h2 id="4-2-数据库设计原则"><a href="#4-2-数据库设计原则" class="headerlink" title="4.2 数据库设计原则"></a>4.2 数据库设计原则</h2><h1 id="五-数据库常见业务处理"><a href="#五-数据库常见业务处理" class="headerlink" title="五.数据库常见业务处理"></a>五.数据库常见业务处理</h1><h1 id="六-数据备份与恢复"><a href="#六-数据备份与恢复" class="headerlink" title="六.数据备份与恢复"></a>六.数据备份与恢复</h1>]]></content>
-      <categories>
-        <category>PXC</category>
-      </categories>
-      <tags>
-        <tag>PXC集群</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
     <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
@@ -1372,6 +1352,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL日期类型</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL数据库集群-PXC方案</title>
+    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>docker中安装pxc集群比较简单，这里尝试在centos7安装MySQL集群</p>
+<a id="more"></a>
+
+<h1 id="一-安装环境"><a href="#一-安装环境" class="headerlink" title="一.安装环境"></a>一.安装环境</h1><p>Centos7</p>
+<p>MySQL：5.7.22</p>
+<p>Mycat</p>
+<h1 id="二-创建PXC集群"><a href="#二-创建PXC集群" class="headerlink" title="二.创建PXC集群"></a>二.创建PXC集群</h1><h2 id="2-1-CentOS安装PerconaServer数据库"><a href="#2-1-CentOS安装PerconaServer数据库" class="headerlink" title="2.1 CentOS安装PerconaServer数据库"></a>2.1 CentOS安装PerconaServer数据库</h2><blockquote>
+<p>官网下载网址：<a href="https://www.percona.com/downloads/Percona-Server-5.7/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/LATEST/</a></p>
+</blockquote>
+<h2 id="2-2-安装PXC组建集群"><a href="#2-2-安装PXC组建集群" class="headerlink" title="2.2 安装PXC组建集群"></a>2.2 安装PXC组建集群</h2><h2 id="2-3-PXC集群的常用管理-数据库集群使用"><a href="#2-3-PXC集群的常用管理-数据库集群使用" class="headerlink" title="2.3 PXC集群的常用管理-数据库集群使用"></a>2.3 PXC集群的常用管理-数据库集群使用</h2><h2 id="2-4-PXC集群的常用管理-状态参数"><a href="#2-4-PXC集群的常用管理-状态参数" class="headerlink" title="2.4 PXC集群的常用管理-状态参数"></a>2.4 PXC集群的常用管理-状态参数</h2><h2 id="2-5-PXC节点的上线与关闭"><a href="#2-5-PXC节点的上线与关闭" class="headerlink" title="2.5 PXC节点的上线与关闭"></a>2.5 PXC节点的上线与关闭</h2><h2 id="2-6-MySQL集群中间件比较"><a href="#2-6-MySQL集群中间件比较" class="headerlink" title="2.6 MySQL集群中间件比较"></a>2.6 MySQL集群中间件比较</h2><h2 id="2-7-配置MyCat负载均衡"><a href="#2-7-配置MyCat负载均衡" class="headerlink" title="2.7 配置MyCat负载均衡"></a>2.7 配置MyCat负载均衡</h2><h2 id="2-8-数据切分"><a href="#2-8-数据切分" class="headerlink" title="2.8 数据切分"></a>2.8 数据切分</h2><h2 id="2-9-父子表"><a href="#2-9-父子表" class="headerlink" title="2.9 父子表"></a>2.9 父子表</h2><h2 id="2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群"><a href="#2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群" class="headerlink" title="2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群"></a>2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群</h2><h2 id="2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"><a href="#2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP" class="headerlink" title="2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"></a>2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP</h2><h2 id="2-12-Sysbench基准测试-安装Sysbench"><a href="#2-12-Sysbench基准测试-安装Sysbench" class="headerlink" title="2.12 Sysbench基准测试-安装Sysbench"></a>2.12 Sysbench基准测试-安装Sysbench</h2><h2 id="2-13-Sysbench基准测试-使用Sysbench"><a href="#2-13-Sysbench基准测试-使用Sysbench" class="headerlink" title="2.13 Sysbench基准测试-使用Sysbench"></a>2.13 Sysbench基准测试-使用Sysbench</h2><h2 id="2-14-tpcc-mysql压力测试"><a href="#2-14-tpcc-mysql压力测试" class="headerlink" title="2.14 tpcc-mysql压力测试"></a>2.14 tpcc-mysql压力测试</h2><h1 id="三-PXC集群原理"><a href="#三-PXC集群原理" class="headerlink" title="三.PXC集群原理"></a>三.PXC集群原理</h1><h2 id="3-1-binlog日志"><a href="#3-1-binlog日志" class="headerlink" title="3.1 binlog日志"></a>3.1 binlog日志</h2><h2 id="3-2-PXC同步原理"><a href="#3-2-PXC同步原理" class="headerlink" title="3.2 PXC同步原理"></a>3.2 PXC同步原理</h2><h1 id="四-业务需求与MySQL架构设计"><a href="#四-业务需求与MySQL架构设计" class="headerlink" title="四. 业务需求与MySQL架构设计"></a>四. 业务需求与MySQL架构设计</h1><h2 id="4-1-MySQL的5种特殊架构设计"><a href="#4-1-MySQL的5种特殊架构设计" class="headerlink" title="4.1 MySQL的5种特殊架构设计"></a>4.1 MySQL的5种特殊架构设计</h2><h2 id="4-2-数据库设计原则"><a href="#4-2-数据库设计原则" class="headerlink" title="4.2 数据库设计原则"></a>4.2 数据库设计原则</h2><h1 id="五-数据库常见业务处理"><a href="#五-数据库常见业务处理" class="headerlink" title="五.数据库常见业务处理"></a>五.数据库常见业务处理</h1><h1 id="六-数据备份与恢复"><a href="#六-数据备份与恢复" class="headerlink" title="六.数据备份与恢复"></a>六.数据备份与恢复</h1>]]></content>
+      <categories>
+        <category>PXC</category>
+      </categories>
+      <tags>
+        <tag>PXC集群</tag>
       </tags>
   </entry>
   <entry>
@@ -2420,6 +2420,49 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot整合Undertow</title>
+    <url>/2020/12/30/SpringBoot%E6%95%B4%E5%90%88Undertow/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-maven依赖"><a href="#1-maven依赖" class="headerlink" title="1.maven依赖"></a>1.maven依赖</h1><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-undertow<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-配置Undertow"><a href="#2-配置Undertow" class="headerlink" title="2.配置Undertow"></a>2.配置Undertow</h1><blockquote>
+<p>Undertow基本配置:<a href="https://www.pianshen.com/article/7390262599/" target="_blank" rel="noopener">https://www.pianshen.com/article/7390262599/</a></p>
+</blockquote>
+<p>这里以application.properties示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 是否打开 undertow 日志，默认为 false</span><br><span class="line">server.undertow.accesslog.enabled&#x3D;false</span><br><span class="line"># 设置访问日志所在目录</span><br><span class="line">server.undertow.accesslog.dir&#x3D;logs</span><br><span class="line"># 指定工作者线程的 I&#x2F;0 线程数，默认为 2 或者 CPU 的个数</span><br><span class="line">server.undertow.io-threads&#x3D;</span><br><span class="line"># 指定工作者线程个数，默认为 I&#x2F;O 线程个数的 8 倍</span><br><span class="line">server.undertow.worker-threads&#x3D;</span><br><span class="line"># 设置 HTTP POST 内容的最大长度，默认不做限制</span><br><span class="line">server.undertow.max-http-post-size&#x3D;0</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="3-使用-Undertow-监听多个端口示例："><a href="#3-使用-Undertow-监听多个端口示例：" class="headerlink" title="3.使用 Undertow 监听多个端口示例："></a>3.使用 Undertow 监听多个端口示例：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UndertowEmbeddedServletContainerFactory <span class="title">embeddedServletContainerFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    UndertowEmbeddedServletContainerFactory factory = <span class="keyword">new</span> UndertowEmbeddedServletContainerFactory();</span><br><span class="line">    factory.addBuilderCustomizers(<span class="keyword">new</span> UndertowBuilderCustomizer() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">customize</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">            builder.addHttpListener(<span class="number">8080</span>, <span class="string">"0.0.0.0"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>运维知识</category>
+        <category>应用服务器</category>
+      </categories>
+      <tags>
+        <tag>Undertow</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot项目测试模板</title>
+    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
@@ -2452,20 +2495,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Java</tag>
         <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot项目测试模板</title>
-    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -3570,29 +3599,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
-    <title>服务器软件盘点</title>
-    <url>/2020/12/30/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9B%98%E7%82%B9/</url>
-    <content><![CDATA[<p>静态服务：主要提供静态资源，不同用户访问到的资源相同。本博客就是典型的静态服务（Hexo+Next）<br>动态服务：提供动态服务，不同用户访问到的资源不同，涉及到数据之类的。例如类似<a href="https://github.com/halo-dev/halo" target="_blank" rel="noopener">halo</a> </p>
-<blockquote>
-<p>服务器软件大盘点！:<a href="https://zhuanlan.zhihu.com/p/122252011" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/122252011</a></p>
-</blockquote>
-<p>服务器软件主要分为以下几类：</p>
-<ul>
-<li>Web服务器:广义上来说，就是响应用户的需求，提供服务，当下所有的服务器软件都可以称之为web服务器软件</li>
-<li>HTTP服务器(静态服务)：使用HTTP协议传输资源，提供服务</li>
-<li>应用服务器(动态服务)：一个特定应用的承载容器</li>
-</ul>
-<a id="more"></a>
-<p><strong>常见的轻量级服务器软件：</strong><br>    1.Nginx：典型的静态服务器，可做反向代理、负载均衡，一般放在最前面直面用户，和后端Tomcat打配合；纯C写的，性能贼高、内存消耗极少、稳定性也相当好，互联网公司重度使用<br>    2.Tengine：阿里出品，基于Nginx服务器做的改造(加强和封装)，对大流量场景做了很多高级功能，性能、稳定性优秀<br>    3.Apache http server：也是静态服务器，但是不如Nginx<br>    4.IIS：微软开发，只能用在Windows下，具有应用服务器能力的http服务器<br>    5.Tomcat：Apache出品，典型的应用服务器软件，符合Servlet标准的应用容器，也可以提供http服务，但一般不会作为http服务器；是Spring Boot框架默认的内置服务器<br>    6.Jetty：跟Tomcat是一个性质的东西，符合Servlet标准的应用容器，也是Spring Boot框架支持的服务器，但不是默认的<br>    7.Undertow：红帽子出品，跟Tomcat、Jetty一样也是Spring Boot框架支持的服务器，但不是默认的；高并发时性能优于Tomcat、Jetty<br><strong>几款商用重量级的服务器软件：</strong><br>    1.JBoss(从8版开始更名为WildFly)：不仅是Servlet应用容器，更是EJB的应用容器，整套JavaEE框架部署的解决方案<br>    2.WebLogic：Oracle公司出品，用于部署企业级JavaEE应用，全能型，几乎支持JavaEE所有的应用规范<br>    3.WebSphere：IBM公司出品，支持更多JavaEE的应用规范的综合应用服务器</p>
-]]></content>
-      <categories>
-        <category>运维知识</category>
-      </categories>
-      <tags>
-        <tag>服务器软件</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>浅析Java平台无关性的实现</title>
     <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
@@ -3614,6 +3620,32 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>JVM</tag>
         <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>服务器软件盘点</title>
+    <url>/2020/12/30/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9B%98%E7%82%B9/</url>
+    <content><![CDATA[<p>静态服务：主要提供静态资源，不同用户访问到的资源相同。本博客就是典型的静态服务（Hexo+Next）<br>动态服务：提供动态服务，不同用户访问到的资源不同，涉及到数据之类的。例如类似<a href="https://github.com/halo-dev/halo" target="_blank" rel="noopener">halo</a> </p>
+<a id="more"></a>
+
+<blockquote>
+<p>服务器软件大盘点！:<a href="https://zhuanlan.zhihu.com/p/122252011" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/122252011</a></p>
+</blockquote>
+<p>服务器软件主要分为以下几类：</p>
+<ul>
+<li>Web服务器:广义上来说，就是响应用户的需求，提供服务，当下所有的服务器软件都可以称之为web服务器软件</li>
+<li>HTTP服务器(静态服务)：使用HTTP协议传输资源，提供服务</li>
+<li>应用服务器(动态服务)：一个特定应用的承载容器</li>
+</ul>
+<p><strong>常见的轻量级服务器软件：</strong><br>    1.Nginx：典型的静态服务器，可做反向代理、负载均衡，一般放在最前面直面用户，和后端Tomcat打配合；纯C写的，性能贼高、内存消耗极少、稳定性也相当好，互联网公司重度使用。<br>    2.Tengine：阿里出品，基于Nginx服务器做的改造(加强和封装)，对大流量场景做了很多高级功能，性能、稳定性优秀。<br>    3.Apache http server：也是静态服务器，但是不如Nginx。</p>
+<p>​    4.IIS：微软开发，不开源，只能用在Windows下，具有应用服务器能力的http服务器。</p>
+<p>​    5.Tomcat：Apache出品，典型的应用服务器软件，符合Servlet标准的应用容器，也可以提供http服务，但一般不会作为http服务器；是Spring Boot框架默认的内置服务器。<br>​    6.Jetty：跟Tomcat是一个性质的东西，符合Servlet标准的应用容器，也是Spring Boot框架支持的服务器，但不是默认的。Jetty比Tomcat要轻量一些，配置也更简单一些而已。<br>​    7.Undertow：红帽出品，跟Tomcat、Jetty一样也是Spring Boot框架支持的服务器，但不是默认的；在并发量不高的情况下 , Undertow与Tomcat、Jetty的性能区别不大 ，但在高并发时性能优于Tomcat、Jetty。<br><strong>几款商用重量级的服务器软件：</strong><br>​    1.JBoss(从8版开始更名为WildFly)：不仅是Servlet应用容器，更是EJB的应用容器，整套JavaEE框架部署的解决方案。<br>​    2.WebLogic：Oracle公司出品，用于部署企业级JavaEE应用，全能型，几乎支持JavaEE所有的应用规范。<br>​    3.WebSphere：IBM公司出品，支持更多JavaEE的应用规范的综合应用服务器。</p>
+]]></content>
+      <categories>
+        <category>运维知识</category>
+      </categories>
+      <tags>
+        <tag>服务器软件</tag>
       </tags>
   </entry>
   <entry>
