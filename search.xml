@@ -77,6 +77,47 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker设置镜像自启动</title>
+    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
+    <content><![CDATA[<p>Docker便捷小技巧：</p>
+<a id="more"></a>
+
+<p>1.发现没启动</p>
+<p><code>docker ps</code></p>
+<p>2.查看所有安装的镜像</p>
+<p><code>docker ps -a</code></p>
+<p>3.设置总是自动启动</p>
+<p><code>docker update 镜像id --restart=always</code></p>
+<p>4.重启测试一下</p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker安装RabbitMQ</title>
     <url>/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</url>
     <content><![CDATA[<p> RabbitMQ是基于AMQP的一款消息管理系统。AMQP(Advanced Message Queuing Protocol)，是一个提供消息服务的应用层标准高级消息队列协议，其中RabbitMQ就是基于这种协议的一种实现。</p>
@@ -109,26 +150,6 @@
       <tags>
         <tag>Docker</tag>
         <tag>RabbitMQ</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker命令</tag>
       </tags>
   </entry>
   <entry>
@@ -214,27 +235,6 @@
       <tags>
         <tag>Docker</tag>
         <tag>MySQL集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker设置镜像自启动</title>
-    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>Docker便捷小技巧：</p>
-<a id="more"></a>
-
-<p>1.发现没启动</p>
-<p><code>docker ps</code></p>
-<p>2.查看所有安装的镜像</p>
-<p><code>docker ps -a</code></p>
-<p>3.设置总是自动启动</p>
-<p><code>docker update 镜像id --restart=always</code></p>
-<p>4.重启测试一下</p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -906,43 +906,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>JVM学习笔记</title>
-    <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="为什么学习JVM"><a href="#为什么学习JVM" class="headerlink" title="为什么学习JVM"></a>为什么学习JVM</h1><p>1.面试需要</p>
-<p>2.更深入的理解Java</p>
-<ul>
-<li>一个类是如何加载到JVM的</li>
-<li>它在JVM中是如何存储的</li>
-<li>如何运行的</li>
-<li>方法是如何调用的</li>
-<li>运行时内存怎么分配的</li>
-<li>产生垃圾后是如何回收的</li>
-</ul>
-<p>3.排查解决故障</p>
-<ul>
-<li>内存溢出导致宕机了</li>
-<li>CPU使用率居高不下</li>
-<li>频繁卡顿</li>
-<li>应用越跑越慢</li>
-</ul>
-<p>4.性能调优</p>
-<ul>
-<li>合理的分配内存</li>
-<li>调整参数</li>
-<li>选择GC垃圾回收器</li>
-<li>第三方中间件的适配</li>
-</ul>
-<a id="more"></a>
-
-<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
-      <categories>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java IO流详解</title>
     <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -988,6 +951,43 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>IO流</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JVM学习笔记</title>
+    <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="为什么学习JVM"><a href="#为什么学习JVM" class="headerlink" title="为什么学习JVM"></a>为什么学习JVM</h1><p>1.面试需要</p>
+<p>2.更深入的理解Java</p>
+<ul>
+<li>一个类是如何加载到JVM的</li>
+<li>它在JVM中是如何存储的</li>
+<li>如何运行的</li>
+<li>方法是如何调用的</li>
+<li>运行时内存怎么分配的</li>
+<li>产生垃圾后是如何回收的</li>
+</ul>
+<p>3.排查解决故障</p>
+<ul>
+<li>内存溢出导致宕机了</li>
+<li>CPU使用率居高不下</li>
+<li>频繁卡顿</li>
+<li>应用越跑越慢</li>
+</ul>
+<p>4.性能调优</p>
+<ul>
+<li>合理的分配内存</li>
+<li>调整参数</li>
+<li>选择GC垃圾回收器</li>
+<li>第三方中间件的适配</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
       </tags>
   </entry>
   <entry>
@@ -1154,6 +1154,33 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Linux安装配置大全</title>
+    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
+    <content><![CDATA[<p>Linux各种版本安装配置</p>
+<a id="more"></a>
+
+<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
+<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
+<h1 id="CentOS7磁盘操作"><a href="#CentOS7磁盘操作" class="headerlink" title="CentOS7磁盘操作"></a>CentOS7磁盘操作</h1><h2 id="linux磁盘分区扩容"><a href="#linux磁盘分区扩容" class="headerlink" title="linux磁盘分区扩容"></a>linux磁盘分区扩容</h2><p>大概分为以下几步：</p>
+<ol>
+<li>分区fdisk</li>
+<li>格式化mkfs</li>
+<li>挂载mount</li>
+</ol>
+<blockquote>
+<p>详细操作：<a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenmh/p/5096592.html</a></p>
+</blockquote>
+<p><strong>其他操作：</strong></p>
+<p>du 查看文件数据占用多少磁盘空间<br>swap交换分区 是一种通过在磁盘中预先划分一定的空军，然后就讲把内存中暂时不常用的数据临时存放在磁盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java面向对象详解</title>
     <url>/2020/12/27/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1245,33 +1272,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Linux安装配置大全</title>
-    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
-    <content><![CDATA[<p>Linux各种版本安装配置</p>
-<a id="more"></a>
-
-<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
-<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
-<h1 id="CentOS7磁盘操作"><a href="#CentOS7磁盘操作" class="headerlink" title="CentOS7磁盘操作"></a>CentOS7磁盘操作</h1><h2 id="linux磁盘分区扩容"><a href="#linux磁盘分区扩容" class="headerlink" title="linux磁盘分区扩容"></a>linux磁盘分区扩容</h2><p>大概分为以下几步：</p>
-<ol>
-<li>分区fdisk</li>
-<li>格式化mkfs</li>
-<li>挂载mount</li>
-</ol>
-<blockquote>
-<p>详细操作：<a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenmh/p/5096592.html</a></p>
-</blockquote>
-<p><strong>其他操作：</strong></p>
-<p>du 查看文件数据占用多少磁盘空间<br>swap交换分区 是一种通过在磁盘中预先划分一定的空军，然后就讲把内存中暂时不常用的数据临时存放在磁盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题</p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MyBatis二级缓存的一个小细节</title>
     <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
     <content><![CDATA[<p>记录一个小细节</p>
@@ -1289,6 +1289,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MyBatis缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
+    <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
+<a id="more"></a>
+
+<p><strong>DATE</strong>类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以’YYYY-MM-DD’格式显示DATE值，支持的范围是’1000-01-01’到’9999-12-31’。</p>
+<p><strong>TIMESTAMP</strong>列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。</p>
+<p><strong>TIME</strong>数据类型表示一天中的时间。MySQL检索并且以”HH:MM:SS”格式显示TIME值。支持的范围是’00:00:00’到’23:59:59’。</p>
+<p>创建数据库表测试：</p>
+<p><img src="/images/2020111501.png" alt="image-20201115191901682"></p>
+<p><img src="http://www.linuxidc.com/upload/2012_08/120811102669351.jpg" alt="img"></p>
+<p><strong>datetime和timestamp的区别：</strong><br>1.datetime 的日期范围比较大；如果有1970年以前的数据还是要用datetime.但是timestamp 所占存储空间比较小。<br>2.timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新。</p>
+<p>3.timestamp比较受时区timezone的影响以及MYSQL版本和服务器的<strong>SQL</strong> MODE的影响.</p>
+<p>使用一个常用的格式集的任何一个，你可以指定DATETIME、</p>
+<p><strong>DATE和TIMESTAMP值：</strong><br>‘YYYY-MM-DD HH:MM:SS’或’YY-MM-DD HH:MM:SS’格式的一个字符串,允许一种”宽松”的语法:任何标点可用作在日期部分和时间部分之间的分隔符。例如，’98-12-31 11:30:45’、’98.12.31 11+30+45’、’98/12/31 11<em>30</em>45’和‘98@12@31 11^30^45’是等价的。</p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL日期类型</tag>
       </tags>
   </entry>
   <entry>
@@ -1328,30 +1352,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
-    <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
-<a id="more"></a>
-
-<p><strong>DATE</strong>类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以’YYYY-MM-DD’格式显示DATE值，支持的范围是’1000-01-01’到’9999-12-31’。</p>
-<p><strong>TIMESTAMP</strong>列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。</p>
-<p><strong>TIME</strong>数据类型表示一天中的时间。MySQL检索并且以”HH:MM:SS”格式显示TIME值。支持的范围是’00:00:00’到’23:59:59’。</p>
-<p>创建数据库表测试：</p>
-<p><img src="/images/2020111501.png" alt="image-20201115191901682"></p>
-<p><img src="http://www.linuxidc.com/upload/2012_08/120811102669351.jpg" alt="img"></p>
-<p><strong>datetime和timestamp的区别：</strong><br>1.datetime 的日期范围比较大；如果有1970年以前的数据还是要用datetime.但是timestamp 所占存储空间比较小。<br>2.timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新。</p>
-<p>3.timestamp比较受时区timezone的影响以及MYSQL版本和服务器的<strong>SQL</strong> MODE的影响.</p>
-<p>使用一个常用的格式集的任何一个，你可以指定DATETIME、</p>
-<p><strong>DATE和TIMESTAMP值：</strong><br>‘YYYY-MM-DD HH:MM:SS’或’YY-MM-DD HH:MM:SS’格式的一个字符串,允许一种”宽松”的语法:任何标点可用作在日期部分和时间部分之间的分隔符。例如，’98-12-31 11:30:45’、’98.12.31 11+30+45’、’98/12/31 11<em>30</em>45’和‘98@12@31 11^30^45’是等价的。</p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL日期类型</tag>
       </tags>
   </entry>
   <entry>
@@ -2463,6 +2463,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>UML学习笔记</title>
+    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>UML</category>
+      </categories>
+      <tags>
+        <tag>UML</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
@@ -2495,17 +2506,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Java</tag>
         <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UML学习笔记</title>
-    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>UML</category>
-      </categories>
-      <tags>
-        <tag>UML</tag>
       </tags>
   </entry>
   <entry>
@@ -2739,28 +2739,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>canal-adapter启动失败问题记录</title>
-    <url>/2020/12/14/canal-adapter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<blockquote>
-<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
-</blockquote>
-<a id="more"></a>
-
-<h1 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h1><p>canal-1.4 </p>
-<p>elasticsearch-7.7.1</p>
-<p>jdk1.8</p>
-<p>mysql-5.7.30</p>
-<h1 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2020-12-13 09:39:06.006 [main] INFO  o.s.c.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131: startup date [Sun Dec 13 09:39:05 GMT+08:00 2020]; root of context hierarchy</span><br><span class="line">2020-12-13 09:39:06.521 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;configurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:06.852 [main] INFO  c.a.otter.canal.adapter.launcher.CanalAdapterApplication - No active profile set, falling back to default profiles: default</span><br><span class="line">2020-12-13 09:39:06.884 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@796d3c9f: startup date [Sun Dec 13 09:39:06 GMT+08:00 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131</span><br><span class="line">2020-12-13 09:39:07.640 [main] INFO  org.springframework.cloud.context.scope.GenericScope - BeanFactory id&#x3D;ba9c0aec-0105-3f1f-b89e-e85c68567039</span><br><span class="line">2020-12-13 09:39:07.724 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:09.358 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)</span><br><span class="line">2020-12-13 09:39:09.382 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler [&quot;http-nio-8081&quot;]</span><br><span class="line">2020-12-13 09:39:09.402 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]</span><br><span class="line">2020-12-13 09:39:09.404 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat&#x2F;8.5.29</span><br><span class="line">2020-12-13 09:39:09.421 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;&quot;.;C:\Program Files\Java\jdk-11.0.9\\bin;E:\tomcat\apache-tomcat-8.5.59\bin;&quot;;C:\Program Files\VanDyke Software\Clients\;E:\Python\python3\Scripts\;E:\Python\python3\;E:\Java\maven\apache-maven-3.6.3\bin;E:\IDEA\gradle\gradle-5.4.1\bin;E:\app\admin\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\;rogram Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;人网站\Git\bin;:\;人网站\Git\cmd;it;cmd;D:\;C:\WINDOWS\System32\OpenSSH\;&quot;E:\tomcat\apache-tomcat-8.5.59\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\&quot;;E:\Coding\winhadoop\bin;E:\Git\cmd;E:\node\;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Program Files (x86)\CADSeePlus;E:\tomcat\apache-tomcat-8.5.34\bin;C:\Program Files\Java\jdk1.8.0_261\bin;C:\Program Files\Java\jdk-11.0.9\bin;E:\Python\python3\Scripts\;E:\Python\python3\;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files (x86)\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools;C:\Program Files (x86)\Microsoft Visual Studio\VC98\bin;C:\Qt\Qt5.6.2\5.6\msvc2013\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\个人网站\Git\bin;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;&quot;E:\IDEA\gradle\gradle-5.4.1\bin;&quot;;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\IDEA\IntelliJ IDEA 2019.3.4\bin;;C:\Users\admin\AppData\Local\Pandoc\;C:\Users\admin\AppData\Roaming\npm;E:\vscode\Microsoft VS Code\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;E:\WebStorm\WebStorm 2020.2\bin;;C:\Program Files\Bandizip\;C:\Program Files\JetBrains\PyCharm 2020.1.4\bin;;;.]</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  o.a.catalina.core.ContainerBase.[Tomcat].[localhost].[&#x2F;] - Initializing Spring embedded WebApplicationContext</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2766 ms</span><br><span class="line">2020-12-13 09:39:09.902 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [&#x2F;]</span><br><span class="line">2020-12-13 09:39:09.910 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;characterEncodingFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.913 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;hiddenHttpMethodFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.914 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;httpPutFormContentFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.915 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;requestContextFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:10.094 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">2020-12-13 09:39:10.098 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]</span><br><span class="line">2020-12-13 09:39:10.321 [localhost-startStop-1] WARN  org.apache.catalina.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.Object.wait(Native Method)</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)</span><br><span class="line"> app&#x2F;&#x2F;com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)</span><br><span class="line">2020-12-13 09:39:10.341 [main] INFO  o.s.b.a.logging.ConditionEvaluationReportLoggingListener - </span><br><span class="line"></span><br><span class="line">Error starting ApplicationContext. To display the conditions report re-run your application with &#39;debug&#39; enabled.</span><br><span class="line">2020-12-13 09:39:10.347 [main] ERROR org.springframework.boot.SpringApplication - Application run failed</span><br><span class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:138)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1694)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:579)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:501)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:760)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:869)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)</span><br><span class="line">	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395)</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.CanalAdapterApplication.main(CanalAdapterApplication.java:19)</span><br><span class="line">Caused by: java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:105)</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:85)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.monitor.ApplicationConfigMonitor.init(ApplicationConfigMonitor.java:41)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.base&#x2F;java.lang.reflect.Method.invoke(Method.java:566)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:365)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:308)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:135)</span><br><span class="line">	... 16 common frames omitted</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>canal</category>
-      </categories>
-      <tags>
-        <tag>canal</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>canal中间件学习笔记</title>
     <url>/2020/12/09/canal%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>es准时性索引的构建</p>
@@ -2921,6 +2899,28 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>canal-adapter启动失败问题记录</title>
+    <url>/2020/12/14/canal-adapter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<blockquote>
+<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h1><p>canal-1.4 </p>
+<p>elasticsearch-7.7.1</p>
+<p>jdk1.8</p>
+<p>mysql-5.7.30</p>
+<h1 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2020-12-13 09:39:06.006 [main] INFO  o.s.c.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131: startup date [Sun Dec 13 09:39:05 GMT+08:00 2020]; root of context hierarchy</span><br><span class="line">2020-12-13 09:39:06.521 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;configurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:06.852 [main] INFO  c.a.otter.canal.adapter.launcher.CanalAdapterApplication - No active profile set, falling back to default profiles: default</span><br><span class="line">2020-12-13 09:39:06.884 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@796d3c9f: startup date [Sun Dec 13 09:39:06 GMT+08:00 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131</span><br><span class="line">2020-12-13 09:39:07.640 [main] INFO  org.springframework.cloud.context.scope.GenericScope - BeanFactory id&#x3D;ba9c0aec-0105-3f1f-b89e-e85c68567039</span><br><span class="line">2020-12-13 09:39:07.724 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:09.358 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)</span><br><span class="line">2020-12-13 09:39:09.382 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler [&quot;http-nio-8081&quot;]</span><br><span class="line">2020-12-13 09:39:09.402 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]</span><br><span class="line">2020-12-13 09:39:09.404 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat&#x2F;8.5.29</span><br><span class="line">2020-12-13 09:39:09.421 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;&quot;.;C:\Program Files\Java\jdk-11.0.9\\bin;E:\tomcat\apache-tomcat-8.5.59\bin;&quot;;C:\Program Files\VanDyke Software\Clients\;E:\Python\python3\Scripts\;E:\Python\python3\;E:\Java\maven\apache-maven-3.6.3\bin;E:\IDEA\gradle\gradle-5.4.1\bin;E:\app\admin\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\;rogram Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;人网站\Git\bin;:\;人网站\Git\cmd;it;cmd;D:\;C:\WINDOWS\System32\OpenSSH\;&quot;E:\tomcat\apache-tomcat-8.5.59\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\&quot;;E:\Coding\winhadoop\bin;E:\Git\cmd;E:\node\;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Program Files (x86)\CADSeePlus;E:\tomcat\apache-tomcat-8.5.34\bin;C:\Program Files\Java\jdk1.8.0_261\bin;C:\Program Files\Java\jdk-11.0.9\bin;E:\Python\python3\Scripts\;E:\Python\python3\;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files (x86)\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools;C:\Program Files (x86)\Microsoft Visual Studio\VC98\bin;C:\Qt\Qt5.6.2\5.6\msvc2013\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\个人网站\Git\bin;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;&quot;E:\IDEA\gradle\gradle-5.4.1\bin;&quot;;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\IDEA\IntelliJ IDEA 2019.3.4\bin;;C:\Users\admin\AppData\Local\Pandoc\;C:\Users\admin\AppData\Roaming\npm;E:\vscode\Microsoft VS Code\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;E:\WebStorm\WebStorm 2020.2\bin;;C:\Program Files\Bandizip\;C:\Program Files\JetBrains\PyCharm 2020.1.4\bin;;;.]</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  o.a.catalina.core.ContainerBase.[Tomcat].[localhost].[&#x2F;] - Initializing Spring embedded WebApplicationContext</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2766 ms</span><br><span class="line">2020-12-13 09:39:09.902 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [&#x2F;]</span><br><span class="line">2020-12-13 09:39:09.910 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;characterEncodingFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.913 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;hiddenHttpMethodFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.914 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;httpPutFormContentFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.915 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;requestContextFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:10.094 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">2020-12-13 09:39:10.098 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]</span><br><span class="line">2020-12-13 09:39:10.321 [localhost-startStop-1] WARN  org.apache.catalina.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.Object.wait(Native Method)</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)</span><br><span class="line"> app&#x2F;&#x2F;com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)</span><br><span class="line">2020-12-13 09:39:10.341 [main] INFO  o.s.b.a.logging.ConditionEvaluationReportLoggingListener - </span><br><span class="line"></span><br><span class="line">Error starting ApplicationContext. To display the conditions report re-run your application with &#39;debug&#39; enabled.</span><br><span class="line">2020-12-13 09:39:10.347 [main] ERROR org.springframework.boot.SpringApplication - Application run failed</span><br><span class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:138)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1694)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:579)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:501)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:760)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:869)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)</span><br><span class="line">	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395)</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.CanalAdapterApplication.main(CanalAdapterApplication.java:19)</span><br><span class="line">Caused by: java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:105)</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:85)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.monitor.ApplicationConfigMonitor.init(ApplicationConfigMonitor.java:41)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.base&#x2F;java.lang.reflect.Method.invoke(Method.java:566)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:365)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:308)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:135)</span><br><span class="line">	... 16 common frames omitted</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>canal</category>
+      </categories>
+      <tags>
+        <tag>canal</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git命令操作笔记</title>
     <url>/2020/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>今天看到公众号上一篇非常</p>
@@ -2998,7 +2998,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
   <entry>
     <title>nginx安装及其配置</title>
     <url>/2020/07/31/nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>nginx安装及其配置</p>
+    <content><![CDATA[<p>[TOC]</p>
 <a id="more"></a>
 
 <h1 id="1-nginx-介绍"><a href="#1-nginx-介绍" class="headerlink" title="1 nginx 介绍"></a>1 nginx 介绍</h1><h2 id="1-什么是nginx"><a href="#1-什么是nginx" class="headerlink" title="1 什么是nginx"></a>1 什么是nginx</h2><p>Nginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。</p>
@@ -3308,10 +3308,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <categories>
         <category>运维知识</category>
         <category>Web服务器</category>
-        <category>Nginx</category>
       </categories>
       <tags>
-        <tag>nginx</tag>
+        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -3599,30 +3598,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
-
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>服务器软件盘点</title>
     <url>/2020/12/30/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9B%98%E7%82%B9/</url>
     <content><![CDATA[<p>静态服务：主要提供静态资源，不同用户访问到的资源相同。本博客就是典型的静态服务（Hexo+Next）<br>动态服务：提供动态服务，不同用户访问到的资源不同，涉及到数据之类的。例如类似<a href="https://github.com/halo-dev/halo" target="_blank" rel="noopener">halo</a> </p>
@@ -3646,6 +3621,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>服务器软件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -3868,26 +3867,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>读《深入浅出MyBatis技术原理与实战》</title>
-    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
-    <content><![CDATA[<p>1.MyBatis简介</p>
-<p>2 MyBatis入门</p>
-<p>3 配置</p>
-<p>4 映射器</p>
-<p>5 动态SQL</p>
-<p>6 MyBatis的解析和运行原理</p>
-<p>7 插件</p>
-<p>8 MyBatis-Spring</p>
-<p>9 实用的场景</p>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>MyBatis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>读《解读基金：我的投资观与实践》</title>
     <url>/2020/12/07/%E8%AF%BB%E3%80%8A%E8%A7%A3%E8%AF%BB%E5%9F%BA%E9%87%91%EF%BC%9A%E6%88%91%E7%9A%84%E6%8A%95%E8%B5%84%E8%A7%82%E4%B8%8E%E5%AE%9E%E8%B7%B5%E3%80%8B/</url>
     <content><![CDATA[<p>读《解读基金：我的投资观与实践》总结</p>
@@ -3924,6 +3903,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>解读基金</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>读《深入浅出MyBatis技术原理与实战》</title>
+    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
+    <content><![CDATA[<p>1.MyBatis简介</p>
+<p>2 MyBatis入门</p>
+<p>3 配置</p>
+<p>4 映射器</p>
+<p>5 动态SQL</p>
+<p>6 MyBatis的解析和运行原理</p>
+<p>7 插件</p>
+<p>8 MyBatis-Spring</p>
+<p>9 实用的场景</p>
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -4159,6 +4158,24 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>防火墙管理</title>
+    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<p>防火墙常用命令</p>
+<a id="more"></a>
+
+<h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>通用型支付系统接入电商平台</title>
     <url>/2020/12/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</url>
     <content><![CDATA[<p>一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统</p>
@@ -4278,24 +4295,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>电商平台</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>防火墙管理</title>
-    <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<p>防火墙常用命令</p>
-<a id="more"></a>
-
-<h3 id="防火墙常用命令："><a href="#防火墙常用命令：" class="headerlink" title="防火墙常用命令："></a>防火墙常用命令：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：firewall-cmd --state </span><br><span class="line">启动：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启防火墙：service firewall restart</span><br></pre></td></tr></table></figure>
-
-<h3 id="端口管理："><a href="#端口管理：" class="headerlink" title="端口管理："></a>端口管理：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看哪些程序正在使用互联网：firewall-cmd --permanent --list-services</span><br><span class="line">添加端口：firewall-cmd --permanent --add-port&#x3D;8080-8085&#x2F;tcp</span><br><span class="line">加载设置：firewall-cmd --reload</span><br><span class="line">删除端口：firewall-cmd --permanent --remove-port&#x3D;8080-8085&#x2F;tcp</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>firewall</tag>
       </tags>
   </entry>
   <entry>
