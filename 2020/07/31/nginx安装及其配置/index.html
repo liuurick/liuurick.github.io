@@ -22,8 +22,8 @@
 
   <meta name="description" content="[TOC]">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nginx安装及其配置">
-<meta property="og:url" content="http://yoursite.com/2020/07/31/nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="Nginx安装及其配置">
+<meta property="og:url" content="http://yoursite.com/2020/07/31/Nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="[TOC]">
 <meta property="og:locale" content="zh_CN">
@@ -70,13 +70,13 @@
 <meta property="og:image" content="http://yoursite.com/images/2020073141.png">
 <meta property="og:image" content="http://yoursite.com/images/2020073142.png">
 <meta property="article:published_time" content="2020-07-31T00:18:05.000Z">
-<meta property="article:modified_time" content="2020-12-30T14:43:24.144Z">
+<meta property="article:modified_time" content="2020-12-31T05:20:17.242Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="Nginx">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/2020073101.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/07/31/nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/">
+<link rel="canonical" href="http://yoursite.com/2020/07/31/Nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/">
 
 
 <script id="page-configurations">
@@ -89,7 +89,7 @@
   };
 </script>
 
-  <title>nginx安装及其配置 | lb Blog</title>
+  <title>Nginx安装及其配置 | lb Blog</title>
   
 
 
@@ -237,7 +237,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/31/nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/31/Nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -250,7 +250,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          nginx安装及其配置
+          Nginx安装及其配置
         </h1>
 
         <div class="post-meta">
@@ -290,15 +290,15 @@
         <p>[TOC]</p>
 <a id="more"></a>
 
-<h1 id="1-nginx-介绍"><a href="#1-nginx-介绍" class="headerlink" title="1 nginx 介绍"></a>1 nginx 介绍</h1><h2 id="1-什么是nginx"><a href="#1-什么是nginx" class="headerlink" title="1 什么是nginx"></a>1 什么是nginx</h2><p>Nginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。</p>
-<p>由俄罗斯的程序设计师Igor Sysoev所开发，官方测试nginx能够支支撑5万并发链接，</p>
+<h1 id="1-Nginx-介绍"><a href="#1-Nginx-介绍" class="headerlink" title="1 Nginx 介绍"></a>1 Nginx 介绍</h1><h2 id="1-什么是Nginx"><a href="#1-什么是Nginx" class="headerlink" title="1 什么是Nginx"></a>1 什么是Nginx</h2><p>Nginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。</p>
+<p>由俄罗斯的程序设计师Igor Sysoev所开发，官方测试Nginx能够支支撑5万并发链接，</p>
 <p>并且cpu、内存等资源消耗却非常低，运行非常稳定。</p>
 <h2 id="2-应用场景"><a href="#2-应用场景" class="headerlink" title="2 应用场景"></a>2 应用场景</h2><p>1、http服务器。Nginx是一个http服务可以独立提供http服务。可以做网页静态服务器。</p>
 <p>2、虚拟主机。可以实现在一台服务器虚拟出多个网站。例如个人网站使用的虚拟主机。</p>
 <p>3、反向代理，负载均衡。当网站的访问量达到一定程度后，单台服务器不能满足用户的请求时，</p>
-<p>需要用多台服务器集群可以使用nginx做反向代理。并且多台服务器可以平均分担负载，</p>
+<p>需要用多台服务器集群可以使用Nginx做反向代理。并且多台服务器可以平均分担负载，</p>
 <p>不会因为某台服务器负载高宕机而某台服务器闲置的情况。</p>
-<h1 id="2-nginx安装"><a href="#2-nginx安装" class="headerlink" title="2 nginx安装"></a>2 nginx安装</h1><h2 id="1-下载"><a href="#1-下载" class="headerlink" title="1 下载"></a>1 下载</h2><p>官方网址：<a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">http://nginx.org/en/download.html</a></p>
+<h1 id="2-Nginx安装"><a href="#2-Nginx安装" class="headerlink" title="2 Nginx安装"></a>2 Nginx安装</h1><h2 id="1-下载"><a href="#1-下载" class="headerlink" title="1 下载"></a>1 下载</h2><p>官方网址：<a href="http://Nginx.org/en/download.html" target="_blank" rel="noopener">http://Nginx.org/en/download.html</a></p>
 <p>官网提供三种版本：</p>
 <p>Nginx官网提供了三个类型的版本<br>Mainline version：Mainline 是 Nginx 目前主力在做的版本，可以说是开发版<br>Stable version：最新稳定版，生产环境上建议使用的版本<br>Legacy versions：遗留的老版本的稳定版</p>
 <p><img src="/images/2020073101.png" alt="img"></p>
@@ -312,55 +312,55 @@
 <p><strong>2.第三方的开发包</strong></p>
 <p><strong>1 PERE</strong></p>
 <p>PCRE(Perl Compatible Regular Expressions)是一个Perl库，包括 perl 兼容的正则表达式库。</p>
-<p>nginx的http模块使用pcre来解析正则表达式，所以需要在linux上安装pcre库。</p>
-<p><strong>注：pcre-devel是使用pcre开发的一个二次开发库。nginx**</strong>也需要此库**。</p>
+<p>Nginx的http模块使用pcre来解析正则表达式，所以需要在linux上安装pcre库。</p>
+<p><strong>注：pcre-devel是使用pcre开发的一个二次开发库。Nginx**</strong>也需要此库**。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y pcre pcre-devel</span><br></pre></td></tr></table></figure>
 
 <p><strong>2 zlib</strong></p>
-<p>zlib库提供了很多种压缩和解压缩的方式，nginx使用zlib对http包的内容进行gzip，所以需要在linux上安装zlib库。</p>
+<p>zlib库提供了很多种压缩和解压缩的方式，Nginx使用zlib对http包的内容进行gzip，所以需要在linux上安装zlib库。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y zlib zlib-devel</span><br></pre></td></tr></table></figure>
 
 <p><strong>3 openssl</strong></p>
 <p>OpenSSL 是一个强大的安全套接字层密码库，囊括主要的密码算法、常用的密钥和证书封装管理功能及SSL协议，</p>
 <p>并提供丰富的应用程序供测试或其它目的使用。</p>
-<p>nginx不仅支持http协议，还支持https（即在ssl协议上传输http），所以需要在linux安装openssl库。</p>
+<p>Nginx不仅支持http协议，还支持https（即在ssl协议上传输http），所以需要在linux安装openssl库。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install pcre  pcre-devel zlib  zlib-devel openssl openssl-devel</span><br></pre></td></tr></table></figure>
 
-<h2 id="3-nginx安装过程"><a href="#3-nginx安装过程" class="headerlink" title="3 nginx安装过程"></a>3 nginx安装过程</h2><p><strong>1 把nginx源码包上传到linux系统上</strong></p>
+<h2 id="3-Nginx安装过程"><a href="#3-Nginx安装过程" class="headerlink" title="3 Nginx安装过程"></a>3 Nginx安装过程</h2><p><strong>1 把Nginx源码包上传到linux系统上</strong></p>
 <p><img src="/images/2020073103.png" alt="img"></p>
 <p><strong>2 解压到/usr/local下面</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf nginx-1.14.0.tar.gz -C &#x2F;usr&#x2F;local</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf Nginx-1.14.0.tar.gz -C &#x2F;usr&#x2F;local</span><br></pre></td></tr></table></figure>
 
 <p><strong>3 使用cofigure命令创建一个makeFile文件</strong></p>
-<p><strong>执行下面的命令的时候，一定要进入到nginx-1.14.0目录里面去。</strong></p>
+<p><strong>执行下面的命令的时候，一定要进入到Nginx-1.14.0目录里面去。</strong></p>
 <p><img src="/images/2020073104.png" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure \</span><br><span class="line">--prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx \</span><br><span class="line">--pid-path&#x3D;&#x2F;var&#x2F;run&#x2F;nginx&#x2F;nginx.pid \</span><br><span class="line">--lock-path&#x3D;&#x2F;var&#x2F;lock&#x2F;nginx.lock \</span><br><span class="line">--error-log-path&#x3D;&#x2F;var&#x2F;log&#x2F;nginx&#x2F;error.log \</span><br><span class="line">--http-log-path&#x3D;&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log \</span><br><span class="line">--with-http_gzip_static_module \</span><br><span class="line">--http-client-body-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;nginx&#x2F;client \</span><br><span class="line">--http-proxy-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;nginx&#x2F;proxy \</span><br><span class="line">--http-fastcgi-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;nginx&#x2F;fastcgi \</span><br><span class="line">--http-uwsgi-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;nginx&#x2F;uwsgi \</span><br><span class="line">--http-scgi-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;nginx&#x2F;scgi \--with-http_stub_status_module \--with-http_ssl_module \--with-file-aio \--with-http_realip_module</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure \</span><br><span class="line">--prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;Nginx \</span><br><span class="line">--pid-path&#x3D;&#x2F;var&#x2F;run&#x2F;Nginx&#x2F;Nginx.pid \</span><br><span class="line">--lock-path&#x3D;&#x2F;var&#x2F;lock&#x2F;Nginx.lock \</span><br><span class="line">--error-log-path&#x3D;&#x2F;var&#x2F;log&#x2F;Nginx&#x2F;error.log \</span><br><span class="line">--http-log-path&#x3D;&#x2F;var&#x2F;log&#x2F;Nginx&#x2F;access.log \</span><br><span class="line">--with-http_gzip_static_module \</span><br><span class="line">--http-client-body-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;Nginx&#x2F;client \</span><br><span class="line">--http-proxy-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;Nginx&#x2F;proxy \</span><br><span class="line">--http-fastcgi-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;Nginx&#x2F;fastcgi \</span><br><span class="line">--http-uwsgi-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;Nginx&#x2F;uwsgi \</span><br><span class="line">--http-scgi-temp-path&#x3D;&#x2F;var&#x2F;temp&#x2F;Nginx&#x2F;scgi \--with-http_stub_status_module \--with-http_ssl_module \--with-file-aio \--with-http_realip_module</span><br></pre></td></tr></table></figure>
 
 <p>如果没有makeFile文件，编译的时候会报错</p>
 <p><img src="/images/2020073105.png" alt="img"></p>
 <p>\ 表示命令还没有输入完，换行的意思。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx  表示软件安装到&#x2F;usr&#x2F;local&#x2F;nginx下面。</span><br><span class="line">这个make install 的时候就不用在指定安装路径。</span><br><span class="line">执行完成后查看目录里面已经多了一个Makefile文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;Nginx  表示软件安装到&#x2F;usr&#x2F;local&#x2F;Nginx下面。</span><br><span class="line">这个make install 的时候就不用在指定安装路径。</span><br><span class="line">执行完成后查看目录里面已经多了一个Makefile文件</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/2020073106.png" alt="img"></p>
-<p><strong>注意：启动nginx之前，上边将临时文件目录指定为/var/temp/nginx，</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">需要在&#x2F;var下创建temp及nginx目</span><br></pre></td></tr></table></figure>
+<p><strong>注意：启动Nginx之前，上边将临时文件目录指定为/var/temp/Nginx，</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">需要在&#x2F;var下创建temp及Nginx目</span><br></pre></td></tr></table></figure>
 
-<p><strong>4 创建目录/var/temp/nginx/</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir &#x2F;var&#x2F;temp&#x2F;nginx -p</span><br></pre></td></tr></table></figure>
+<p><strong>4 创建目录/var/temp/Nginx/</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir &#x2F;var&#x2F;temp&#x2F;Nginx -p</span><br></pre></td></tr></table></figure>
 
 <p>-p 表示级联创建的意思</p>
-<p><strong>5 进入nginx-1.14.0里面执行make命令进行编译</strong></p>
+<p><strong>5 进入Nginx-1.14.0里面执行make命令进行编译</strong></p>
 <p> <img src="/images/2020073107.png" alt="img"></p>
-<p><strong>6 进入nginx-1.14.0里面执行make install 命令进行安装</strong></p>
+<p><strong>6 进入Nginx-1.14.0里面执行make install 命令进行安装</strong></p>
 <p> 这里不需要再次执行安装路径，创建makefile文件的时候已经指定了。</p>
 <p><img src="/images/2020073108.png" alt="img"></p>
-<p><strong>7 进入安装位置/usr/local/nginx查看目录结构</strong></p>
+<p><strong>7 进入安装位置/usr/local/Nginx查看目录结构</strong></p>
 <p><img src="/images/2020073109.png" alt="img"></p>
 <p>其中html是里面首页html文件。conf里面是配置文件。sbin里面只执行文件。</p>
-<h1 id="3-启动nginx"><a href="#3-启动nginx" class="headerlink" title="3 启动nginx"></a>3 启动nginx</h1><p>进入sbin目录，执行命令./nginx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<h1 id="3-启动Nginx"><a href="#3-启动Nginx" class="headerlink" title="3 启动Nginx"></a>3 启动Nginx</h1><p>进入sbin目录，执行命令./Nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;Nginx</span><br></pre></td></tr></table></figure>
 
-<h1 id="4-查看nginx是否启动"><a href="#4-查看nginx是否启动" class="headerlink" title="4 查看nginx是否启动"></a>4 查看nginx是否启动</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# ps -aux | grep nginx</span><br></pre></td></tr></table></figure>
+<h1 id="4-查看Nginx是否启动"><a href="#4-查看Nginx是否启动" class="headerlink" title="4 查看Nginx是否启动"></a>4 查看Nginx是否启动</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# ps -aux | grep Nginx</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/2020073110.png" alt="img"></p>
 <p><strong>ps命令</strong>用于报告当前系统的进程状态。</p>
@@ -368,15 +368,15 @@
 <p>a：显示现行终端机下的所有程序，包括其他用户的程序。</p>
 <p>u：以用户为主的格式来显示程序状况。</p>
 <p>x：显示所有程序，不以终端机来区分。</p>
-<h1 id="5-关闭nginx"><a href="#5-关闭nginx" class="headerlink" title="5 关闭nginx"></a>5 关闭nginx</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]#  .&#x2F;nginx -s stop</span><br></pre></td></tr></table></figure>
+<h1 id="5-关闭Nginx"><a href="#5-关闭Nginx" class="headerlink" title="5 关闭Nginx"></a>5 关闭Nginx</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]#  .&#x2F;Nginx -s stop</span><br></pre></td></tr></table></figure>
 
 <p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;nginx -s quit</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;Nginx -s quit</span><br></pre></td></tr></table></figure>
 
 
 
-<h1 id="6-重启nginx"><a href="#6-重启nginx" class="headerlink" title="6 重启nginx"></a>6 重启nginx</h1><p>先关闭，然后启动</p>
-<h1 id="7-刷新配置文件"><a href="#7-刷新配置文件" class="headerlink" title="7 刷新配置文件"></a>7 刷新配置文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;nginx -s reload</span><br></pre></td></tr></table></figure>
+<h1 id="6-重启Nginx"><a href="#6-重启Nginx" class="headerlink" title="6 重启Nginx"></a>6 重启Nginx</h1><p>先关闭，然后启动</p>
+<h1 id="7-刷新配置文件"><a href="#7-刷新配置文件" class="headerlink" title="7 刷新配置文件"></a>7 刷新配置文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;Nginx -s reload</span><br></pre></td></tr></table></figure>
 
 
 
@@ -393,12 +393,12 @@
 <p><strong>特殊：针对阿里云</strong></p>
 <p>需要添加安全组规则</p>
 <p><img src="/images/2020073111.png" alt="img"></p>
-<h1 id="9-访问nginx"><a href="#9-访问nginx" class="headerlink" title="9 访问nginx"></a>9 访问nginx</h1><p><img src="/images/2020073112.png" alt="img"></p>
+<h1 id="9-访问Nginx"><a href="#9-访问Nginx" class="headerlink" title="9 访问Nginx"></a>9 访问Nginx</h1><p><img src="/images/2020073112.png" alt="img"></p>
 <h1 id="10-配置虚拟主机"><a href="#10-配置虚拟主机" class="headerlink" title="10 配置虚拟主机"></a>10 配置虚拟主机</h1><p>就是在一台服务器启动多个网站。</p>
 <p>如何区分不同的网站：主要有以下两种方式</p>
 <p>方式一：端口不同</p>
 <p>方式二：域名不同</p>
-<h1 id="11-通过端口区分不同的主机"><a href="#11-通过端口区分不同的主机" class="headerlink" title="11 通过端口区分不同的主机"></a>11 通过端口区分不同的主机</h1><p>nginx配置文件的位置：/usr/local/nginx/conf/nginx.conf</p>
+<h1 id="11-通过端口区分不同的主机"><a href="#11-通过端口区分不同的主机" class="headerlink" title="11 通过端口区分不同的主机"></a>11 通过端口区分不同的主机</h1><p>Nginx配置文件的位置：/usr/local/Nginx/conf/Nginx.conf</p>
 <p>原始配置文件的内容如下：</p>
 <p><img src="/images/2020073113.png" alt="img"></p>
 <p>我们可以通过配置多个server,从而配置多个虚拟机</p>
@@ -406,11 +406,11 @@
 <p>下面测试以下：复制原来的html目录，改名为html-81</p>
 <p><img src="/images/2020073115.png" alt="img"></p>
 <p>修改以下里面的index.html文件，方便区分</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin nginx]# vim html-81&#x2F;index.html</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin Nginx]# vim html-81&#x2F;index.html</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/2020073116.png" alt="img"></p>
 <p>修改完成之后刷新以下配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;nginx -s reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;Nginx -s reload</span><br></pre></td></tr></table></figure>
 
 <p>然后分别访问192.168.204.131:80 和192.168.204.131:81</p>
 <p><img src="/images/2020073117.png" alt="img"></p>
@@ -426,7 +426,7 @@
 <p>hosts文件的位置：C:\Windows\System32\drivers\etc</p>
 <p>可以自己手动配置域名和ip的映射关系，如果hosts文件中配置了域名和ip的对应关系，不需要走DNS域名解析服务器。</p>
 <p>因为拿到一个域名，首先是到hosts文件里面查找，没有才有去DNS域名解析器查找。</p>
-<h2 id="2-nginx配置"><a href="#2-nginx配置" class="headerlink" title="2 nginx配置"></a>2 nginx配置</h2><p><img src="/images/2020073119.png" alt="img"></p>
+<h2 id="2-Nginx配置"><a href="#2-Nginx配置" class="headerlink" title="2 Nginx配置"></a>2 Nginx配置</h2><p><img src="/images/2020073119.png" alt="img"></p>
 <h2 id="3-测试"><a href="#3-测试" class="headerlink" title="3 测试"></a>3 测试</h2><p>1 修改本地hosts配置文件</p>
 <p><img src="/images/2020073120.png" alt="img"></p>
 <p>2 复制html目录，分别改名为html-taobao和html-baidu</p>
@@ -435,21 +435,21 @@
 <p><img src="/images/2020073123.png" alt="img"></p>
 <p><img src="/images/2020073122.png" alt="img"></p>
 <p>4 刷新配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;nginx -s reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin sbin]# .&#x2F;Nginx -s reload</span><br></pre></td></tr></table></figure>
 
 <p>5 然后使用浏览器分别访问：<a href="http://www.taobao.com" target="_blank" rel="noopener">www.taobao.com</a> 和 <a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a></p>
 <h1 id="13-正向代理"><a href="#13-正向代理" class="headerlink" title="13 正向代理"></a>13 正向代理</h1><p><img src="/images/2020073124.png" alt="img"></p>
 <h1 id="14-反向代理"><a href="#14-反向代理" class="headerlink" title="14 反向代理"></a>14 反向代理</h1><p><img src="/images/2020073125.png" alt="img"></p>
 <p>反向代理服务器决定那台服务器提供服务</p>
-<h1 id="15-nginx实现反向代理"><a href="#15-nginx实现反向代理" class="headerlink" title="15 nginx实现反向代理"></a>15 nginx实现反向代理</h1><p>两个域名指向同一台nginx服务器，用户访问不同的域名显示不同的网页内容。</p>
+<h1 id="15-Nginx实现反向代理"><a href="#15-Nginx实现反向代理" class="headerlink" title="15 Nginx实现反向代理"></a>15 Nginx实现反向代理</h1><p>两个域名指向同一台Nginx服务器，用户访问不同的域名显示不同的网页内容。</p>
 <p>两个域名是<a href="http://www.baidu.com和www.taobao.com" target="_blank" rel="noopener">www.baidu.com和www.taobao.com</a></p>
-<p>nginx代理服务器使用虚拟机192.168.204.131</p>
+<p>Nginx代理服务器使用虚拟机192.168.204.131</p>
 <p><img src="/images/2020073126.png" alt="img"></p>
 <p>第一步：安装两个tomcat，分别运行在8080和8081端口。</p>
 <p>第二步：启动两个tomcat。</p>
 <p>第三步：反向代理服务器的配置</p>
 <p> <img src="/images/020073127.png" alt="img"></p>
-<p>第四步：nginx重新加载配置文件</p>
+<p>第四步：Nginx重新加载配置文件</p>
 <p>第五步：配置域名</p>
 <p>在hosts文件中添加域名和ip的映射关系</p>
 <p>192.168.204.131 <a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a></p>
@@ -458,142 +458,142 @@
 <p><img src="/images/2020073128.png" alt="img"></p>
 <p>可以根据服务器的实际情况调整服务器权重。权重越高分配的请求越多，权重越低，请求越少。默认是都是1</p>
 <p><img src="/images/2020073129.png" alt="img"></p>
-<h1 id="17-设置nginx开机自启动（centos6-5）"><a href="#17-设置nginx开机自启动（centos6-5）" class="headerlink" title="17 设置nginx开机自启动（centos6.5）"></a>17 设置nginx开机自启动（centos6.5）</h1><p>每次启动nginx服务都需要到安装目录下的/sbin下面，感觉挺麻烦的。</p>
-<p>下面介绍一下如何在Linux(CentOS)系统上，设置nginx开机自启动。</p>
-<h2 id="1-用脚本管理nginx服务"><a href="#1-用脚本管理nginx服务" class="headerlink" title="1 用脚本管理nginx服务"></a>1 用脚本管理nginx服务</h2><p><strong>第一步：在/etc/init.d/目录下创建nginx文件，命令如下：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># touch &#x2F;etc&#x2F;init.d&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<h1 id="17-设置Nginx开机自启动（centos6-5）"><a href="#17-设置Nginx开机自启动（centos6-5）" class="headerlink" title="17 设置Nginx开机自启动（centos6.5）"></a>17 设置Nginx开机自启动（centos6.5）</h1><p>每次启动Nginx服务都需要到安装目录下的/sbin下面，感觉挺麻烦的。</p>
+<p>下面介绍一下如何在Linux(CentOS)系统上，设置Nginx开机自启动。</p>
+<h2 id="1-用脚本管理Nginx服务"><a href="#1-用脚本管理Nginx服务" class="headerlink" title="1 用脚本管理Nginx服务"></a>1 用脚本管理Nginx服务</h2><p><strong>第一步：在/etc/init.d/目录下创建Nginx文件，命令如下：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># touch &#x2F;etc&#x2F;init.d&#x2F;Nginx</span><br></pre></td></tr></table></figure>
 
-<p><strong>第二步：在创建的nginx文件中加入下面的内容</strong></p>
+<p><strong>第二步：在创建的Nginx文件中加入下面的内容</strong></p>
 <p>首先执行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim &#x2F;etc&#x2F;init.d&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim &#x2F;etc&#x2F;init.d&#x2F;Nginx</span><br></pre></td></tr></table></figure>
 
-<p>然后加下面的内容复制到nginx配置文件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">#</span><br><span class="line"># nginx - this script starts and stops the nginx daemon</span><br><span class="line">#</span><br><span class="line"># chkconfig:   - 85 15</span><br><span class="line"># description:  NGINX is an HTTP(S) server, HTTP(S) reverse \</span><br><span class="line">#               proxy and IMAP&#x2F;POP3 proxy server</span><br><span class="line"># processname: nginx</span><br><span class="line"># config:      &#x2F;etc&#x2F;nginx&#x2F;nginx.conf</span><br><span class="line"># config:      &#x2F;etc&#x2F;sysconfig&#x2F;nginx</span><br><span class="line"># pidfile:     &#x2F;var&#x2F;run&#x2F;nginx.pid</span><br><span class="line"># Source function library.</span><br><span class="line">. &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;functions</span><br><span class="line"># Source networking configuration.</span><br><span class="line">. &#x2F;etc&#x2F;sysconfig&#x2F;network</span><br><span class="line"># Check that networking is up.</span><br><span class="line">[ &quot;$NETWORKING&quot; &#x3D; &quot;no&quot; ] &amp;&amp; exit 0</span><br><span class="line">nginx&#x3D;&quot;&#x2F;usr&#x2F;sbin&#x2F;nginx&quot;</span><br><span class="line">prog&#x3D;$(basename $nginx)</span><br><span class="line">NGINX_CONF_FILE&#x3D;&quot;&#x2F;etc&#x2F;nginx&#x2F;nginx.conf&quot;</span><br><span class="line">[ -f &#x2F;etc&#x2F;sysconfig&#x2F;nginx ] &amp;&amp; . &#x2F;etc&#x2F;sysconfig&#x2F;nginx</span><br><span class="line">lockfile&#x3D;&#x2F;var&#x2F;lock&#x2F;subsys&#x2F;nginx</span><br><span class="line">make_dirs() &#123;</span><br><span class="line">   # make required directories</span><br><span class="line">   user&#x3D;&#96;$nginx -V 2&gt;&amp;1 | grep &quot;configure arguments:&quot; | sed &#39;s&#x2F;[^*]*--user&#x3D;\([^ ]*\).*&#x2F;\1&#x2F;g&#39; -&#96;</span><br><span class="line">   if [ -z &quot;&#96;grep $user &#x2F;etc&#x2F;passwd&#96;&quot; ]; then</span><br><span class="line">       useradd -M -s &#x2F;bin&#x2F;nologin $user</span><br><span class="line">   fi</span><br><span class="line">   options&#x3D;&#96;$nginx -V 2&gt;&amp;1 | grep &#39;configure arguments:&#39;&#96;</span><br><span class="line">   for opt in $options; do</span><br><span class="line">       if [ &#96;echo $opt | grep &#39;.*-temp-path&#39;&#96; ]; then</span><br><span class="line">           value&#x3D;&#96;echo $opt | cut -d &quot;&#x3D;&quot; -f 2&#96;</span><br><span class="line">           if [ ! -d &quot;$value&quot; ]; then</span><br><span class="line">               # echo &quot;creating&quot; $value</span><br><span class="line">               mkdir -p $value &amp;&amp; chown -R $user $value</span><br><span class="line">           fi</span><br><span class="line">       fi</span><br><span class="line">   done</span><br><span class="line">&#125;</span><br><span class="line">start() &#123;</span><br><span class="line">    [ -x $nginx ] || exit 5</span><br><span class="line">    [ -f $NGINX_CONF_FILE ] || exit 6</span><br><span class="line">    make_dirs</span><br><span class="line">    echo -n $&quot;Starting $prog: &quot;</span><br><span class="line">    daemon $nginx -c $NGINX_CONF_FILE</span><br><span class="line">    retval&#x3D;$?</span><br><span class="line">    echo</span><br><span class="line">    [ $retval -eq 0 ] &amp;&amp; touch $lockfile</span><br><span class="line">    return $retval</span><br><span class="line">&#125;</span><br><span class="line">stop() &#123;</span><br><span class="line">    echo -n $&quot;Stopping $prog: &quot;</span><br><span class="line">    killproc $prog -QUIT</span><br><span class="line">    retval&#x3D;$?</span><br><span class="line">    echo</span><br><span class="line">    [ $retval -eq 0 ] &amp;&amp; rm -f $lockfile</span><br><span class="line">    return $retval</span><br><span class="line">&#125;</span><br><span class="line">restart() &#123;</span><br><span class="line">    configtest || return $?</span><br><span class="line">    stop</span><br><span class="line">    sleep 1</span><br><span class="line">    start</span><br><span class="line">&#125;</span><br><span class="line">reload() &#123;</span><br><span class="line">    configtest || return $?</span><br><span class="line">    echo -n $&quot;Reloading $prog: &quot;</span><br><span class="line">    killproc $nginx -HUP</span><br><span class="line">    RETVAL&#x3D;$?</span><br><span class="line">    echo</span><br><span class="line">&#125;</span><br><span class="line">force_reload() &#123;</span><br><span class="line">    restart</span><br><span class="line">&#125;</span><br><span class="line">configtest() &#123;</span><br><span class="line">  $nginx -t -c $NGINX_CONF_FILE</span><br><span class="line">&#125;</span><br><span class="line">rh_status() &#123;</span><br><span class="line">    status $prog</span><br><span class="line">&#125;</span><br><span class="line">rh_status_q() &#123;</span><br><span class="line">    rh_status &gt;&#x2F;dev&#x2F;null 2&gt;&amp;1</span><br><span class="line">&#125;</span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">    start)</span><br><span class="line">        rh_status_q &amp;&amp; exit 0</span><br><span class="line">        $1</span><br><span class="line">        ;;</span><br><span class="line">    stop)</span><br><span class="line">        rh_status_q || exit 0</span><br><span class="line">        $1</span><br><span class="line">        ;;</span><br><span class="line">    restart|configtest)</span><br><span class="line">        $1</span><br><span class="line">        ;;</span><br><span class="line">    reload)</span><br><span class="line">        rh_status_q || exit 7</span><br><span class="line">        $1</span><br><span class="line">        ;;</span><br><span class="line">    force-reload)</span><br><span class="line">        force_reload</span><br><span class="line">        ;;</span><br><span class="line">    status)</span><br><span class="line">        rh_status</span><br><span class="line">        ;;</span><br><span class="line">    condrestart|try-restart)</span><br><span class="line">        rh_status_q || exit 0</span><br><span class="line">            ;;</span><br><span class="line">    *)</span><br><span class="line">        echo $&quot;Usage: $0 &#123;start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest&#125;&quot;</span><br><span class="line">        exit 2</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+<p>然后加下面的内容复制到Nginx配置文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">#</span><br><span class="line"># Nginx - this script starts and stops the Nginx daemon</span><br><span class="line">#</span><br><span class="line"># chkconfig:   - 85 15</span><br><span class="line"># description:  Nginx is an HTTP(S) server, HTTP(S) reverse \</span><br><span class="line">#               proxy and IMAP&#x2F;POP3 proxy server</span><br><span class="line"># processname: Nginx</span><br><span class="line"># config:      &#x2F;etc&#x2F;Nginx&#x2F;Nginx.conf</span><br><span class="line"># config:      &#x2F;etc&#x2F;sysconfig&#x2F;Nginx</span><br><span class="line"># pidfile:     &#x2F;var&#x2F;run&#x2F;Nginx.pid</span><br><span class="line"># Source function library.</span><br><span class="line">. &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;functions</span><br><span class="line"># Source networking configuration.</span><br><span class="line">. &#x2F;etc&#x2F;sysconfig&#x2F;network</span><br><span class="line"># Check that networking is up.</span><br><span class="line">[ &quot;$NETWORKING&quot; &#x3D; &quot;no&quot; ] &amp;&amp; exit 0</span><br><span class="line">Nginx&#x3D;&quot;&#x2F;usr&#x2F;sbin&#x2F;Nginx&quot;</span><br><span class="line">prog&#x3D;$(basename $Nginx)</span><br><span class="line">NGINX_CONF_FILE&#x3D;&quot;&#x2F;etc&#x2F;Nginx&#x2F;Nginx.conf&quot;</span><br><span class="line">[ -f &#x2F;etc&#x2F;sysconfig&#x2F;Nginx ] &amp;&amp; . &#x2F;etc&#x2F;sysconfig&#x2F;Nginx</span><br><span class="line">lockfile&#x3D;&#x2F;var&#x2F;lock&#x2F;subsys&#x2F;Nginx</span><br><span class="line">make_dirs() &#123;</span><br><span class="line">   # make required directories</span><br><span class="line">   user&#x3D;&#96;$Nginx -V 2&gt;&amp;1 | grep &quot;configure arguments:&quot; | sed &#39;s&#x2F;[^*]*--user&#x3D;\([^ ]*\).*&#x2F;\1&#x2F;g&#39; -&#96;</span><br><span class="line">   if [ -z &quot;&#96;grep $user &#x2F;etc&#x2F;passwd&#96;&quot; ]; then</span><br><span class="line">       useradd -M -s &#x2F;bin&#x2F;nologin $user</span><br><span class="line">   fi</span><br><span class="line">   options&#x3D;&#96;$Nginx -V 2&gt;&amp;1 | grep &#39;configure arguments:&#39;&#96;</span><br><span class="line">   for opt in $options; do</span><br><span class="line">       if [ &#96;echo $opt | grep &#39;.*-temp-path&#39;&#96; ]; then</span><br><span class="line">           value&#x3D;&#96;echo $opt | cut -d &quot;&#x3D;&quot; -f 2&#96;</span><br><span class="line">           if [ ! -d &quot;$value&quot; ]; then</span><br><span class="line">               # echo &quot;creating&quot; $value</span><br><span class="line">               mkdir -p $value &amp;&amp; chown -R $user $value</span><br><span class="line">           fi</span><br><span class="line">       fi</span><br><span class="line">   done</span><br><span class="line">&#125;</span><br><span class="line">start() &#123;</span><br><span class="line">    [ -x $Nginx ] || exit 5</span><br><span class="line">    [ -f $NGINX_CONF_FILE ] || exit 6</span><br><span class="line">    make_dirs</span><br><span class="line">    echo -n $&quot;Starting $prog: &quot;</span><br><span class="line">    daemon $Nginx -c $NGINX_CONF_FILE</span><br><span class="line">    retval&#x3D;$?</span><br><span class="line">    echo</span><br><span class="line">    [ $retval -eq 0 ] &amp;&amp; touch $lockfile</span><br><span class="line">    return $retval</span><br><span class="line">&#125;</span><br><span class="line">stop() &#123;</span><br><span class="line">    echo -n $&quot;Stopping $prog: &quot;</span><br><span class="line">    killproc $prog -QUIT</span><br><span class="line">    retval&#x3D;$?</span><br><span class="line">    echo</span><br><span class="line">    [ $retval -eq 0 ] &amp;&amp; rm -f $lockfile</span><br><span class="line">    return $retval</span><br><span class="line">&#125;</span><br><span class="line">restart() &#123;</span><br><span class="line">    configtest || return $?</span><br><span class="line">    stop</span><br><span class="line">    sleep 1</span><br><span class="line">    start</span><br><span class="line">&#125;</span><br><span class="line">reload() &#123;</span><br><span class="line">    configtest || return $?</span><br><span class="line">    echo -n $&quot;Reloading $prog: &quot;</span><br><span class="line">    killproc $Nginx -HUP</span><br><span class="line">    RETVAL&#x3D;$?</span><br><span class="line">    echo</span><br><span class="line">&#125;</span><br><span class="line">force_reload() &#123;</span><br><span class="line">    restart</span><br><span class="line">&#125;</span><br><span class="line">configtest() &#123;</span><br><span class="line">  $Nginx -t -c $NGINX_CONF_FILE</span><br><span class="line">&#125;</span><br><span class="line">rh_status() &#123;</span><br><span class="line">    status $prog</span><br><span class="line">&#125;</span><br><span class="line">rh_status_q() &#123;</span><br><span class="line">    rh_status &gt;&#x2F;dev&#x2F;null 2&gt;&amp;1</span><br><span class="line">&#125;</span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">    start)</span><br><span class="line">        rh_status_q &amp;&amp; exit 0</span><br><span class="line">        $1</span><br><span class="line">        ;;</span><br><span class="line">    stop)</span><br><span class="line">        rh_status_q || exit 0</span><br><span class="line">        $1</span><br><span class="line">        ;;</span><br><span class="line">    restart|configtest)</span><br><span class="line">        $1</span><br><span class="line">        ;;</span><br><span class="line">    reload)</span><br><span class="line">        rh_status_q || exit 7</span><br><span class="line">        $1</span><br><span class="line">        ;;</span><br><span class="line">    force-reload)</span><br><span class="line">        force_reload</span><br><span class="line">        ;;</span><br><span class="line">    status)</span><br><span class="line">        rh_status</span><br><span class="line">        ;;</span><br><span class="line">    condrestart|try-restart)</span><br><span class="line">        rh_status_q || exit 0</span><br><span class="line">            ;;</span><br><span class="line">    *)</span><br><span class="line">        echo $&quot;Usage: $0 &#123;start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest&#125;&quot;</span><br><span class="line">        exit 2</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
 
 
 
-<p>上面的脚本文件并不是自己写的，是nginx官方提供的。</p>
-<p>地址：<a href="http://wiki.nginx.org/RedHatNginxInitScript" target="_blank" rel="noopener">http://wiki.nginx.org/RedHatNginxInitScript</a></p>
-<p>注意：如果是自定义安装的nginx,修改根据实际情况修改安装路和配置文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nginx&#x3D;&quot;&#x2F;usr&#x2F;sbin&#x2F;nginx&quot; 修改成你的nginx执行程序的路径。比如我的是nginx&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx&quot;</span><br><span class="line">NGINX_CONF_FILE&#x3D;&quot;&#x2F;etc&#x2F;nginx&#x2F;nginx.conf&quot; 修改成你的配置文件的路径</span><br><span class="line">例如：NGINX_CONF_FILE&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>上面的脚本文件并不是自己写的，是Nginx官方提供的。</p>
+<p>地址：<a href="http://wiki.Nginx.org/RedHatNginxInitScript" target="_blank" rel="noopener">http://wiki.Nginx.org/RedHatNginxInitScript</a></p>
+<p>注意：如果是自定义安装的Nginx,修改根据实际情况修改安装路和配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Nginx&#x3D;&quot;&#x2F;usr&#x2F;sbin&#x2F;Nginx&quot; 修改成你的Nginx执行程序的路径。比如我的是Nginx&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;sbin&#x2F;Nginx&quot;</span><br><span class="line">NGINX_CONF_FILE&#x3D;&quot;&#x2F;etc&#x2F;Nginx&#x2F;Nginx.conf&quot; 修改成你的配置文件的路径</span><br><span class="line">例如：NGINX_CONF_FILE&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;Nginx.conf</span><br></pre></td></tr></table></figure>
 
 <p>修改完成后保存脚本文件，wq 保存并退出</p>
-<p><strong>第三步：设置nginx文件的权限</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># chmod a+x &#x2F;etc&#x2F;init.d&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<p><strong>第三步：设置Nginx文件的权限</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># chmod a+x &#x2F;etc&#x2F;init.d&#x2F;Nginx</span><br></pre></td></tr></table></figure>
 
 <p>解释：a+x==&gt;all user can execute 所有用户可执行）的意思</p>
 <p><strong>第四步：管理脚本</strong></p>
-<p>到这里，我们就可以使用nginx脚本对服务进行管理了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;etc&#x2F;init.d&#x2F;nginx start      启动服务</span><br><span class="line"># &#x2F;etc&#x2F;init.d&#x2F;nginx stop       停止服务  # &#x2F;etc&#x2F;init.d&#x2F;nginx restart    重启服务</span><br><span class="line"># &#x2F;etc&#x2F;init.d&#x2F;nginx status     查看服务的状态# &#x2F;etc&#x2F;init.d&#x2F;nginx reload     刷新配置文件</span><br></pre></td></tr></table></figure>
+<p>到这里，我们就可以使用Nginx脚本对服务进行管理了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;etc&#x2F;init.d&#x2F;Nginx start      启动服务</span><br><span class="line"># &#x2F;etc&#x2F;init.d&#x2F;Nginx stop       停止服务  # &#x2F;etc&#x2F;init.d&#x2F;Nginx restart    重启服务</span><br><span class="line"># &#x2F;etc&#x2F;init.d&#x2F;Nginx status     查看服务的状态# &#x2F;etc&#x2F;init.d&#x2F;Nginx reload     刷新配置文件</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-使用chkconfig管理"><a href="#2-使用chkconfig管理" class="headerlink" title="2 使用chkconfig管理"></a>2 使用chkconfig管理</h2><p>上面的方法完成了用脚本管理nginx服务的功能，但是还是不太方便，比如要设置nginx开机启动等。</p>
+<h2 id="2-使用chkconfig管理"><a href="#2-使用chkconfig管理" class="headerlink" title="2 使用chkconfig管理"></a>2 使用chkconfig管理</h2><p>上面的方法完成了用脚本管理Nginx服务的功能，但是还是不太方便，比如要设置Nginx开机启动等。</p>
 <p>这个时候我们可以使用chkconfig来进行管理。</p>
-<p><strong>第一步：将nginx服务加入chkconfig管理列表</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># chkconfig --add &#x2F;etc&#x2F;init.d&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<p><strong>第一步：将Nginx服务加入chkconfig管理列表</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># chkconfig --add &#x2F;etc&#x2F;init.d&#x2F;Nginx</span><br></pre></td></tr></table></figure>
 
 <p><strong>第二步：使用service管理服务</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># service nginx start    启动服务</span><br><span class="line"># service nginx stop     停止服务# service nginx restart  重启服务# service nginx status   查询服务的状态# service nginx relaod   刷新配置文</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># service Nginx start    启动服务</span><br><span class="line"># service Nginx stop     停止服务# service Nginx restart  重启服务# service Nginx status   查询服务的状态# service Nginx relaod   刷新配置文</span><br></pre></td></tr></table></figure>
 
 <p><strong>第三步：设置终端模式开机启动</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># chkconfig nginx on</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># chkconfig Nginx on</span><br></pre></td></tr></table></figure>
 
 
 
-<h1 id="17-设置nginx开机自启动（centos7-4）"><a href="#17-设置nginx开机自启动（centos7-4）" class="headerlink" title="17 设置nginx开机自启动（centos7.4）"></a>17 设置nginx开机自启动（centos7.4）</h1><p> <strong>第一步：进入到/lib/systemd/system/目录</strong></p>
+<h1 id="17-设置Nginx开机自启动（centos7-4）"><a href="#17-设置Nginx开机自启动（centos7-4）" class="headerlink" title="17 设置Nginx开机自启动（centos7.4）"></a>17 设置Nginx开机自启动（centos7.4）</h1><p> <strong>第一步：进入到/lib/systemd/system/目录</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@iz2z init.d]# cd &#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span><br></pre></td></tr></table></figure>
 
-<p><strong>第二步：创建nginx.service文件，并编辑</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim nginx.service</span><br></pre></td></tr></table></figure>
+<p><strong>第二步：创建Nginx.service文件，并编辑</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim Nginx.service</span><br></pre></td></tr></table></figure>
 
 <p>内如如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;nginx service</span><br><span class="line">After&#x3D;network.target </span><br><span class="line">   </span><br><span class="line">[Service] </span><br><span class="line">Type&#x3D;forking </span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx</span><br><span class="line">ExecReload&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -s reload</span><br><span class="line">ExecStop&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -s quit</span><br><span class="line">PrivateTmp&#x3D;true </span><br><span class="line">   </span><br><span class="line">[Install] </span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;nginx service</span><br><span class="line">After&#x3D;network.target </span><br><span class="line">   </span><br><span class="line">[Service] </span><br><span class="line">Type&#x3D;forking </span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;sbin&#x2F;Nginx</span><br><span class="line">ExecReload&#x3D;&#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;sbin&#x2F;Nginx -s reload</span><br><span class="line">ExecStop&#x3D;&#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;sbin&#x2F;Nginx -s quit</span><br><span class="line">PrivateTmp&#x3D;true </span><br><span class="line">   </span><br><span class="line">[Install] </span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
 
 <p>Description:描述服务<br>After:描述服务类别<br>[Service]服务运行参数的设置<br>Type=forking是后台运行的形式<br>ExecStart为服务的具体运行命令<br>ExecReload为重启命令<br>ExecStop为停止命令<br>PrivateTmp=True表示给服务分配独立的临时空间<br><strong>注意</strong>：[Service]的启动、重启、停止命令全部要求使用绝对路径<br>[Install]运行级别下服务安装的相关设置，可设置为多用户，即系统运行级别为3</p>
 <p>保存退出。</p>
 <p><strong>第三步：加入开机自启动</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl enable nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl enable Nginx</span><br></pre></td></tr></table></figure>
 
 <p>如果不想开机自启动了，可以使用下面的命令取消开机自启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl disable nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl disable Nginx</span><br></pre></td></tr></table></figure>
 
 <p><strong>第四步：服务的启动/停止/刷新配置文件/查看状态</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># systemctl start nginx.service　         启动nginx服务</span><br><span class="line"># systemctl stop nginx.service　          停止服务</span><br><span class="line"># systemctl restart nginx.service　       重新启动服务</span><br><span class="line"># systemctl list-units --type&#x3D;service     查看所有已启动的服务</span><br><span class="line"># systemctl status nginx.service          查看服务当前状态</span><br><span class="line"># systemctl enable nginx.service          设置开机自启动</span><br><span class="line"># systemctl disable nginx.service         停止开机自启动</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># systemctl start Nginx.service　         启动Nginx服务</span><br><span class="line"># systemctl stop Nginx.service　          停止服务</span><br><span class="line"># systemctl restart Nginx.service　       重新启动服务</span><br><span class="line"># systemctl list-units --type&#x3D;service     查看所有已启动的服务</span><br><span class="line"># systemctl status Nginx.service          查看服务当前状态</span><br><span class="line"># systemctl enable Nginx.service          设置开机自启动</span><br><span class="line"># systemctl disable Nginx.service         停止开机自启动</span><br></pre></td></tr></table></figure>
 
-<h2 id="一个常见的错误"><a href="#一个常见的错误" class="headerlink" title="一个常见的错误"></a><strong>一个常见的错误</strong></h2><h3 id="Warning-nginx-service-changed-on-disk-Run-‘systemctl-daemon-reload’-to-reload-units"><a href="#Warning-nginx-service-changed-on-disk-Run-‘systemctl-daemon-reload’-to-reload-units" class="headerlink" title="Warning: nginx.service changed on disk. Run ‘systemctl daemon-reload’ to reload units."></a>Warning: nginx.service changed on disk. Run ‘systemctl daemon-reload’ to reload units.</h3><p> 直接按照提示执行命令systemctl daemon-reload 即可。</p>
+<h2 id="一个常见的错误"><a href="#一个常见的错误" class="headerlink" title="一个常见的错误"></a><strong>一个常见的错误</strong></h2><h3 id="Warning-Nginx-service-changed-on-disk-Run-‘systemctl-daemon-reload’-to-reload-units"><a href="#Warning-Nginx-service-changed-on-disk-Run-‘systemctl-daemon-reload’-to-reload-units" class="headerlink" title="Warning: Nginx.service changed on disk. Run ‘systemctl daemon-reload’ to reload units."></a>Warning: Nginx.service changed on disk. Run ‘systemctl daemon-reload’ to reload units.</h3><p> 直接按照提示执行命令systemctl daemon-reload 即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
 
 
 
-<h1 id="18-重启系统，再次启动nginx报错"><a href="#18-重启系统，再次启动nginx报错" class="headerlink" title="18 重启系统，再次启动nginx报错"></a>18 重启系统，再次启动nginx报错</h1><h2 id="1-故障现场"><a href="#1-故障现场" class="headerlink" title="1 故障现场"></a>1 故障现场</h2><p>之前在虚拟机centos6.5上面设置自启动之后，重新启动系统可以正常启动，也不会出错。</p>
+<h1 id="18-重启系统，再次启动Nginx报错"><a href="#18-重启系统，再次启动Nginx报错" class="headerlink" title="18 重启系统，再次启动Nginx报错"></a>18 重启系统，再次启动Nginx报错</h1><h2 id="1-故障现场"><a href="#1-故障现场" class="headerlink" title="1 故障现场"></a>1 故障现场</h2><p>之前在虚拟机centos6.5上面设置自启动之后，重新启动系统可以正常启动，也不会出错。</p>
 <p>centos6.5的自启动设置见16部分知识点。</p>
-<p>但是在centos7.4(阿里云上面），参照第17部分配置好了自启动。重启系统发现nginx并没有自启动</p>
-<p>使用命名systemctl status nginx查看了一下状态，内容如下：</p>
+<p>但是在centos7.4(阿里云上面），参照第17部分配置好了自启动。重启系统发现Nginx并没有自启动</p>
+<p>使用命名systemctl status Nginx查看了一下状态，内容如下：</p>
 <p><img src="/images/2020073130.png" alt="img"></p>
-<p>然后我直接进入/usr/local/nginx/sbin目录下面，执行./nginx，出现了下面的错误提示：</p>
+<p>然后我直接进入/usr/local/Nginx/sbin目录下面，执行./Nginx，出现了下面的错误提示：</p>
 <p><img src="/images/2020073131.png" alt="img"></p>
-<p>从这两个提示信息，可以大概看出告诉我们的就是找不到/var/run/nginx/目录下面的nginx.pid文件。</p>
-<h2 id="2-故障解决"><a href="#2-故障解决" class="headerlink" title="2 故障解决"></a>2 故障解决</h2><p><strong>第一步：进入 cd /usr/local/nginx/conf/ 目录，编辑配置文件nginx.conf ；</strong></p>
-<p>在配置文件中找到：#pid    logs/nginx.pid;</p>
+<p>从这两个提示信息，可以大概看出告诉我们的就是找不到/var/run/Nginx/目录下面的Nginx.pid文件。</p>
+<h2 id="2-故障解决"><a href="#2-故障解决" class="headerlink" title="2 故障解决"></a>2 故障解决</h2><p><strong>第一步：进入 cd /usr/local/Nginx/conf/ 目录，编辑配置文件Nginx.conf ；</strong></p>
+<p>在配置文件中找到：#pid    logs/Nginx.pid;</p>
 <p><img src="/images/2020073132.png" alt="img"></p>
 <p>将其修改为：去掉注释，修改成自己的路径</p>
 <p><img src="/images/2020073133.png" alt="img"></p>
 <p>修改完成保存退出</p>
-<p><strong>第二步：创建目录/var/run/nginx/</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir &#x2F;var&#x2F;run&#x2F;nginx -p</span><br></pre></td></tr></table></figure>
+<p><strong>第二步：创建目录/var/run/Nginx/</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir &#x2F;var&#x2F;run&#x2F;Nginx -p</span><br></pre></td></tr></table></figure>
 
-<p><strong>第三步：启动nginx服务</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<p><strong>第三步：启动Nginx服务</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;sbin&#x2F;Nginx</span><br></pre></td></tr></table></figure>
 
 <p>可以查看一下是否成功启动了</p>
 <p><img src="/images/2020073134.png" alt="img"></p>
 <h2 id="3-故障重现"><a href="#3-故障重现" class="headerlink" title="3 故障重现"></a>3 故障重现</h2><blockquote>
-<p>[emerg] open() “/var/run/nginx/nginx.pid” failed (2: No such file or directory)处理</p>
+<p>[emerg] open() “/var/run/Nginx/Nginx.pid” failed (2: No such file or directory)处理</p>
 </blockquote>
-<p>测试发现，只要执行reboot命令重启，var/run/nginx，nginx这个文件夹都会被删除，</p>
-<p>搞得每一次都要去建立nginx这个文件夹，简直麻烦到了极点，实在受不了。下面</p>
+<p>测试发现，只要执行reboot命令重启，var/run/Nginx，Nginx这个文件夹都会被删除，</p>
+<p>搞得每一次都要去建立Nginx这个文件夹，简直麻烦到了极点，实在受不了。下面</p>
 <p>继续来解决这个问题。</p>
-<p><strong>第一步：进入 cd /usr/local/nginx/conf/ 目录，编辑配置文件nginx.conf ；</strong></p>
+<p><strong>第一步：进入 cd /usr/local/Nginx/conf/ 目录，编辑配置文件Nginx.conf ；</strong></p>
 <p><img src="/images/2020073135.png" alt="img"></p>
-<p><strong>第二步：在/usr/local/nginx目录下建立logs文件夹</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;logs</span><br></pre></td></tr></table></figure>
+<p><strong>第二步：在/usr/local/Nginx目录下建立logs文件夹</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir &#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;logs</span><br></pre></td></tr></table></figure>
 
 <p><strong><img src="/images/2020073136.png" alt="img"></strong></p>
-<p><strong>第三步：把/var/run/nginx/目录下的nginx.pid这个文件拷贝到第二步创建的logs文件夹里面。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cp nginx.pid &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;logs&#x2F;</span><br></pre></td></tr></table></figure>
+<p><strong>第三步：把/var/run/Nginx/目录下的Nginx.pid这个文件拷贝到第二步创建的logs文件夹里面。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cp Nginx.pid &#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;logs&#x2F;</span><br></pre></td></tr></table></figure>
 
 <p> <img src="/images/2020073137.png" alt="img"></p>
 <p><strong>第四步：把logs这个文件夹在conf下也拷贝一份</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cp -r logs conf</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/2020073138.png" alt="img"></p>
-<p><strong>第五步：修改权限/usr/local/nginx/logs/目录下面的nginx.pid文件的权限。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@iz2logs]# chmod 755 nginx.pid</span><br></pre></td></tr></table></figure>
+<p><strong>第五步：修改权限/usr/local/Nginx/logs/目录下面的Nginx.pid文件的权限。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@iz2logs]# chmod 755 Nginx.pid</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/2020073139.png" alt="img"></p>
 <p><strong>第六步：重启reboot</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># reboot</span><br></pre></td></tr></table></figure>
 
-<p><strong>第六步：启动nginx</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<p><strong>第六步：启动Nginx</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;sbin&#x2F;Nginx</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/2020073140.png" alt="img"></p>
-<p>这次是终于成功解决了，一边安装一边解决问题，到这里nginx总是算是可以自启动了，并且也不会重启后找不到nginx.pid文件。真的太不容易了。</p>
-<p><strong>解决的原理：就是让它去另外一个地方找nginx.pid文件，</strong></p>
-<p><strong>因为/var/run/nginx/nginx.pid这个文件总是重启就删除了</strong>。</p>
+<p>这次是终于成功解决了，一边安装一边解决问题，到这里Nginx总是算是可以自启动了，并且也不会重启后找不到Nginx.pid文件。真的太不容易了。</p>
+<p><strong>解决的原理：就是让它去另外一个地方找Nginx.pid文件，</strong></p>
+<p><strong>因为/var/run/Nginx/Nginx.pid这个文件总是重启就删除了</strong>。</p>
 <h2 id="简单解决方案"><a href="#简单解决方案" class="headerlink" title="简单解决方案"></a>简单解决方案</h2><p>上面的过程有点繁琐了，实际可以直接按照下面的这个简单方法解决</p>
-<p>修改nginx.conf文件如下：</p>
+<p>修改Nginx.conf文件如下：</p>
 <p><img src="/images/2020073141.png" alt="img"></p>
-<p>在/usr/local/nginx/目录下创建一个logs目录。</p>
+<p>在/usr/local/Nginx/目录下创建一个logs目录。</p>
 <p>然后启动就可以了，并且重启也不会被删除。</p>
 <p>这样下面的日志文件的配置也可以简化为去掉# error_log logs/error.log info; 前面的“#”就可以了</p>
 <p>error_log logs/error.log info;</p>
-<h1 id="19-配置日志文件的位置"><a href="#19-配置日志文件的位置" class="headerlink" title="19 配置日志文件的位置"></a>19 配置日志文件的位置</h1><p><strong>第一步：进入 cd /usr/local/nginx/conf/ 目录，编辑配置文件nginx.conf ；</strong></p>
+<h1 id="19-配置日志文件的位置"><a href="#19-配置日志文件的位置" class="headerlink" title="19 配置日志文件的位置"></a>19 配置日志文件的位置</h1><p><strong>第一步：进入 cd /usr/local/Nginx/conf/ 目录，编辑配置文件Nginx.conf ；</strong></p>
 <p><img src="/images/2020073142.png" alt="img"></p>
 <p><strong>第二步：保证肯定有这个路径，可以直接创建一下这个配置的目录</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p &#x2F;var&#x2F;log&#x2F;nginx&#x2F;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p &#x2F;var&#x2F;log&#x2F;Nginx&#x2F;</span><br></pre></td></tr></table></figure>
 
 <p><strong>第三步：刷新配置文件</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -s reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;Nginx&#x2F;sbin&#x2F;Nginx -s reload</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -676,7 +676,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-nginx-介绍"><span class="nav-text">1 nginx 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是nginx"><span class="nav-text">1 什么是nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-应用场景"><span class="nav-text">2 应用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-nginx安装"><span class="nav-text">2 nginx安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-下载"><span class="nav-text">1 下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装要求的环境"><span class="nav-text">2 安装要求的环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-nginx安装过程"><span class="nav-text">3 nginx安装过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-启动nginx"><span class="nav-text">3 启动nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-查看nginx是否启动"><span class="nav-text">4 查看nginx是否启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-关闭nginx"><span class="nav-text">5 关闭nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-重启nginx"><span class="nav-text">6 重启nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-刷新配置文件"><span class="nav-text">7 刷新配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-关闭防火墙，开启远程访问"><span class="nav-text">8 关闭防火墙，开启远程访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-访问nginx"><span class="nav-text">9 访问nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-配置虚拟主机"><span class="nav-text">10 配置虚拟主机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-通过端口区分不同的主机"><span class="nav-text">11 通过端口区分不同的主机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-多个域名区分虚拟主机"><span class="nav-text">12 多个域名区分虚拟主机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是域名"><span class="nav-text">1 什么是域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-nginx配置"><span class="nav-text">2 nginx配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-测试"><span class="nav-text">3 测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-正向代理"><span class="nav-text">13 正向代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-反向代理"><span class="nav-text">14 反向代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-nginx实现反向代理"><span class="nav-text">15 nginx实现反向代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#16-负载均衡"><span class="nav-text">16 负载均衡</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#17-设置nginx开机自启动（centos6-5）"><span class="nav-text">17 设置nginx开机自启动（centos6.5）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-用脚本管理nginx服务"><span class="nav-text">1 用脚本管理nginx服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用chkconfig管理"><span class="nav-text">2 使用chkconfig管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#17-设置nginx开机自启动（centos7-4）"><span class="nav-text">17 设置nginx开机自启动（centos7.4）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一个常见的错误"><span class="nav-text">一个常见的错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Warning-nginx-service-changed-on-disk-Run-‘systemctl-daemon-reload’-to-reload-units"><span class="nav-text">Warning: nginx.service changed on disk. Run ‘systemctl daemon-reload’ to reload units.</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#18-重启系统，再次启动nginx报错"><span class="nav-text">18 重启系统，再次启动nginx报错</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-故障现场"><span class="nav-text">1 故障现场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-故障解决"><span class="nav-text">2 故障解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-故障重现"><span class="nav-text">3 故障重现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单解决方案"><span class="nav-text">简单解决方案</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-配置日志文件的位置"><span class="nav-text">19 配置日志文件的位置</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Nginx-介绍"><span class="nav-text">1 Nginx 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是Nginx"><span class="nav-text">1 什么是Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-应用场景"><span class="nav-text">2 应用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Nginx安装"><span class="nav-text">2 Nginx安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-下载"><span class="nav-text">1 下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装要求的环境"><span class="nav-text">2 安装要求的环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Nginx安装过程"><span class="nav-text">3 Nginx安装过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-启动Nginx"><span class="nav-text">3 启动Nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-查看Nginx是否启动"><span class="nav-text">4 查看Nginx是否启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-关闭Nginx"><span class="nav-text">5 关闭Nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-重启Nginx"><span class="nav-text">6 重启Nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-刷新配置文件"><span class="nav-text">7 刷新配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-关闭防火墙，开启远程访问"><span class="nav-text">8 关闭防火墙，开启远程访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-访问Nginx"><span class="nav-text">9 访问Nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-配置虚拟主机"><span class="nav-text">10 配置虚拟主机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-通过端口区分不同的主机"><span class="nav-text">11 通过端口区分不同的主机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-多个域名区分虚拟主机"><span class="nav-text">12 多个域名区分虚拟主机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是域名"><span class="nav-text">1 什么是域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Nginx配置"><span class="nav-text">2 Nginx配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-测试"><span class="nav-text">3 测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-正向代理"><span class="nav-text">13 正向代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-反向代理"><span class="nav-text">14 反向代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-Nginx实现反向代理"><span class="nav-text">15 Nginx实现反向代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#16-负载均衡"><span class="nav-text">16 负载均衡</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#17-设置Nginx开机自启动（centos6-5）"><span class="nav-text">17 设置Nginx开机自启动（centos6.5）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-用脚本管理Nginx服务"><span class="nav-text">1 用脚本管理Nginx服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用chkconfig管理"><span class="nav-text">2 使用chkconfig管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#17-设置Nginx开机自启动（centos7-4）"><span class="nav-text">17 设置Nginx开机自启动（centos7.4）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一个常见的错误"><span class="nav-text">一个常见的错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Warning-Nginx-service-changed-on-disk-Run-‘systemctl-daemon-reload’-to-reload-units"><span class="nav-text">Warning: Nginx.service changed on disk. Run ‘systemctl daemon-reload’ to reload units.</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#18-重启系统，再次启动Nginx报错"><span class="nav-text">18 重启系统，再次启动Nginx报错</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-故障现场"><span class="nav-text">1 故障现场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-故障解决"><span class="nav-text">2 故障解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-故障重现"><span class="nav-text">3 故障重现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单解决方案"><span class="nav-text">简单解决方案</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-配置日志文件的位置"><span class="nav-text">19 配置日志文件的位置</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -692,20 +692,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-count">65</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
