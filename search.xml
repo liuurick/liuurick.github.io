@@ -112,26 +112,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker命令</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker搭建MySQL集群-PXC方案</title>
     <url>/2020/08/21/Docker%E6%90%AD%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<p>尝试通过Dcoekr搭建MySQL集群</p>
@@ -217,6 +197,46 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker设置镜像自启动</title>
     <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
     <content><![CDATA[<p>Docker便捷小技巧：</p>
@@ -238,23 +258,113 @@
       </tags>
   </entry>
   <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+    <title>ElasticSearch7笔记</title>
+    <url>/2020/12/02/ElasticSearch7%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>ElasticSearch7学习笔记</p>
 <a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+<h1 id="ElasticSearch原理及部署"><a href="#ElasticSearch原理及部署" class="headerlink" title="ElasticSearch原理及部署"></a>ElasticSearch原理及部署</h1><blockquote>
+<p>中文官网：<a href="https://www.elastic.co/cn/elasticsearch/" target="_blank" rel="noopener">https://www.elastic.co/cn/elasticsearch/</a></p>
+<p>阮一峰：<a href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
+</blockquote>
+<h2 id="搜索原理"><a href="#搜索原理" class="headerlink" title="搜索原理"></a>搜索原理</h2><p>ElasticSearch是独立的网络上的一个或一组进程节点，对外提供搜索服务（http/transport协议），对内就是一个搜索数据库。</p>
+<p>对于搜索，是以词为单位做最基本的搜索单元，依靠分词器构造分词（其中英文分词器有空格分词器），然后用分词构建倒排索引。</p>
+<p><img src="/images/2020120401.png" alt="image-20201204152921640"></p>
+<p>正向索引</p>
+<p><img src="/images/2020120402.png" alt="image-20201204193628122"></p>
+<p>倒排索引</p>
+<p><img src="/images/2020120403.png" alt="image-20201204193651906"></p>
+<p>试想根据某个词查找，查找出一堆文档，那到底是哪个匹配度更高呢，这时候就需要打分的逻辑</p>
+<ul>
+<li>TF：词频，这个document文档包含了多少个这个词，包含越多表明越相关</li>
+<li>DF：文档频率，包含该词的文档总数目</li>
+<li>IDF：DF取倒数</li>
+<li>打分常用计算公式：TF * IDF</li>
+</ul>
+<h2 id="名词定义"><a href="#名词定义" class="headerlink" title="名词定义"></a>名词定义</h2><p>关系型数据库MySQL对应ElasticSearch：</p>
+<ol>
+<li>MySQL 中的数据库（DataBase），等价于 ES 中的索引（Index）。</li>
+<li>MySQL 中一个数据库下面有 N 张表（Table），等价于1个索引 Index 下面有 N 多类型（Type）。</li>
+<li>MySQL 中一个数据库表（Table）下的数据由多行（Row）多列（column，属性）组成，等价于1个 Type 由多个文档（Document）和多 Field 组成。</li>
+<li>MySQL 中定义表结构、设定字段类型等价于 ES 中的 Mapping。举例说明，在一个关系型数据库里面，Schema 定义了表、每个表的字段，还有表和字段之间的关系。与之对应的，在 ES 中，Mapping 定义索引下的 Type 的字段处理规则，即索引如何建立、索引类型、是否保存原始索引 JSON 文档、是否压缩原始 JSON 文档、是否需要分词处理、如何进行分词处理等。</li>
+<li>MySQL 中的增 insert、删 delete、改 update、查 search 操作等价于 ES 中的增 PUT/POST、删 Delete、改 _update、查 GET。其中的修改指定条件的更新 update 等价于 ES 中的 update_by_query，指定条件的删除等价于 ES 中的 delete_by_query。</li>
+<li>MySQL 中的 group by、avg、sum 等函数类似于 ES 中的 Aggregations 的部分特性。</li>
+<li>MySQL 中的去重 distinct 类似 ES 中的 cardinality 操作。</li>
+<li>MySQL 中的数据迁移等价于 ES 中的 reindex 操作。</li>
+</ol>
+<p><img src="/images/2020120404.png" alt="img"></p>
+<h2 id="分布式原理"><a href="#分布式原理" class="headerlink" title="分布式原理"></a>分布式原理</h2><p><a href="https://www.cnblogs.com/jajian/p/10176604.html" target="_blank" rel="noopener">https://www.cnblogs.com/jajian/p/10176604.html</a></p>
+<h2 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h2><p><a href="https://liuurick.github.io/2020/10/11/ElasticSearch集群搭建/" target="_blank" rel="noopener">https://liuurick.github.io/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</a></p>
+<h1 id="ElasticSearch基础语法及应用"><a href="#ElasticSearch基础语法及应用" class="headerlink" title="ElasticSearch基础语法及应用"></a>ElasticSearch基础语法及应用</h1><h2 id="索引创建，更新，删除"><a href="#索引创建，更新，删除" class="headerlink" title="索引创建，更新，删除"></a>索引创建，更新，删除</h2><blockquote>
+<p>结构化索引，类似MySQL，我们会对索引结构做预定义，包括字段名，字段类型等；</p>
+<p>非结构化索引，就类似Mongo，索引结构未知，根据具体的数据来update索引的mapping。</p>
+<p>那么如何选择两种索引呢，还是跟具体的使用场景有关，结构化相比非结构化，更易优化，性能好些，非结构化相较灵活，只是频繁update索引mapping会有一定的性能损耗。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#1.索引创建</span><br><span class="line">PUT &#x2F;mytest</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#2.索引删除</span><br><span class="line">DELETE &#x2F;mytest</span><br></pre></td></tr></table></figure>
 
 
 
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
+<h2 id="索引简单语句"><a href="#索引简单语句" class="headerlink" title="索引简单语句"></a>索引简单语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#3.非结构化方式新建索引</span><br><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;name&quot;: &quot;liubin&quot;,</span><br><span class="line">  &quot;age&quot;: 24</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#4.获取索引记录</span><br><span class="line">GET &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#5.指定字段修改</span><br><span class="line">POST &#x2F;employee&#x2F;_update&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;:&#123;</span><br><span class="line">    &quot;name&quot;: &quot;刘斌&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#6.强制指定创建，若已经存在，则失败</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;123&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#7.删除某个文档</span><br><span class="line">DELETE &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#8.查询全部文档</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#9.使用结构化的方式创建索引</span><br><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line"> &quot;settings&quot;: &#123;</span><br><span class="line">   &quot;number_of_shards&quot;: 1,</span><br><span class="line">   &quot;number_of_replicas&quot;: 1</span><br><span class="line"> &#125; ,</span><br><span class="line"> &quot;mappings&quot;: &#123;</span><br><span class="line">   &quot;properties&quot;: &#123;</span><br><span class="line">     &quot;name&quot;:&#123;&quot;type&quot;: &quot;text&quot;&#125;,</span><br><span class="line">     &quot;age&quot;:&#123;&quot;type&quot;: &quot;integer&quot;&#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#10.添加数据</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;我是打工人&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#11.不带条件查询所有记录</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line"></span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#12.分页查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="索引复杂语句"><a href="#索引复杂语句" class="headerlink" title="索引复杂语句"></a>索引复杂语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#13.带关键字条件的查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#14.带排序</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#15.带filter </span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: [</span><br><span class="line">        &#123;&quot;term&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &quot;30&quot;</span><br><span class="line">        &#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#16.带聚合</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_age&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;age&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>match和term区别：<a href="https://www.cnblogs.com/yjf512/p/4897294.html" target="_blank" rel="noopener">https://www.cnblogs.com/yjf512/p/4897294.html</a></p>
+<p>match 分词查询<br>term 整体查询</p>
+</blockquote>
+<h1 id="ElasticSearch高级语法及应用"><a href="#ElasticSearch高级语法及应用" class="headerlink" title="ElasticSearch高级语法及应用"></a>ElasticSearch高级语法及应用</h1><p>更着重于分词相关的操作</p>
+<h2 id="analyze分析过程"><a href="#analyze分析过程" class="headerlink" title="analyze分析过程"></a>analyze分析过程</h2><p><code>analyse分析=分词的过程：字符过滤器--&gt;字符处理--&gt;分词过滤（分词转换，词干转化）</code></p>
+<ul>
+<li>字符过滤：使用字符过滤器转变字符。</li>
+<li>文本切分为分词：将文本（档）分为单个或多个分词。</li>
+<li>分词过滤：使用分词过滤器转变每个分词。</li>
+<li>分词索引：最终将分词存储在Lucene倒排索引中。</li>
+</ul>
+<p><img src="/images/2020120405.png" alt="20190824003615611858"></p>
+<p>利用analyze api搜索</p>
+<p>先建立索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Eating an apple a day &amp; keeps the doctor away&quot;, </span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后搜索</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;: &#123;&quot;name&quot;:&quot;eat&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>没搜到后使用analyze api查看分析处理结果，可以看到没有分出eat，所以搜不到，改成用english分词器做索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>重新创建索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">   &quot;number_of_shards&quot; : 1,</span><br><span class="line">   &quot;number_of_replicas&quot; : 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot; : &#123;</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">      &quot;name&quot; : &#123; </span><br><span class="line">        &quot;type&quot; : &quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;,</span><br><span class="line">        &quot;age&quot; : &#123;&quot;type&quot;:&quot;integer&quot;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在用<code>analyze api</code>，可以看到eat</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关性查询手段"><a href="#相关性查询手段" class="headerlink" title="相关性查询手段"></a>相关性查询手段</h2><p>类型：</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/chengyuqiang/article/details/79048800" target="_blank" rel="noopener">https://blog.csdn.net/chengyuqiang/article/details/79048800</a></p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>MySQL</category>
+        <category>ElasticSearch</category>
       </categories>
       <tags>
-        <tag>MySQL错误</tag>
+        <tag>ElasticSearch</tag>
       </tags>
   </entry>
   <entry>
@@ -489,113 +599,41 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch7笔记</title>
-    <url>/2020/12/02/ElasticSearch7%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>ElasticSearch7学习笔记</p>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
 <a id="more"></a>
 
-<h1 id="ElasticSearch原理及部署"><a href="#ElasticSearch原理及部署" class="headerlink" title="ElasticSearch原理及部署"></a>ElasticSearch原理及部署</h1><blockquote>
-<p>中文官网：<a href="https://www.elastic.co/cn/elasticsearch/" target="_blank" rel="noopener">https://www.elastic.co/cn/elasticsearch/</a></p>
-<p>阮一峰：<a href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
-</blockquote>
-<h2 id="搜索原理"><a href="#搜索原理" class="headerlink" title="搜索原理"></a>搜索原理</h2><p>ElasticSearch是独立的网络上的一个或一组进程节点，对外提供搜索服务（http/transport协议），对内就是一个搜索数据库。</p>
-<p>对于搜索，是以词为单位做最基本的搜索单元，依靠分词器构造分词（其中英文分词器有空格分词器），然后用分词构建倒排索引。</p>
-<p><img src="/images/2020120401.png" alt="image-20201204152921640"></p>
-<p>正向索引</p>
-<p><img src="/images/2020120402.png" alt="image-20201204193628122"></p>
-<p>倒排索引</p>
-<p><img src="/images/2020120403.png" alt="image-20201204193651906"></p>
-<p>试想根据某个词查找，查找出一堆文档，那到底是哪个匹配度更高呢，这时候就需要打分的逻辑</p>
-<ul>
-<li>TF：词频，这个document文档包含了多少个这个词，包含越多表明越相关</li>
-<li>DF：文档频率，包含该词的文档总数目</li>
-<li>IDF：DF取倒数</li>
-<li>打分常用计算公式：TF * IDF</li>
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
 </ul>
-<h2 id="名词定义"><a href="#名词定义" class="headerlink" title="名词定义"></a>名词定义</h2><p>关系型数据库MySQL对应ElasticSearch：</p>
-<ol>
-<li>MySQL 中的数据库（DataBase），等价于 ES 中的索引（Index）。</li>
-<li>MySQL 中一个数据库下面有 N 张表（Table），等价于1个索引 Index 下面有 N 多类型（Type）。</li>
-<li>MySQL 中一个数据库表（Table）下的数据由多行（Row）多列（column，属性）组成，等价于1个 Type 由多个文档（Document）和多 Field 组成。</li>
-<li>MySQL 中定义表结构、设定字段类型等价于 ES 中的 Mapping。举例说明，在一个关系型数据库里面，Schema 定义了表、每个表的字段，还有表和字段之间的关系。与之对应的，在 ES 中，Mapping 定义索引下的 Type 的字段处理规则，即索引如何建立、索引类型、是否保存原始索引 JSON 文档、是否压缩原始 JSON 文档、是否需要分词处理、如何进行分词处理等。</li>
-<li>MySQL 中的增 insert、删 delete、改 update、查 search 操作等价于 ES 中的增 PUT/POST、删 Delete、改 _update、查 GET。其中的修改指定条件的更新 update 等价于 ES 中的 update_by_query，指定条件的删除等价于 ES 中的 delete_by_query。</li>
-<li>MySQL 中的 group by、avg、sum 等函数类似于 ES 中的 Aggregations 的部分特性。</li>
-<li>MySQL 中的去重 distinct 类似 ES 中的 cardinality 操作。</li>
-<li>MySQL 中的数据迁移等价于 ES 中的 reindex 操作。</li>
-</ol>
-<p><img src="/images/2020120404.png" alt="img"></p>
-<h2 id="分布式原理"><a href="#分布式原理" class="headerlink" title="分布式原理"></a>分布式原理</h2><p><a href="https://www.cnblogs.com/jajian/p/10176604.html" target="_blank" rel="noopener">https://www.cnblogs.com/jajian/p/10176604.html</a></p>
-<h2 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h2><p><a href="https://liuurick.github.io/2020/10/11/ElasticSearch集群搭建/" target="_blank" rel="noopener">https://liuurick.github.io/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</a></p>
-<h1 id="ElasticSearch基础语法及应用"><a href="#ElasticSearch基础语法及应用" class="headerlink" title="ElasticSearch基础语法及应用"></a>ElasticSearch基础语法及应用</h1><h2 id="索引创建，更新，删除"><a href="#索引创建，更新，删除" class="headerlink" title="索引创建，更新，删除"></a>索引创建，更新，删除</h2><blockquote>
-<p>结构化索引，类似MySQL，我们会对索引结构做预定义，包括字段名，字段类型等；</p>
-<p>非结构化索引，就类似Mongo，索引结构未知，根据具体的数据来update索引的mapping。</p>
-<p>那么如何选择两种索引呢，还是跟具体的使用场景有关，结构化相比非结构化，更易优化，性能好些，非结构化相较灵活，只是频繁update索引mapping会有一定的性能损耗。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#1.索引创建</span><br><span class="line">PUT &#x2F;mytest</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#2.索引删除</span><br><span class="line">DELETE &#x2F;mytest</span><br></pre></td></tr></table></figure>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
 
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
 
-
-<h2 id="索引简单语句"><a href="#索引简单语句" class="headerlink" title="索引简单语句"></a>索引简单语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#3.非结构化方式新建索引</span><br><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;name&quot;: &quot;liubin&quot;,</span><br><span class="line">  &quot;age&quot;: 24</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#4.获取索引记录</span><br><span class="line">GET &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#5.指定字段修改</span><br><span class="line">POST &#x2F;employee&#x2F;_update&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;:&#123;</span><br><span class="line">    &quot;name&quot;: &quot;刘斌&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#6.强制指定创建，若已经存在，则失败</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;123&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#7.删除某个文档</span><br><span class="line">DELETE &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#8.查询全部文档</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#9.使用结构化的方式创建索引</span><br><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line"> &quot;settings&quot;: &#123;</span><br><span class="line">   &quot;number_of_shards&quot;: 1,</span><br><span class="line">   &quot;number_of_replicas&quot;: 1</span><br><span class="line"> &#125; ,</span><br><span class="line"> &quot;mappings&quot;: &#123;</span><br><span class="line">   &quot;properties&quot;: &#123;</span><br><span class="line">     &quot;name&quot;:&#123;&quot;type&quot;: &quot;text&quot;&#125;,</span><br><span class="line">     &quot;age&quot;:&#123;&quot;type&quot;: &quot;integer&quot;&#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#10.添加数据</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;我是打工人&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#11.不带条件查询所有记录</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line"></span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#12.分页查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="索引复杂语句"><a href="#索引复杂语句" class="headerlink" title="索引复杂语句"></a>索引复杂语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#13.带关键字条件的查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#14.带排序</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#15.带filter </span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: [</span><br><span class="line">        &#123;&quot;term&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &quot;30&quot;</span><br><span class="line">        &#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#16.带聚合</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_age&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;age&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>match和term区别：<a href="https://www.cnblogs.com/yjf512/p/4897294.html" target="_blank" rel="noopener">https://www.cnblogs.com/yjf512/p/4897294.html</a></p>
-<p>match 分词查询<br>term 整体查询</p>
-</blockquote>
-<h1 id="ElasticSearch高级语法及应用"><a href="#ElasticSearch高级语法及应用" class="headerlink" title="ElasticSearch高级语法及应用"></a>ElasticSearch高级语法及应用</h1><p>更着重于分词相关的操作</p>
-<h2 id="analyze分析过程"><a href="#analyze分析过程" class="headerlink" title="analyze分析过程"></a>analyze分析过程</h2><p><code>analyse分析=分词的过程：字符过滤器--&gt;字符处理--&gt;分词过滤（分词转换，词干转化）</code></p>
-<ul>
-<li>字符过滤：使用字符过滤器转变字符。</li>
-<li>文本切分为分词：将文本（档）分为单个或多个分词。</li>
-<li>分词过滤：使用分词过滤器转变每个分词。</li>
-<li>分词索引：最终将分词存储在Lucene倒排索引中。</li>
-</ul>
-<p><img src="/images/2020120405.png" alt="20190824003615611858"></p>
-<p>利用analyze api搜索</p>
-<p>先建立索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Eating an apple a day &amp; keeps the doctor away&quot;, </span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>然后搜索</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;: &#123;&quot;name&quot;:&quot;eat&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>没搜到后使用analyze api查看分析处理结果，可以看到没有分出eat，所以搜不到，改成用english分词器做索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>重新创建索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">   &quot;number_of_shards&quot; : 1,</span><br><span class="line">   &quot;number_of_replicas&quot; : 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot; : &#123;</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">      &quot;name&quot; : &#123; </span><br><span class="line">        &quot;type&quot; : &quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;,</span><br><span class="line">        &quot;age&quot; : &#123;&quot;type&quot;:&quot;integer&quot;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>在用<code>analyze api</code>，可以看到eat</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="相关性查询手段"><a href="#相关性查询手段" class="headerlink" title="相关性查询手段"></a>相关性查询手段</h2><p>类型：</p>
-<blockquote>
-<p><a href="https://blog.csdn.net/chengyuqiang/article/details/79048800" target="_blank" rel="noopener">https://blog.csdn.net/chengyuqiang/article/details/79048800</a></p>
-</blockquote>
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
+<p><img src="/images/2020101102.png" alt="node1"></p>
+<p>node2:</p>
+<p><img src="/images/2020101103.png" alt="node2"></p>
+<p>node3:</p>
+<p><img src="/images/2020101104.png" alt="node3"></p>
+<p>总览：</p>
+<p><img src="/images/2020101105.png" alt="nodes"></p>
 ]]></content>
       <categories>
         <category>ElasticSearch</category>
       </categories>
       <tags>
-        <tag>ElasticSearch</tag>
+        <tag>ElasticSearch集群</tag>
       </tags>
   </entry>
   <entry>
@@ -629,7 +667,7 @@
 <p>搜索它等于搜索它</p>
 </blockquote>
 <h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
-<p><img src="/images/202012091601.png" alt="image-20201209164003792"></p>
+<p><img src="/images/2020120901.png" alt="image-20201209164003792"></p>
 <h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
@@ -668,44 +706,6 @@
       </categories>
       <tags>
         <tag>ElasticSearch7</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
-<a id="more"></a>
-
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
-
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
-<p><img src="/images/2020101102.png" alt="node1"></p>
-<p>node2:</p>
-<p><img src="/images/2020101103.png" alt="node2"></p>
-<p>node3:</p>
-<p><img src="/images/2020101104.png" alt="node3"></p>
-<p>总览：</p>
-<p><img src="/images/2020101105.png" alt="nodes"></p>
-]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch集群</tag>
       </tags>
   </entry>
   <entry>
@@ -776,6 +776,23 @@
       </categories>
       <tags>
         <tag>Hadoop集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IDEA快捷键</title>
+    <url>/2020/09/11/IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<p>IDEA快捷键记录</p>
+<a id="more"></a>
+
+<h1 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>集成开发环境</category>
+      </categories>
+      <tags>
+        <tag>Idea快捷键</tag>
       </tags>
   </entry>
   <entry>
@@ -868,23 +885,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>IDEA快捷键</title>
-    <url>/2020/09/11/IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<p>IDEA快捷键记录</p>
-<a id="more"></a>
-
-<h1 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>集成开发环境</category>
-      </categories>
-      <tags>
-        <tag>Idea快捷键</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JSP页面El表达式不起作用</title>
     <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
     <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
@@ -904,6 +904,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>JSP</tag>
         <tag>session</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java反射详解</title>
+    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
       </tags>
   </entry>
   <entry>
@@ -989,20 +1003,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>IO流</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java反射详解</title>
-    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
       </tags>
   </entry>
   <entry>
@@ -1101,6 +1101,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java泛型详解</title>
+    <url>/2020/12/27/Java%E6%B3%9B%E5%9E%8B%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://blog.csdn.net/s10461/article/details/53941091" target="_blank" rel="noopener">https://blog.csdn.net/s10461/article/details/53941091</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>泛型</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java接口详解</title>
     <url>/2020/12/27/Java%E6%8E%A5%E5%8F%A3%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1119,41 +1133,16 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
-    <title>Java注解详解</title>
-    <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java泛型详解</title>
-    <url>/2020/12/27/Java%E6%B3%9B%E5%9E%8B%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://blog.csdn.net/s10461/article/details/53941091" target="_blank" rel="noopener">https://blog.csdn.net/s10461/article/details/53941091</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>泛型</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java面向对象详解</title>
     <url>/2020/12/27/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
 <p>面向对象的多态性：<a href="https://liuyangjun.blog.csdn.net/article/details/79788326" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/79788326</a></p>
 <p>理解java的三大特性之多态：<a href="https://www.cnblogs.com/chenssy/p/3372798.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3372798.html</a></p>
 </blockquote>
-<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><p><a href="https://www.cnblogs.com/dolphin0520/p/3803432.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3803432.html</a></p>
+<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><p><a href="https://www.cnblogs.com/dolphin0520/p/3803432.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3803432.html</a></p>
 <h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><blockquote>
 <p><a href="https://www.zhihu.com/question/30082151" target="_blank" rel="noopener">https://www.zhihu.com/question/30082151</a></p>
 </blockquote>
@@ -1192,6 +1181,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java注解详解</title>
+    <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>注解</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Jenkins笔记</title>
     <url>/2020/12/28/Jenkins%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[]]></content>
@@ -1201,6 +1204,23 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis-Plus笔记</title>
+    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>应用框架</category>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>ORM框架</category>
+      </categories>
+      <tags>
+        <tag>MyBatis-Plus</tag>
       </tags>
   </entry>
   <entry>
@@ -1228,23 +1248,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MyBatis-Plus笔记</title>
-    <url>/2021/01/01/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>应用框架</category>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>ORM框架</category>
-      </categories>
-      <tags>
-        <tag>MyBatis-Plus</tag>
       </tags>
   </entry>
   <entry>
@@ -1389,6 +1392,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>PXC集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
+    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -2102,17 +2116,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
-    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PXC方案的一些改进</title>
     <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
     <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
@@ -2195,6 +2198,19 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Docker</tag>
         <tag>MySQL集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -2683,37 +2699,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot启动时找不到或无法加载主类</title>
-    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
-<blockquote>
-<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
-</blockquote>
-<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot实现邮件发送功能</title>
     <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
     <content><![CDATA[<p>SpringBoot实现邮件发送功能</p>
@@ -2752,6 +2737,38 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>邮件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot项目测试模板</title>
+    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot启动时找不到或无法加载主类</title>
+    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
+<blockquote>
+<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
+</blockquote>
+<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -2819,17 +2836,14 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot项目测试模板</title>
-    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <title>UML学习笔记</title>
+    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
       <categories>
-        <category>SpringBoot</category>
+        <category>UML</category>
       </categories>
       <tags>
-        <tag>测试</tag>
+        <tag>UML</tag>
       </tags>
   </entry>
   <entry>
@@ -2892,17 +2906,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SpringCloud</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UML学习笔记</title>
-    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>UML</category>
-      </categories>
-      <tags>
-        <tag>UML</tag>
       </tags>
   </entry>
   <entry>
@@ -3318,35 +3321,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git命令操作笔记</title>
-    <url>/2020/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>今天看到公众号上一篇非常</p>
-<blockquote>
-<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
-<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
-<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
-<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
+    <title>hexo博客高级操作</title>
+    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<blockquote>
+<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
 </blockquote>
-<a id="more"></a>
-
-
-
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2018062701.png" alt="image"></p>
-<p>创建一个目录用于存放仓库，或在有内容的目录下操作。<br>然后切换到此目录下初始化：git –bare init<br>git status 查看仓库状态<br>branches 分支目录<br>config 定义项目特有的配置选项<br>description 仅供git web使用<br>HEAD 当前分支<br>hooks 包含git钩子文件<br>info 包含一个全局排除文件<br>objects 存放所有数据内容，有info、pack两个子文件夹<br>refs 存放只想数据（分支）的提交对象的指针<br>index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成<br>工作目录 暂存区 本地仓库 远程仓库<br>git add git commit git push</p>
-<p>git add FILE 添加file到暂存区<br>git add . 添加目录中所有改动过的文件到暂存区<br>git rm –cached FILE 将暂存区的FILE 撤回到工作区<br>git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）<br>git commit -m “add newfile a” 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）<br>【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m “输入的备注”添加到本地仓库】<br>修改文件名两种方式：<br>1、 mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）<br>git rm –cached a<br>git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）<br>git commit -m “modified a a.txt” a改名a.txt并提交<br>2、git mv old new 直接更改文件名，改完直接git commit提交即可</p>
-<p>git diff 比对工作目录与缓存区有什么不同<br>git diff –cached 比对暂存区与本地仓库有什么不同</p>
-<p>ls检查下当前目录下是否有仓库信息，<br>git remote add origin <a href="mailto:git@10.0.0.227">git@10.0.0.227</a>:web/control.git 创建远程仓库origin<br>git remote 查看当前远程仓库的名称<br>git remote remove origin 删除远程仓库origin</p>
-<p>git log 查看历史提交信息<br>git log –online 查看历史提交信息的哈希值<br>git log –online –decorate 历史提交信息并查看当前指针位置<br>git log -p 展示具体变化内容<br>git log -1 展示一条提交信息的内容<br>git log -1 -p 展示详细具体的最后一条变更的信息内容</p>
-<p>git reset –hard haxizhi 恢复到从前的haxizhi位置<br>git reflog 查看所有历史提交信息，包括回复到指定位置之前的<br>git reset –hard haxizhi 前后都能回滚 来回滚</p>
-<p>git branch 查看分支<br>git branch fenzhi 创建分支fenzhi<br>git checkout fenzhi 切换分支fenzhi<br>git checkout -b testing 创建并切换到分支testing<br>删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复<br>git branch -d testing 删除分支testing<br>git merge testing 合并分支<br>冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</p>
-<p>git tag -a v1.0 -m “hehe” 当前状态打标签为V1.0<br>git tag -a V1.0 haxizhi -m “hehe” 把某个哈希状态的状态打标签<br>git show v1.0 查看某个标签的信息<br>git reset –hard v2.0 回滚数据到V2.0<br>git tag -d v2.0 删除V2.0标签的数据</p>
-<p>git remote add origin <a href="mailto:git@10.0.0.227">git@10.0.0.227</a>:web/hehe.git 添加远程仓库<br>git push -u origin master<br>gitlab :git服务器的公钥放到gitlab里即可不用输入密码推送代码<br>git pull origin master 把origin分支拉到本地与master分支合并</p>
-]]></content>
+<a id="more"></a>]]></content>
       <categories>
-        <category>git</category>
+        <category>hexo</category>
       </categories>
       <tags>
-        <tag>git常见命令</tag>
+        <tag>next</tag>
       </tags>
   </entry>
   <entry>
@@ -3379,20 +3364,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>hexo博客高级操作</title>
-    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<blockquote>
-<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
-</blockquote>
-<a id="more"></a>]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>next</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ubuntu安装VMware Tools</title>
     <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
     <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
@@ -3410,6 +3381,38 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git命令操作笔记</title>
+    <url>/2020/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>今天看到公众号上一篇非常</p>
+<blockquote>
+<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
+<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
+<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
+<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
+</blockquote>
+<a id="more"></a>
+
+
+
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2018062701.png" alt="image"></p>
+<p>创建一个目录用于存放仓库，或在有内容的目录下操作。<br>然后切换到此目录下初始化：git –bare init<br>git status 查看仓库状态<br>branches 分支目录<br>config 定义项目特有的配置选项<br>description 仅供git web使用<br>HEAD 当前分支<br>hooks 包含git钩子文件<br>info 包含一个全局排除文件<br>objects 存放所有数据内容，有info、pack两个子文件夹<br>refs 存放只想数据（分支）的提交对象的指针<br>index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成<br>工作目录 暂存区 本地仓库 远程仓库<br>git add git commit git push</p>
+<p>git add FILE 添加file到暂存区<br>git add . 添加目录中所有改动过的文件到暂存区<br>git rm –cached FILE 将暂存区的FILE 撤回到工作区<br>git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）<br>git commit -m “add newfile a” 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）<br>【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m “输入的备注”添加到本地仓库】<br>修改文件名两种方式：<br>1、 mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）<br>git rm –cached a<br>git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）<br>git commit -m “modified a a.txt” a改名a.txt并提交<br>2、git mv old new 直接更改文件名，改完直接git commit提交即可</p>
+<p>git diff 比对工作目录与缓存区有什么不同<br>git diff –cached 比对暂存区与本地仓库有什么不同</p>
+<p>ls检查下当前目录下是否有仓库信息，<br>git remote add origin <a href="mailto:git@10.0.0.227">git@10.0.0.227</a>:web/control.git 创建远程仓库origin<br>git remote 查看当前远程仓库的名称<br>git remote remove origin 删除远程仓库origin</p>
+<p>git log 查看历史提交信息<br>git log –online 查看历史提交信息的哈希值<br>git log –online –decorate 历史提交信息并查看当前指针位置<br>git log -p 展示具体变化内容<br>git log -1 展示一条提交信息的内容<br>git log -1 -p 展示详细具体的最后一条变更的信息内容</p>
+<p>git reset –hard haxizhi 恢复到从前的haxizhi位置<br>git reflog 查看所有历史提交信息，包括回复到指定位置之前的<br>git reset –hard haxizhi 前后都能回滚 来回滚</p>
+<p>git branch 查看分支<br>git branch fenzhi 创建分支fenzhi<br>git checkout fenzhi 切换分支fenzhi<br>git checkout -b testing 创建并切换到分支testing<br>删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复<br>git branch -d testing 删除分支testing<br>git merge testing 合并分支<br>冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</p>
+<p>git tag -a v1.0 -m “hehe” 当前状态打标签为V1.0<br>git tag -a V1.0 haxizhi -m “hehe” 把某个哈希状态的状态打标签<br>git show v1.0 查看某个标签的信息<br>git reset –hard v2.0 回滚数据到V2.0<br>git tag -d v2.0 删除V2.0标签的数据</p>
+<p>git remote add origin <a href="mailto:git@10.0.0.227">git@10.0.0.227</a>:web/hehe.git 添加远程仓库<br>git push -u origin master<br>gitlab :git服务器的公钥放到gitlab里即可不用输入密码推送代码<br>git pull origin master 把origin分支拉到本地与master分支合并</p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git常见命令</tag>
       </tags>
   </entry>
   <entry>
@@ -3433,29 +3436,12 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>实体类的4种类型</title>
-    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>实体类的4种类型总结</p>
-<a id="more"></a>
-
-<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
-<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
-<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
-<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
-<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
-<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-      </categories>
-      <tags>
-        <tag>Domain Object</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>微服务架构编码构建</title>
     <url>/2021/01/01/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%BC%96%E7%A0%81%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h1 id="微服务架构编码构建"><a href="#微服务架构编码构建" class="headerlink" title="微服务架构编码构建"></a>微服务架构编码构建</h1><blockquote>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="微服务架构编码构建"><a href="#微服务架构编码构建" class="headerlink" title="微服务架构编码构建"></a>微服务架构编码构建</h1><blockquote>
 <p>约定 &gt; 配置 &gt; 编码</p>
 </blockquote>
 <h2 id="IDEA新建project工作空间"><a href="#IDEA新建project工作空间" class="headerlink" title="IDEA新建project工作空间"></a>IDEA新建project工作空间</h2><h3 id="微服务cloud整体聚合父工程Project"><a href="#微服务cloud整体聚合父工程Project" class="headerlink" title="微服务cloud整体聚合父工程Project"></a>微服务cloud整体聚合父工程Project</h3><ol>
@@ -3489,9 +3475,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 
 
 
-<p>Maven工程落地细节复习</p>
-<p>Maven中的dependencyManagement和dependencies</p>
+<p><strong>Maven中的dependencyManagement和dependencies</strong></p>
+<p>​        使用dependencyManagement统一管理项目的版本号，确保应用的各个项目的依赖和版本一致，才能保证测试的和发布的是相同的成果，因此，在顶层pom中定义共同的依赖关系。同时可以避免在每个使用的子项目中都声明一个版本号，这样想升级或者切换到另一个版本时，只需要在父类容器里更新，不需要任何一个子项目的修改。</p>
+<p>​        如果某个子项目需要另外一个版本号时，只需要在dependencies中声明一个版本号即可。子类就会使用子类声明的版本号，不继承于父类版本号。</p>
 <p>maven中跳过单元测试</p>
+<p><img src="/images/2021010106.png" alt="image-20210102104537833"></p>
 <p>父工程创建完成执行mvn:install将父工程发布到仓库方便子工程继承</p>
 <h2 id="Rest微服务工程构建"><a href="#Rest微服务工程构建" class="headerlink" title="Rest微服务工程构建"></a>Rest微服务工程构建</h2><p>对于子模块的创建主要分为以下几步：</p>
 <ol>
@@ -3537,8 +3525,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>开启自动构建</p>
 <p><img src="/images/2021010101.png" alt="image-20210101210359900"></p>
 <p>update the value of</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210101210442984.png" alt="image-20210101210442984"></p>
-<p>​    <img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210101210451557.png" alt="image-20210101210451557"></p>
+<p>快捷键 <code>ctrl+shift+alt+/</code>，然后选择Registry</p>
+<p><img src="/images/2021010107.png" alt="image-20210102105046131"></p>
+<p><img src="/images/2021010108.png" alt="image-20210102105307801"></p>
 <p>最后重启IDEA</p>
 <h3 id="3-cloud-consumer-order80微服务消费者订单Module模块"><a href="#3-cloud-consumer-order80微服务消费者订单Module模块" class="headerlink" title="3.cloud-consumer-order80微服务消费者订单Module模块"></a>3.cloud-consumer-order80微服务消费者订单Module模块</h3><h3 id="4-工程重构"><a href="#4-工程重构" class="headerlink" title="4.工程重构"></a>4.工程重构</h3><p>在创建多个子mode的时候，会出现重复部分，此时就需要重构</p>
 <p>重构的步骤也比较简单，主要有以下几步：</p>
@@ -3557,6 +3546,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SpringCloud</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实体类的4种类型</title>
+    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>实体类的4种类型总结</p>
+<a id="more"></a>
+
+<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
+<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
+<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
+<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
+<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
+<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>Domain Object</tag>
       </tags>
   </entry>
   <entry>
@@ -3784,30 +3793,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
-
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>服务器软件盘点</title>
     <url>/2020/12/30/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9B%98%E7%82%B9/</url>
     <content><![CDATA[<p>静态服务：主要提供静态资源，不同用户访问到的资源相同。本博客就是典型的静态服务（Hexo+Next）<br>动态服务：提供动态服务，不同用户访问到的资源不同，涉及到数据之类的。例如类似<a href="https://github.com/halo-dev/halo" target="_blank" rel="noopener">halo</a> </p>
@@ -3835,6 +3820,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>服务器软件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -4034,26 +4043,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>读《深入浅出MyBatis技术原理与实战》</title>
-    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
-    <content><![CDATA[<p>1.MyBatis简介</p>
-<p>2 MyBatis入门</p>
-<p>3 配置</p>
-<p>4 映射器</p>
-<p>5 动态SQL</p>
-<p>6 MyBatis的解析和运行原理</p>
-<p>7 插件</p>
-<p>8 MyBatis-Spring</p>
-<p>9 实用的场景</p>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>MyBatis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>读《Java多线程核心技术》</title>
     <url>/2020/12/30/%E8%AF%BB%E3%80%8AJava%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E3%80%8B/</url>
     <content><![CDATA[<blockquote>
@@ -4074,6 +4063,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>读《深入浅出MyBatis技术原理与实战》</title>
+    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
+    <content><![CDATA[<p>1.MyBatis简介</p>
+<p>2 MyBatis入门</p>
+<p>3 配置</p>
+<p>4 映射器</p>
+<p>5 动态SQL</p>
+<p>6 MyBatis的解析和运行原理</p>
+<p>7 插件</p>
+<p>8 MyBatis-Spring</p>
+<p>9 实用的场景</p>
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
