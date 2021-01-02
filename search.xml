@@ -368,78 +368,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch搜索优化</title>
-    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
-<ol>
-<li>定制化分词器</li>
-<li>同义词扩展</li>
-<li>相关性重塑</li>
-</ol>
-<a id="more"></a>
-
-<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
-<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
-<p>然后将文件复制到其余的两个节点</p>
-<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
-
-<p>将文件复制到其余的两个节点</p>
-<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Http请求需要返回两个头部，last-modified和etag</p>
-<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
-</blockquote>
-<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
-<blockquote>
-<p>语义相近或相同</p>
-<p>品牌类目关联</p>
-<p>搜索它等于搜索它</p>
-</blockquote>
-<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
-<p><img src="/images/2020120901.png" alt="image-20201209164003792"></p>
-<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>索引测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
-<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
-</blockquote>
-<p>相关性搜索</p>
-<p>让搜索引擎理解语义</p>
-<p>影响召回及排序</p>
-<h2 id="重新构建es索引"><a href="#重新构建es索引" class="headerlink" title="重新构建es索引"></a>重新构建es索引</h2><p>采取词性影响召回策略模型 通过category_id</p>
-<h2 id="引入Java代码："><a href="#引入Java代码：" class="headerlink" title="引入Java代码："></a>引入Java代码：</h2><p>构造分类：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Integer <span class="title">getCategoryIdByToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer key : categoryWorkMap.keySet()) &#123;</span><br><span class="line">        List&lt;String&gt; tokenList = categoryWorkMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (tokenList.contains(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> key;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; categoryWorkMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    categoryWorkMap.put(<span class="number">1</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    categoryWorkMap.put(<span class="number">2</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"吃饭"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"下午茶"</span>);</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"休息"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"睡觉"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"住宿"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch7</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ElasticSearch7进阶</title>
     <url>/2020/12/06/ElasticSearch7%E8%BF%9B%E9%98%B6/</url>
     <content><![CDATA[<p>ElasticSearch的进阶学习主要有两种分别是通读文档和案例学习。这里我选择的是通过案例来深入学习es。</p>
@@ -671,6 +599,78 @@
       </tags>
   </entry>
   <entry>
+    <title>ElasticSearch搜索优化</title>
+    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
+<ol>
+<li>定制化分词器</li>
+<li>同义词扩展</li>
+<li>相关性重塑</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
+<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
+<p>然后将文件复制到其余的两个节点</p>
+<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将文件复制到其余的两个节点</p>
+<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Http请求需要返回两个头部，last-modified和etag</p>
+<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
+</blockquote>
+<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
+<blockquote>
+<p>语义相近或相同</p>
+<p>品牌类目关联</p>
+<p>搜索它等于搜索它</p>
+</blockquote>
+<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
+<p><img src="/images/2020120901.png" alt="image-20201209164003792"></p>
+<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>索引测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
+<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
+</blockquote>
+<p>相关性搜索</p>
+<p>让搜索引擎理解语义</p>
+<p>影响召回及排序</p>
+<h2 id="重新构建es索引"><a href="#重新构建es索引" class="headerlink" title="重新构建es索引"></a>重新构建es索引</h2><p>采取词性影响召回策略模型 通过category_id</p>
+<h2 id="引入Java代码："><a href="#引入Java代码：" class="headerlink" title="引入Java代码："></a>引入Java代码：</h2><p>构造分类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Integer <span class="title">getCategoryIdByToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer key : categoryWorkMap.keySet()) &#123;</span><br><span class="line">        List&lt;String&gt; tokenList = categoryWorkMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (tokenList.contains(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> key;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; categoryWorkMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    categoryWorkMap.put(<span class="number">1</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    categoryWorkMap.put(<span class="number">2</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"吃饭"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"下午茶"</span>);</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"休息"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"睡觉"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"住宿"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch7</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ElasticSearch集群搭建</title>
     <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
@@ -885,6 +885,43 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>JVM学习笔记</title>
+    <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="为什么学习JVM"><a href="#为什么学习JVM" class="headerlink" title="为什么学习JVM"></a>为什么学习JVM</h1><p>1.面试需要</p>
+<p>2.更深入的理解Java</p>
+<ul>
+<li>一个类是如何加载到JVM的</li>
+<li>它在JVM中是如何存储的</li>
+<li>如何运行的</li>
+<li>方法是如何调用的</li>
+<li>运行时内存怎么分配的</li>
+<li>产生垃圾后是如何回收的</li>
+</ul>
+<p>3.排查解决故障</p>
+<ul>
+<li>内存溢出导致宕机了</li>
+<li>CPU使用率居高不下</li>
+<li>频繁卡顿</li>
+<li>应用越跑越慢</li>
+</ul>
+<p>4.性能调优</p>
+<ul>
+<li>合理的分配内存</li>
+<li>调整参数</li>
+<li>选择GC垃圾回收器</li>
+<li>第三方中间件的适配</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JSP页面El表达式不起作用</title>
     <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
     <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
@@ -955,43 +992,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>IO流</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JVM学习笔记</title>
-    <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="为什么学习JVM"><a href="#为什么学习JVM" class="headerlink" title="为什么学习JVM"></a>为什么学习JVM</h1><p>1.面试需要</p>
-<p>2.更深入的理解Java</p>
-<ul>
-<li>一个类是如何加载到JVM的</li>
-<li>它在JVM中是如何存储的</li>
-<li>如何运行的</li>
-<li>方法是如何调用的</li>
-<li>运行时内存怎么分配的</li>
-<li>产生垃圾后是如何回收的</li>
-</ul>
-<p>3.排查解决故障</p>
-<ul>
-<li>内存溢出导致宕机了</li>
-<li>CPU使用率居高不下</li>
-<li>频繁卡顿</li>
-<li>应用越跑越慢</li>
-</ul>
-<p>4.性能调优</p>
-<ul>
-<li>合理的分配内存</li>
-<li>调整参数</li>
-<li>选择GC垃圾回收器</li>
-<li>第三方中间件的适配</li>
-</ul>
-<a id="more"></a>
-
-<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
-      <categories>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
       </tags>
   </entry>
   <entry>
@@ -1150,11 +1150,16 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p><strong>Java泛型设计原则：只要在编译时期没有出现警告，那么运行时期就不会出现ClassCastException异常</strong>.</p>
 <p>泛型：<strong>把类型明确的工作推迟到创建对象或调用方法的时候才去明确的特殊的类型</strong></p>
 </blockquote>
-<p>让数据类型变得参数化</p>
+<p><strong>让数据类型变得参数化</strong>，也就是所操作的数据类型被指定为一个参数</p>
 <ul>
 <li>定义泛型时，对应的数据类型是不确定的</li>
 <li>泛型方法被调用时，会指定具体类型</li>
 <li>核心目标：解决容器类型在编译时安全检查的问题</li>
+</ul>
+<p>泛型优点：</p>
+<ul>
+<li>类型安全</li>
+<li>消除了强制类型的转换</li>
 </ul>
 <p>demo:</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List ls = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        ls.add(<span class="string">"hello"</span>);</span><br><span class="line">        ls.add(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ls.size(); i++) &#123;</span><br><span class="line">            String item = (String) ls.get(i);</span><br><span class="line">            System.out.println(item);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1164,20 +1169,67 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>这个类型转换的错误在运行期才报出来，显然是不符合我们的预期，应该在编译器就应该解决掉。</p>
 <p>设置List容器的类型，就可以解决上面的问题</p>
 <p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122102.png" alt="image-20201221104807273"></p>
-<h1 id="2-泛型基础"><a href="#2-泛型基础" class="headerlink" title="2 泛型基础"></a>2 泛型基础</h1><h2 id="1-泛型类"><a href="#1-泛型类" class="headerlink" title="1.泛型类"></a>1.泛型类</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class 类名称&lt;泛型标识 : 可以随便写任意标识号 , 标识指定的泛型的类型&gt;&#123;</span><br><span class="line">	修饰符 泛型标识 &#x2F;* (成员变量类型) *&#x2F;</span><br><span class="line">	修饰符 构造函数(泛型标识 参数)</span><br><span class="line">	......</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="2-泛型基础"><a href="#2-泛型基础" class="headerlink" title="2 泛型基础"></a>2 泛型基础</h1><h2 id="1-泛型类"><a href="#1-泛型类" class="headerlink" title="1.泛型类"></a>1.泛型类</h2><ul>
+<li>泛型类的定义语法：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">class 类名称&lt;泛型标识 : 可以随便写任意标识号 , 标识指定的泛型的类型&gt;&#123;</span><br><span class="line">	修饰符 泛型标识 <span class="comment">/* (成员变量类型) */</span></span><br><span class="line">	修饰符 构造函数(泛型标识 参数)</span><br><span class="line">	......</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
+<ul>
+<li><p>常用的泛型标识：<code>T、E、K、V</code></p>
+<ul>
+<li>E - Element (在集合中使用，因为集合中存放的是元素)</li>
+<li>T - Type（表示Java 类，包括基本的类和我们自定义的类）</li>
+<li>K - Key（表示键，比如Map中的key）</li>
+<li>V - Value（表示值）</li>
+<li>N - Number（表示数值类型）</li>
+<li>？ - （表示不确定的java类型）</li>
+<li>S、U、V - 2nd、3rd、4th types</li>
+</ul>
+</li>
+<li><p>使用语法：</p>
+<p><code>类名&lt;具体的数据类型&gt; 对象名 = new 类名&lt;具体的数据类型&gt;();</code></p>
+</li>
+<li><p>Java7以后，后面的&lt;&gt;中的具体的数据类型可以省略不写</p>
+<p><code>类名&lt;具体的数据类型&gt; 对象名 = new 类名&lt;&gt;();</code></p>
+</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericClassExample</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//member这个成员变量的类型为T，T的类型由外部指定</span></span><br><span class="line">    <span class="keyword">private</span> T member;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//泛型构造方法形参member的类型也为T，T的类型由外部指定</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">GenericClassExample</span><span class="params">(T member)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.member = member;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// member的get set方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">handleSomething</span><span class="params">(T target)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//泛型类中是可以定义正常的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayhello</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello "</span>+ name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122103.png" alt="image-20201221111507121"></p>
 <p><strong>注意：</strong></p>
 <ul>
-<li><p>泛型参数不支持基本类型</p>
+<li><p>泛型类在创建对象的时候，没有指定类型，将按照Object类型来操作</p>
+</li>
+<li><p>泛型参数不支持基本类型，只能是类类型</p>
 <p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122104.png" alt="image-20201221113906058"></p>
 </li>
 <li><p>泛型相关的信息不会进入到运行时阶段</p>
 <p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122105.png" alt="image-20201221114453417"></p>
+</li>
+<li><p>同一泛型类，根据不同数据类型创建对象，本质是同一类型</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 泛型类的定义</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt; 泛型标识-类型形参</span></span><br><span class="line"><span class="comment"> *           T 创建对象的时候指定具体的数据类型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generic</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * T，是由外部</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T key;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Generic</span><span class="params">(T key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setKey</span><span class="params">(T key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"GenericDemo&#123;"</span> +</span><br><span class="line">                <span class="string">"key="</span> + key +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class main &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Generic&lt;String&gt; stringGeneric &#x3D; new Generic&lt;&gt;(&quot;hello&quot;);</span><br><span class="line">        Generic&lt;Integer&gt; integerGeneric &#x3D; new Generic(100);</span><br><span class="line"></span><br><span class="line">        System.out.println(stringGeneric.getClass());</span><br><span class="line">        System.out.println(integerGeneric.getClass());</span><br><span class="line"></span><br><span class="line">        System.out.println(stringGeneric.getClass() &#x3D;&#x3D; integerGeneric.getClass());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210102213439918.png" alt="image-20210102213439918"></p>
+</li>
+</ul>
+<h2 id="2-泛型类派生子类"><a href="#2-泛型类派生子类" class="headerlink" title="2.泛型类派生子类"></a>2.泛型类派生子类</h2><ul>
+<li><p>子类也是泛型类，子类和父类的泛型类型要一致</p>
+<p><code>class ChildGeneric&lt;T&gt; extends Generic&lt;T&gt;</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//父类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> E value;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setValue</span><span class="params">(E value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 泛型类派生子类，子类也是泛型类，那么子类的泛型标识要和父类一致。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChildFirst</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">Parent</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getValue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>子类不是泛型类，父类要明确泛型的数据类型</p>
+<p><code>class ChildGeneric extends Generic&lt;String&gt;</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 泛型类派生子类，如果子类不是泛型类，那么父类要明确数据类型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChildSecond</span> <span class="keyword">extends</span> <span class="title">Parent</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getValue();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setValue</span><span class="params">(Integer value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.setValue(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
 </li>
 </ul>
 <blockquote>
@@ -1193,10 +1245,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 
 
 
-<h2 id="2-泛型接口"><a href="#2-泛型接口" class="headerlink" title="2.泛型接口"></a>2.泛型接口</h2><blockquote>
+
+
+<h2 id="3-泛型接口"><a href="#3-泛型接口" class="headerlink" title="3.泛型接口"></a>3.泛型接口</h2><blockquote>
 <p>泛型接口与泛型类的用法基本相同，常用于数据类型的生产工厂接口中</p>
 </blockquote>
-<h2 id="3-泛型通配符"><a href="#3-泛型通配符" class="headerlink" title="3 泛型通配符"></a>3 泛型通配符</h2><p>我们知道<code>Ingeter</code>是<code>Number</code>的一个子类，同时在特性章节中我们也验证过<code>Generic&lt;Ingeter&gt;</code>与<code>Generic&lt;Number&gt;</code>实际上是相同的一种基本类型。那么问题来了，在使用<code>Generic&lt;Number&gt;</code>作为形参的方法中，能否使用<code>Generic&lt;Ingeter&gt;</code>的实例传入呢？在逻辑上类似于<code>Generic&lt;Number&gt;</code>和<code>Generic&lt;Ingeter&gt;</code>是否可以看成具有父子关系的泛型类型呢？</p>
+<p><strong>定义方法：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> 接口名称 &lt;泛型标识，泛型标识，…&gt; </span>&#123;</span><br><span class="line">	泛型标识 方法名(); </span><br><span class="line">	.....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>泛型接口的使用</strong>：</p>
+<ul>
+<li>实现类也是泛型类，实现类和接口的泛型类型要一致</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 泛型接口</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Generator</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">getKey</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 泛型接口的实现类，是一个泛型类，</span></span><br><span class="line"><span class="comment"> * 那么要保证实现接口的泛型类泛型标识包含泛型接口的泛型标识</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;E&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>,<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Generator</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T key;</span><br><span class="line">    <span class="keyword">private</span> E value;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T key, E value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>实现类不是泛型类，接口要明确数据类型</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 实现泛型接口的类，不是泛型类，需要明确实现泛型接口的数据类型。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Apple</span> <span class="keyword">implements</span> <span class="title">Generator</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello generic"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-泛型通配符"><a href="#4-泛型通配符" class="headerlink" title="4.泛型通配符"></a>4.泛型通配符</h2><p>我们知道<code>Ingeter</code>是<code>Number</code>的一个子类，同时在特性章节中我们也验证过<code>Generic&lt;Ingeter&gt;</code>与<code>Generic&lt;Number&gt;</code>实际上是相同的一种基本类型。那么问题来了，在使用<code>Generic&lt;Number&gt;</code>作为形参的方法中，能否使用<code>Generic&lt;Ingeter&gt;</code>的实例传入呢？在逻辑上类似于<code>Generic&lt;Number&gt;</code>和<code>Generic&lt;Ingeter&gt;</code>是否可以看成具有父子关系的泛型类型呢？</p>
 <p>为了弄清楚这个问题，我们使用<code>Generic&lt;T&gt;</code>这个泛型类继续看下面的例子：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showKeyValue1</span><span class="params">(Generic&lt;Number&gt; obj)</span></span>&#123;</span><br><span class="line">    Log.d(<span class="string">"泛型测试"</span>,<span class="string">"key value is "</span> + obj.getKey());</span><br><span class="line">&#125;<span class="number">123</span></span><br><span class="line">Generic&lt;Integer&gt; gInteger = <span class="keyword">new</span> Generic&lt;Integer&gt;(<span class="number">123</span>);</span><br><span class="line">Generic&lt;Number&gt; gNumber = <span class="keyword">new</span> Generic&lt;Number&gt;(<span class="number">456</span>);</span><br><span class="line"></span><br><span class="line">showKeyValue(gNumber);</span><br><span class="line"></span><br><span class="line"><span class="comment">// showKeyValue这个方法编译器会为我们报错：Generic&lt;java.lang.Integer&gt; </span></span><br><span class="line"><span class="comment">// cannot be applied to Generic&lt;java.lang.Number&gt;</span></span><br><span class="line"><span class="comment">// showKeyValue(gInteger);12345678</span></span><br></pre></td></tr></table></figure>
 
@@ -1207,7 +1275,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 
 <p>类型通配符一般是使用？代替具体的类型实参，注意了，<strong>此处’？’是类型实参，而不是类型形参</strong> 。重要说三遍！<strong>此处’？’是类型实参，而不是类型形参</strong> ！ <strong>此处’？’是类型实参，而不是类型形参</strong> ！再直白点的意思就是，此处的？和Number、String、Integer一样都是一种实际的类型，可以把？看成所有类型的父类。是一种真实的类型。</p>
 <p>可以解决当具体类型不确定的时候，这个通配符就是 <strong>?</strong> ；<strong>当操作类型时，不需要使用类型的具体功能时，只使用Object类中的功能。那么可以用 ? 通配符来表未知类型。</strong></p>
-<h2 id="4-泛型方法"><a href="#4-泛型方法" class="headerlink" title="4 泛型方法"></a>4 泛型方法</h2><blockquote>
+<h2 id="5-泛型方法"><a href="#5-泛型方法" class="headerlink" title="5.泛型方法"></a>5.泛型方法</h2><blockquote>
 <p>泛型方法既能用在泛型类、泛型接口里，也能用在普通类或者接口里</p>
 </blockquote>
 ]]></content>
@@ -1402,30 +1470,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
-    <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
-<a id="more"></a>
-
-<p><strong>DATE</strong>类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以’YYYY-MM-DD’格式显示DATE值，支持的范围是’1000-01-01’到’9999-12-31’。</p>
-<p><strong>TIMESTAMP</strong>列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。</p>
-<p><strong>TIME</strong>数据类型表示一天中的时间。MySQL检索并且以”HH:MM:SS”格式显示TIME值。支持的范围是’00:00:00’到’23:59:59’。</p>
-<p>创建数据库表测试：</p>
-<p><img src="/images/2020111501.png" alt="image-20201115191901682"></p>
-<p><img src="http://www.linuxidc.com/upload/2012_08/120811102669351.jpg" alt="img"></p>
-<p><strong>datetime和timestamp的区别：</strong><br>1.datetime 的日期范围比较大；如果有1970年以前的数据还是要用datetime.但是timestamp 所占存储空间比较小。<br>2.timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新。</p>
-<p>3.timestamp比较受时区timezone的影响以及MYSQL版本和服务器的<strong>SQL</strong> MODE的影响.</p>
-<p>使用一个常用的格式集的任何一个，你可以指定DATETIME、</p>
-<p><strong>DATE和TIMESTAMP值：</strong><br>‘YYYY-MM-DD HH:MM:SS’或’YY-MM-DD HH:MM:SS’格式的一个字符串,允许一种”宽松”的语法:任何标点可用作在日期部分和时间部分之间的分隔符。例如，’98-12-31 11:30:45’、’98.12.31 11+30+45’、’98/12/31 11<em>30</em>45’和‘98@12@31 11^30^45’是等价的。</p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL日期类型</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
     <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
@@ -1462,6 +1506,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
+    <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
+<a id="more"></a>
+
+<p><strong>DATE</strong>类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以’YYYY-MM-DD’格式显示DATE值，支持的范围是’1000-01-01’到’9999-12-31’。</p>
+<p><strong>TIMESTAMP</strong>列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。</p>
+<p><strong>TIME</strong>数据类型表示一天中的时间。MySQL检索并且以”HH:MM:SS”格式显示TIME值。支持的范围是’00:00:00’到’23:59:59’。</p>
+<p>创建数据库表测试：</p>
+<p><img src="/images/2020111501.png" alt="image-20201115191901682"></p>
+<p><img src="http://www.linuxidc.com/upload/2012_08/120811102669351.jpg" alt="img"></p>
+<p><strong>datetime和timestamp的区别：</strong><br>1.datetime 的日期范围比较大；如果有1970年以前的数据还是要用datetime.但是timestamp 所占存储空间比较小。<br>2.timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新。</p>
+<p>3.timestamp比较受时区timezone的影响以及MYSQL版本和服务器的<strong>SQL</strong> MODE的影响.</p>
+<p>使用一个常用的格式集的任何一个，你可以指定DATETIME、</p>
+<p><strong>DATE和TIMESTAMP值：</strong><br>‘YYYY-MM-DD HH:MM:SS’或’YY-MM-DD HH:MM:SS’格式的一个字符串,允许一种”宽松”的语法:任何标点可用作在日期部分和时间部分之间的分隔符。例如，’98-12-31 11:30:45’、’98.12.31 11+30+45’、’98/12/31 11<em>30</em>45’和‘98@12@31 11^30^45’是等价的。</p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL日期类型</tag>
       </tags>
   </entry>
   <entry>
@@ -2291,35 +2359,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Redis应用场景</title>
-    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
-    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
-</blockquote>
-<blockquote>
-<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
-</blockquote>
-<p>Redis常见场景主要有以下几种:</p>
-<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
-<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
-<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
-<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
-<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
-<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
-<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
-<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
-]]></content>
-      <categories>
-        <category>Redis</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PXC脚本命令</title>
     <url>/2020/12/13/PXC%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p>MySQL集群脚本命令</p>
@@ -2736,6 +2775,48 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Redis应用场景</title>
+    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+</blockquote>
+<blockquote>
+<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+</blockquote>
+<p>Redis常见场景主要有以下几种:</p>
+<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
+<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
+<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
+<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
+<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
+<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
+<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
+<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
+]]></content>
+      <categories>
+        <category>Redis</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -2773,19 +2854,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -3443,20 +3511,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>hexo博客高级操作</title>
-    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<blockquote>
-<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
-</blockquote>
-<a id="more"></a>]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>next</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>git常见错误</title>
     <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
     <content><![CDATA[<p>记录git常见错误</p>
@@ -3483,6 +3537,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>git常见错误</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客高级操作</title>
+    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<blockquote>
+<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
+</blockquote>
+<a id="more"></a>]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
       </tags>
   </entry>
   <entry>
@@ -3913,6 +3981,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<p>操作系统课设</p>
@@ -3997,30 +4089,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
-
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
