@@ -20,18 +20,24 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;s10461&#x2F;article&#x2F;details&#x2F;53941091">
+  <meta name="description" content="从今天开始复习Java基础知识，泛型是JavaSE中一个很重要的知识点，这里写一篇文档，强化自己的记忆。 [TOC]">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java泛型详解">
 <meta property="og:url" content="http://yoursite.com/2020/12/27/Java%E6%B3%9B%E5%9E%8B%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="lb Blog">
-<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;s10461&#x2F;article&#x2F;details&#x2F;53941091">
+<meta property="og:description" content="从今天开始复习Java基础知识，泛型是JavaSE中一个很重要的知识点，这里写一篇文档，强化自己的记忆。 [TOC]">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122101.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122102.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122103.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122104.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122105.png">
 <meta property="article:published_time" content="2020-12-27T10:32:16.000Z">
-<meta property="article:modified_time" content="2021-01-02T03:48:30.991Z">
+<meta property="article:modified_time" content="2021-01-02T12:20:17.614Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="泛型">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122101.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/27/Java%E6%B3%9B%E5%9E%8B%E8%AF%A6%E8%A7%A3/">
 
@@ -248,8 +254,77 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
-<p><a href="https://blog.csdn.net/s10461/article/details/53941091" target="_blank" rel="noopener">https://blog.csdn.net/s10461/article/details/53941091</a></p>
+        <p>从今天开始复习Java基础知识，泛型是JavaSE中一个很重要的知识点，这里写一篇文档，强化自己的记忆。</p>
+<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>泛型就这么简单:<a href="https://segmentfault.com/a/1190000014120746" target="_blank" rel="noopener">https://segmentfault.com/a/1190000014120746</a></p>
+<p>java 泛型详解:<a href="https://blog.csdn.net/s10461/article/details/53941091" target="_blank" rel="noopener">https://blog.csdn.net/s10461/article/details/53941091</a></p>
+</blockquote>
+<h1 id="1-泛型概念"><a href="#1-泛型概念" class="headerlink" title="1 泛型概念"></a>1 泛型概念</h1><blockquote>
+<p><strong>Java泛型设计原则：只要在编译时期没有出现警告，那么运行时期就不会出现ClassCastException异常</strong>.</p>
+<p>泛型：<strong>把类型明确的工作推迟到创建对象或调用方法的时候才去明确的特殊的类型</strong></p>
+</blockquote>
+<p>让数据类型变得参数化</p>
+<ul>
+<li>定义泛型时，对应的数据类型是不确定的</li>
+<li>泛型方法被调用时，会指定具体类型</li>
+<li>核心目标：解决容器类型在编译时安全检查的问题</li>
+</ul>
+<p>demo:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List ls = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        ls.add(<span class="string">"hello"</span>);</span><br><span class="line">        ls.add(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ls.size(); i++) &#123;</span><br><span class="line">            String item = (String) ls.get(i);</span><br><span class="line">            System.out.println(item);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>报错如下：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122101.png" alt="image-20201221104504502"></p>
+<p>这个类型转换的错误在运行期才报出来，显然是不符合我们的预期，应该在编译器就应该解决掉。</p>
+<p>设置List容器的类型，就可以解决上面的问题</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122102.png" alt="image-20201221104807273"></p>
+<h1 id="2-泛型基础"><a href="#2-泛型基础" class="headerlink" title="2 泛型基础"></a>2 泛型基础</h1><h2 id="1-泛型类"><a href="#1-泛型类" class="headerlink" title="1.泛型类"></a>1.泛型类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class 类名称&lt;泛型标识 : 可以随便写任意标识号 , 标识指定的泛型的类型&gt;&#123;</span><br><span class="line">	修饰符 泛型标识 &#x2F;* (成员变量类型) *&#x2F;</span><br><span class="line">	修饰符 构造函数(泛型标识 参数)</span><br><span class="line">	......</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericClassExample</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//member这个成员变量的类型为T，T的类型由外部指定</span></span><br><span class="line">    <span class="keyword">private</span> T member;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//泛型构造方法形参member的类型也为T，T的类型由外部指定</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">GenericClassExample</span><span class="params">(T member)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.member = member;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// member的get set方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">handleSomething</span><span class="params">(T target)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//泛型类中是可以定义正常的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayhello</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello "</span>+ name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122103.png" alt="image-20201221111507121"></p>
+<p><strong>注意：</strong></p>
+<ul>
+<li><p>泛型参数不支持基本类型</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122104.png" alt="image-20201221113906058"></p>
+</li>
+<li><p>泛型相关的信息不会进入到运行时阶段</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122105.png" alt="image-20201221114453417"></p>
+</li>
+</ul>
+<blockquote>
+<p>能否在泛型里面使用具备继承关系的类?</p>
+<p>不能使用</p>
+<ul>
+<li>使用通配符？，但是会使得泛型的类型检查失去意义</li>
+<li>给泛型加入上边界 <code>? extends E</code></li>
+<li>给泛型加入下边界 <code>? super E</code></li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">handleMember</span><span class="params">(GenericClassExample&lt;?&gt; integerGenericClassExample)</span></span>&#123;</span><br><span class="line">        Integer result = <span class="number">111</span> + (Integer)integerGenericClassExample.getMember();</span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        GenericClassExample&lt;String&gt; stringGE = <span class="keyword">new</span> GenericClassExample&lt;String&gt;(<span class="string">"hello"</span>);</span><br><span class="line">        GenericClassExample&lt;Number&gt; integerGE = <span class="keyword">new</span> GenericClassExample&lt;Number&gt;(<span class="number">123</span>);</span><br><span class="line">        System.out.println(stringGE.getMember().getClass());</span><br><span class="line">        System.out.println(integerGE.getMember().getClass());</span><br><span class="line">        System.out.println(stringGE.sayhello(<span class="string">"liubin"</span>));</span><br><span class="line"></span><br><span class="line">        handleMember(integerGE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-泛型接口"><a href="#2-泛型接口" class="headerlink" title="2.泛型接口"></a>2.泛型接口</h2><blockquote>
+<p>泛型接口与泛型类的用法基本相同，常用于数据类型的生产工厂接口中</p>
+</blockquote>
+<h2 id="3-泛型通配符"><a href="#3-泛型通配符" class="headerlink" title="3 泛型通配符"></a>3 泛型通配符</h2><p>我们知道<code>Ingeter</code>是<code>Number</code>的一个子类，同时在特性章节中我们也验证过<code>Generic&lt;Ingeter&gt;</code>与<code>Generic&lt;Number&gt;</code>实际上是相同的一种基本类型。那么问题来了，在使用<code>Generic&lt;Number&gt;</code>作为形参的方法中，能否使用<code>Generic&lt;Ingeter&gt;</code>的实例传入呢？在逻辑上类似于<code>Generic&lt;Number&gt;</code>和<code>Generic&lt;Ingeter&gt;</code>是否可以看成具有父子关系的泛型类型呢？</p>
+<p>为了弄清楚这个问题，我们使用<code>Generic&lt;T&gt;</code>这个泛型类继续看下面的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showKeyValue1</span><span class="params">(Generic&lt;Number&gt; obj)</span></span>&#123;</span><br><span class="line">    Log.d(<span class="string">"泛型测试"</span>,<span class="string">"key value is "</span> + obj.getKey());</span><br><span class="line">&#125;<span class="number">123</span></span><br><span class="line">Generic&lt;Integer&gt; gInteger = <span class="keyword">new</span> Generic&lt;Integer&gt;(<span class="number">123</span>);</span><br><span class="line">Generic&lt;Number&gt; gNumber = <span class="keyword">new</span> Generic&lt;Number&gt;(<span class="number">456</span>);</span><br><span class="line"></span><br><span class="line">showKeyValue(gNumber);</span><br><span class="line"></span><br><span class="line"><span class="comment">// showKeyValue这个方法编译器会为我们报错：Generic&lt;java.lang.Integer&gt; </span></span><br><span class="line"><span class="comment">// cannot be applied to Generic&lt;java.lang.Number&gt;</span></span><br><span class="line"><span class="comment">// showKeyValue(gInteger);12345678</span></span><br></pre></td></tr></table></figure>
+
+<p>通过提示信息我们可以看到<code>Generic&lt;Integer&gt;</code>不能被看作为``Generic<Number>`的子类。由此可以看出:<strong>同一种泛型可以对应多个版本（因为参数类型是不确定的），不同版本的泛型类实例是不兼容的</strong>。</p>
+<p>回到上面的例子，如何解决上面的问题？总不能为了定义一个新的方法来处理<code>Generic&lt;Integer&gt;</code>类型的类，这显然与java中的多台理念相违背。因此我们需要一个在逻辑上可以表示<strong>同时</strong>是<code>Generic&lt;Integer&gt;</code>和<code>Generic&lt;Number&gt;</code>父类的引用类型。由此类型通配符应运而生。</p>
+<p>我们可以将上面的方法改一下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showKeyValue1</span><span class="params">(Generic&lt;?&gt; obj)</span></span>&#123;</span><br><span class="line">    Log.d(<span class="string">"泛型测试"</span>,<span class="string">"key value is "</span> + obj.getKey());</span><br><span class="line">&#125;<span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p>类型通配符一般是使用？代替具体的类型实参，注意了，<strong>此处’？’是类型实参，而不是类型形参</strong> 。重要说三遍！<strong>此处’？’是类型实参，而不是类型形参</strong> ！ <strong>此处’？’是类型实参，而不是类型形参</strong> ！再直白点的意思就是，此处的？和Number、String、Integer一样都是一种实际的类型，可以把？看成所有类型的父类。是一种真实的类型。</p>
+<p>可以解决当具体类型不确定的时候，这个通配符就是 <strong>?</strong> ；<strong>当操作类型时，不需要使用类型的具体功能时，只使用Object类中的功能。那么可以用 ? 通配符来表未知类型。</strong></p>
+<h2 id="4-泛型方法"><a href="#4-泛型方法" class="headerlink" title="4 泛型方法"></a>4 泛型方法</h2><blockquote>
+<p>泛型方法既能用在泛型类、泛型接口里，也能用在普通类或者接口里</p>
 </blockquote>
 
     </div>
@@ -334,6 +409,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-泛型概念"><span class="nav-text">1 泛型概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-泛型基础"><span class="nav-text">2 泛型基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-泛型类"><span class="nav-text">1.泛型类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-泛型接口"><span class="nav-text">2.泛型接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-泛型通配符"><span class="nav-text">3 泛型通配符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-泛型方法"><span class="nav-text">4 泛型方法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
