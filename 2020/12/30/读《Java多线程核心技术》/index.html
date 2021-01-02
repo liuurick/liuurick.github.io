@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="推荐几本非常棒的Java多线程编程书籍？https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;28982243&#x2F;answer&#x2F;1225022955">
+  <meta name="description" content="[TOC]">
 <meta property="og:type" content="article">
 <meta property="og:title" content="读《Java多线程核心技术》">
 <meta property="og:url" content="http://yoursite.com/2020/12/30/%E8%AF%BB%E3%80%8AJava%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E3%80%8B/index.html">
 <meta property="og:site_name" content="lb Blog">
-<meta property="og:description" content="推荐几本非常棒的Java多线程编程书籍？https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;28982243&#x2F;answer&#x2F;1225022955">
+<meta property="og:description" content="[TOC]">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-30T12:24:54.000Z">
-<meta property="article:modified_time" content="2020-12-30T12:25:27.552Z">
+<meta property="article:modified_time" content="2021-01-02T06:02:06.296Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
@@ -240,19 +240,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
-<p>推荐几本非常棒的Java多线程编程书籍？<a href="https://www.zhihu.com/question/28982243/answer/1225022955" target="_blank" rel="noopener">https://www.zhihu.com/question/28982243/answer/1225022955</a></p>
-</blockquote>
+        <p>[TOC]</p>
 <a id="more"></a>
 
-<p>1 Java多线程技能</p>
-<p>2 对象及变量的并发访问</p>
-<p>3 线程间通信</p>
-<p>4 Lock的使用</p>
-<p>5 定时器Timer</p>
-<p>6 单例模式与多线程</p>
-<p>7 拾遗增补</p>
+<blockquote>
+<p>推荐几本非常棒的Java多线程编程书籍？<a href="https://www.zhihu.com/question/28982243/answer/1225022955" target="_blank" rel="noopener">https://www.zhihu.com/question/28982243/answer/1225022955</a></p>
+</blockquote>
+<h1 id="1-Java多线程技能"><a href="#1-Java多线程技能" class="headerlink" title="1 Java多线程技能"></a>1 Java多线程技能</h1><p>关键技术点：</p>
+<ul>
+<li>线程的启动</li>
+<li>如何使线程暂停</li>
+<li>如何使线程停止</li>
+<li>线程的优先级</li>
+<li>线程安全相关的问题</li>
+</ul>
+<h2 id="1-1-进程和多线程的概念及线程的优点"><a href="#1-1-进程和多线程的概念及线程的优点" class="headerlink" title="1.1 进程和多线程的概念及线程的优点"></a>1.1 进程和多线程的概念及线程的优点</h2><p>进程与线程</p>
+<p>进程是程序运行的实例，线程是进程中独立运行的子任务。简而言之就是一个进程中至少有一个线程。</p>
+<p>多线程的优点：</p>
+<p>充分“压榨”CPU</p>
+<blockquote>
+<p>使用多任务操作系统Windows后，可以最大限度地利用CPU的空闲时间来处理其他的任务，比如一边让操作系统处理正在由打印机打印的数据，一边使用Word编辑文档。而CPU在这些任务之间不停地切换，由于切换的速度非常快，给使用者的感受就是这些任务似乎在同时运行。所以使用多线程技术后，可以在同一时间内运行更多不同种类的任务。</p>
+</blockquote>
+<p><strong>注意：</strong>多线程是异步的，所以千万不要把代码的顺序当成线程执行的顺序，线程被调用的时机是随机的。</p>
+<h2 id="1-2-多线程的使用"><a href="#1-2-多线程的使用" class="headerlink" title="1.2 多线程的使用"></a>1.2 多线程的使用</h2><p>获取当前运行中的线程：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thread.currentThread().getName()</span><br></pre></td></tr></table></figure>
 
+<p>实现多线程编程的方法主要有两种：</p>
+<ol>
+<li>继承Thread类</li>
+<li>实现Runnable接口</li>
+</ol>
+<p>两种方式创建的线程在工作时的性质是一样的，没有本质的区别。</p>
+<h3 id="1-2-1-继承Thread类"><a href="#1-2-1-继承Thread类" class="headerlink" title="1.2.1 继承Thread类"></a>1.2.1 继承Thread类</h3><p>线程启动顺序与start()执行顺序无关。</p>
+<blockquote>
+<p>Thread.java类中的start()方法通知“线程规划器”此线程已经准备就绪，等待调用线程对象的run()方法。这个过程其实就是让系统安排一个时间来调用Thread中的run()方法，也就是使线程得到运行，启动线程，具有异步执行的效果。如果调用代码thread.run()就不是异步执行了，而是同步，那么此线程对象并不交给“线程规划器”来进行处理，而是由main主线程来调用run()方法，也就是必须等run()方法中的代码执行完后才可以执行后面的代码。</p>
+</blockquote>
+<h3 id="1-2-2-实现Runnable接口"><a href="#1-2-2-实现Runnable接口" class="headerlink" title="1.2.2 实现Runnable接口"></a>1.2.2 实现Runnable接口</h3><h3 id="1-2-3-实例变量与线程安全"><a href="#1-2-3-实例变量与线程安全" class="headerlink" title="1.2.3 实例变量与线程安全"></a>1.2.3 实例变量与线程安全</h3><h2 id="1-3-currentThread-方法"><a href="#1-3-currentThread-方法" class="headerlink" title="1.3 currentThread()方法"></a>1.3 currentThread()方法</h2><h2 id="1-4-isAlive-方法"><a href="#1-4-isAlive-方法" class="headerlink" title="1.4 isAlive()方法"></a>1.4 isAlive()方法</h2><h2 id="1-5-sleep-方法"><a href="#1-5-sleep-方法" class="headerlink" title="1.5 sleep()方法"></a>1.5 sleep()方法</h2><h2 id="1-6-getId-方法"><a href="#1-6-getId-方法" class="headerlink" title="1.6 getId()方法"></a>1.6 getId()方法</h2><h2 id="1-7-停止线程"><a href="#1-7-停止线程" class="headerlink" title="1.7 停止线程"></a>1.7 停止线程</h2><h2 id="1-8-暂停线程"><a href="#1-8-暂停线程" class="headerlink" title="1.8 暂停线程"></a>1.8 暂停线程</h2><h2 id="1-9-yield方法"><a href="#1-9-yield方法" class="headerlink" title="1.9 yield方法"></a>1.9 yield方法</h2><h2 id="1-10-线程的优先级"><a href="#1-10-线程的优先级" class="headerlink" title="1.10 线程的优先级"></a>1.10 线程的优先级</h2><h2 id="1-11-守护线程"><a href="#1-11-守护线程" class="headerlink" title="1.11 守护线程"></a>1.11 守护线程</h2><h1 id="2-对象及变量的并发访问"><a href="#2-对象及变量的并发访问" class="headerlink" title="2 对象及变量的并发访问"></a>2 对象及变量的并发访问</h1><h2 id="2-1-synchronized同步方法"><a href="#2-1-synchronized同步方法" class="headerlink" title="2.1 synchronized同步方法"></a>2.1 synchronized同步方法</h2><h2 id="2-2-synchronized同步语句块"><a href="#2-2-synchronized同步语句块" class="headerlink" title="2.2 synchronized同步语句块"></a>2.2 synchronized同步语句块</h2><h2 id="2-3-volatile关键字"><a href="#2-3-volatile关键字" class="headerlink" title="2.3 volatile关键字"></a>2.3 volatile关键字</h2><h1 id="3-线程间通信"><a href="#3-线程间通信" class="headerlink" title="3 线程间通信"></a>3 线程间通信</h1><h1 id="4-Lock的使用"><a href="#4-Lock的使用" class="headerlink" title="4 Lock的使用"></a>4 Lock的使用</h1><h1 id="5-定时器Timer"><a href="#5-定时器Timer" class="headerlink" title="5 定时器Timer"></a>5 定时器Timer</h1><h1 id="6-单例模式与多线程"><a href="#6-单例模式与多线程" class="headerlink" title="6 单例模式与多线程"></a>6 单例模式与多线程</h1><h1 id="7-拾遗增补"><a href="#7-拾遗增补" class="headerlink" title="7 拾遗增补"></a>7 拾遗增补</h1>
     </div>
 
     
@@ -335,6 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Java多线程技能"><span class="nav-text">1 Java多线程技能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-进程和多线程的概念及线程的优点"><span class="nav-text">1.1 进程和多线程的概念及线程的优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-多线程的使用"><span class="nav-text">1.2 多线程的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-继承Thread类"><span class="nav-text">1.2.1 继承Thread类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-实现Runnable接口"><span class="nav-text">1.2.2 实现Runnable接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-实例变量与线程安全"><span class="nav-text">1.2.3 实例变量与线程安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-currentThread-方法"><span class="nav-text">1.3 currentThread()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-isAlive-方法"><span class="nav-text">1.4 isAlive()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-sleep-方法"><span class="nav-text">1.5 sleep()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-getId-方法"><span class="nav-text">1.6 getId()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-停止线程"><span class="nav-text">1.7 停止线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-暂停线程"><span class="nav-text">1.8 暂停线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-yield方法"><span class="nav-text">1.9 yield方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-10-线程的优先级"><span class="nav-text">1.10 线程的优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-11-守护线程"><span class="nav-text">1.11 守护线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-对象及变量的并发访问"><span class="nav-text">2 对象及变量的并发访问</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-synchronized同步方法"><span class="nav-text">2.1 synchronized同步方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-synchronized同步语句块"><span class="nav-text">2.2 synchronized同步语句块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-volatile关键字"><span class="nav-text">2.3 volatile关键字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-线程间通信"><span class="nav-text">3 线程间通信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Lock的使用"><span class="nav-text">4 Lock的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-定时器Timer"><span class="nav-text">5 定时器Timer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-单例模式与多线程"><span class="nav-text">6 单例模式与多线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-拾遗增补"><span class="nav-text">7 拾遗增补</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -357,13 +381,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
