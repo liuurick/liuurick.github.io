@@ -34,7 +34,7 @@
 <meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122105.png">
 <meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210102213439918.png">
 <meta property="article:published_time" content="2020-12-27T10:32:16.000Z">
-<meta property="article:modified_time" content="2021-01-02T14:20:11.244Z">
+<meta property="article:modified_time" content="2021-01-03T03:07:16.216Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="泛型">
 <meta name="twitter:card" content="summary">
@@ -347,6 +347,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 </li>
 </ul>
 <blockquote>
@@ -381,7 +390,13 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 实现泛型接口的类，不是泛型类，需要明确实现泛型接口的数据类型。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Apple</span> <span class="keyword">implements</span> <span class="title">Generator</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello generic"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="4-泛型通配符"><a href="#4-泛型通配符" class="headerlink" title="4.泛型通配符"></a>4.泛型通配符</h2><p>我们知道<code>Ingeter</code>是<code>Number</code>的一个子类，同时在特性章节中我们也验证过<code>Generic&lt;Ingeter&gt;</code>与<code>Generic&lt;Number&gt;</code>实际上是相同的一种基本类型。那么问题来了，在使用<code>Generic&lt;Number&gt;</code>作为形参的方法中，能否使用<code>Generic&lt;Ingeter&gt;</code>的实例传入呢？在逻辑上类似于<code>Generic&lt;Number&gt;</code>和<code>Generic&lt;Ingeter&gt;</code>是否可以看成具有父子关系的泛型类型呢？</p>
+
+
+<h2 id="4-泛型方法"><a href="#4-泛型方法" class="headerlink" title="4.泛型方法"></a>4.泛型方法</h2><blockquote>
+<p>泛型方法，是在调用方法的时候指明泛型的具体类型。</p>
+<p>泛型方法既能用在泛型类、泛型接口里，也能用在普通类或者接口里</p>
+</blockquote>
+<h2 id="5-泛型通配符"><a href="#5-泛型通配符" class="headerlink" title="5.泛型通配符"></a>5.泛型通配符</h2><p>我们知道<code>Ingeter</code>是<code>Number</code>的一个子类，同时在特性章节中我们也验证过<code>Generic&lt;Ingeter&gt;</code>与<code>Generic&lt;Number&gt;</code>实际上是相同的一种基本类型。那么问题来了，在使用<code>Generic&lt;Number&gt;</code>作为形参的方法中，能否使用<code>Generic&lt;Ingeter&gt;</code>的实例传入呢？在逻辑上类似于<code>Generic&lt;Number&gt;</code>和<code>Generic&lt;Ingeter&gt;</code>是否可以看成具有父子关系的泛型类型呢？</p>
 <p>为了弄清楚这个问题，我们使用<code>Generic&lt;T&gt;</code>这个泛型类继续看下面的例子：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showKeyValue1</span><span class="params">(Generic&lt;Number&gt; obj)</span></span>&#123;</span><br><span class="line">    Log.d(<span class="string">"泛型测试"</span>,<span class="string">"key value is "</span> + obj.getKey());</span><br><span class="line">&#125;<span class="number">123</span></span><br><span class="line">Generic&lt;Integer&gt; gInteger = <span class="keyword">new</span> Generic&lt;Integer&gt;(<span class="number">123</span>);</span><br><span class="line">Generic&lt;Number&gt; gNumber = <span class="keyword">new</span> Generic&lt;Number&gt;(<span class="number">456</span>);</span><br><span class="line"></span><br><span class="line">showKeyValue(gNumber);</span><br><span class="line"></span><br><span class="line"><span class="comment">// showKeyValue这个方法编译器会为我们报错：Generic&lt;java.lang.Integer&gt; </span></span><br><span class="line"><span class="comment">// cannot be applied to Generic&lt;java.lang.Number&gt;</span></span><br><span class="line"><span class="comment">// showKeyValue(gInteger);12345678</span></span><br></pre></td></tr></table></figure>
 
@@ -392,10 +407,7 @@
 
 <p>类型通配符一般是使用？代替具体的类型实参，注意了，<strong>此处’？’是类型实参，而不是类型形参</strong> 。重要说三遍！<strong>此处’？’是类型实参，而不是类型形参</strong> ！ <strong>此处’？’是类型实参，而不是类型形参</strong> ！再直白点的意思就是，此处的？和Number、String、Integer一样都是一种实际的类型，可以把？看成所有类型的父类。是一种真实的类型。</p>
 <p>可以解决当具体类型不确定的时候，这个通配符就是 <strong>?</strong> ；<strong>当操作类型时，不需要使用类型的具体功能时，只使用Object类中的功能。那么可以用 ? 通配符来表未知类型。</strong></p>
-<h2 id="5-泛型方法"><a href="#5-泛型方法" class="headerlink" title="5.泛型方法"></a>5.泛型方法</h2><blockquote>
-<p>泛型方法既能用在泛型类、泛型接口里，也能用在普通类或者接口里</p>
-</blockquote>
-
+<h2 id="6-类型擦除"><a href="#6-类型擦除" class="headerlink" title="6.类型擦除"></a>6.类型擦除</h2><h2 id="7-泛型和数组"><a href="#7-泛型和数组" class="headerlink" title="7.泛型和数组"></a>7.泛型和数组</h2><h2 id="8-泛型和反射"><a href="#8-泛型和反射" class="headerlink" title="8.泛型和反射"></a>8.泛型和反射</h2>
     </div>
 
     
@@ -478,7 +490,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-泛型概念"><span class="nav-text">1 泛型概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-泛型基础"><span class="nav-text">2 泛型基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-泛型类"><span class="nav-text">1.泛型类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-泛型类派生子类"><span class="nav-text">2.泛型类派生子类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-泛型接口"><span class="nav-text">3.泛型接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-泛型通配符"><span class="nav-text">4.泛型通配符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-泛型方法"><span class="nav-text">5.泛型方法</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-泛型概念"><span class="nav-text">1 泛型概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-泛型基础"><span class="nav-text">2 泛型基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-泛型类"><span class="nav-text">1.泛型类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-泛型类派生子类"><span class="nav-text">2.泛型类派生子类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-泛型接口"><span class="nav-text">3.泛型接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-泛型方法"><span class="nav-text">4.泛型方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-泛型通配符"><span class="nav-text">5.泛型通配符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-类型擦除"><span class="nav-text">6.类型擦除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-泛型和数组"><span class="nav-text">7.泛型和数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-泛型和反射"><span class="nav-text">8.泛型和反射</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
