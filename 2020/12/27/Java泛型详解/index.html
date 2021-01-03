@@ -32,9 +32,13 @@
 <meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122103.png">
 <meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122104.png">
 <meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122105.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210102213439918.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122107.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122108.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122109.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122110.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122111.png">
 <meta property="article:published_time" content="2020-12-27T10:32:16.000Z">
-<meta property="article:modified_time" content="2021-01-03T03:07:16.216Z">
+<meta property="article:modified_time" content="2021-01-03T07:43:36.713Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="泛型">
 <meta name="twitter:card" content="summary">
@@ -328,7 +332,7 @@
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class main &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Generic&lt;String&gt; stringGeneric &#x3D; new Generic&lt;&gt;(&quot;hello&quot;);</span><br><span class="line">        Generic&lt;Integer&gt; integerGeneric &#x3D; new Generic(100);</span><br><span class="line"></span><br><span class="line">        System.out.println(stringGeneric.getClass());</span><br><span class="line">        System.out.println(integerGeneric.getClass());</span><br><span class="line"></span><br><span class="line">        System.out.println(stringGeneric.getClass() &#x3D;&#x3D; integerGeneric.getClass());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210102213439918.png" alt="image-20210102213439918"></p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122107.png" alt="image-20210102213439918"></p>
 </li>
 </ul>
 <h2 id="2-泛型类派生子类"><a href="#2-泛型类派生子类" class="headerlink" title="2.泛型类派生子类"></a>2.泛型类派生子类</h2><ul>
@@ -352,27 +356,8 @@
 
 
 
-
-
-
-
 </li>
 </ul>
-<blockquote>
-<p>能否在泛型里面使用具备继承关系的类?</p>
-<p>不能使用</p>
-<ul>
-<li>使用通配符？，但是会使得泛型的类型检查失去意义</li>
-<li>给泛型加入上边界 <code>? extends E</code></li>
-<li>给泛型加入下边界 <code>? super E</code></li>
-</ul>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">handleMember</span><span class="params">(GenericClassExample&lt;?&gt; integerGenericClassExample)</span></span>&#123;</span><br><span class="line">        Integer result = <span class="number">111</span> + (Integer)integerGenericClassExample.getMember();</span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        GenericClassExample&lt;String&gt; stringGE = <span class="keyword">new</span> GenericClassExample&lt;String&gt;(<span class="string">"hello"</span>);</span><br><span class="line">        GenericClassExample&lt;Number&gt; integerGE = <span class="keyword">new</span> GenericClassExample&lt;Number&gt;(<span class="number">123</span>);</span><br><span class="line">        System.out.println(stringGE.getMember().getClass());</span><br><span class="line">        System.out.println(integerGE.getMember().getClass());</span><br><span class="line">        System.out.println(stringGE.sayhello(<span class="string">"liubin"</span>));</span><br><span class="line"></span><br><span class="line">        handleMember(integerGE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
 <h2 id="3-泛型接口"><a href="#3-泛型接口" class="headerlink" title="3.泛型接口"></a>3.泛型接口</h2><blockquote>
 <p>泛型接口与泛型类的用法基本相同，常用于数据类型的生产工厂接口中</p>
 </blockquote>
@@ -396,18 +381,63 @@
 <p>泛型方法，是在调用方法的时候指明泛型的具体类型。</p>
 <p>泛型方法既能用在泛型类、泛型接口里，也能用在普通类或者接口里</p>
 </blockquote>
-<h2 id="5-泛型通配符"><a href="#5-泛型通配符" class="headerlink" title="5.泛型通配符"></a>5.泛型通配符</h2><p>我们知道<code>Ingeter</code>是<code>Number</code>的一个子类，同时在特性章节中我们也验证过<code>Generic&lt;Ingeter&gt;</code>与<code>Generic&lt;Number&gt;</code>实际上是相同的一种基本类型。那么问题来了，在使用<code>Generic&lt;Number&gt;</code>作为形参的方法中，能否使用<code>Generic&lt;Ingeter&gt;</code>的实例传入呢？在逻辑上类似于<code>Generic&lt;Number&gt;</code>和<code>Generic&lt;Ingeter&gt;</code>是否可以看成具有父子关系的泛型类型呢？</p>
-<p>为了弄清楚这个问题，我们使用<code>Generic&lt;T&gt;</code>这个泛型类继续看下面的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showKeyValue1</span><span class="params">(Generic&lt;Number&gt; obj)</span></span>&#123;</span><br><span class="line">    Log.d(<span class="string">"泛型测试"</span>,<span class="string">"key value is "</span> + obj.getKey());</span><br><span class="line">&#125;<span class="number">123</span></span><br><span class="line">Generic&lt;Integer&gt; gInteger = <span class="keyword">new</span> Generic&lt;Integer&gt;(<span class="number">123</span>);</span><br><span class="line">Generic&lt;Number&gt; gNumber = <span class="keyword">new</span> Generic&lt;Number&gt;(<span class="number">456</span>);</span><br><span class="line"></span><br><span class="line">showKeyValue(gNumber);</span><br><span class="line"></span><br><span class="line"><span class="comment">// showKeyValue这个方法编译器会为我们报错：Generic&lt;java.lang.Integer&gt; </span></span><br><span class="line"><span class="comment">// cannot be applied to Generic&lt;java.lang.Number&gt;</span></span><br><span class="line"><span class="comment">// showKeyValue(gInteger);12345678</span></span><br></pre></td></tr></table></figure>
+<p><strong>语法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修饰符 &lt;T，E, ...&gt; 返回值类型 方法名(形参列表) &#123; </span><br><span class="line">	方法体... </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>通过提示信息我们可以看到<code>Generic&lt;Integer&gt;</code>不能被看作为``Generic<Number>`的子类。由此可以看出:<strong>同一种泛型可以对应多个版本（因为参数类型是不确定的），不同版本的泛型类实例是不兼容的</strong>。</p>
-<p>回到上面的例子，如何解决上面的问题？总不能为了定义一个新的方法来处理<code>Generic&lt;Integer&gt;</code>类型的类，这显然与java中的多台理念相违背。因此我们需要一个在逻辑上可以表示<strong>同时</strong>是<code>Generic&lt;Integer&gt;</code>和<code>Generic&lt;Number&gt;</code>父类的引用类型。由此类型通配符应运而生。</p>
-<p>我们可以将上面的方法改一下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showKeyValue1</span><span class="params">(Generic&lt;?&gt; obj)</span></span>&#123;</span><br><span class="line">    Log.d(<span class="string">"泛型测试"</span>,<span class="string">"key value is "</span> + obj.getKey());</span><br><span class="line">&#125;<span class="number">123</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>public与返回值中间<code>&lt;T&gt;</code>非常重要，可以理解为声明此方法为泛型方法。</li>
+<li>只有声明了<code>&lt;T&gt;</code>的方法才是泛型方法，泛型类中的使用了泛型的成员方法并不是泛型方法。</li>
+<li><code>&lt; T &gt;</code>表明该方法将使用泛型类型T，此时才可以在方法中使用泛型类型T。</li>
+<li>与泛型类的定义一样，此处<code>T</code>可以随便写为任意标识，常见的如<code>T、E、K、V</code>等形式的参数常用于表示泛型。</li>
+</ul>
+<p><strong>泛型方法与可变参数:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;E&gt; <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(E... e)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (E e1 : e) &#123;</span><br><span class="line">		System.out.println(e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>类型通配符一般是使用？代替具体的类型实参，注意了，<strong>此处’？’是类型实参，而不是类型形参</strong> 。重要说三遍！<strong>此处’？’是类型实参，而不是类型形参</strong> ！ <strong>此处’？’是类型实参，而不是类型形参</strong> ！再直白点的意思就是，此处的？和Number、String、Integer一样都是一种实际的类型，可以把？看成所有类型的父类。是一种真实的类型。</p>
-<p>可以解决当具体类型不确定的时候，这个通配符就是 <strong>?</strong> ；<strong>当操作类型时，不需要使用类型的具体功能时，只使用Object类中的功能。那么可以用 ? 通配符来表未知类型。</strong></p>
-<h2 id="6-类型擦除"><a href="#6-类型擦除" class="headerlink" title="6.类型擦除"></a>6.类型擦除</h2><h2 id="7-泛型和数组"><a href="#7-泛型和数组" class="headerlink" title="7.泛型和数组"></a>7.泛型和数组</h2><h2 id="8-泛型和反射"><a href="#8-泛型和反射" class="headerlink" title="8.泛型和反射"></a>8.泛型和反射</h2>
+<p><strong>泛型方法总结</strong></p>
+<ul>
+<li><strong>泛型方法能使方法独立于类而产生变化</strong></li>
+<li><strong>如果static方法要使用泛型能力，就必须使其成为泛型方法</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 静态的泛型方法，采用多个泛型类型</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> t</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> e</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> k</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> &lt;E&gt;</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> &lt;K&gt;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> &lt;T,E,K&gt; <span class="function"><span class="keyword">void</span> <span class="title">printType</span><span class="params">(T t, E e, K k)</span> </span>&#123;</span><br><span class="line">       System.out.println(t + <span class="string">"\t"</span> + t.getClass().getSimpleName());</span><br><span class="line">       System.out.println(e + <span class="string">"\t"</span> + e.getClass().getSimpleName());</span><br><span class="line">       System.out.println(k + <span class="string">"\t"</span> + k.getClass().getSimpleName());</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-泛型通配符"><a href="#5-泛型通配符" class="headerlink" title="5.泛型通配符"></a>5.泛型通配符</h2><blockquote>
+<p>能否在泛型里面使用具备继承关系的类?</p>
+<p>不能使用</p>
+<ul>
+<li>使用通配符？，但是会使得泛型的类型检查失去意义</li>
+<li>给泛型加入上边界 <code>? extends E</code></li>
+<li>给泛型加入下边界 <code>? super E</code></li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">handleMember</span><span class="params">(GenericClassExample&lt;?&gt; integerGenericClassExample)</span></span>&#123;</span><br><span class="line">        Integer result = <span class="number">111</span> + (Integer)integerGenericClassExample.getMember();</span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        GenericClassExample&lt;String&gt; stringGE = <span class="keyword">new</span> GenericClassExample&lt;String&gt;(<span class="string">"hello"</span>);</span><br><span class="line">        GenericClassExample&lt;Number&gt; integerGE = <span class="keyword">new</span> GenericClassExample&lt;Number&gt;(<span class="number">123</span>);</span><br><span class="line">        System.out.println(stringGE.getMember().getClass());</span><br><span class="line">        System.out.println(integerGE.getMember().getClass());</span><br><span class="line">        System.out.println(stringGE.sayhello(<span class="string">"liubin"</span>));</span><br><span class="line"></span><br><span class="line">        handleMember(integerGE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-类型擦除"><a href="#6-类型擦除" class="headerlink" title="6.类型擦除"></a>6.类型擦除</h2><p><strong>概念:</strong></p>
+<p>泛型是Java 1.5版本才引进的概念，在这之前是没有泛型的，但是泛型代码能够很好地和之前版本的代码兼容。那是因为，泛型信息只存在于代码编译阶段，在进入JVM之前，与泛型相关的信息会被擦除掉，我们称之为–类型擦除。</p>
+<p><strong>分类：</strong></p>
+<ul>
+<li>无限制类型擦除<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122108.png" alt="image-20210103145023407"></li>
+<li>有限制类型擦除<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122109.png" alt="image-20210103145059877">擦除方法中类型定义的参数<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122110.png" alt="在这里插入图片描述"></li>
+<li>桥接方法<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122111.png" alt="在这里插入图片描述"></li>
+</ul>
+<h2 id="7-泛型和数组"><a href="#7-泛型和数组" class="headerlink" title="7.泛型和数组"></a>7.泛型和数组</h2><p><strong>泛型数组的创建</strong></p>
+<ul>
+<li>可以声明带泛型的数组引用，但是不能直接创建带泛型的数组对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt;[] listArr = <span class="keyword">new</span> ArrayList&lt;<span class="number">5</span>&gt;(); <span class="comment">//会报错</span></span><br></pre></td></tr></table></figure>
+
+<p>会报错</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ArrayList[] list = <span class="keyword">new</span> ArrayList[<span class="number">5</span>];</span><br><span class="line">ArrayList&lt;String&gt;[] listArr = list;</span><br><span class="line">或者</span><br><span class="line">ArrayList&lt;String&gt;[] listArr = <span class="keyword">new</span> ArrayList[<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+
+<p>不会报错</p>
+<ul>
+<li>可以通过java.lang.reflect.Array的newInstance(Class,int)创建T[]数组</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Fruit</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T[] array;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Fruit</span><span class="params">(Class&lt;T&gt; clz, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">        <span class="comment">//通过Array.newInstance创建泛型数组</span></span><br><span class="line">        array = (T[])Array.newInstance(clz, length);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-泛型和反射"><a href="#8-泛型和反射" class="headerlink" title="8.泛型和反射"></a>8.泛型和反射</h2><ul>
+<li>反射常用的泛型类<br>Class<br>Constructor</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 泛型与反射</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test11</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	     Class&lt;Person&gt; personClass = Person<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">	     Constructor&lt;Person&gt; constructor = personClass.getConstructor();</span><br><span class="line">	     Person person = constructor.newInstance();</span><br><span class="line">	 &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -506,7 +536,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
