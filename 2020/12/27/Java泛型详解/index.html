@@ -27,22 +27,22 @@
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="从今天开始复习Java基础知识，泛型是JavaSE中一个很重要的知识点，这里写一篇文档，强化自己的记忆。 [TOC]">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122101.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122102.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122103.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122104.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122105.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122107.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122108.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122109.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122110.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122111.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122101.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122102.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122103.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122104.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122105.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122107.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122108.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122109.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122110.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122111.png">
 <meta property="article:published_time" content="2020-12-27T10:32:16.000Z">
-<meta property="article:modified_time" content="2021-01-03T07:43:36.713Z">
+<meta property="article:modified_time" content="2021-01-03T07:54:35.051Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="泛型">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122101.png">
+<meta name="twitter:image" content="http://yoursite.com/images/2020122101.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/27/Java%E6%B3%9B%E5%9E%8B%E8%AF%A6%E8%A7%A3/">
 
@@ -286,10 +286,10 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List ls = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        ls.add(<span class="string">"hello"</span>);</span><br><span class="line">        ls.add(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ls.size(); i++) &#123;</span><br><span class="line">            String item = (String) ls.get(i);</span><br><span class="line">            System.out.println(item);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>报错如下：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122101.png" alt="image-20201221104504502"></p>
+<p><img src="/images/2020122101.png" alt="image-20201221104504502"></p>
 <p>这个类型转换的错误在运行期才报出来，显然是不符合我们的预期，应该在编译器就应该解决掉。</p>
 <p>设置List容器的类型，就可以解决上面的问题</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122102.png" alt="image-20201221104807273"></p>
+<p><img src="/images/2020122102.png" alt="image-20201221104807273"></p>
 <h1 id="2-泛型基础"><a href="#2-泛型基础" class="headerlink" title="2 泛型基础"></a>2 泛型基础</h1><h2 id="1-泛型类"><a href="#1-泛型类" class="headerlink" title="1.泛型类"></a>1.泛型类</h2><ul>
 <li>泛型类的定义语法：</li>
 </ul>
@@ -316,23 +316,23 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericClassExample</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//member这个成员变量的类型为T，T的类型由外部指定</span></span><br><span class="line">    <span class="keyword">private</span> T member;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//泛型构造方法形参member的类型也为T，T的类型由外部指定</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">GenericClassExample</span><span class="params">(T member)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.member = member;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// member的get set方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">handleSomething</span><span class="params">(T target)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//泛型类中是可以定义正常的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayhello</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello "</span>+ name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122103.png" alt="image-20201221111507121"></p>
+<p><img src="/images/2020122103.png" alt="image-20201221111507121"></p>
 <p><strong>注意：</strong></p>
 <ul>
 <li><p>泛型类在创建对象的时候，没有指定类型，将按照Object类型来操作</p>
 </li>
 <li><p>泛型参数不支持基本类型，只能是类类型</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122104.png" alt="image-20201221113906058"></p>
+<p><img src="/images/2020122104.png" alt="image-20201221113906058"></p>
 </li>
 <li><p>泛型相关的信息不会进入到运行时阶段</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122105.png" alt="image-20201221114453417"></p>
+<p><img src="/images/2020122105.png" alt="image-20201221114453417"></p>
 </li>
 <li><p>同一泛型类，根据不同数据类型创建对象，本质是同一类型</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 泛型类的定义</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt; 泛型标识-类型形参</span></span><br><span class="line"><span class="comment"> *           T 创建对象的时候指定具体的数据类型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generic</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * T，是由外部</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T key;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Generic</span><span class="params">(T key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setKey</span><span class="params">(T key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"GenericDemo&#123;"</span> +</span><br><span class="line">                <span class="string">"key="</span> + key +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class main &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Generic&lt;String&gt; stringGeneric &#x3D; new Generic&lt;&gt;(&quot;hello&quot;);</span><br><span class="line">        Generic&lt;Integer&gt; integerGeneric &#x3D; new Generic(100);</span><br><span class="line"></span><br><span class="line">        System.out.println(stringGeneric.getClass());</span><br><span class="line">        System.out.println(integerGeneric.getClass());</span><br><span class="line"></span><br><span class="line">        System.out.println(stringGeneric.getClass() &#x3D;&#x3D; integerGeneric.getClass());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122107.png" alt="image-20210102213439918"></p>
+<p><img src="/images/2020122107.png" alt="image-20210102213439918"></p>
 </li>
 </ul>
 <h2 id="2-泛型类派生子类"><a href="#2-泛型类派生子类" class="headerlink" title="2.泛型类派生子类"></a>2.泛型类派生子类</h2><ul>
@@ -415,9 +415,9 @@
 <p>泛型是Java 1.5版本才引进的概念，在这之前是没有泛型的，但是泛型代码能够很好地和之前版本的代码兼容。那是因为，泛型信息只存在于代码编译阶段，在进入JVM之前，与泛型相关的信息会被擦除掉，我们称之为–类型擦除。</p>
 <p><strong>分类：</strong></p>
 <ul>
-<li>无限制类型擦除<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122108.png" alt="image-20210103145023407"></li>
-<li>有限制类型擦除<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122109.png" alt="image-20210103145059877">擦除方法中类型定义的参数<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122110.png" alt="在这里插入图片描述"></li>
-<li>桥接方法<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122111.png" alt="在这里插入图片描述"></li>
+<li>无限制类型擦除<br><img src="/images/2020122108.png" alt="image-20210103145023407"></li>
+<li>有限制类型擦除<br><img src="/images/2020122109.png" alt="image-20210103145059877">擦除方法中类型定义的参数<br><img src="/images/2020122110.png" alt="在这里插入图片描述"></li>
+<li>桥接方法<br><img src="/images/2020122111.png" alt="在这里插入图片描述"></li>
 </ul>
 <h2 id="7-泛型和数组"><a href="#7-泛型和数组" class="headerlink" title="7.泛型和数组"></a>7.泛型和数组</h2><p><strong>泛型数组的创建</strong></p>
 <ul>
