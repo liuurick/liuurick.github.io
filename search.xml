@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Arthas使用与进阶</title>
+    <url>/2021/01/17/Arthas%E4%BD%BF%E7%94%A8%E4%B8%8E%E8%BF%9B%E9%98%B6/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<blockquote>
+<p>开源地址：<a href="https://github.com/alibaba/arthas" target="_blank" rel="noopener">https://github.com/alibaba/arthas</a><br>官方文档：<a href="https://alibaba.github.io/arthas" target="_blank" rel="noopener">https://alibaba.github.io/arthas</a></p>
+</blockquote>
+<h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/install-detail.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/install-detail.html</a></p>
+<p><a href="https://blog.csdn.net/monokai/article/details/107457772" target="_blank" rel="noopener">https://blog.csdn.net/monokai/article/details/107457772</a></p>
+</blockquote>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/quick-start.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/quick-start.html</a></p>
+</blockquote>
+<h1 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/advanced-use.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/advanced-use.html</a></p>
+</blockquote>
+<h1 id="Arthas-脑图—常用命令汇总"><a href="#Arthas-脑图—常用命令汇总" class="headerlink" title="Arthas 脑图—常用命令汇总:"></a>Arthas 脑图—常用命令汇总:</h1><blockquote>
+<p><a href="https://github.com/alibaba/arthas/issues/1003" target="_blank" rel="noopener">https://github.com/alibaba/arthas/issues/1003</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>运维知识</category>
+        <category>Java诊断工具</category>
+      </categories>
+      <tags>
+        <tag>Arthas</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Centos7上安装docker</title>
     <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
     <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
@@ -77,26 +106,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker命令</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker安装RabbitMQ</title>
     <url>/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</url>
     <content><![CDATA[<p> RabbitMQ是基于AMQP的一款消息管理系统。AMQP(Advanced Message Queuing Protocol)，是一个提供消息服务的应用层标准高级消息队列协议，其中RabbitMQ就是基于这种协议的一种实现。</p>
@@ -129,6 +138,26 @@
       <tags>
         <tag>Docker</tag>
         <tag>RabbitMQ</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -217,6 +246,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker设置镜像自启动</title>
     <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
     <content><![CDATA[<p>Docker便捷小技巧：</p>
@@ -235,26 +284,6 @@
       </categories>
       <tags>
         <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -599,6 +628,99 @@
       </tags>
   </entry>
   <entry>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
+<a id="more"></a>
+
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
+</ul>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
+
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
+
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
+<p><img src="/images/2020101102.png" alt="node1"></p>
+<p>node2:</p>
+<p><img src="/images/2020101103.png" alt="node2"></p>
+<p>node3:</p>
+<p><img src="/images/2020101104.png" alt="node3"></p>
+<p>总览：</p>
+<p><img src="/images/2020101105.png" alt="nodes"></p>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IDEA配置与常用快捷键</title>
+    <url>/2021/01/20/IDEA%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-IDEA配置"><a href="#1-IDEA配置" class="headerlink" title="1 IDEA配置"></a>1 IDEA配置</h1><h2 id="1-1-整合maven"><a href="#1-1-整合maven" class="headerlink" title="1.1 整合maven"></a>1.1 整合maven</h2><h2 id="1-2-JDK配置"><a href="#1-2-JDK配置" class="headerlink" title="1.2 JDK配置"></a>1.2 JDK配置</h2><h2 id="1-3-编码设置为UTF8"><a href="#1-3-编码设置为UTF8" class="headerlink" title="1.3 编码设置为UTF8"></a>1.3 编码设置为UTF8</h2><h2 id="1-4-启动时不自动打开上一次的项目"><a href="#1-4-启动时不自动打开上一次的项目" class="headerlink" title="1.4 启动时不自动打开上一次的项目"></a>1.4 启动时不自动打开上一次的项目</h2><p>取消勾选</p>
+<p><img src="/images/2021012001.png" alt="image"></p>
+<h1 id="2-常用快捷键"><a href="#2-常用快捷键" class="headerlink" title="2 常用快捷键"></a>2 常用快捷键</h1><p><strong>快捷键技巧：</strong></p>
+<p>对于Windows：HotKey Explorer，HotKey Commander，快捷键说明</p>
+<p>对于macOS：CheatSheet</p>
+<p><strong>查看快捷键文档：</strong></p>
+<p>Helper–》Keymap Preference</p>
+<h2 id="2-1-代码格式化"><a href="#2-1-代码格式化" class="headerlink" title="2.1 代码格式化"></a>2.1 代码格式化</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-Maven插件"><a href="#3-Maven插件" class="headerlink" title="3 Maven插件"></a>3 Maven插件</h1><table>
+<thead>
+<tr>
+<th>Plugins</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Maven Helper</td>
+<td>检测maven依赖冲突的问题</td>
+</tr>
+<tr>
+<td>Lombok</td>
+<td>让代码更简洁</td>
+</tr>
+<tr>
+<td>CodeGlance</td>
+<td>代码缩放图</td>
+</tr>
+<tr>
+<td>Alibaba Java Coding</td>
+<td>扫描Java代码潜在的代码隐患，提升代码质量</td>
+</tr>
+<tr>
+<td>Save Actions</td>
+<td>保存自动格式化</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>集成开发环境</category>
+        <category>IDEA</category>
+      </categories>
+      <tags>
+        <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ElasticSearch搜索优化</title>
     <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
@@ -668,44 +790,6 @@
       </categories>
       <tags>
         <tag>ElasticSearch7</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
-<a id="more"></a>
-
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
-
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
-<p><img src="/images/2020101102.png" alt="node1"></p>
-<p>node2:</p>
-<p><img src="/images/2020101103.png" alt="node2"></p>
-<p>node3:</p>
-<p><img src="/images/2020101104.png" alt="node3"></p>
-<p>总览：</p>
-<p><img src="/images/2020101105.png" alt="nodes"></p>
-]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch集群</tag>
       </tags>
   </entry>
   <entry>
@@ -868,23 +952,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>IDEA快捷键</title>
-    <url>/2020/09/11/IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<p>IDEA快捷键记录</p>
-<a id="more"></a>
-
-<h1 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>集成开发环境</category>
-      </categories>
-      <tags>
-        <tag>Idea快捷键</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JSP页面El表达式不起作用</title>
     <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
     <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
@@ -904,43 +971,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>JSP</tag>
         <tag>session</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JVM学习笔记</title>
-    <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="为什么学习JVM"><a href="#为什么学习JVM" class="headerlink" title="为什么学习JVM"></a>为什么学习JVM</h1><p>1.面试需要</p>
-<p>2.更深入的理解Java</p>
-<ul>
-<li>一个类是如何加载到JVM的</li>
-<li>它在JVM中是如何存储的</li>
-<li>如何运行的</li>
-<li>方法是如何调用的</li>
-<li>运行时内存怎么分配的</li>
-<li>产生垃圾后是如何回收的</li>
-</ul>
-<p>3.排查解决故障</p>
-<ul>
-<li>内存溢出导致宕机了</li>
-<li>CPU使用率居高不下</li>
-<li>频繁卡顿</li>
-<li>应用越跑越慢</li>
-</ul>
-<p>4.性能调优</p>
-<ul>
-<li>合理的分配内存</li>
-<li>调整参数</li>
-<li>选择GC垃圾回收器</li>
-<li>第三方中间件的适配</li>
-</ul>
-<a id="more"></a>
-
-<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
-      <categories>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
       </tags>
   </entry>
   <entry>
@@ -992,6 +1022,255 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>IO流</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java8新特性</title>
+    <url>/2020/12/24/Java%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<p>Java8提供了很多新特性，总结一下</p>
+<p>1.lambda表达式</p>
+<p>2.函数式（Functional）接口</p>
+<p>3.方法引用/构造器引用</p>
+<p>4.Stream API</p>
+<ul>
+<li>并行流：</li>
+<li>串行流</li>
+</ul>
+<p>5.Optional类—最大化减少空指针异常</p>
+<p>6.新的时间和日期API</p>
+<a id="more"></a>
+
+<h1 id="1-lambda表达式"><a href="#1-lambda表达式" class="headerlink" title="1 lambda表达式"></a>1 lambda表达式</h1><blockquote>
+<p>Lambda表达式详解:<a href="https://www.cnblogs.com/haixiang/p/11029639.html" target="_blank" rel="noopener">https://www.cnblogs.com/haixiang/p/11029639.html</a></p>
+<p>Lambda 表达式有何用处？如何使用？:<a href="https://www.zhihu.com/question/20125256/answer/324121308" target="_blank" rel="noopener">https://www.zhihu.com/question/20125256/answer/324121308</a></p>
+</blockquote>
+<p>lambda表达式是JDK8的一个新特性，直接感受是简化代码，个人认为主要目的是取代匿名内部类，从而写出更优雅的 Java 代码，尤其在集合的遍历和其他集合操作中，可以极大地优化代码结构。</p>
+<h2 id="1-1-为什么使用lambda表达式"><a href="#1-1-为什么使用lambda表达式" class="headerlink" title="1.1 为什么使用lambda表达式"></a>1.1 为什么使用lambda表达式</h2><p>Lambda 是一个<strong>匿名函数</strong>，我们可以把 Lambda 表达式理解为是<strong>一段可以传递的代码</strong>（将代码像数据一样进行传递）。可以写出更简洁、更灵活的代码。作为一种更紧凑的代码风格，使Java的语言表达能力得到了提升。</p>
+<h2 id="1-2-语法"><a href="#1-2-语法" class="headerlink" title="1.2 语法"></a>1.2 语法</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">lambda操作符 或箭头操作符</span><br><span class="line">左边：lambda形参列表（其实就是接口中的抽象方法的形参列表）</span><br><span class="line">右边：lambda体（其实就是重写的抽象方法的方法体）</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-lambda的使用"><a href="#1-3-lambda的使用" class="headerlink" title="1.3 lambda的使用"></a>1.3 lambda的使用</h2><p>主要分为6种情况</p>
+<ul>
+<li>无参数无返回值</li>
+<li>一个参数无返回值</li>
+<li>多个参数无返回值</li>
+<li>无参数有返回值</li>
+<li>一个参数有返回值</li>
+<li>多个参数有返回值</li>
+</ul>
+<h2 id="1-4-lambda表达式的本质"><a href="#1-4-lambda表达式的本质" class="headerlink" title="1.4 lambda表达式的本质"></a>1.4 lambda表达式的本质</h2><p>作为函数式接口的实例</p>
+<h2 id="1-5-Lambda-表达式常用示例"><a href="#1-5-Lambda-表达式常用示例" class="headerlink" title="1.5 Lambda 表达式常用示例"></a>1.5 Lambda 表达式常用示例</h2><h3 id="lambda-表达式引用方法"><a href="#lambda-表达式引用方法" class="headerlink" title="lambda 表达式引用方法"></a>lambda 表达式引用方法</h3><p>有时候我们不是必须要自己重写某个匿名内部类的方法，我们可以可以利用 lambda表达式的接口快速指向一个已经被实现的方法。</p>
+<p><strong>语法：</strong><code>方法归属者::方法名 静态方法的归属者为类名，普通方法归属者为对象</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exe1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ReturnOneParam lambda1 = a -&gt; doubleNum(a);</span><br><span class="line">        System.out.println(lambda1.method(<span class="number">3</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//lambda2 引用了已经实现的 doubleNum 方法</span></span><br><span class="line">        ReturnOneParam lambda2 = Exe1::doubleNum;</span><br><span class="line">        System.out.println(lambda2.method(<span class="number">3</span>));</span><br><span class="line"></span><br><span class="line">        Exe1 exe = <span class="keyword">new</span> Exe1();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//lambda4 引用了已经实现的 addTwo 方法</span></span><br><span class="line">        ReturnOneParam lambda4 = exe::addTwo;</span><br><span class="line">        System.out.println(lambda4.method(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 要求</span></span><br><span class="line"><span class="comment">     * 1.参数数量和类型要与接口中定义的一致</span></span><br><span class="line"><span class="comment">     * 2.返回值类型要与接口中定义的一致</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">doubleNum</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a * <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addTwo</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="构造方法的引用"><a href="#构造方法的引用" class="headerlink" title="构造方法的引用"></a>构造方法的引用</h3><p>一般我们需要声明接口，该接口作为对象的生成器，通过<code>类名::new</code> 的方式来实例化对象，然后调用方法返回对象。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ItemCreatorBlankConstruct</span> </span>&#123;</span><br><span class="line">    <span class="function">Item <span class="title">getItem</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ItemCreatorParamContruct</span> </span>&#123;</span><br><span class="line">    <span class="function">Item <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> id, String name, <span class="keyword">double</span> price)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exe2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ItemCreatorBlankConstruct creator = () -&gt; <span class="keyword">new</span> Item();</span><br><span class="line">        Item item = creator.getItem();</span><br><span class="line"></span><br><span class="line">        ItemCreatorBlankConstruct creator2 = Item::<span class="keyword">new</span>;</span><br><span class="line">        Item item2 = creator2.getItem();</span><br><span class="line"></span><br><span class="line">        ItemCreatorParamContruct creator3 = Item::<span class="keyword">new</span>;</span><br><span class="line">        Item item3 = creator3.getItem(<span class="number">112</span>, <span class="string">"鼠标"</span>, <span class="number">135.99</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="lambda-表达式创建线程"><a href="#lambda-表达式创建线程" class="headerlink" title="lambda 表达式创建线程"></a>lambda 表达式创建线程</h3><p>我们以往都是通过创建 Thread 对象，然后通过匿名内部类重写 run() 方法，一提到匿名内部类我们就应该想到可以使用 lambda 表达式来简化线程的创建过程。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> Thread t = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">     System.out.println(<span class="number">2</span> + <span class="string">":"</span> + i);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;);</span><br><span class="line">t.start();</span><br></pre></td></tr></table></figure>
+
+<h3 id="遍历集合"><a href="#遍历集合" class="headerlink" title="遍历集合"></a>遍历集合</h3><p>我们可以调用集合的 <code>public void forEach(Consumer&lt;? super E&gt; action)</code> 方法，通过 lambda 表达式的方式遍历集合中的元素。以下是 Consumer 接口的方法以及遍历集合的操作。Consumer 接口是 jdk 为我们提供的一个函数式接口。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Consumer</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(T t)</span></span>;</span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">&#125;</span><br><span class="line">  ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  Collections.addAll(list, <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//lambda表达式 方法引用</span></span><br><span class="line">  list.forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">  list.forEach(element -&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (element % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">      System.out.println(element);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除集合中的某个元素"><a href="#删除集合中的某个元素" class="headerlink" title="删除集合中的某个元素"></a>删除集合中的某个元素</h3><p>我们通过<code>public boolean removeIf(Predicate&lt;? super E&gt; filter)</code>方法来删除集合中的某个元素，Predicate 也是 jdk 为我们提供的一个函数式接口，可以简化程序的编写。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ArrayList&lt;Item&gt; items = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">items.add(<span class="keyword">new</span> Item(<span class="number">11</span>, <span class="string">"小牙刷"</span>, <span class="number">12.05</span> ));</span><br><span class="line">items.add(<span class="keyword">new</span> Item(<span class="number">5</span>, <span class="string">"日本马桶盖"</span>, <span class="number">999.05</span> ));</span><br><span class="line">items.add(<span class="keyword">new</span> Item(<span class="number">7</span>, <span class="string">"格力空调"</span>, <span class="number">888.88</span> ));</span><br><span class="line">items.add(<span class="keyword">new</span> Item(<span class="number">17</span>, <span class="string">"肥皂"</span>, <span class="number">2.00</span> ));</span><br><span class="line">items.add(<span class="keyword">new</span> Item(<span class="number">9</span>, <span class="string">"冰箱"</span>, <span class="number">4200.00</span> ));</span><br><span class="line"></span><br><span class="line">items.removeIf(ele -&gt; ele.getId() == <span class="number">7</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过 foreach 遍历，查看是否已经删除</span></span><br><span class="line">items.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+
+<h3 id="集合内元素的排序"><a href="#集合内元素的排序" class="headerlink" title="集合内元素的排序"></a>集合内元素的排序</h3><p>在以前我们若要为集合内的元素排序，就必须调用 sort 方法，传入比较器匿名内部类重写 compare 方法，我们现在可以使用 lambda 表达式来简化代码。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ArrayList&lt;Item&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list.add(<span class="keyword">new</span> Item(<span class="number">13</span>, <span class="string">"背心"</span>, <span class="number">7.80</span>));</span><br><span class="line">list.add(<span class="keyword">new</span> Item(<span class="number">11</span>, <span class="string">"半袖"</span>, <span class="number">37.80</span>));</span><br><span class="line">list.add(<span class="keyword">new</span> Item(<span class="number">14</span>, <span class="string">"风衣"</span>, <span class="number">139.80</span>));</span><br><span class="line">list.add(<span class="keyword">new</span> Item(<span class="number">12</span>, <span class="string">"秋裤"</span>, <span class="number">55.33</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">list.sort(new Comparator&lt;Item&gt;() &#123;</span></span><br><span class="line"><span class="comment">    @Override</span></span><br><span class="line"><span class="comment">    public int compare(Item o1, Item o2) &#123;</span></span><br><span class="line"><span class="comment">        return o1.getId()  - o2.getId();</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">list.sort((o1, o2) -&gt; o1.getId() - o2.getId());</span><br><span class="line"></span><br><span class="line">System.out.println(list);</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-6-Lambda-表达式中的闭包问题"><a href="#1-6-Lambda-表达式中的闭包问题" class="headerlink" title="1.6 Lambda 表达式中的闭包问题"></a>1.6 Lambda 表达式中的闭包问题</h2><p>这个问题我们在匿名内部类中也会存在，如果我们把注释放开会报错，告诉我 num 值是 final 不能被改变。这里我们虽然没有标识 num 类型为 final，但是在编译期间虚拟机会帮我们加上 final 修饰关键字。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.function.Consumer;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        Consumer&lt;String&gt; consumer = ele -&gt; &#123;</span><br><span class="line">            System.out.println(num);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//num = num + 2;</span></span><br><span class="line">        consumer.accept(<span class="string">"hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-函数式（Functional）接口"><a href="#2-函数式（Functional）接口" class="headerlink" title="2  函数式（Functional）接口"></a>2  函数式（Functional）接口</h1><p>函数式（Functional）接口：只包含一个抽象方法</p>
+<p>Java内置的四大核心函数式接口：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020120411.png" alt="img"></p>
+<h1 id="3-方法引用-构造器引用"><a href="#3-方法引用-构造器引用" class="headerlink" title="3 方法引用/构造器引用"></a>3 方法引用/构造器引用</h1><p>当要传递给Lamdba体的操作，已经有实现的方法了，可以使用方法引用。</p>
+<p>方法引用可以看做是lambda表达式深层次的表达。换句话说，方法引用就是lambda表达式，也就是函数式接口的一个实例，通过方法的名字来指向一个方法，可以认为是lambda表达式的一个语法糖。</p>
+<p><strong>要求：</strong>实现接口的抽象方法的参数列表和返回值类型，必须与方法引用的方法的参数列表和返回值类型保持一致。</p>
+<p><strong>格式：</strong>使用操作符“::”将类（或对象）与方法名分隔开来</p>
+<p>主要有三种使用情况：</p>
+<ul>
+<li>对象::实例方法名</li>
+<li>类::静态方法名</li>
+<li>类::实例方法名</li>
+</ul>
+<h1 id="4-Stream-API"><a href="#4-Stream-API" class="headerlink" title="4 Stream API"></a>4 Stream API</h1><h2 id="4-1-概述"><a href="#4-1-概述" class="headerlink" title="4.1 概述"></a>4.1 概述</h2><blockquote>
+<p>Stream API（java.util.stream）把真正的函数式编程风格引入到Java中。这是目前为止对Java类库最好的补充，因为Stream API可以极大提供Java程序员的生成力，让程序员写出高效率，干净，简洁的代码。</p>
+</blockquote>
+<p>Stream 是 Java8 中处理集合的关键抽象概念，它可以指定你希望对集合进行的操作，可以执行非常复杂的查找、过滤和映射数据等操作。 <strong>使用Stream API 对集合数据进行操作，就类似于使用 SQL 执行的数据库查询。</strong>也可以使用 Stream API 来<strong>并行</strong>执行操作。简言之，Stream API 提供了一种高效且易于使用的处理数据的方式。</p>
+<h2 id="4-2-为什么使用Stream-API"><a href="#4-2-为什么使用Stream-API" class="headerlink" title="4.2 为什么使用Stream API"></a>4.2 为什么使用Stream API</h2><ul>
+<li>实际开发中，项目中多数数据源都来自于MySQL，Oracle等。但现在数据源可以更多了，有MonogoDB，Redis，而这些NoSQL的数据源就需要Java层面去处理。</li>
+<li>Stream和Collection集合的区别：<ul>
+<li>Collection是一种静态的内存数据结构，是主要面向内存，存储在内存中。</li>
+<li>Stream是有相关计算的，主要是面向CPU，通过CPU实现计算。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-3-什么是Stream"><a href="#4-3-什么是Stream" class="headerlink" title="4.3 什么是Stream"></a>4.3 什么是Stream</h2><p>Stream是数据渠道，用于操作数据源（集合，数组等）所生成的元素序列。</p>
+<p><strong>“集合讲的是数据，Stream讲的是计算”</strong></p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>Stream 自己不会存储元素。</li>
+<li>Stream 不会改变源对象。每次处理都会返回一个持有结果的新Stream。</li>
+<li>Stream 操作是延迟执行的。这意味着他们会等到需要结果的时候才执行。</li>
+</ul>
+<h2 id="4-4-Stream-的操作三个步骤："><a href="#4-4-Stream-的操作三个步骤：" class="headerlink" title="4.4 Stream 的操作三个步骤："></a>4.4 Stream 的操作三个步骤：</h2><ol>
+<li><strong>创建 Stream</strong>：通过一个数据源（如：集合、数组），获取一个流</li>
+<li><strong>中间操作</strong>：中间操作是个操作链，对数据源的数据进行n次处理，但是在终结操作前，并不会真正执行。</li>
+<li><strong>终止操作</strong>：一旦执行终止操作，就执行中间操作链，最终产生结果并结束Stream。<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020120410.png" alt="在这里插入图片描述"></li>
+</ol>
+<h3 id="4-4-1-创建Stream流"><a href="#4-4-1-创建Stream流" class="headerlink" title="4.4.1 创建Stream流"></a>4.4.1 创建Stream流</h3><h4 id="1-创建Stream方式一-通过集合"><a href="#1-创建Stream方式一-通过集合" class="headerlink" title="1.创建Stream方式一:通过集合"></a>1.创建Stream方式一:通过集合</h4><p>Java8中的Collection接口被扩展，提供了两个获取流的方法:</p>
+<p>​        ●default Stream stream() : 返回一个顺序流</p>
+<p>​        ●default Stream parallelStream() : 返回一个并行流</p>
+<h4 id="2-创建Stream方式二-通过数组"><a href="#2-创建Stream方式二-通过数组" class="headerlink" title="2.创建Stream方式二:通过数组"></a>2.创建Stream方式二:通过数组</h4><p>Java8中的Arrays的静态方法stream()可以获取数组流:</p>
+<p>​        ● static Stream stream(T[] array): 返回一个流</p>
+<p>重载形式，能够处理对应基本类型的数组:</p>
+<p>​        ●public static IntStream stream(int[] array)：返回一个整型数据流</p>
+<p>​        ●public static LongStream stream(long[] array)：返回一个长整型数据流</p>
+<p>​        ●public static DoubleStream stream(double[] array)：返回一个浮点型数据流</p>
+<h4 id="3-创建Stream方式三-通过Stream的of"><a href="#3-创建Stream方式三-通过Stream的of" class="headerlink" title="3.创建Stream方式三:通过Stream的of()"></a>3.创建Stream方式三:通过Stream的of()</h4><p>可以调用Stream类静态方法<code>of()</code>，通过显示值创建一个流。它可以接受任意数量的参数</p>
+<p>​        ●public static Stream of(T… values) : 返回一个顺序流</p>
+<h4 id="4-创建Stream方式四-创建无限流"><a href="#4-创建Stream方式四-创建无限流" class="headerlink" title="4.创建Stream方式四:创建无限流"></a>4.创建Stream方式四:创建无限流</h4><p>可以使用静态方法 Stream.iterate() 和Stream.generate(), 创建无限流。</p>
+<p>​        ●public static Stream iterate(final T seed, final UnaryOperator f):返回一个无限流</p>
+<p>​        ● public static Stream generate(Supplier s) ：返回一个无限流</p>
+<h3 id="4-4-2-中间处理数据操作"><a href="#4-4-2-中间处理数据操作" class="headerlink" title="4.4.2 中间处理数据操作"></a>4.4.2 中间处理数据操作</h3><h3 id="4-4-3-终结操作"><a href="#4-4-3-终结操作" class="headerlink" title="4.4.3 终结操作"></a>4.4.3 终结操作</h3><h1 id="5-Optional类—最大化减少空指针异常"><a href="#5-Optional类—最大化减少空指针异常" class="headerlink" title="5 Optional类—最大化减少空指针异常"></a>5 Optional类—最大化减少空指针异常</h1><h1 id="6-新的时间和日期API"><a href="#6-新的时间和日期API" class="headerlink" title="6 新的时间和日期API"></a>6 新的时间和日期API</h1>]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>函数式编程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JVM学习笔记</title>
+    <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="为什么学习JVM"><a href="#为什么学习JVM" class="headerlink" title="为什么学习JVM"></a>为什么学习JVM</h1><p>1.面试需要</p>
+<p>2.更深入的理解Java</p>
+<ul>
+<li>一个类是如何加载到JVM的</li>
+<li>它在JVM中是如何存储的</li>
+<li>如何运行的</li>
+<li>方法是如何调用的</li>
+<li>运行时内存怎么分配的</li>
+<li>产生垃圾后是如何回收的</li>
+</ul>
+<p>3.排查解决故障</p>
+<ul>
+<li>内存溢出导致宕机了</li>
+<li>CPU使用率居高不下</li>
+<li>频繁卡顿</li>
+<li>应用越跑越慢</li>
+</ul>
+<p>4.性能调优</p>
+<ul>
+<li>合理的分配内存</li>
+<li>调整参数</li>
+<li>选择GC垃圾回收器</li>
+<li>第三方中间件的适配</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java反射详解</title>
+    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java容器详解</title>
+    <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.jianshu.com/p/8ef342da8732" target="_blank" rel="noopener">https://www.jianshu.com/p/8ef342da8732</a></p>
+<p><a href="https://blog.csdn.net/feiyanaffection/article/details/81394745" target="_blank" rel="noopener">https://blog.csdn.net/feiyanaffection/article/details/81394745</a></p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201228151026979.png" alt="image-20201228151026979"></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java异常详解</title>
+    <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
+<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
+</blockquote>
+<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>异常</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java接口详解</title>
+    <url>/2020/12/27/Java%E6%8E%A5%E5%8F%A3%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p>JAVA基础——接口（全网最详细教程）：<a href="https://blog.csdn.net/qq_19782019/article/details/80259836" target="_blank" rel="noopener">https://blog.csdn.net/qq_19782019/article/details/80259836</a></p>
+<p>java提高篇(五)—–抽象类与接口：<a href="https://www.cnblogs.com/chenssy/p/3376708.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3376708.html</a></p>
+<p>深入理解Java的接口和抽象类：<a href="https://www.cnblogs.com/dolphin0520/p/3811437.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3811437.html</a></p>
+</blockquote>
+<p><strong>接口：</strong></p>
+<p><strong>抽象类：</strong></p>
+<p>　从这里可以看出，抽象类就是为了继承而存在的，如果你定义了一个抽象类，却不去继承它，那么等于白白创建了这个抽象类，因为你不能用它来做任何事情。对于一个父类，如果它的某个方法在父类中实现出来没有任何意义，必须根据子类的实际需求来进行不同的实现，那么就可以将这个方法声明为abstract方法，此时这个类也就成为abstract类了。</p>
+<p>包含抽象方法的类称为抽象类，但并不意味着抽象类中只能有抽象方法，它和普通类一样，同样可以拥有成员变量和普通的成员方法。注意，抽象类和普通类的主要有三点区别：</p>
+<p>1）抽象方法必须为public或者protected（因为如果为private，则不能被子类继承，子类便无法实现该方法），缺省情况下默认为public。</p>
+<p>2）抽象类不能用来创建对象；</p>
+<p>3）如果一个类继承于一个抽象类，则子类必须实现父类的抽象方法。如果子类没有实现父类的抽象方法，则必须将子类也定义为为abstract类。</p>
+<p>在其他方面，抽象类和普通的类并没有区别。</p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>接口</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java注解详解</title>
+    <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -1062,22 +1341,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java反射详解</title>
-    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java多线程</title>
     <url>/2020/08/04/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
     <content><![CDATA[<p>Java多线程知识总结</p>
@@ -1138,68 +1401,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <tag>Java</tag>
         <tag>多线程</tag>
         <tag>JavaSE</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java异常详解</title>
-    <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
-<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
-</blockquote>
-<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>异常</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java容器详解</title>
-    <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.jianshu.com/p/8ef342da8732" target="_blank" rel="noopener">https://www.jianshu.com/p/8ef342da8732</a></p>
-<p><a href="https://blog.csdn.net/feiyanaffection/article/details/81394745" target="_blank" rel="noopener">https://blog.csdn.net/feiyanaffection/article/details/81394745</a></p>
-</blockquote>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201228151026979.png" alt="image-20201228151026979"></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>集合</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java接口详解</title>
-    <url>/2020/12/27/Java%E6%8E%A5%E5%8F%A3%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p>接口:<a href="https://blog.csdn.net/qq_19782019/article/details/80259836" target="_blank" rel="noopener">https://blog.csdn.net/qq_19782019/article/details/80259836</a></p>
-<p><a href="https://www.cnblogs.com/chenssy/p/3376708.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3376708.html</a></p>
-</blockquote>
-<p><a href="https://www.cnblogs.com/dolphin0520/p/3811437.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3811437.html</a></p>
-<p><strong>接口：</strong></p>
-<p><strong>抽象类：</strong></p>
-<p>　从这里可以看出，抽象类就是为了继承而存在的，如果你定义了一个抽象类，却不去继承它，那么等于白白创建了这个抽象类，因为你不能用它来做任何事情。对于一个父类，如果它的某个方法在父类中实现出来没有任何意义，必须根据子类的实际需求来进行不同的实现，那么就可以将这个方法声明为abstract方法，此时这个类也就成为abstract类了。</p>
-<p>包含抽象方法的类称为抽象类，但并不意味着抽象类中只能有抽象方法，它和普通类一样，同样可以拥有成员变量和普通的成员方法。注意，抽象类和普通类的主要有三点区别：</p>
-<p>1）抽象方法必须为public或者protected（因为如果为private，则不能被子类继承，子类便无法实现该方法），缺省情况下默认为public。</p>
-<p>2）抽象类不能用来创建对象；</p>
-<p>3）如果一个类继承于一个抽象类，则子类必须实现父类的抽象方法。如果子类没有实现父类的抽象方法，则必须将子类也定义为为abstract类。</p>
-<p>在其他方面，抽象类和普通的类并没有区别。</p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>接口</tag>
       </tags>
   </entry>
   <entry>
@@ -1410,19 +1611,47 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java注解详解</title>
-    <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
+    <title>MyBatis-Plus笔记</title>
+    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<blockquote>
-<p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
+<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
 </blockquote>
 ]]></content>
       <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
+        <category>应用框架</category>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>ORM框架</category>
       </categories>
       <tags>
-        <tag>注解</tag>
+        <tag>MyBatis-Plus</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux安装配置大全</title>
+    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
+    <content><![CDATA[<p>Linux各种版本安装配置</p>
+<a id="more"></a>
+
+<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
+<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
+<h1 id="CentOS7磁盘操作"><a href="#CentOS7磁盘操作" class="headerlink" title="CentOS7磁盘操作"></a>CentOS7磁盘操作</h1><h2 id="linux磁盘分区扩容"><a href="#linux磁盘分区扩容" class="headerlink" title="linux磁盘分区扩容"></a>linux磁盘分区扩容</h2><p>大概分为以下几步：</p>
+<ol>
+<li>分区fdisk</li>
+<li>格式化mkfs</li>
+<li>挂载mount</li>
+</ol>
+<blockquote>
+<p>详细操作：<a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenmh/p/5096592.html</a></p>
+</blockquote>
+<p><strong>其他操作：</strong></p>
+<p>du 查看文件数据占用多少磁盘空间<br>swap交换分区 是一种通过在磁盘中预先划分一定的空军，然后就讲把内存中暂时不常用的数据临时存放在磁盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1484,47 +1713,62 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Linux安装配置大全</title>
-    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
-    <content><![CDATA[<p>Linux各种版本安装配置</p>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<p>记录一个小细节</p>
 <a id="more"></a>
 
-<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
-<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
-<h1 id="CentOS7磁盘操作"><a href="#CentOS7磁盘操作" class="headerlink" title="CentOS7磁盘操作"></a>CentOS7磁盘操作</h1><h2 id="linux磁盘分区扩容"><a href="#linux磁盘分区扩容" class="headerlink" title="linux磁盘分区扩容"></a>linux磁盘分区扩容</h2><p>大概分为以下几步：</p>
-<ol>
-<li>分区fdisk</li>
-<li>格式化mkfs</li>
-<li>挂载mount</li>
-</ol>
-<blockquote>
-<p>详细操作：<a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenmh/p/5096592.html</a></p>
-</blockquote>
-<p><strong>其他操作：</strong></p>
-<p>du 查看文件数据占用多少磁盘空间<br>swap交换分区 是一种通过在磁盘中预先划分一定的空军，然后就讲把内存中暂时不常用的数据临时存放在磁盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题</p>
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>MyBatis</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
+        <tag>MyBatis缓存</tag>
       </tags>
   </entry>
   <entry>
-    <title>MyBatis-Plus笔记</title>
-    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
+    <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
+    <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
+<a id="more"></a>
+
+<blockquote>
+<p>COUNT(column_name) 函数返回指定列的值的数目（NULL 不计入）</p>
 </blockquote>
+<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是 NULL，累计值就加 1，否则不加。最后返回累计值。</p>
+<p>所以，count(*)、count(1)和count(主键 id) 都表示返回满足条件的结果集的总行数；而 count(字段），则表示返回满足条件的数据行里面，参数“字段”不为 NULL 的总个数。</p>
+<p>至于分析性能差别的时候，记住这么几个原则：</p>
+<ul>
+<li>server 层要什么就给什么；</li>
+<li>InnoDB 只给必要的值；</li>
+<li>现在的优化器只优化了 count(*) 的语义为“取行数”，其他“显而易见”的优化并没有做。</li>
+</ul>
+<p><strong>count(可空字段)</strong></p>
+<p>扫描全表，读到server层，判断字段可空，拿出该字段所有值，判断每一个值是否为空，不为空则累加</p>
+<p><strong>count(非空字段)与count(主键 id)</strong></p>
+<p>扫描全表，读到server层，判断字段不可空，按行累加。</p>
+<p><strong>count(1)</strong></p>
+<p>扫描全表，但不取值，server层收到的每一行都是1，判断不可能是null，按值累加。</p>
+<p><strong>注意：</strong>count(1)执行速度比count(主键 id)快的原因：从引擎返回 id 会涉及到解析数据行，以及拷贝字段值的操作。</p>
+<p><strong>count(*)</strong></p>
+<p>MySQL 执行count(<em>)在优化器做了专门优化。因为count(</em>)返回的行一定不是空。扫描全表，但是不取值，按行累加。</p>
+<blockquote>
+<p>看到这里，你会说优化器就不能自己判断一下吗，主键 id 肯定是非空的，为什么不能按照 count(<em>) 来处理，多么简单的优化。当然 MySQL 专门针对这个语句进行优化也不是不可以。但是这种需要专门优化的情况太多了，而且 MySQL 已经优化过 count(</em>) 了，你直接使用这种语句就可以了。</p>
+</blockquote>
+<p><strong>性能对比结论</strong></p>
+<p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
 ]]></content>
       <categories>
-        <category>应用框架</category>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>ORM框架</category>
+        <category>MySQL</category>
       </categories>
       <tags>
-        <tag>MyBatis-Plus</tag>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -1569,26 +1813,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<p>记录一个小细节</p>
-<a id="more"></a>
-
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
     <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
@@ -1613,65 +1837,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
-    <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
-<a id="more"></a>
-
-<blockquote>
-<p>COUNT(column_name) 函数返回指定列的值的数目（NULL 不计入）</p>
-</blockquote>
-<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是 NULL，累计值就加 1，否则不加。最后返回累计值。</p>
-<p>所以，count(*)、count(1)和count(主键 id) 都表示返回满足条件的结果集的总行数；而 count(字段），则表示返回满足条件的数据行里面，参数“字段”不为 NULL 的总个数。</p>
-<p>至于分析性能差别的时候，记住这么几个原则：</p>
-<ul>
-<li>server 层要什么就给什么；</li>
-<li>InnoDB 只给必要的值；</li>
-<li>现在的优化器只优化了 count(*) 的语义为“取行数”，其他“显而易见”的优化并没有做。</li>
-</ul>
-<p><strong>count(可空字段)</strong></p>
-<p>扫描全表，读到server层，判断字段可空，拿出该字段所有值，判断每一个值是否为空，不为空则累加</p>
-<p><strong>count(非空字段)与count(主键 id)</strong></p>
-<p>扫描全表，读到server层，判断字段不可空，按行累加。</p>
-<p><strong>count(1)</strong></p>
-<p>扫描全表，但不取值，server层收到的每一行都是1，判断不可能是null，按值累加。</p>
-<p><strong>注意：</strong>count(1)执行速度比count(主键 id)快的原因：从引擎返回 id 会涉及到解析数据行，以及拷贝字段值的操作。</p>
-<p><strong>count(*)</strong></p>
-<p>MySQL 执行count(<em>)在优化器做了专门优化。因为count(</em>)返回的行一定不是空。扫描全表，但是不取值，按行累加。</p>
-<blockquote>
-<p>看到这里，你会说优化器就不能自己判断一下吗，主键 id 肯定是非空的，为什么不能按照 count(<em>) 来处理，多么简单的优化。当然 MySQL 专门针对这个语句进行优化也不是不可以。但是这种需要专门优化的情况太多了，而且 MySQL 已经优化过 count(</em>) 了，你直接使用这种语句就可以了。</p>
-</blockquote>
-<p><strong>性能对比结论</strong></p>
-<p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL数据库集群-PXC方案</title>
-    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>docker中安装pxc集群比较简单，这里尝试在centos7安装MySQL集群</p>
-<a id="more"></a>
-
-<h1 id="一-安装环境"><a href="#一-安装环境" class="headerlink" title="一.安装环境"></a>一.安装环境</h1><p>Centos7</p>
-<p>MySQL：5.7.22</p>
-<p>Mycat</p>
-<h1 id="二-创建PXC集群"><a href="#二-创建PXC集群" class="headerlink" title="二.创建PXC集群"></a>二.创建PXC集群</h1><h2 id="2-1-CentOS安装PerconaServer数据库"><a href="#2-1-CentOS安装PerconaServer数据库" class="headerlink" title="2.1 CentOS安装PerconaServer数据库"></a>2.1 CentOS安装PerconaServer数据库</h2><blockquote>
-<p>官网下载网址：<a href="https://www.percona.com/downloads/Percona-Server-5.7/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/LATEST/</a></p>
-</blockquote>
-<h2 id="2-2-安装PXC组建集群"><a href="#2-2-安装PXC组建集群" class="headerlink" title="2.2 安装PXC组建集群"></a>2.2 安装PXC组建集群</h2><h2 id="2-3-PXC集群的常用管理-数据库集群使用"><a href="#2-3-PXC集群的常用管理-数据库集群使用" class="headerlink" title="2.3 PXC集群的常用管理-数据库集群使用"></a>2.3 PXC集群的常用管理-数据库集群使用</h2><h2 id="2-4-PXC集群的常用管理-状态参数"><a href="#2-4-PXC集群的常用管理-状态参数" class="headerlink" title="2.4 PXC集群的常用管理-状态参数"></a>2.4 PXC集群的常用管理-状态参数</h2><h2 id="2-5-PXC节点的上线与关闭"><a href="#2-5-PXC节点的上线与关闭" class="headerlink" title="2.5 PXC节点的上线与关闭"></a>2.5 PXC节点的上线与关闭</h2><h2 id="2-6-MySQL集群中间件比较"><a href="#2-6-MySQL集群中间件比较" class="headerlink" title="2.6 MySQL集群中间件比较"></a>2.6 MySQL集群中间件比较</h2><h2 id="2-7-配置MyCat负载均衡"><a href="#2-7-配置MyCat负载均衡" class="headerlink" title="2.7 配置MyCat负载均衡"></a>2.7 配置MyCat负载均衡</h2><h2 id="2-8-数据切分"><a href="#2-8-数据切分" class="headerlink" title="2.8 数据切分"></a>2.8 数据切分</h2><h2 id="2-9-父子表"><a href="#2-9-父子表" class="headerlink" title="2.9 父子表"></a>2.9 父子表</h2><h2 id="2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群"><a href="#2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群" class="headerlink" title="2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群"></a>2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群</h2><h2 id="2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"><a href="#2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP" class="headerlink" title="2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"></a>2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP</h2><h2 id="2-12-Sysbench基准测试-安装Sysbench"><a href="#2-12-Sysbench基准测试-安装Sysbench" class="headerlink" title="2.12 Sysbench基准测试-安装Sysbench"></a>2.12 Sysbench基准测试-安装Sysbench</h2><h2 id="2-13-Sysbench基准测试-使用Sysbench"><a href="#2-13-Sysbench基准测试-使用Sysbench" class="headerlink" title="2.13 Sysbench基准测试-使用Sysbench"></a>2.13 Sysbench基准测试-使用Sysbench</h2><h2 id="2-14-tpcc-mysql压力测试"><a href="#2-14-tpcc-mysql压力测试" class="headerlink" title="2.14 tpcc-mysql压力测试"></a>2.14 tpcc-mysql压力测试</h2><h1 id="三-PXC集群原理"><a href="#三-PXC集群原理" class="headerlink" title="三.PXC集群原理"></a>三.PXC集群原理</h1><h2 id="3-1-binlog日志"><a href="#3-1-binlog日志" class="headerlink" title="3.1 binlog日志"></a>3.1 binlog日志</h2><h2 id="3-2-PXC同步原理"><a href="#3-2-PXC同步原理" class="headerlink" title="3.2 PXC同步原理"></a>3.2 PXC同步原理</h2><h1 id="四-业务需求与MySQL架构设计"><a href="#四-业务需求与MySQL架构设计" class="headerlink" title="四. 业务需求与MySQL架构设计"></a>四. 业务需求与MySQL架构设计</h1><h2 id="4-1-MySQL的5种特殊架构设计"><a href="#4-1-MySQL的5种特殊架构设计" class="headerlink" title="4.1 MySQL的5种特殊架构设计"></a>4.1 MySQL的5种特殊架构设计</h2><h2 id="4-2-数据库设计原则"><a href="#4-2-数据库设计原则" class="headerlink" title="4.2 数据库设计原则"></a>4.2 数据库设计原则</h2><h1 id="五-数据库常见业务处理"><a href="#五-数据库常见业务处理" class="headerlink" title="五.数据库常见业务处理"></a>五.数据库常见业务处理</h1><h1 id="六-数据备份与恢复"><a href="#六-数据备份与恢复" class="headerlink" title="六.数据备份与恢复"></a>六.数据备份与恢复</h1>]]></content>
-      <categories>
-        <category>PXC</category>
-      </categories>
-      <tags>
-        <tag>PXC集群</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Mycat学习笔记</title>
     <url>/2021/01/12/Mycat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<blockquote>
@@ -1684,6 +1849,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>数据库</category>
         <category>分库分表</category>
       </categories>
+  </entry>
+  <entry>
+    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
+    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>注解</tag>
+      </tags>
   </entry>
   <entry>
     <title>MySQL高级</title>
@@ -2078,6 +2254,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>MySQL数据库集群-PXC方案</title>
+    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>docker中安装pxc集群比较简单，这里尝试在centos7安装MySQL集群</p>
+<a id="more"></a>
+
+<h1 id="一-安装环境"><a href="#一-安装环境" class="headerlink" title="一.安装环境"></a>一.安装环境</h1><p>Centos7</p>
+<p>MySQL：5.7.22</p>
+<p>Mycat</p>
+<h1 id="二-创建PXC集群"><a href="#二-创建PXC集群" class="headerlink" title="二.创建PXC集群"></a>二.创建PXC集群</h1><h2 id="2-1-CentOS安装PerconaServer数据库"><a href="#2-1-CentOS安装PerconaServer数据库" class="headerlink" title="2.1 CentOS安装PerconaServer数据库"></a>2.1 CentOS安装PerconaServer数据库</h2><blockquote>
+<p>官网下载网址：<a href="https://www.percona.com/downloads/Percona-Server-5.7/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/LATEST/</a></p>
+</blockquote>
+<h2 id="2-2-安装PXC组建集群"><a href="#2-2-安装PXC组建集群" class="headerlink" title="2.2 安装PXC组建集群"></a>2.2 安装PXC组建集群</h2><h2 id="2-3-PXC集群的常用管理-数据库集群使用"><a href="#2-3-PXC集群的常用管理-数据库集群使用" class="headerlink" title="2.3 PXC集群的常用管理-数据库集群使用"></a>2.3 PXC集群的常用管理-数据库集群使用</h2><h2 id="2-4-PXC集群的常用管理-状态参数"><a href="#2-4-PXC集群的常用管理-状态参数" class="headerlink" title="2.4 PXC集群的常用管理-状态参数"></a>2.4 PXC集群的常用管理-状态参数</h2><h2 id="2-5-PXC节点的上线与关闭"><a href="#2-5-PXC节点的上线与关闭" class="headerlink" title="2.5 PXC节点的上线与关闭"></a>2.5 PXC节点的上线与关闭</h2><h2 id="2-6-MySQL集群中间件比较"><a href="#2-6-MySQL集群中间件比较" class="headerlink" title="2.6 MySQL集群中间件比较"></a>2.6 MySQL集群中间件比较</h2><h2 id="2-7-配置MyCat负载均衡"><a href="#2-7-配置MyCat负载均衡" class="headerlink" title="2.7 配置MyCat负载均衡"></a>2.7 配置MyCat负载均衡</h2><h2 id="2-8-数据切分"><a href="#2-8-数据切分" class="headerlink" title="2.8 数据切分"></a>2.8 数据切分</h2><h2 id="2-9-父子表"><a href="#2-9-父子表" class="headerlink" title="2.9 父子表"></a>2.9 父子表</h2><h2 id="2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群"><a href="#2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群" class="headerlink" title="2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群"></a>2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群</h2><h2 id="2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"><a href="#2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP" class="headerlink" title="2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"></a>2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP</h2><h2 id="2-12-Sysbench基准测试-安装Sysbench"><a href="#2-12-Sysbench基准测试-安装Sysbench" class="headerlink" title="2.12 Sysbench基准测试-安装Sysbench"></a>2.12 Sysbench基准测试-安装Sysbench</h2><h2 id="2-13-Sysbench基准测试-使用Sysbench"><a href="#2-13-Sysbench基准测试-使用Sysbench" class="headerlink" title="2.13 Sysbench基准测试-使用Sysbench"></a>2.13 Sysbench基准测试-使用Sysbench</h2><h2 id="2-14-tpcc-mysql压力测试"><a href="#2-14-tpcc-mysql压力测试" class="headerlink" title="2.14 tpcc-mysql压力测试"></a>2.14 tpcc-mysql压力测试</h2><h1 id="三-PXC集群原理"><a href="#三-PXC集群原理" class="headerlink" title="三.PXC集群原理"></a>三.PXC集群原理</h1><h2 id="3-1-binlog日志"><a href="#3-1-binlog日志" class="headerlink" title="3.1 binlog日志"></a>3.1 binlog日志</h2><h2 id="3-2-PXC同步原理"><a href="#3-2-PXC同步原理" class="headerlink" title="3.2 PXC同步原理"></a>3.2 PXC同步原理</h2><h1 id="四-业务需求与MySQL架构设计"><a href="#四-业务需求与MySQL架构设计" class="headerlink" title="四. 业务需求与MySQL架构设计"></a>四. 业务需求与MySQL架构设计</h1><h2 id="4-1-MySQL的5种特殊架构设计"><a href="#4-1-MySQL的5种特殊架构设计" class="headerlink" title="4.1 MySQL的5种特殊架构设计"></a>4.1 MySQL的5种特殊架构设计</h2><h2 id="4-2-数据库设计原则"><a href="#4-2-数据库设计原则" class="headerlink" title="4.2 数据库设计原则"></a>4.2 数据库设计原则</h2><h1 id="五-数据库常见业务处理"><a href="#五-数据库常见业务处理" class="headerlink" title="五.数据库常见业务处理"></a>五.数据库常见业务处理</h1><h1 id="六-数据备份与恢复"><a href="#六-数据备份与恢复" class="headerlink" title="六.数据备份与恢复"></a>六.数据备份与恢复</h1>]]></content>
+      <categories>
+        <category>PXC</category>
+      </categories>
+      <tags>
+        <tag>PXC集群</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Nginx安装及其配置</title>
     <url>/2020/07/31/Nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -2396,17 +2592,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
-    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PXC方案的一些改进</title>
     <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
     <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
@@ -2489,6 +2674,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Docker</tag>
         <tag>MySQL集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring @Configuration和@Component的区别</title>
+    <url>/2021/01/17/Spring-Configuration%E5%92%8C-Component%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>SpringBoot2.0源码笔记</title>
+    <url>/2021/01/03/SpringBoot2-0%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210103114217610.png" alt="image-20210103114217610"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -2977,25 +3186,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot2.0源码笔记</title>
-    <url>/2021/01/03/SpringBoot2-0%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210103114217610.png" alt="image-20210103114217610"></p>
-]]></content>
-  </entry>
-  <entry>
     <title>SpringBoot启动时找不到或无法加载主类</title>
     <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -3055,32 +3245,95 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot整合Undertow</title>
-    <url>/2020/12/30/SpringBoot%E6%95%B4%E5%90%88Undertow/</url>
+    <title>SpringBoot项目测试模板</title>
+    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringCloud笔记</title>
+    <url>/2020/08/15/SpringCloud%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
 <a id="more"></a>
 
-<h1 id="1-maven依赖"><a href="#1-maven依赖" class="headerlink" title="1.maven依赖"></a>1.maven依赖</h1><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-undertow<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="2-配置Undertow"><a href="#2-配置Undertow" class="headerlink" title="2.配置Undertow"></a>2.配置Undertow</h1><blockquote>
-<p>Undertow基本配置:<a href="https://www.pianshen.com/article/7390262599/" target="_blank" rel="noopener">https://www.pianshen.com/article/7390262599/</a></p>
+<h1 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h1><blockquote>
+<p>Spring Boot:<a href="https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/htmlsingle/" target="_blank" rel="noopener">https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/htmlsingle/</a></p>
 </blockquote>
-<p>这里以application.properties示例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 是否打开 undertow 日志，默认为 false</span><br><span class="line">server.undertow.accesslog.enabled&#x3D;false</span><br><span class="line"># 设置访问日志所在目录</span><br><span class="line">server.undertow.accesslog.dir&#x3D;logs</span><br><span class="line"># 指定工作者线程的 I&#x2F;0 线程数，默认为 2 或者 CPU 的个数</span><br><span class="line">server.undertow.io-threads&#x3D;</span><br><span class="line"># 指定工作者线程个数，默认为 I&#x2F;O 线程个数的 8 倍</span><br><span class="line">server.undertow.worker-threads&#x3D;</span><br><span class="line"># 设置 HTTP POST 内容的最大长度，默认不做限制</span><br><span class="line">server.undertow.max-http-post-size&#x3D;0</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="3-使用-Undertow-监听多个端口示例："><a href="#3-使用-Undertow-监听多个端口示例：" class="headerlink" title="3.使用 Undertow 监听多个端口示例："></a>3.使用 Undertow 监听多个端口示例：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UndertowEmbeddedServletContainerFactory <span class="title">embeddedServletContainerFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    UndertowEmbeddedServletContainerFactory factory = <span class="keyword">new</span> UndertowEmbeddedServletContainerFactory();</span><br><span class="line">    factory.addBuilderCustomizers(<span class="keyword">new</span> UndertowBuilderCustomizer() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">customize</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">            builder.addHttpListener(<span class="number">8080</span>, <span class="string">"0.0.0.0"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<blockquote>
+<p>Spring Cloud:<a href="https://cloud.spring.io/spring-cloud-static/Hoxton.SR1/reference/htmlsingle/" target="_blank" rel="noopener">https://cloud.spring.io/spring-cloud-static/Hoxton.SR1/reference/htmlsingle/</a></p>
+<p>Spring Cloud中文文档:<a href="https://www.bookstack.cn/read/spring-cloud-docs/docs-index.md" target="_blank" rel="noopener">https://www.bookstack.cn/read/spring-cloud-docs/docs-index.md</a></p>
+</blockquote>
+<h1 id="版本对应"><a href="#版本对应" class="headerlink" title="版本对应"></a>版本对应</h1><p>SpringCloud F</p>
+<p>SpringBoot 2.2.2.RELEASE</p>
+<p>SpringCloud Alibaba 2.1.0.RELEASE</p>
+<p>JDK1.8</p>
+<p>Maven 3.5及以上</p>
+<p>mysql 5.7及以上</p>
+<h1 id="SpringCloud笔记"><a href="#SpringCloud笔记" class="headerlink" title="SpringCloud笔记"></a>SpringCloud笔记</h1><h2 id="微服务理解"><a href="#微服务理解" class="headerlink" title="微服务理解"></a>微服务理解</h2><p><a href="https://liuurick.github.io/2021/01/08/微服务的理解/" target="_blank" rel="noopener">微服务的理解</a></p>
+<h2 id="服务注册与发现（Eureka）"><a href="#服务注册与发现（Eureka）" class="headerlink" title="服务注册与发现（Eureka）"></a>服务注册与发现（Eureka）</h2><ul>
+<li><p>Eureka Server</p>
+</li>
+<li><p>Eureka Client</p>
+</li>
+<li><p>Eureka高可用（两节点，三节点演示）</p>
+<p>多个节点是两两注册</p>
+</li>
+<li><p>服务发现原理剖析</p>
+</li>
+</ul>
+<h2 id="服务通信"><a href="#服务通信" class="headerlink" title="服务通信"></a>服务通信</h2><ul>
+<li>通信机制剖析</li>
+<li>Feign</li>
+<li>Ribbon（带领分析源码，了解底层）</li>
+<li>RestTemplate</li>
+</ul>
+<h2 id="分布式配置（Spring-Cloud-Config）"><a href="#分布式配置（Spring-Cloud-Config）" class="headerlink" title="分布式配置（Spring Cloud Config）"></a>分布式配置（Spring Cloud Config）</h2><ul>
+<li>Config Server</li>
+<li>Config Client</li>
+<li>Git和Refresh</li>
+<li>自动刷新</li>
+<li>SpringCloud Bus（配合RabbitMQ）</li>
+</ul>
+<h2 id="网关（Zuul）"><a href="#网关（Zuul）" class="headerlink" title="网关（Zuul）"></a>网关（Zuul）</h2><ul>
+<li>动态路由</li>
+<li>Zuul高可用</li>
+<li>异常网关统一处理</li>
+<li>验证与安全</li>
+</ul>
+<h2 id="熔断-（Hystrix）"><a href="#熔断-（Hystrix）" class="headerlink" title="熔断 （Hystrix）"></a>熔断 （Hystrix）</h2><ul>
+<li>Hystrix Dashboard</li>
+<li>熔断机制</li>
+<li>目的和重要性</li>
+</ul>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210117105845082.png" alt="image-20210117105845082"></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210117105905190.png" alt="image-20210117105905190"></p>
 ]]></content>
       <categories>
-        <category>运维知识</category>
-        <category>应用服务器</category>
+        <category>应用框架</category>
+        <category>后端</category>
+        <category>分布式/微服务</category>
       </categories>
       <tags>
-        <tag>Undertow</tag>
+        <tag>SpringCloud</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UML学习笔记</title>
+    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>UML</category>
+      </categories>
+      <tags>
+        <tag>UML</tag>
       </tags>
   </entry>
   <entry>
@@ -3119,88 +3372,71 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot项目测试模板</title>
-    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UML学习笔记</title>
-    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>UML</category>
-      </categories>
-      <tags>
-        <tag>UML</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringCloud笔记</title>
-    <url>/2020/08/15/SpringCloud%E7%AC%94%E8%AE%B0/</url>
+    <title>SpringBoot整合Undertow</title>
+    <url>/2020/12/30/SpringBoot%E6%95%B4%E5%90%88Undertow/</url>
     <content><![CDATA[<p>[TOC]</p>
 <a id="more"></a>
 
-<h1 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h1><blockquote>
-<p>Spring Boot:<a href="https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/htmlsingle/" target="_blank" rel="noopener">https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/htmlsingle/</a></p>
+<h1 id="1-maven依赖"><a href="#1-maven依赖" class="headerlink" title="1.maven依赖"></a>1.maven依赖</h1><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-undertow<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-配置Undertow"><a href="#2-配置Undertow" class="headerlink" title="2.配置Undertow"></a>2.配置Undertow</h1><blockquote>
+<p>Undertow基本配置:<a href="https://www.pianshen.com/article/7390262599/" target="_blank" rel="noopener">https://www.pianshen.com/article/7390262599/</a></p>
 </blockquote>
-<blockquote>
-<p>Spring Cloud:<a href="https://cloud.spring.io/spring-cloud-static/Hoxton.SR1/reference/htmlsingle/" target="_blank" rel="noopener">https://cloud.spring.io/spring-cloud-static/Hoxton.SR1/reference/htmlsingle/</a></p>
-<p>Spring Cloud中文文档:<a href="https://www.bookstack.cn/read/spring-cloud-docs/docs-index.md" target="_blank" rel="noopener">https://www.bookstack.cn/read/spring-cloud-docs/docs-index.md</a></p>
-</blockquote>
-<h1 id="版本对应"><a href="#版本对应" class="headerlink" title="版本对应"></a>版本对应</h1><p>SpringCloud Hoxton.SR1</p>
-<p>SpringBoot 2.2.2.RELEASE</p>
-<p>SpringCloud Alibaba 2.1.0.RELEASE</p>
-<p>JDK1.8</p>
-<p>Maven 3.5及以上</p>
-<p>mysql 5.7及以上</p>
-<h1 id="SpringCloud笔记"><a href="#SpringCloud笔记" class="headerlink" title="SpringCloud笔记"></a>SpringCloud笔记</h1><h2 id="服务发现（Eureka）"><a href="#服务发现（Eureka）" class="headerlink" title="服务发现（Eureka）"></a>服务发现（Eureka）</h2><ul>
-<li>Eureka Server</li>
-<li>Eureka Client</li>
-<li>Eureka高可用（两节点，三节点演示）</li>
-<li>服务发现原理剖析</li>
-</ul>
-<h2 id="服务通信"><a href="#服务通信" class="headerlink" title="服务通信"></a>服务通信</h2><ul>
-<li>通信机制剖析</li>
-<li>Feign</li>
-<li>Ribbon（带领分析源码，了解底层）</li>
-<li>RestTemplate</li>
-</ul>
-<h2 id="分布式配置（Spring-Cloud-Config）"><a href="#分布式配置（Spring-Cloud-Config）" class="headerlink" title="分布式配置（Spring Cloud Config）"></a>分布式配置（Spring Cloud Config）</h2><ul>
-<li>Config Server</li>
-<li>Config Client</li>
-<li>Git和Refresh</li>
-<li>自动刷新</li>
-<li>SpringCloud Bus（配合RabbitMQ）</li>
-</ul>
-<h2 id="网关（Zuul）"><a href="#网关（Zuul）" class="headerlink" title="网关（Zuul）"></a>网关（Zuul）</h2><ul>
-<li>动态路由</li>
-<li>Zuul高可用</li>
-<li>异常网关统一处理</li>
-<li>验证与安全</li>
-</ul>
-<h2 id="熔断-（Hystrix）"><a href="#熔断-（Hystrix）" class="headerlink" title="熔断 （Hystrix）"></a>熔断 （Hystrix）</h2><ul>
-<li>Hystrix Dashboard</li>
-<li>熔断机制</li>
-<li>目的和重要性</li>
-</ul>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210117105845082.png" alt="image-20210117105845082"></p>
+<p>这里以application.properties示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 是否打开 undertow 日志，默认为 false</span><br><span class="line">server.undertow.accesslog.enabled&#x3D;false</span><br><span class="line"># 设置访问日志所在目录</span><br><span class="line">server.undertow.accesslog.dir&#x3D;logs</span><br><span class="line"># 指定工作者线程的 I&#x2F;0 线程数，默认为 2 或者 CPU 的个数</span><br><span class="line">server.undertow.io-threads&#x3D;</span><br><span class="line"># 指定工作者线程个数，默认为 I&#x2F;O 线程个数的 8 倍</span><br><span class="line">server.undertow.worker-threads&#x3D;</span><br><span class="line"># 设置 HTTP POST 内容的最大长度，默认不做限制</span><br><span class="line">server.undertow.max-http-post-size&#x3D;0</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="3-使用-Undertow-监听多个端口示例："><a href="#3-使用-Undertow-监听多个端口示例：" class="headerlink" title="3.使用 Undertow 监听多个端口示例："></a>3.使用 Undertow 监听多个端口示例：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UndertowEmbeddedServletContainerFactory <span class="title">embeddedServletContainerFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    UndertowEmbeddedServletContainerFactory factory = <span class="keyword">new</span> UndertowEmbeddedServletContainerFactory();</span><br><span class="line">    factory.addBuilderCustomizers(<span class="keyword">new</span> UndertowBuilderCustomizer() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">customize</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">            builder.addHttpListener(<span class="number">8080</span>, <span class="string">"0.0.0.0"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
-        <category>应用框架</category>
-        <category>后端</category>
-        <category>分布式/微服务</category>
+        <category>运维知识</category>
+        <category>应用服务器</category>
       </categories>
       <tags>
-        <tag>SpringCloud</tag>
+        <tag>Undertow</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>.gitignore的使用</title>
+    <url>/2021/01/20/gitignore%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>很长一段时间忽视了.gitignore的作用，果真是自己太菜了。。。</p>
+<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>官方文档：<a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a></p>
+</blockquote>
+<h1 id="官方模板"><a href="#官方模板" class="headerlink" title="官方模板"></a>官方模板</h1><p>.gitignore文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Log file</span><br><span class="line">*.log</span><br><span class="line"></span><br><span class="line"># BlueJ files</span><br><span class="line">*.ctxt</span><br><span class="line"></span><br><span class="line"># Mobile Tools for Java (J2ME)</span><br><span class="line">.mtj.tmp&#x2F;</span><br><span class="line"></span><br><span class="line"># Package Files #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.nar</span><br><span class="line">*.ear</span><br><span class="line">*.zip</span><br><span class="line">*.tar.gz</span><br><span class="line">*.rar</span><br><span class="line"></span><br><span class="line"># virtual machine crash logs, see http:&#x2F;&#x2F;www.java.com&#x2F;en&#x2F;download&#x2F;help&#x2F;error_hotspot.xml</span><br><span class="line">hs_err_pid*</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="个人常用模板"><a href="#个人常用模板" class="headerlink" title="个人常用模板"></a>个人常用模板</h1><p>.gitignore文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file #</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Eclipse #</span><br><span class="line">.project</span><br><span class="line">.classpath</span><br><span class="line">.settings&#x2F;</span><br><span class="line"></span><br><span class="line"># Intellij #</span><br><span class="line">*.ipr</span><br><span class="line">*.iml</span><br><span class="line">*.iws</span><br><span class="line">.idea&#x2F;</span><br><span class="line"></span><br><span class="line"># Maven #</span><br><span class="line">target&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle #</span><br><span class="line">build</span><br><span class="line">.gradle</span><br><span class="line"></span><br><span class="line"># Log file #</span><br><span class="line">*.log</span><br><span class="line">log&#x2F;</span><br><span class="line"></span><br><span class="line"># out #</span><br><span class="line">**&#x2F;out&#x2F;</span><br><span class="line"></span><br><span class="line"># Mac #</span><br><span class="line">.DS_Store</span><br><span class="line"></span><br><span class="line"># others #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.zip</span><br><span class="line">*.tar</span><br><span class="line">*.tar.gz</span><br><span class="line">*.pid</span><br><span class="line">*.orig</span><br><span class="line">temp&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="可能遇到的问题"><a href="#可能遇到的问题" class="headerlink" title="可能遇到的问题"></a>可能遇到的问题</h1><h2 id="gitignore规则不生效"><a href="#gitignore规则不生效" class="headerlink" title=".gitignore规则不生效"></a>.gitignore规则不生效</h2><p>.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。</p>
+<p>解决方法就是先把本地缓存删除（改变成未track状态），然后再提交:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git rm -r --cached .</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">'update .gitignore'</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你确实想添加该文件，可以用-f强制添加到Git：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git add -f xxx.class</span><br></pre></td></tr></table></figure>
+
+<p>或者你发现，可能是.gitignore写得有问题，需要找出来到底哪个规则写错了，</p>
+<p>可以用<code>git check-ignore</code>命令检查：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git check-ignore -v xxx.class</span><br><span class="line">.gitignore:3:*.class    xxx.class</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>代码管理工具</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>gitignore</tag>
       </tags>
   </entry>
   <entry>
@@ -3434,6 +3670,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>hexo博客高级操作</title>
+    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<blockquote>
+<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
+</blockquote>
+<a id="more"></a>]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>canal-adapter启动失败问题记录</title>
     <url>/2020/12/14/canal-adapter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<blockquote>
@@ -3453,6 +3703,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>canal</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ubuntu安装VMware Tools</title>
+    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
+    <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
+<a id="more"></a>
+
+<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
+<blockquote>
+<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
+</blockquote>
+<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
+<p>解压完成之后即可运行安装文件安装wmware tools</p>
+]]></content>
+      <categories>
+        <category>Ubuntu</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -3616,161 +3886,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git常见错误</title>
-    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>记录git常见错误</p>
-<a id="more"></a>
-
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
-<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-<p>2.git Could not read from remote repository</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3.error: failed to push some refs to xxx</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git常见错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git命令操作笔记</title>
-    <url>/2020/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
-<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
-<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
-<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
-</blockquote>
-<a id="more"></a>
-
-
-
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2018062701.png" alt="image"></p>
-<p>创建一个目录用于存放仓库，或在有内容的目录下操作。</p>
-<p>然后切换到此目录下初始化：git –bare init</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status 查看仓库状态</span><br><span class="line">branches 分支目录</span><br><span class="line">config 定义项目特有的配置选项</span><br><span class="line">description 仅供git web使用</span><br><span class="line">HEAD 当前分支</span><br><span class="line">hooks 包含git钩子文件</span><br><span class="line">info 包含一个全局排除文件</span><br><span class="line">objects 存放所有数据内容，有info、pack两个子文件夹</span><br><span class="line">refs 存放只想数据（分支）的提交对象的指针</span><br><span class="line">index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成</span><br><span class="line">工作目录 暂存区 本地仓库 远程仓库</span><br><span class="line">git add git commit git push</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add FILE 添加file到暂存区</span><br><span class="line">git add . 添加目录中所有改动过的文件到暂存区</span><br><span class="line">git rm --cached FILE 将暂存区的FILE 撤回到工作区</span><br><span class="line">git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）</span><br><span class="line">git commit -m "add newfile a" 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）</span><br><span class="line">【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m "输入的备注"添加到本地仓库】</span><br><span class="line">修改文件名两种方式：</span><br><span class="line">1、 mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）</span><br><span class="line">git rm --cached a</span><br><span class="line">git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）</span><br><span class="line">git commit -m "modified a a.txt" a改名a.txt并提交</span><br><span class="line">2、git mv old new 直接更改文件名，改完直接git commit提交即可</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git diff 比对工作目录与缓存区有什么不同</span><br><span class="line">git diff --cached 比对暂存区与本地仓库有什么不同</span><br><span class="line"></span><br><span class="line">ls检查下当前目录下是否有仓库信息，</span><br><span class="line">git remote add origin git@10.0.0.227:web/control.git 创建远程仓库origin</span><br><span class="line">git remote 查看当前远程仓库的名称</span><br><span class="line">git remote remove origin 删除远程仓库origin</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git log 查看历史提交信息</span><br><span class="line">git log --online 查看历史提交信息的哈希值</span><br><span class="line">git log --online --decorate 历史提交信息并查看当前指针位置</span><br><span class="line">git log -p 展示具体变化内容</span><br><span class="line">git log -1 展示一条提交信息的内容</span><br><span class="line">git log -1 -p 展示详细具体的最后一条变更的信息内容</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard xx 恢复到从前的位置</span><br><span class="line">git reflog 查看所有历史提交信息，包括回复到指定位置之前的</span><br><span class="line">git reset --hard xxx 前后都能回滚 来回滚</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch 查看分支</span><br><span class="line">git branch fenzhi 创建分支fenzhi</span><br><span class="line">git checkout fenzhi 切换分支fenzhi</span><br><span class="line">git checkout -b testing 创建并切换到分支testing</span><br><span class="line">删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复</span><br><span class="line">git branch -d testing 删除分支testing</span><br><span class="line">git merge testing 合并分支</span><br><span class="line">冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.0 -m "hehe" 当前状态打标签为V1.0</span><br><span class="line">git tag -a V1.0 haxizhi -m "hehe" 把某个哈希状态的状态打标签</span><br><span class="line">git show v1.0 查看某个标签的信息</span><br><span class="line">git reset --hard v2.0 回滚数据到V2.0</span><br><span class="line">git tag -d v2.0 删除V2.0标签的数据</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git remote add origin git@xxx:xxx/xxx.git 添加远程仓库</span><br><span class="line">git push -u origin master</span><br><span class="line">gitlab :git服务器的公钥放到gitlab里即可不用输入密码推送代码</span><br><span class="line">git pull origin master 把origin分支拉到本地与master分支合并</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git常见命令</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo博客高级操作</title>
-    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<blockquote>
-<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
-</blockquote>
-<a id="more"></a>]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>next</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ubuntu安装VMware Tools</title>
-    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
-    <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
-<a id="more"></a>
-
-<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
-<blockquote>
-<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
-</blockquote>
-<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
-<p>解压完成之后即可运行安装文件安装wmware tools</p>
-]]></content>
-      <categories>
-        <category>Ubuntu</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>人民日报给90后的理财计划</title>
-    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
-    <content><![CDATA[<p>人民日报给90后的理财计划</p>
-<a id="more"></a>
-
-<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="image"></p>
-<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="image"></p>
-<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="image"></p>
-<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="image"></p>
-<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="image"></p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><img src="/images/2020102506.png" alt="image-20201227160018479"></p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>理财</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实体类的4种类型</title>
-    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>实体类的4种类型总结</p>
-<a id="more"></a>
-
-<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
-<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
-<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
-<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
-<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
-<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-      </categories>
-      <tags>
-        <tag>Domain Object</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>微服务的理解</title>
     <url>/2021/01/08/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<p>微服务是一种架构风格</p>
@@ -3826,6 +3941,55 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>后端</category>
         <category>分布式/微服务</category>
       </categories>
+  </entry>
+  <entry>
+    <title>git常见错误</title>
+    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>记录git常见错误</p>
+<a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
+<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+<p>2.git Could not read from remote repository</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.error: failed to push some refs to xxx</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git常见错误</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人民日报给90后的理财计划</title>
+    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>人民日报给90后的理财计划</p>
+<a id="more"></a>
+
+<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="image"></p>
+<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="image"></p>
+<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="image"></p>
+<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="image"></p>
+<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="image"></p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><img src="/images/2020102506.png" alt="image-20201227160018479"></p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>理财</tag>
+      </tags>
   </entry>
   <entry>
     <title>快速构建Java Web项目的开发环境</title>
@@ -3885,6 +4049,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Java Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实体类的4种类型</title>
+    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>实体类的4种类型总结</p>
+<a id="more"></a>
+
+<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
+<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
+<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
+<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
+<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
+<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>Domain Object</tag>
       </tags>
   </entry>
   <entry>
@@ -4171,6 +4355,48 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>服务器软件盘点</title>
+    <url>/2020/12/30/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9B%98%E7%82%B9/</url>
+    <content><![CDATA[<p>静态服务：主要提供静态资源，不同用户访问到的资源相同。本博客就是典型的静态服务（Hexo+Next）<br>动态服务：提供动态服务，不同用户访问到的资源不同，涉及到数据之类的。例如类似<a href="https://github.com/halo-dev/halo" target="_blank" rel="noopener">halo</a> </p>
+<a id="more"></a>
+
+<blockquote>
+<p>服务器软件大盘点！:<a href="https://zhuanlan.zhihu.com/p/122252011" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/122252011</a></p>
+</blockquote>
+<p>服务器软件主要分为以下几类：</p>
+<ul>
+<li>Web服务器:广义上来说，就是响应用户的需求，提供服务，当下所有的服务器软件都可以称之为web服务器软件</li>
+<li>HTTP服务器(静态服务)：使用HTTP协议传输资源，提供服务</li>
+<li>应用服务器(动态服务)：一个特定应用的承载容器</li>
+</ul>
+<p><strong>常见的轻量级服务器软件：</strong><br>    1.Nginx：典型的静态服务器，可做反向代理、负载均衡，一般放在最前面直面用户，和后端Tomcat打配合；纯C写的，性能贼高、内存消耗极少、稳定性也相当好，互联网公司重度使用。<br>    2.Tengine：阿里出品，基于Nginx服务器做的改造(加强和封装)，对大流量场景做了很多高级功能，性能、稳定性优秀。<br>    3.Apache http server：也是静态服务器，但是不如Nginx。</p>
+<p>​    4.IIS：微软开发，不开源，只能用在Windows下，具有应用服务器能力的http服务器。</p>
+<p>​    5.Tomcat：Apache出品，典型的应用服务器软件，符合Servlet标准的应用容器，也可以提供http服务，但一般不会作为http服务器；是Spring Boot框架默认的内置服务器。<br>​    6.Jetty：跟Tomcat是一个性质的东西，符合Servlet标准的应用容器，也是Spring Boot框架支持的服务器，但不是默认的。Jetty比Tomcat要轻量一些，配置也更简单一些而已。<br>​    7.Undertow：红帽出品，跟Tomcat、Jetty一样也是Spring Boot框架支持的服务器，但不是默认的；在并发量不高的情况下 , Undertow与Tomcat、Jetty的性能区别不大 ，但在高并发时性能优于Tomcat、Jetty。<br><strong>几款商用重量级的服务器软件：</strong><br>​    1.JBoss(从8版开始更名为WildFly)：不仅是Servlet应用容器，更是EJB的应用容器，整套JavaEE框架部署的解决方案。<br>​    2.WebLogic：Oracle公司出品，用于部署企业级JavaEE应用，全能型，几乎支持JavaEE所有的应用规范。<br>​    3.WebSphere：IBM公司出品，支持更多JavaEE的应用规范的综合应用服务器。</p>
+<p><strong>对比：</strong></p>
+<blockquote>
+<p>严格意义上Web服务器只负责处理HTTP协议，只能发送静态页面的内容。而JSP，ASP，PHP等动态内容需要通过CGI、FastCGI、ISAPI等接口交给其他程序去处理。这个其他程序就是应用服务器。<br>比如Web服务器包括Nginx，Apache，IIS等。而应用服务器包括WebLogic，JBoss等。应用服务器一般也支持HTTP协议，因此界限没这么清晰。但是应用服务器的HTTP协议部分仅仅是支持，一般不会做特别优化，所以很少有见Tomcat直接暴露给外面，而是和Nginx、Apache等配合，只让Tomcat处理JSP和Servlet部分</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>运维知识</category>
+      </categories>
+      <tags>
+        <tag>服务器软件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>短信登录注册功能的实现</title>
+    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>短信服务</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>推荐系统算法整理</title>
     <url>/2020/12/08/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/</url>
     <content><![CDATA[<p>推荐系统算法整理</p>
@@ -4266,36 +4492,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
-    <title>服务器软件盘点</title>
-    <url>/2020/12/30/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9B%98%E7%82%B9/</url>
-    <content><![CDATA[<p>静态服务：主要提供静态资源，不同用户访问到的资源相同。本博客就是典型的静态服务（Hexo+Next）<br>动态服务：提供动态服务，不同用户访问到的资源不同，涉及到数据之类的。例如类似<a href="https://github.com/halo-dev/halo" target="_blank" rel="noopener">halo</a> </p>
-<a id="more"></a>
-
-<blockquote>
-<p>服务器软件大盘点！:<a href="https://zhuanlan.zhihu.com/p/122252011" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/122252011</a></p>
-</blockquote>
-<p>服务器软件主要分为以下几类：</p>
-<ul>
-<li>Web服务器:广义上来说，就是响应用户的需求，提供服务，当下所有的服务器软件都可以称之为web服务器软件</li>
-<li>HTTP服务器(静态服务)：使用HTTP协议传输资源，提供服务</li>
-<li>应用服务器(动态服务)：一个特定应用的承载容器</li>
-</ul>
-<p><strong>常见的轻量级服务器软件：</strong><br>    1.Nginx：典型的静态服务器，可做反向代理、负载均衡，一般放在最前面直面用户，和后端Tomcat打配合；纯C写的，性能贼高、内存消耗极少、稳定性也相当好，互联网公司重度使用。<br>    2.Tengine：阿里出品，基于Nginx服务器做的改造(加强和封装)，对大流量场景做了很多高级功能，性能、稳定性优秀。<br>    3.Apache http server：也是静态服务器，但是不如Nginx。</p>
-<p>​    4.IIS：微软开发，不开源，只能用在Windows下，具有应用服务器能力的http服务器。</p>
-<p>​    5.Tomcat：Apache出品，典型的应用服务器软件，符合Servlet标准的应用容器，也可以提供http服务，但一般不会作为http服务器；是Spring Boot框架默认的内置服务器。<br>​    6.Jetty：跟Tomcat是一个性质的东西，符合Servlet标准的应用容器，也是Spring Boot框架支持的服务器，但不是默认的。Jetty比Tomcat要轻量一些，配置也更简单一些而已。<br>​    7.Undertow：红帽出品，跟Tomcat、Jetty一样也是Spring Boot框架支持的服务器，但不是默认的；在并发量不高的情况下 , Undertow与Tomcat、Jetty的性能区别不大 ，但在高并发时性能优于Tomcat、Jetty。<br><strong>几款商用重量级的服务器软件：</strong><br>​    1.JBoss(从8版开始更名为WildFly)：不仅是Servlet应用容器，更是EJB的应用容器，整套JavaEE框架部署的解决方案。<br>​    2.WebLogic：Oracle公司出品，用于部署企业级JavaEE应用，全能型，几乎支持JavaEE所有的应用规范。<br>​    3.WebSphere：IBM公司出品，支持更多JavaEE的应用规范的综合应用服务器。</p>
-<p><strong>对比：</strong></p>
-<blockquote>
-<p>严格意义上Web服务器只负责处理HTTP协议，只能发送静态页面的内容。而JSP，ASP，PHP等动态内容需要通过CGI、FastCGI、ISAPI等接口交给其他程序去处理。这个其他程序就是应用服务器。<br>比如Web服务器包括Nginx，Apache，IIS等。而应用服务器包括WebLogic，JBoss等。应用服务器一般也支持HTTP协议，因此界限没这么清晰。但是应用服务器的HTTP协议部分仅仅是支持，一般不会做特别优化，所以很少有见Tomcat直接暴露给外面，而是和Nginx、Apache等配合，只让Tomcat处理JSP和Servlet部分</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>运维知识</category>
-      </categories>
-      <tags>
-        <tag>服务器软件</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>浅析Java平台无关性的实现</title>
     <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>    
@@ -4317,6 +4513,42 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>JVM</tag>
         <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学感悟</title>
+    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
+    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
+<a id="more"></a>
+
+<p><img src="/images/2020122702.png" alt="img"></p>
+<p><strong>附上Java后端学习路线：</strong></p>
+<blockquote>
+<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
+</blockquote>
+<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
+]]></content>
+      <categories>
+        <category>杂谈</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一个小小的强迫症</title>
+    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
+    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
+
+<p>在idea中经常会碰到这样的问题</p>
+<blockquote>
+<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
+</blockquote>
+<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
+<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
+]]></content>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
       </tags>
   </entry>
   <entry>
@@ -4407,18 +4639,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>短信登录注册功能的实现</title>
-    <url>/2020/11/29/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201129223819676.png" alt="image-20201129223819676"></p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>短信服务</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>算法与数据结构体系</title>
     <url>/2020/12/30/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BD%93%E7%B3%BB/</url>
     <content><![CDATA[<p>算法与数据结构体系学习大纲：</p>
@@ -4480,39 +4700,23 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>自学感悟</title>
-    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
-    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
-<a id="more"></a>
-
-<p><img src="/images/2020122702.png" alt="img"></p>
-<p><strong>附上Java后端学习路线：</strong></p>
-<blockquote>
-<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
-</blockquote>
-<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
+    <title>读《深入浅出MyBatis技术原理与实战》</title>
+    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
+    <content><![CDATA[<p>1.MyBatis简介</p>
+<p>2 MyBatis入门</p>
+<p>3 配置</p>
+<p>4 映射器</p>
+<p>5 动态SQL</p>
+<p>6 MyBatis的解析和运行原理</p>
+<p>7 插件</p>
+<p>8 MyBatis-Spring</p>
+<p>9 实用的场景</p>
 ]]></content>
       <categories>
-        <category>杂谈</category>
+        <category>读书</category>
       </categories>
       <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一个小小的强迫症</title>
-    <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
-    <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
-
-<p>在idea中经常会碰到这样的问题</p>
-<blockquote>
-<p>Could not autowire. No beans of ‘xxxx’ type found.. </p>
-</blockquote>
-<p>项目工程并没有报错提示，仅仅是在实际java文件中飙红，说实话看着真的很难受，心理不得劲</p>
-<p>解决方法还是蛮简单的，打开setting即可<br>Editor-&gt;Inspections-&gt;Spring Core-&gt;Code-&gt;Autowiring for bean class<br>将Severvty改成warning就可以了</p>
-]]></content>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
+        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -4559,26 +4763,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>多线程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>读《深入浅出MyBatis技术原理与实战》</title>
-    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
-    <content><![CDATA[<p>1.MyBatis简介</p>
-<p>2 MyBatis入门</p>
-<p>3 配置</p>
-<p>4 映射器</p>
-<p>5 动态SQL</p>
-<p>6 MyBatis的解析和运行原理</p>
-<p>7 插件</p>
-<p>8 MyBatis-Spring</p>
-<p>9 实用的场景</p>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -4975,6 +5159,31 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>（转）重定向与转发</title>
+    <url>/2018/04/21/%EF%BC%88%E8%BD%AC%EF%BC%89%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<p>重定向（redirect）与转发（forward）</p>
+<h3 id="解释一"><a href="#解释一" class="headerlink" title="解释一　　"></a>解释一　　</h3><p>一句话，转发是服务器行为，重定向是客户端行为。为什么这样说呢，这就要看两个动作的工作流程：</p>
+<p><strong>转发过程：</strong>客户浏览器发送http请求—》web服务器接受此请求–》调用内部的一个方法在容器内部完成请求处理和转发动作—》将目标资源发送给客户；在这里，转发的路径必须是同一个web容器下的url，其不能转向到其他的web路径上去，中间传递的是自己的容器内的request。在客户浏览器路径栏显示的仍然是其第一次访问的路径，也就是说客户是感觉不到服务器做了转发的。转发行为是浏览器只做了一次访问请求。</p>
+<p><strong>重定向过程：</strong>客户浏览器发送http请求—》web服务器接受后发送302状态码响应及对应新的location给客户浏览器—》客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址—-》服务器根据此请求寻找资源并发送给客户。在这里location可以重定向到任意URL，既然是浏览器重新发出了请求，则就没有什么request传递的概念了。在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。</p>
+<h3 id="解释二"><a href="#解释二" class="headerlink" title="解释二"></a>解释二</h3><p>重定向，其实是两次request,<br>第一次，客户端request  A,服务器响应，并response回来，告诉浏览器，你应该去B。这个时候IE可以看到地址变了，而且历史的回退按钮也亮了。重定向可以访问自己web应用以外的资源。在重定向的过程中，传输的信息会被丢失。</p>
+<p><strong>例子：</strong></p>
+<p><img src="/images/2020102301.png" alt="img"><br>请求转发是服务器内部把对一个request/response的处理权，移交给另外一个<br>对于客户端而言，它只知道自己最早请求的那个A，而不知道中间的B，甚至C、D。 传输的信息不会丢失。</p>
+<p> <strong>例子：</strong></p>
+<p><img src="/images/2020102302.png" alt="img"></p>
+<h3 id="解释三"><a href="#解释三" class="headerlink" title="解释三"></a>解释三</h3><p>假设你去办理某个执照， </p>
+<p><strong>重定向：</strong>你先去了A局，A局的人说：“这个事情不归我们管，去B局”，然后，你就从A退了出来，自己乘车去了B局。 </p>
+<p><strong>转发：</strong>你先去了A局，A局看了以后，知道这个事情其实应该B局来管，但是他没有把你退回来，而是让你坐一会儿，自己到后面办公室联系了B的人，让他们办好后，送了过来。</p>
+]]></content>
+      <categories>
+        <category>Java Web</category>
+      </categories>
+      <tags>
+        <tag>Java Web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>防火墙管理</title>
     <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<p>防火墙常用命令</p>
@@ -5019,28 +5228,55 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>（转）重定向与转发</title>
-    <url>/2018/04/21/%EF%BC%88%E8%BD%AC%EF%BC%89%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+    <title>git命令操作笔记</title>
+    <url>/2020/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
+<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
+<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
+<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
+</blockquote>
+<a id="more"></a>
 
-<p>重定向（redirect）与转发（forward）</p>
-<h3 id="解释一"><a href="#解释一" class="headerlink" title="解释一　　"></a>解释一　　</h3><p>一句话，转发是服务器行为，重定向是客户端行为。为什么这样说呢，这就要看两个动作的工作流程：</p>
-<p><strong>转发过程：</strong>客户浏览器发送http请求—》web服务器接受此请求–》调用内部的一个方法在容器内部完成请求处理和转发动作—》将目标资源发送给客户；在这里，转发的路径必须是同一个web容器下的url，其不能转向到其他的web路径上去，中间传递的是自己的容器内的request。在客户浏览器路径栏显示的仍然是其第一次访问的路径，也就是说客户是感觉不到服务器做了转发的。转发行为是浏览器只做了一次访问请求。</p>
-<p><strong>重定向过程：</strong>客户浏览器发送http请求—》web服务器接受后发送302状态码响应及对应新的location给客户浏览器—》客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址—-》服务器根据此请求寻找资源并发送给客户。在这里location可以重定向到任意URL，既然是浏览器重新发出了请求，则就没有什么request传递的概念了。在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。</p>
-<h3 id="解释二"><a href="#解释二" class="headerlink" title="解释二"></a>解释二</h3><p>重定向，其实是两次request,<br>第一次，客户端request  A,服务器响应，并response回来，告诉浏览器，你应该去B。这个时候IE可以看到地址变了，而且历史的回退按钮也亮了。重定向可以访问自己web应用以外的资源。在重定向的过程中，传输的信息会被丢失。</p>
-<p><strong>例子：</strong></p>
-<p><img src="/images/2020102301.png" alt="img"><br>请求转发是服务器内部把对一个request/response的处理权，移交给另外一个<br>对于客户端而言，它只知道自己最早请求的那个A，而不知道中间的B，甚至C、D。 传输的信息不会丢失。</p>
-<p> <strong>例子：</strong></p>
-<p><img src="/images/2020102302.png" alt="img"></p>
-<h3 id="解释三"><a href="#解释三" class="headerlink" title="解释三"></a>解释三</h3><p>假设你去办理某个执照， </p>
-<p><strong>重定向：</strong>你先去了A局，A局的人说：“这个事情不归我们管，去B局”，然后，你就从A退了出来，自己乘车去了B局。 </p>
-<p><strong>转发：</strong>你先去了A局，A局看了以后，知道这个事情其实应该B局来管，但是他没有把你退回来，而是让你坐一会儿，自己到后面办公室联系了B的人，让他们办好后，送了过来。</p>
-]]></content>
+
+
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2018062701.png" alt="image"></p>
+<p>创建一个目录用于存放仓库，或在有内容的目录下操作。</p>
+<p>然后切换到此目录下初始化：git –bare init</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status 查看仓库状态</span><br><span class="line">branches 分支目录</span><br><span class="line">config 定义项目特有的配置选项</span><br><span class="line">description 仅供git web使用</span><br><span class="line">HEAD 当前分支</span><br><span class="line">hooks 包含git钩子文件</span><br><span class="line">info 包含一个全局排除文件</span><br><span class="line">objects 存放所有数据内容，有info、pack两个子文件夹</span><br><span class="line">refs 存放只想数据（分支）的提交对象的指针</span><br><span class="line">index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成</span><br><span class="line">工作目录 暂存区 本地仓库 远程仓库</span><br><span class="line">git add git commit git push</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add FILE 添加file到暂存区</span><br><span class="line">git add . 添加目录中所有改动过的文件到暂存区</span><br><span class="line">git rm --cached FILE 将暂存区的FILE 撤回到工作区</span><br><span class="line">git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）</span><br><span class="line">git commit -m "add newfile a" 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）</span><br><span class="line">【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m "输入的备注"添加到本地仓库】</span><br><span class="line">修改文件名两种方式：</span><br><span class="line">1、 mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）</span><br><span class="line">git rm --cached a</span><br><span class="line">git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）</span><br><span class="line">git commit -m "modified a a.txt" a改名a.txt并提交</span><br><span class="line">2、git mv old new 直接更改文件名，改完直接git commit提交即可</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git diff 比对工作目录与缓存区有什么不同</span><br><span class="line">git diff --cached 比对暂存区与本地仓库有什么不同</span><br><span class="line"></span><br><span class="line">ls检查下当前目录下是否有仓库信息，</span><br><span class="line">git remote add origin git@10.0.0.227:web/control.git 创建远程仓库origin</span><br><span class="line">git remote 查看当前远程仓库的名称</span><br><span class="line">git remote remove origin 删除远程仓库origin</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git log 查看历史提交信息</span><br><span class="line">git log --online 查看历史提交信息的哈希值</span><br><span class="line">git log --online --decorate 历史提交信息并查看当前指针位置</span><br><span class="line">git log -p 展示具体变化内容</span><br><span class="line">git log -1 展示一条提交信息的内容</span><br><span class="line">git log -1 -p 展示详细具体的最后一条变更的信息内容</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard xx 恢复到从前的位置</span><br><span class="line">git reflog 查看所有历史提交信息，包括回复到指定位置之前的</span><br><span class="line">git reset --hard xxx 前后都能回滚 来回滚</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch 查看分支</span><br><span class="line">git branch fenzhi 创建分支fenzhi</span><br><span class="line">git checkout fenzhi 切换分支fenzhi</span><br><span class="line">git checkout -b testing 创建并切换到分支testing</span><br><span class="line">删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复</span><br><span class="line">git branch -d testing 删除分支testing</span><br><span class="line">git merge testing 合并分支</span><br><span class="line">冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.0 -m "hehe" 当前状态打标签为V1.0</span><br><span class="line">git tag -a V1.0 haxizhi -m "hehe" 把某个哈希状态的状态打标签</span><br><span class="line">git show v1.0 查看某个标签的信息</span><br><span class="line">git reset --hard v2.0 回滚数据到V2.0</span><br><span class="line">git tag -d v2.0 删除V2.0标签的数据</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git remote add origin git@xxx:xxx/xxx.git 添加远程仓库</span><br><span class="line">git push -u origin master</span><br><span class="line">gitlab :git服务器的公钥放到gitlab里即可不用输入密码推送代码</span><br><span class="line">git pull origin master 把origin分支拉到本地与master分支合并</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>Java Web</category>
+        <category>git</category>
       </categories>
       <tags>
-        <tag>Java Web</tag>
+        <tag>git常见命令</tag>
       </tags>
   </entry>
 </search>
