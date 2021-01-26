@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ASM开发入门</title>
+    <url>/2020/12/30/ASM%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<p>认识ASM：是什么，有什么，能干什么</p>
+<p>ASM编程模型和核心API</p>
+<p>ASM开发实战：实现统计方法的运行时间</p>
+<a id="more"></a>
+
+<h1 id="ASM概述"><a href="#ASM概述" class="headerlink" title="ASM概述"></a>ASM概述</h1><blockquote>
+<p>ASM是一个Java字节码操作框架，它能被用来动态生成类或者增强既有类的功能</p>
+<p>ASM可以直接产生二进制Class文件，也可以在类被加载入虚拟机之前动态改变类行为，ASM从类文件中读取信息后，能够改变类行为，分析类信息，甚至能根据要求生成新类</p>
+<p>目前许多框架如cglib，Hibernate，Spring都直接或间接地使用ASM操作字节码</p>
+</blockquote>
+<h1 id="ASM编程模型："><a href="#ASM编程模型：" class="headerlink" title="ASM编程模型："></a>ASM编程模型：</h1><blockquote>
+<p><strong>Core API</strong>：提供了基于事件形式的编程模型。该模型不需要一次性将整个类的结构读取到内存中，因此这种方式更快，需要更少的内存，但这种编码方式难度较大。</p>
+<p><strong>Tree API</strong>：提供了基于树形的编程模型。该模型需要一次性将一个类的完整结构全部读取到内存当中，所以这种方法需要更多的内存，这种编码格式较简单。</p>
+</blockquote>
+<h1 id="ASM的Core-API"><a href="#ASM的Core-API" class="headerlink" title="ASM的Core API"></a>ASM的Core API</h1><blockquote>
+<p>ASM Core API中操纵字节码的功能基于ClassVisitor接口。这个接口中的每个方法对应了class文件中的每一项。</p>
+<p>ASM提供了三个基于ClassVisitor接口的类来实现class文件的生成的转换</p>
+</blockquote>
+<p>1.ClassReader：ClassReader解析一个类的class字节码</p>
+<p>2.ClassAdapter：ClassAdapter是ClassVisitor的实现类，实现要变化的功能</p>
+<p>3.ClassWriter：ClassWriter也是ClassVisitor的实现类，可以用来输出变化后的字节码</p>
+<p>ASM给我们提供了ASMifiter工具来帮助开发，可使用<strong>ASMifier</strong>工具生成ASM结构来对比</p>
+<h1 id="ClassVisitor开发"><a href="#ClassVisitor开发" class="headerlink" title="ClassVisitor开发"></a>ClassVisitor开发</h1><h1 id="MethodVisitor开发"><a href="#MethodVisitor开发" class="headerlink" title="MethodVisitor开发"></a>MethodVisitor开发</h1><h1 id="实现模拟AOP功能"><a href="#实现模拟AOP功能" class="headerlink" title="实现模拟AOP功能"></a>实现模拟AOP功能</h1>]]></content>
+  </entry>
+  <entry>
     <title>Arthas使用与进阶</title>
     <url>/2021/01/17/Arthas%E4%BD%BF%E7%94%A8%E4%B8%8E%E8%BF%9B%E9%98%B6/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -164,27 +191,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker设置镜像自启动</title>
-    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>Docker便捷小技巧：</p>
-<a id="more"></a>
-
-<p>1.发现没启动</p>
-<p><code>docker ps</code></p>
-<p>2.查看所有安装的镜像</p>
-<p><code>docker ps -a</code></p>
-<p>3.设置总是自动启动</p>
-<p><code>docker update 镜像id --restart=always</code></p>
-<p>4.重启测试一下</p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker搭建MySQL集群-PXC方案</title>
     <url>/2020/08/21/Docker%E6%90%AD%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<p>尝试通过Dcoekr搭建MySQL集群</p>
@@ -267,6 +273,27 @@
       <tags>
         <tag>Docker</tag>
         <tag>MySQL集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker设置镜像自启动</title>
+    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
+    <content><![CDATA[<p>Docker便捷小技巧：</p>
+<a id="more"></a>
+
+<p>1.发现没启动</p>
+<p><code>docker ps</code></p>
+<p>2.查看所有安装的镜像</p>
+<p><code>docker ps -a</code></p>
+<p>3.设置总是自动启动</p>
+<p><code>docker update 镜像id --restart=always</code></p>
+<p>4.重启测试一下</p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -393,6 +420,8 @@
 </blockquote>
 ]]></content>
       <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
         <category>ElasticSearch</category>
       </categories>
       <tags>
@@ -624,80 +653,12 @@
 </blockquote>
 ]]></content>
       <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
         <category>ElasticSearch</category>
       </categories>
       <tags>
         <tag>ElasticSearch7</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hadoop运行环境搭建</title>
-    <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>Hadoop运行环境搭建</p>
-<a id="more"></a>
-
-<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
-<h3 id="系统环境："><a href="#系统环境：" class="headerlink" title="系统环境："></a>系统环境：</h3><p>Windows环境：Windows10<br>Linux环境：CentOS-6.10-x86_64-bin-DVD1<br>VMware：15.5.0 build-14665864</p>
-<h3 id="所需文件"><a href="#所需文件" class="headerlink" title="所需文件"></a>所需文件</h3><p><strong>链接：</strong> <a href="https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA" target="_blank" rel="noopener">https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA</a><br>提取码：dgmt<br><strong>资源失效记得留言</strong></p>
-<h3 id="检查是否开启虚拟机"><a href="#检查是否开启虚拟机" class="headerlink" title="检查是否开启虚拟机"></a>检查是否开启虚拟机</h3><p><img src="https://img-blog.csdnimg.cn/2020032710260212.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="安装Linux"><a href="#安装Linux" class="headerlink" title="安装Linux"></a>安装Linux</h3><p>1.选择自定义<br><img src="https://img-blog.csdnimg.cn/20200327103653439.png?x-oss-process=image" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/2020032710440027.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.稍后安装操作系统<br><img src="https://img-blog.csdnimg.cn/20200327104418203.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.选择Linux 版本为Centos6 64位<br><img src="https://img-blog.csdnimg.cn/20200327104437670.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.虚拟机命名为Hadoop001<br><img src="https://img-blog.csdnimg.cn/20200327104457220.png?x-oss-process=image" alt="在这里插入图片描述"><br>6.处理机配置，这里配置最好对应下图：<br><img src="https://img-blog.csdnimg.cn/2020032710451572.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意:</strong> 如果电脑配置不足，虚拟机会自动提示，这里根据自己电脑配置调整即可<br><img src="https://img-blog.csdnimg.cn/20200327110559495.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>7.网络类型选择NAT<br><img src="https://img-blog.csdnimg.cn/20200327104532614.png?x-oss-process=image" alt="在这里插入图片描述"><br>8.I/O控制器类型选择LSI Logic<br><img src="https://img-blog.csdnimg.cn/20200327104555764.png?x-oss-process=image" alt="在这里插入图片描述"><br>9.磁盘类型选择SCSI<br><img src="https://img-blog.csdnimg.cn/20200327104618841.png?x-oss-process=image" alt="在这里插入图片描述"><br>10.创建新虚拟磁盘<br><img src="https://img-blog.csdnimg.cn/20200327104635294.png?x-oss-process=image" alt="在这里插入图片描述"><br>11.磁盘大小分配50G，将虚拟磁盘拆分成多个文件<br><img src="https://img-blog.csdnimg.cn/20200327104652738.png?x-oss-process=image" alt="在这里插入图片描述"><br>12.指定磁盘文件<br><img src="https://img-blog.csdnimg.cn/20200327104707478.png?x-oss-process=image" alt="在这里插入图片描述"><br>13.创建完成<br><img src="https://img-blog.csdnimg.cn/2020032710473853.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>14.在虚拟机配置中选择下载好的镜像文件<br><img src="https://img-blog.csdnimg.cn/20200327104750966.png?x-oss-process=image" alt="在这里插入图片描述"><br>15.选择第一个<br> <img src="https://img-blog.csdnimg.cn/20200327105929634.png?x-oss-process=image" alt="在这里插入图片描述"><br>16.选择skip<br><img src="https://img-blog.csdnimg.cn/20200327105959950.png?x-oss-process=image" alt="在这里插入图片描述"><br>17.选择next<br><img src="https://img-blog.csdnimg.cn/20200327110029718.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>18.语言环境选择英文<br><img src="https://img-blog.csdnimg.cn/20200327110101712.png?x-oss-process=image" alt="在这里插入图片描述"><br>19.选择输入法<br><img src="https://img-blog.csdnimg.cn/20200327110230645.png?x-oss-process=image" alt="在这里插入图片描述"><br>20.选择Basic Storage Devices<br><img src="https://img-blog.csdnimg.cn/20200327110259402.png?x-oss-process=image" alt="在这里插入图片描述"><br>21.同意即可<br><img src="https://img-blog.csdnimg.cn/20200327110344102.png?x-oss-process=image" alt="在这里插入图片描述"><br>22.主机命名<br><img src="https://img-blog.csdnimg.cn/20200327110434306.png?x-oss-process=image" alt="在这里插入图片描述"><br>23.配置Configure Network<br><img src="https://img-blog.csdnimg.cn/20200327110518430.png?x-oss-process=image" alt="在这里插入图片描述"><br>24.勾选即可<br><img src="https://img-blog.csdnimg.cn/20200327110749262.png?x-oss-process=image" alt="在这里插入图片描述"><br>25.选择相应的时区<br><img src="https://img-blog.csdnimg.cn/20200327110908993.png?x-oss-process=image" alt="在这里插入图片描述"><br>26.密码设个123456就行了<br><img src="https://img-blog.csdnimg.cn/20200327110937171.png?x-oss-process=image" alt="在这里插入图片描述"><br>27.选择Use All Space<br><img src="https://img-blog.csdnimg.cn/20200327111016724.png?x-oss-process=image0" alt="在这里插入图片描述"><br>28.write changes to disk<br><img src="https://img-blog.csdnimg.cn/20200327111055987.png?x-oss-process=image" alt="在这里插入图片描述"><br>29.选择Basic<br><img src="https://img-blog.csdnimg.cn/20200327111132984.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>30.系统开始初始化<br><img src="https://img-blog.csdnimg.cn/20200327111233395.png?x-oss-process=image" alt="在这里插入图片描述"><br>31.可见系统已经安装成功，reboot重启即可<img src="https://img-blog.csdnimg.cn/20200327111308432.png?x-oss-process=image" alt="在这里插入图片描述"><br>32.进入系统界面<br><img src="https://img-blog.csdnimg.cn/20200327111408414.png?x-oss-process=image" alt="在这里插入图片描述"><br>因为hadoop实验需要3个服务器，另外两个可以使用克隆安装<br>33.选择下一步<img src="https://img-blog.csdnimg.cn/20200327111548739.png?x-oss-process=image" alt="在这里插入图片描述"><br>34.下一步<br><img src="https://img-blog.csdnimg.cn/20200327111614282.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>35.克隆类型选择链接克隆，尽量节省磁盘空间<br><img src="https://img-blog.csdnimg.cn/2020032711163713.png?x-oss-process=image" alt="在这里插入图片描述"><br>36.命名<br><img src="https://img-blog.csdnimg.cn/20200327111730702.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111810391.png?x-oss-process=image" alt="在这里插入图片描述"><br>37.可以看到安装完成之后的情形<br><img src="https://img-blog.csdnimg.cn/20200327111851452.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111909745.png" alt="在这里插入图片描述"></p>
-<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><h4 id="1-配置网卡"><a href="#1-配置网卡" class="headerlink" title="1.配置网卡"></a>1.配置网卡</h4><p><img src="https://img-blog.csdnimg.cn/20200327112637566.png" alt="在这里插入图片描述"><br>输入上面的命令可以查看hadoop01的网络环境：如下图所示<br><img src="https://img-blog.csdnimg.cn/20200327112644781.png" alt="在这里插入图片描述"><br>然后开始修改hadoop02，hadoop03的网络配置<br><img src="https://img-blog.csdnimg.cn/20200327112715134.png?x-oss-process=image" alt="在这里插入图片描述"><br>改动如下图所示：<br>也就是将上面的配置删除，下面的NAME=”eth1” 改成eth0<br><img src="https://img-blog.csdnimg.cn/20200327112733595.png" alt="在这里插入图片描述"><br>hadoop03的操作和hadoop02的一样</p>
-<p><strong>注意：</strong> 这里的MAC地址不能一样，如果一样，就需要自动生成一个<br><img src="https://img-blog.csdnimg.cn/20200327113128393.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="2-配置静态ip"><a href="#2-配置静态ip" class="headerlink" title="2.配置静态ip"></a>2.配置静态ip</h4><p>修改hadoop01，02，03的网络配置文件(ifcfg-eth0)<br><img src="https://img-blog.csdnimg.cn/20200327113449436.png" alt="在这里插入图片描述"><br>可以查看配置文件的内容如下图所示：<br><img src="https://img-blog.csdnimg.cn/20200327113458775.png" alt="在这里插入图片描述"><br>将网络配置改为下面的：<br><img src="https://img-blog.csdnimg.cn/20200327113507394.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>验证网络配置：<br><img src="https://img-blog.csdnimg.cn/20200327113527171.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里使用静态IP，ip地址分别是134 135 136<br>hadoop02和hadoop03的操作和hadoop01的一样，重复即可</p>
-<h4 id="3-配置虚拟机网络"><a href="#3-配置虚拟机网络" class="headerlink" title="3.配置虚拟机网络"></a>3.配置虚拟机网络</h4><p>首先需要检查是否开启了5个服务<br>在控制面板的服务里面可以看到是否开启<br><img src="https://img-blog.csdnimg.cn/20200327112000348.png" alt="在这里插入图片描述"><br>1.编辑-&gt;虚拟网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114410335.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2.配置网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114500515.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20200327114550386.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327114917915.png?x-oss-process=image" alt="在这里插入图片描述"><br>NAT设置如图所示：<br><img src="https://img-blog.csdnimg.cn/20200327114628469.png?x-oss-process=image" alt="在这里插入图片描述"><br>DHCP设置如图所示：<br><img src="https://img-blog.csdnimg.cn/2020032711470347.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改VMware network<br><img src="https://img-blog.csdnimg.cn/20200327114710335.png" alt="在这里插入图片描述"><br>将VMnet8的ipv4修改为下图所示<br><img src="https://img-blog.csdnimg.cn/20200327114717792.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="4-主机名映射配置"><a href="#4-主机名映射配置" class="headerlink" title="4.主机名映射配置"></a>4.主机名映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115555637.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115608830.png" alt="在这里插入图片描述"></p>
-<h4 id="5-IP映射配置"><a href="#5-IP映射配置" class="headerlink" title="5.IP映射配置"></a>5.IP映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115618260.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115627958.png" alt="在这里插入图片描述"></p>
-<h4 id="6-windows的hosts配置"><a href="#6-windows的hosts配置" class="headerlink" title="6.windows的hosts配置"></a>6.windows的hosts配置</h4><p>修改Windows下的hosts文件<br><img src="https://img-blog.csdnimg.cn/20200327115930695.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115937887.png" alt="在这里插入图片描述"></p>
-<p><strong>注意：</strong>网络配置完成记得重启网络服务<br><code>service network restart</code>或者重启服务器<code>reboot</code><br>完成以上步骤，网络配置就算完成</p>
-<h4 id="7-测试网络配置"><a href="#7-测试网络配置" class="headerlink" title="7.测试网络配置"></a>7.测试网络配置</h4><p>接下来测试网络配置是否完成<br><img src="https://img-blog.csdnimg.cn/20200327120013734.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>ifcfg-eth0 配置参数说明<br>1.TYPE：配置文件接口类型。在/etc/sysconfig/network-scripts/目录有多种网络配置文件，有Ethernet 、IPsec等类型，网络接口类型为Ethernet。<br>2.DEVICE：网络接口名称<br>3.BOOTPROTO：系统启动地址协议<br>4.none：不使用启动地址协议<br>5.bootp：BOOTP协议<br>6.dhcp：DHCP动态地址协议<br>7.static：静态地址协议<br>8.ONBOOT：系统启动时是否激活<br>            yes：系统启动时激活该网络接口<br>            no：系统启动时不激活该网络接口<br>9.IPADDR：IP地址<br>10.NETMASK：子网掩码<br>11.GATEWAY：网关地址<br>12.BROADCAST：广播地址<br>13.HWADDR/MACADDR：MAC地址。只需设置其中一个，同时设置时不能相互冲突。<br>14.PEERDNS：是否指定DNS。如果使用DHCP协议，默认为yes</p>
-</blockquote>
-<h3 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h3><p>输入<code>rpm -qa|grep ssh</code>查看ssh是否安装<br><img src="https://img-blog.csdnimg.cn/20200327121043104.png" alt="在这里插入图片描述"><br>如果没有安装：<code>yum install openssh-server</code></p>
-<h3 id="免密登陆"><a href="#免密登陆" class="headerlink" title="免密登陆"></a>免密登陆</h3><p>1.为什么要免密登录<br>Hadoop节点众多，所以一般在主节点启动从节点，这个时候就需要程序自动在主节点登录<br>到从节点中，如果不能免密就每次都要输入密码，非常麻烦<br>2. 免密SSH登录的原理<br>需要先在B节点配置A节点的公钥<br>A节点请求B节点要球登录<br>B节点使用A节点的公钥，加密一段随机文本<br>A节点使用私钥解密，并发回给B节点<br>B节点验证文本是否正确</p>
-<p><img src="https://img-blog.csdnimg.cn/20200327121318858.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>这里为了更方便的操作，使用secureCRT文件<br>打开secureCRT文件，new Session创建相应的session连接<br>1.new Session<img src="https://img-blog.csdnimg.cn/20200327122809177.png" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/20200327122947738.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.填写相应信息<br><img src="https://img-blog.csdnimg.cn/20200327123020515.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.SFTP协议<img src="https://img-blog.csdnimg.cn/20200327123105814.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.命名<br><img src="https://img-blog.csdnimg.cn/2020032712314534.png?x-oss-process=image" alt="在这里插入图片描述"><br>最后效果：<br> <img src="https://img-blog.csdnimg.cn/20200327123215433.png" alt="在这里插入图片描述"><br> 配置完成之后虚拟机就可以后台运行了<br><img src="https://img-blog.csdnimg.cn/20200327124339234.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里为了软件的美观，可以进行相应的设置<br>这里推荐一个配色方案：<br><a href="https://blog.51cto.com/sandshell/2109176" target="_blank" rel="noopener">SecureCRT优化调整、永久设置、保护眼睛和配色方案</a></p>
-<h4 id="配置免密登录"><a href="#配置免密登录" class="headerlink" title="配置免密登录"></a>配置免密登录</h4><p>1.在三台机器执行以下命令，生成公钥与私钥<br><code>ssh-keygen -t rsa</code><br>一直回车就行了<br><img src="https://img-blog.csdnimg.cn/20200327123828820.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>2.复制<code>ssh-copy-id hadoop01</code><br><img src="https://img-blog.csdnimg.cn/20200327123939763.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327123952454.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327124005151.png?x-oss-process=image" alt="在这里插入图片描述"><br>将第一台机器的公钥拷贝到其他机器<br><code>scp /root/.ssh/authorized_keys hadoop02:/root/.ssh</code><br><code>scp /root/.ssh/authorized_keys hadoop03:/root/.ssh</code><br><img src="https://img-blog.csdnimg.cn/20200327124148240.png" alt="在这里插入图片描述"><br>如果3台机器可以相互访问，说明配置成功<br><img src="https://img-blog.csdnimg.cn/20200327124153657.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="hadoop安装"><a href="#hadoop安装" class="headerlink" title="hadoop安装"></a>hadoop安装</h3><blockquote>
-<p>Hadoop集群部署模式 </p>
-<ol>
-<li>在独立模式下，所有程序都在单个VM上执行，调试Hadoop集群的MapReduce程序也非常方便。一般情况下，该模式常用于学习或开发阶段进行调试程序。</li>
-<li>在伪分布式模式下，Hadoop程序的守护进程都运行在一台节点上，该模式主要用于调试Hadoop分布式程序的代码，以及程序执行是否正确。伪分布式模式是完全分布式模式的一个特例。</li>
-<li>在完全分布式模式下，Hadoop的守护进程分别运行在由多个主机措建的集群上，不同节点担任不同的角色，在实际工作应用开发中，通常使用该模式构建企业级Hadoop系统。</li>
-</ol>
-</blockquote>
-<blockquote>
-<p>从JDK版本7u71以后，JAVA将会在同一时间发布两个版本的JDK，其中： </p>
-<ol>
-<li>奇数版本为BUG修正并全部通过检验的版本，官方强烈推荐使用这个版本。</li>
-<li>偶数版本包含了奇数版本所有的内容，以及未被验证的BUG修复，Oracle官方表示：除非你深受BUG困扰，否则不推荐您使用这个版本。</li>
-</ol>
-</blockquote>
-<p><a href="http://hbase.apache.org/book.html#basic.prerequisites" target="_blank" rel="noopener">http://hbase.apache.org/book.html#basic.prerequisites</a><br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a><br><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a><br>根据官网推荐，使用如下软件配置<br><img src="https://img-blog.csdnimg.cn/202003271247571.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="1-上传文件并创建相应文件"><a href="#1-上传文件并创建相应文件" class="headerlink" title="1.上传文件并创建相应文件"></a>1.上传文件并创建相应文件</h4><p>1.创建文件：在根目录下创建下图文件<br><img src="https://img-blog.csdnimg.cn/2020032712490655.png" alt="在这里插入图片描述"></p>
-<p>2.通过命令将文件拖进software文件中<br>安装上传文件命令<code>yum install -y lrzsz</code><br>执行命令rz，上传文件<br>执行命令sz，下载文件<br><img src="https://img-blog.csdnimg.cn/20200327125021970.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="2-安装JDK"><a href="#2-安装JDK" class="headerlink" title="2.安装JDK"></a>2.安装JDK</h4><p>解压jdk文件到/export/servers/路径下<br><code>tar -zxvf jdk-8u201-linux-x64.tar.gz -C /export/servers/</code><br>将jdk文件移动到jdk路径下<br><code>mv jdk1.8.0_201 jdk</code></p>
-<p>4.添加环境变量<br><code>vim /etc/profile</code><br>添加下列代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;export&#x2F;servers&#x2F;jdk</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br></pre></td></tr></table></figure>
-<p>添加完成之后记得<code>source /etc/profile</code>使配置生效<br>测试：<br><code>java -version</code><br><img src="https://img-blog.csdnimg.cn/20200327125713207.png" alt="在这里插入图片描述"><br><code>which java</code><br><img src="https://img-blog.csdnimg.cn/20200327125729409.png" alt="在这里插入图片描述"></p>
-<h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop"></a>安装hadoop</h4><p>1.解压<br><code>tar -zxvf hadoop-2.7.7.tar.gz -C /export/servers/</code><br>2.编写<code>/etc/profile文件</code><br><code>vim /etc/profile</code><br>添加下列命令：<br><img src="https://img-blog.csdnimg.cn/20200327125936586.png" alt="在这里插入图片描述"><br>配置完成之后：<code>source /etc/profile</code><br> <img src="https://img-blog.csdnimg.cn/20200327125950742.png" alt="在这里插入图片描述"><br> 测试：<br> <code>hadoop version</code>查看是否配置完成<img src="https://img-blog.csdnimg.cn/2020032713000287.png" alt="在这里插入图片描述"></p>
-<h3 id="hadoop入门案例："><a href="#hadoop入门案例：" class="headerlink" title="hadoop入门案例："></a>hadoop入门案例：</h3><p><img src="https://img-blog.csdnimg.cn/20200327130134643.png" alt="在这里插入图片描述"><br>1.进入hadoop-2.7.7下面<br>2.创建一个input文件夹<br>3.将Hadoop的xml配置文件复制到input<br>xml配置文件是etc/hadoop/*.xml’</p>
-<p>4.执行share目录下的MapReduce程序<br><code>hadoop jar hadoop-mapreduce-examples-2.7.2.jar grep input output &#39;dfs[a-z.]+&#39;</code><br><img src="https://img-blog.csdnimg.cn/20200327130119673.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.在<strong>hadoop-2.7.7路径下</strong>查看输出结果<br><code>cat output/*</code></p>
-<p><strong>注意:</strong> hadoop jar 是命令，hadoop-mapreduce-examples-2.7.7.jar是自己写的mr代码，input 输入文件夹，output 输出文件夹</p>
-]]></content>
-      <categories>
-        <category>Hadoop</category>
-      </categories>
-      <tags>
-        <tag>Hadoop集群</tag>
       </tags>
   </entry>
   <entry>
@@ -766,6 +727,8 @@
 <p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
         <category>ElasticSearch</category>
       </categories>
       <tags>
@@ -804,6 +767,8 @@
 <p><img src="/images/2020101105.png" alt="nodes"></p>
 ]]></content>
       <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
         <category>ElasticSearch</category>
       </categories>
       <tags>
@@ -900,6 +865,100 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Hadoop运行环境搭建</title>
+    <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>Hadoop运行环境搭建</p>
+<a id="more"></a>
+
+<h3 id="电脑配置要求："><a href="#电脑配置要求：" class="headerlink" title="电脑配置要求："></a>电脑配置要求：</h3><p>内存：最低8G，最好16G以上<br>硬盘：预留100G，实际上不妨数据大概不会超过20G</p>
+<h3 id="系统环境："><a href="#系统环境：" class="headerlink" title="系统环境："></a>系统环境：</h3><p>Windows环境：Windows10<br>Linux环境：CentOS-6.10-x86_64-bin-DVD1<br>VMware：15.5.0 build-14665864</p>
+<h3 id="所需文件"><a href="#所需文件" class="headerlink" title="所需文件"></a>所需文件</h3><p><strong>链接：</strong> <a href="https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA" target="_blank" rel="noopener">https://pan.baidu.com/s/1X3Nfv5hBuJl6mGDNNcvnQA</a><br>提取码：dgmt<br><strong>资源失效记得留言</strong></p>
+<h3 id="检查是否开启虚拟机"><a href="#检查是否开启虚拟机" class="headerlink" title="检查是否开启虚拟机"></a>检查是否开启虚拟机</h3><p><img src="https://img-blog.csdnimg.cn/2020032710260212.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="安装Linux"><a href="#安装Linux" class="headerlink" title="安装Linux"></a>安装Linux</h3><p>1.选择自定义<br><img src="https://img-blog.csdnimg.cn/20200327103653439.png?x-oss-process=image" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/2020032710440027.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.稍后安装操作系统<br><img src="https://img-blog.csdnimg.cn/20200327104418203.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.选择Linux 版本为Centos6 64位<br><img src="https://img-blog.csdnimg.cn/20200327104437670.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.虚拟机命名为Hadoop001<br><img src="https://img-blog.csdnimg.cn/20200327104457220.png?x-oss-process=image" alt="在这里插入图片描述"><br>6.处理机配置，这里配置最好对应下图：<br><img src="https://img-blog.csdnimg.cn/2020032710451572.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意:</strong> 如果电脑配置不足，虚拟机会自动提示，这里根据自己电脑配置调整即可<br><img src="https://img-blog.csdnimg.cn/20200327110559495.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>7.网络类型选择NAT<br><img src="https://img-blog.csdnimg.cn/20200327104532614.png?x-oss-process=image" alt="在这里插入图片描述"><br>8.I/O控制器类型选择LSI Logic<br><img src="https://img-blog.csdnimg.cn/20200327104555764.png?x-oss-process=image" alt="在这里插入图片描述"><br>9.磁盘类型选择SCSI<br><img src="https://img-blog.csdnimg.cn/20200327104618841.png?x-oss-process=image" alt="在这里插入图片描述"><br>10.创建新虚拟磁盘<br><img src="https://img-blog.csdnimg.cn/20200327104635294.png?x-oss-process=image" alt="在这里插入图片描述"><br>11.磁盘大小分配50G，将虚拟磁盘拆分成多个文件<br><img src="https://img-blog.csdnimg.cn/20200327104652738.png?x-oss-process=image" alt="在这里插入图片描述"><br>12.指定磁盘文件<br><img src="https://img-blog.csdnimg.cn/20200327104707478.png?x-oss-process=image" alt="在这里插入图片描述"><br>13.创建完成<br><img src="https://img-blog.csdnimg.cn/2020032710473853.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>14.在虚拟机配置中选择下载好的镜像文件<br><img src="https://img-blog.csdnimg.cn/20200327104750966.png?x-oss-process=image" alt="在这里插入图片描述"><br>15.选择第一个<br> <img src="https://img-blog.csdnimg.cn/20200327105929634.png?x-oss-process=image" alt="在这里插入图片描述"><br>16.选择skip<br><img src="https://img-blog.csdnimg.cn/20200327105959950.png?x-oss-process=image" alt="在这里插入图片描述"><br>17.选择next<br><img src="https://img-blog.csdnimg.cn/20200327110029718.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>18.语言环境选择英文<br><img src="https://img-blog.csdnimg.cn/20200327110101712.png?x-oss-process=image" alt="在这里插入图片描述"><br>19.选择输入法<br><img src="https://img-blog.csdnimg.cn/20200327110230645.png?x-oss-process=image" alt="在这里插入图片描述"><br>20.选择Basic Storage Devices<br><img src="https://img-blog.csdnimg.cn/20200327110259402.png?x-oss-process=image" alt="在这里插入图片描述"><br>21.同意即可<br><img src="https://img-blog.csdnimg.cn/20200327110344102.png?x-oss-process=image" alt="在这里插入图片描述"><br>22.主机命名<br><img src="https://img-blog.csdnimg.cn/20200327110434306.png?x-oss-process=image" alt="在这里插入图片描述"><br>23.配置Configure Network<br><img src="https://img-blog.csdnimg.cn/20200327110518430.png?x-oss-process=image" alt="在这里插入图片描述"><br>24.勾选即可<br><img src="https://img-blog.csdnimg.cn/20200327110749262.png?x-oss-process=image" alt="在这里插入图片描述"><br>25.选择相应的时区<br><img src="https://img-blog.csdnimg.cn/20200327110908993.png?x-oss-process=image" alt="在这里插入图片描述"><br>26.密码设个123456就行了<br><img src="https://img-blog.csdnimg.cn/20200327110937171.png?x-oss-process=image" alt="在这里插入图片描述"><br>27.选择Use All Space<br><img src="https://img-blog.csdnimg.cn/20200327111016724.png?x-oss-process=image0" alt="在这里插入图片描述"><br>28.write changes to disk<br><img src="https://img-blog.csdnimg.cn/20200327111055987.png?x-oss-process=image" alt="在这里插入图片描述"><br>29.选择Basic<br><img src="https://img-blog.csdnimg.cn/20200327111132984.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>30.系统开始初始化<br><img src="https://img-blog.csdnimg.cn/20200327111233395.png?x-oss-process=image" alt="在这里插入图片描述"><br>31.可见系统已经安装成功，reboot重启即可<img src="https://img-blog.csdnimg.cn/20200327111308432.png?x-oss-process=image" alt="在这里插入图片描述"><br>32.进入系统界面<br><img src="https://img-blog.csdnimg.cn/20200327111408414.png?x-oss-process=image" alt="在这里插入图片描述"><br>因为hadoop实验需要3个服务器，另外两个可以使用克隆安装<br>33.选择下一步<img src="https://img-blog.csdnimg.cn/20200327111548739.png?x-oss-process=image" alt="在这里插入图片描述"><br>34.下一步<br><img src="https://img-blog.csdnimg.cn/20200327111614282.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>35.克隆类型选择链接克隆，尽量节省磁盘空间<br><img src="https://img-blog.csdnimg.cn/2020032711163713.png?x-oss-process=image" alt="在这里插入图片描述"><br>36.命名<br><img src="https://img-blog.csdnimg.cn/20200327111730702.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111810391.png?x-oss-process=image" alt="在这里插入图片描述"><br>37.可以看到安装完成之后的情形<br><img src="https://img-blog.csdnimg.cn/20200327111851452.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327111909745.png" alt="在这里插入图片描述"></p>
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><h4 id="1-配置网卡"><a href="#1-配置网卡" class="headerlink" title="1.配置网卡"></a>1.配置网卡</h4><p><img src="https://img-blog.csdnimg.cn/20200327112637566.png" alt="在这里插入图片描述"><br>输入上面的命令可以查看hadoop01的网络环境：如下图所示<br><img src="https://img-blog.csdnimg.cn/20200327112644781.png" alt="在这里插入图片描述"><br>然后开始修改hadoop02，hadoop03的网络配置<br><img src="https://img-blog.csdnimg.cn/20200327112715134.png?x-oss-process=image" alt="在这里插入图片描述"><br>改动如下图所示：<br>也就是将上面的配置删除，下面的NAME=”eth1” 改成eth0<br><img src="https://img-blog.csdnimg.cn/20200327112733595.png" alt="在这里插入图片描述"><br>hadoop03的操作和hadoop02的一样</p>
+<p><strong>注意：</strong> 这里的MAC地址不能一样，如果一样，就需要自动生成一个<br><img src="https://img-blog.csdnimg.cn/20200327113128393.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="2-配置静态ip"><a href="#2-配置静态ip" class="headerlink" title="2.配置静态ip"></a>2.配置静态ip</h4><p>修改hadoop01，02，03的网络配置文件(ifcfg-eth0)<br><img src="https://img-blog.csdnimg.cn/20200327113449436.png" alt="在这里插入图片描述"><br>可以查看配置文件的内容如下图所示：<br><img src="https://img-blog.csdnimg.cn/20200327113458775.png" alt="在这里插入图片描述"><br>将网络配置改为下面的：<br><img src="https://img-blog.csdnimg.cn/20200327113507394.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>验证网络配置：<br><img src="https://img-blog.csdnimg.cn/20200327113527171.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里使用静态IP，ip地址分别是134 135 136<br>hadoop02和hadoop03的操作和hadoop01的一样，重复即可</p>
+<h4 id="3-配置虚拟机网络"><a href="#3-配置虚拟机网络" class="headerlink" title="3.配置虚拟机网络"></a>3.配置虚拟机网络</h4><p>首先需要检查是否开启了5个服务<br>在控制面板的服务里面可以看到是否开启<br><img src="https://img-blog.csdnimg.cn/20200327112000348.png" alt="在这里插入图片描述"><br>1.编辑-&gt;虚拟网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114410335.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2.配置网络编辑器<br><img src="https://img-blog.csdnimg.cn/20200327114500515.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200327114550386.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327114917915.png?x-oss-process=image" alt="在这里插入图片描述"><br>NAT设置如图所示：<br><img src="https://img-blog.csdnimg.cn/20200327114628469.png?x-oss-process=image" alt="在这里插入图片描述"><br>DHCP设置如图所示：<br><img src="https://img-blog.csdnimg.cn/2020032711470347.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改VMware network<br><img src="https://img-blog.csdnimg.cn/20200327114710335.png" alt="在这里插入图片描述"><br>将VMnet8的ipv4修改为下图所示<br><img src="https://img-blog.csdnimg.cn/20200327114717792.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="4-主机名映射配置"><a href="#4-主机名映射配置" class="headerlink" title="4.主机名映射配置"></a>4.主机名映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115555637.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115608830.png" alt="在这里插入图片描述"></p>
+<h4 id="5-IP映射配置"><a href="#5-IP映射配置" class="headerlink" title="5.IP映射配置"></a>5.IP映射配置</h4><p><img src="https://img-blog.csdnimg.cn/20200327115618260.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115627958.png" alt="在这里插入图片描述"></p>
+<h4 id="6-windows的hosts配置"><a href="#6-windows的hosts配置" class="headerlink" title="6.windows的hosts配置"></a>6.windows的hosts配置</h4><p>修改Windows下的hosts文件<br><img src="https://img-blog.csdnimg.cn/20200327115930695.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327115937887.png" alt="在这里插入图片描述"></p>
+<p><strong>注意：</strong>网络配置完成记得重启网络服务<br><code>service network restart</code>或者重启服务器<code>reboot</code><br>完成以上步骤，网络配置就算完成</p>
+<h4 id="7-测试网络配置"><a href="#7-测试网络配置" class="headerlink" title="7.测试网络配置"></a>7.测试网络配置</h4><p>接下来测试网络配置是否完成<br><img src="https://img-blog.csdnimg.cn/20200327120013734.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>ifcfg-eth0 配置参数说明<br>1.TYPE：配置文件接口类型。在/etc/sysconfig/network-scripts/目录有多种网络配置文件，有Ethernet 、IPsec等类型，网络接口类型为Ethernet。<br>2.DEVICE：网络接口名称<br>3.BOOTPROTO：系统启动地址协议<br>4.none：不使用启动地址协议<br>5.bootp：BOOTP协议<br>6.dhcp：DHCP动态地址协议<br>7.static：静态地址协议<br>8.ONBOOT：系统启动时是否激活<br>            yes：系统启动时激活该网络接口<br>            no：系统启动时不激活该网络接口<br>9.IPADDR：IP地址<br>10.NETMASK：子网掩码<br>11.GATEWAY：网关地址<br>12.BROADCAST：广播地址<br>13.HWADDR/MACADDR：MAC地址。只需设置其中一个，同时设置时不能相互冲突。<br>14.PEERDNS：是否指定DNS。如果使用DHCP协议，默认为yes</p>
+</blockquote>
+<h3 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h3><p>输入<code>rpm -qa|grep ssh</code>查看ssh是否安装<br><img src="https://img-blog.csdnimg.cn/20200327121043104.png" alt="在这里插入图片描述"><br>如果没有安装：<code>yum install openssh-server</code></p>
+<h3 id="免密登陆"><a href="#免密登陆" class="headerlink" title="免密登陆"></a>免密登陆</h3><p>1.为什么要免密登录<br>Hadoop节点众多，所以一般在主节点启动从节点，这个时候就需要程序自动在主节点登录<br>到从节点中，如果不能免密就每次都要输入密码，非常麻烦<br>2. 免密SSH登录的原理<br>需要先在B节点配置A节点的公钥<br>A节点请求B节点要球登录<br>B节点使用A节点的公钥，加密一段随机文本<br>A节点使用私钥解密，并发回给B节点<br>B节点验证文本是否正确</p>
+<p><img src="https://img-blog.csdnimg.cn/20200327121318858.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>这里为了更方便的操作，使用secureCRT文件<br>打开secureCRT文件，new Session创建相应的session连接<br>1.new Session<img src="https://img-blog.csdnimg.cn/20200327122809177.png" alt="在这里插入图片描述"><br>2.下一步<br><img src="https://img-blog.csdnimg.cn/20200327122947738.png?x-oss-process=image" alt="在这里插入图片描述"><br>3.填写相应信息<br><img src="https://img-blog.csdnimg.cn/20200327123020515.png?x-oss-process=image" alt="在这里插入图片描述"><br>4.SFTP协议<img src="https://img-blog.csdnimg.cn/20200327123105814.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.命名<br><img src="https://img-blog.csdnimg.cn/2020032712314534.png?x-oss-process=image" alt="在这里插入图片描述"><br>最后效果：<br> <img src="https://img-blog.csdnimg.cn/20200327123215433.png" alt="在这里插入图片描述"><br> 配置完成之后虚拟机就可以后台运行了<br><img src="https://img-blog.csdnimg.cn/20200327124339234.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里为了软件的美观，可以进行相应的设置<br>这里推荐一个配色方案：<br><a href="https://blog.51cto.com/sandshell/2109176" target="_blank" rel="noopener">SecureCRT优化调整、永久设置、保护眼睛和配色方案</a></p>
+<h4 id="配置免密登录"><a href="#配置免密登录" class="headerlink" title="配置免密登录"></a>配置免密登录</h4><p>1.在三台机器执行以下命令，生成公钥与私钥<br><code>ssh-keygen -t rsa</code><br>一直回车就行了<br><img src="https://img-blog.csdnimg.cn/20200327123828820.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>2.复制<code>ssh-copy-id hadoop01</code><br><img src="https://img-blog.csdnimg.cn/20200327123939763.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327123952454.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327124005151.png?x-oss-process=image" alt="在这里插入图片描述"><br>将第一台机器的公钥拷贝到其他机器<br><code>scp /root/.ssh/authorized_keys hadoop02:/root/.ssh</code><br><code>scp /root/.ssh/authorized_keys hadoop03:/root/.ssh</code><br><img src="https://img-blog.csdnimg.cn/20200327124148240.png" alt="在这里插入图片描述"><br>如果3台机器可以相互访问，说明配置成功<br><img src="https://img-blog.csdnimg.cn/20200327124153657.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="hadoop安装"><a href="#hadoop安装" class="headerlink" title="hadoop安装"></a>hadoop安装</h3><blockquote>
+<p>Hadoop集群部署模式 </p>
+<ol>
+<li>在独立模式下，所有程序都在单个VM上执行，调试Hadoop集群的MapReduce程序也非常方便。一般情况下，该模式常用于学习或开发阶段进行调试程序。</li>
+<li>在伪分布式模式下，Hadoop程序的守护进程都运行在一台节点上，该模式主要用于调试Hadoop分布式程序的代码，以及程序执行是否正确。伪分布式模式是完全分布式模式的一个特例。</li>
+<li>在完全分布式模式下，Hadoop的守护进程分别运行在由多个主机措建的集群上，不同节点担任不同的角色，在实际工作应用开发中，通常使用该模式构建企业级Hadoop系统。</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>从JDK版本7u71以后，JAVA将会在同一时间发布两个版本的JDK，其中： </p>
+<ol>
+<li>奇数版本为BUG修正并全部通过检验的版本，官方强烈推荐使用这个版本。</li>
+<li>偶数版本包含了奇数版本所有的内容，以及未被验证的BUG修复，Oracle官方表示：除非你深受BUG困扰，否则不推荐您使用这个版本。</li>
+</ol>
+</blockquote>
+<p><a href="http://hbase.apache.org/book.html#basic.prerequisites" target="_blank" rel="noopener">http://hbase.apache.org/book.html#basic.prerequisites</a><br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a><br><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a><br>根据官网推荐，使用如下软件配置<br><img src="https://img-blog.csdnimg.cn/202003271247571.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="1-上传文件并创建相应文件"><a href="#1-上传文件并创建相应文件" class="headerlink" title="1.上传文件并创建相应文件"></a>1.上传文件并创建相应文件</h4><p>1.创建文件：在根目录下创建下图文件<br><img src="https://img-blog.csdnimg.cn/2020032712490655.png" alt="在这里插入图片描述"></p>
+<p>2.通过命令将文件拖进software文件中<br>安装上传文件命令<code>yum install -y lrzsz</code><br>执行命令rz，上传文件<br>执行命令sz，下载文件<br><img src="https://img-blog.csdnimg.cn/20200327125021970.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="2-安装JDK"><a href="#2-安装JDK" class="headerlink" title="2.安装JDK"></a>2.安装JDK</h4><p>解压jdk文件到/export/servers/路径下<br><code>tar -zxvf jdk-8u201-linux-x64.tar.gz -C /export/servers/</code><br>将jdk文件移动到jdk路径下<br><code>mv jdk1.8.0_201 jdk</code></p>
+<p>4.添加环境变量<br><code>vim /etc/profile</code><br>添加下列代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;export&#x2F;servers&#x2F;jdk</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br></pre></td></tr></table></figure>
+<p>添加完成之后记得<code>source /etc/profile</code>使配置生效<br>测试：<br><code>java -version</code><br><img src="https://img-blog.csdnimg.cn/20200327125713207.png" alt="在这里插入图片描述"><br><code>which java</code><br><img src="https://img-blog.csdnimg.cn/20200327125729409.png" alt="在这里插入图片描述"></p>
+<h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop"></a>安装hadoop</h4><p>1.解压<br><code>tar -zxvf hadoop-2.7.7.tar.gz -C /export/servers/</code><br>2.编写<code>/etc/profile文件</code><br><code>vim /etc/profile</code><br>添加下列命令：<br><img src="https://img-blog.csdnimg.cn/20200327125936586.png" alt="在这里插入图片描述"><br>配置完成之后：<code>source /etc/profile</code><br> <img src="https://img-blog.csdnimg.cn/20200327125950742.png" alt="在这里插入图片描述"><br> 测试：<br> <code>hadoop version</code>查看是否配置完成<img src="https://img-blog.csdnimg.cn/2020032713000287.png" alt="在这里插入图片描述"></p>
+<h3 id="hadoop入门案例："><a href="#hadoop入门案例：" class="headerlink" title="hadoop入门案例："></a>hadoop入门案例：</h3><p><img src="https://img-blog.csdnimg.cn/20200327130134643.png" alt="在这里插入图片描述"><br>1.进入hadoop-2.7.7下面<br>2.创建一个input文件夹<br>3.将Hadoop的xml配置文件复制到input<br>xml配置文件是etc/hadoop/*.xml’</p>
+<p>4.执行share目录下的MapReduce程序<br><code>hadoop jar hadoop-mapreduce-examples-2.7.2.jar grep input output &#39;dfs[a-z.]+&#39;</code><br><img src="https://img-blog.csdnimg.cn/20200327130119673.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.在<strong>hadoop-2.7.7路径下</strong>查看输出结果<br><code>cat output/*</code></p>
+<p><strong>注意:</strong> hadoop jar 是命令，hadoop-mapreduce-examples-2.7.7.jar是自己写的mr代码，input 输入文件夹，output 输出文件夹</p>
+]]></content>
+      <categories>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>Hadoop集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JSP页面El表达式不起作用</title>
+    <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
+<a id="more"></a>
+
+<p>头文件中</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
+<p>jsp约束：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>模板框架</category>
+        <category>JSP</category>
+      </categories>
+      <tags>
+        <tag>JSP</tag>
+        <tag>session</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>IDEA配置与常用快捷键</title>
     <url>/2021/01/20/IDEA%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -958,9 +1017,60 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java IO流详解</title>
+    <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Java之美[从菜鸟到高手演变]之Java中的IO:<a href="https://blog.csdn.net/zhangerqing/article/details/8466532" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8466532</a></p>
+<p>Java IO流学习总结一：输入输出流:<a href="https://blog.csdn.net/zhaoyanjun6/article/details/54292148" target="_blank" rel="noopener">https://blog.csdn.net/zhaoyanjun6/article/details/54292148</a></p>
+<p>史上最骚最全最详细的IO流教程，没有之一！:<a href="https://www.cnblogs.com/yichunguo/p/11775270.html" target="_blank" rel="noopener">https://www.cnblogs.com/yichunguo/p/11775270.html</a></p>
+<p>Java IO:<a href="http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88</a></p>
+</blockquote>
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>Java IO流大概可以分为以下几类：</p>
+<ul>
+<li>磁盘操作：File类</li>
+<li>字节流操作：InputStream，OutputStream</li>
+<li>字符流操作：Reader，Writer</li>
+<li>对象操作：Serializable</li>
+<li>网络操作：socket</li>
+<li>新的输入/输出：NIO</li>
+</ul>
+<h1 id="2-磁盘操作"><a href="#2-磁盘操作" class="headerlink" title="2 磁盘操作"></a>2 磁盘操作</h1><p>File类可以用于获取目录和文件的信息，但他不表示文件的内容。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fileMethod</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File file2 : files) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (file2.isDirectory()) &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件夹:"</span> + file2.getAbsolutePath());</span><br><span class="line">                        fileMethod(file2.getAbsolutePath());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件:"</span> + file2.getAbsolutePath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件不存在!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从 Java7 开始，可以使用 Paths 和 Files 代替 File。文件的操作更加简便快捷</p>
+<blockquote>
+<p>Java文件处理：Paths和Files：<a href="https://www.jianshu.com/p/3b3c5dbcfae7" target="_blank" rel="noopener">https://www.jianshu.com/p/3b3c5dbcfae7</a></p>
+</blockquote>
+<h1 id="3-字节流操作"><a href="#3-字节流操作" class="headerlink" title="3 字节流操作"></a>3 字节流操作</h1><p>实现文件复制</p>
+<h1 id="4-对象操作"><a href="#4-对象操作" class="headerlink" title="4 对象操作"></a>4 对象操作</h1><blockquote>
+<p>对象的序列化:<a href="https://liuyangjun.blog.csdn.net/article/details/80422143" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/80422143</a></p>
+</blockquote>
+<h1 id="5-网络操作"><a href="#5-网络操作" class="headerlink" title="5 网络操作"></a>5 网络操作</h1><h1 id="6-新的输入-输出（NIO）"><a href="#6-新的输入-输出（NIO）" class="headerlink" title="6 新的输入/输出（NIO）"></a>6 新的输入/输出（NIO）</h1><blockquote>
+<p><a href="https://www.zhihu.com/question/29005375" target="_blank" rel="noopener">https://www.zhihu.com/question/29005375</a></p>
+</blockquote>
+<p>NIO主要有<strong>三个核心部分组成</strong>：</p>
+<ul>
+<li><strong>buffer缓冲区</strong></li>
+<li><strong>Channel管道</strong></li>
+<li><strong>Selector选择器</strong></li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>IO流</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JVM学习笔记</title>
     <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="为什么学习JVM"><a href="#为什么学习JVM" class="headerlink" title="为什么学习JVM"></a>为什么学习JVM</h1><p>1.面试需要</p>
+    <content><![CDATA[<h1 id="1-为什么学习JVM"><a href="#1-为什么学习JVM" class="headerlink" title="1 为什么学习JVM"></a>1 为什么学习JVM</h1><p>1.面试需要</p>
 <p>2.更深入的理解Java</p>
 <ul>
 <li>一个类是如何加载到JVM的</li>
@@ -986,7 +1096,40 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 </ul>
 <a id="more"></a>
 
-<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
+<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><p><strong>认识JVM</strong>：是什么，有什么，能干什么</p>
+<blockquote>
+<p>JVM：Java Virtual Machine，也就是Java虚拟机</p>
+<p>虚拟机：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统<br>JVM是通过软件来模拟Java字节码的指令集，是Java程序的运行环境</p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201224105252066.png" alt="image-20201224105252066"></p>
+<p><strong>JVM主要功能</strong></p>
+<ol>
+<li>通过ClassLoader寻找和装载class文件</li>
+<li>解释字节码成为指令并执行，提供class文件的运行环境</li>
+<li>进行运行期间的内存分配和垃圾回收</li>
+<li>提供与硬件交互的平台</li>
+</ol>
+<p>​    JVM跨平台特征</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201224105219618.png" alt="image-20201224105219618"></p>
+<h2 id="JVM规范作用及其核心"><a href="#JVM规范作用及其核心" class="headerlink" title="JVM规范作用及其核心"></a>JVM规范作用及其核心</h2><blockquote>
+<p>Java虚拟机规范为不同的硬件平台提供了一种编译Java技术代码的规范</p>
+<p>该规范是Java软件独立于平台，因为编译针对作为虚拟机的“一般机器”而做</p>
+</blockquote>
+<p><strong>JVM规范定义的主要内容</strong>：</p>
+<p>可以看官方文档</p>
+<ul>
+<li>字节码指令集（相当于中央处理器CPU）</li>
+<li>Class文件的格式</li>
+<li>数据类型和值</li>
+<li>运行时数据区</li>
+<li>栈帧</li>
+<li>特殊方法</li>
+<li>类库</li>
+<li>异常</li>
+<li>虚拟机的启动，加载，链接和初始化</li>
+</ul>
+<p>虚拟机规范内容很多，了解即可</p>
+<h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
       <categories>
         <category>JVM</category>
       </categories>
@@ -995,25 +1138,70 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>JSP页面El表达式不起作用</title>
-    <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
+    <title>Java内部类详解</title>
+    <url>/2021/01/04/Java%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
 <a id="more"></a>
 
-<p>头文件中</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://www.runoob.com/w3cnote/java-inner-class-intro.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-inner-class-intro.html</a></p>
+<p><a href="https://www.iteye.com/topic/494230#" target="_blank" rel="noopener">https://www.iteye.com/topic/494230#</a></p>
+</blockquote>
+<h1 id="内部类概述"><a href="#内部类概述" class="headerlink" title="内部类概述"></a>内部类概述</h1><blockquote>
+<p>内部类：就是在一个类中定义一个类。举例：在一个类A的内部定义一个类B，类B就被称为内部类</p>
+</blockquote>
+<p><strong>定义格式：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	修饰符 <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
-<p>jsp约束：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+
+<h1 id="内部类分类"><a href="#内部类分类" class="headerlink" title="内部类分类"></a>内部类分类</h1><ul>
+<li><p>静态内部类：类似于静态变量</p>
+</li>
+<li><p>实例内部类：类似于实例变量</p>
+</li>
+<li><p>局部内部类：类似于局部变量</p>
+</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li><p>使用内部类编写的代码，可读性很差。能不用尽量不用。</p>
+</li>
+<li><p>匿名内部类是局部内部类的一种</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 由于前面有static，称为静态内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner1</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 没有static称为实例内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner2</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSome</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//局部变量</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">         * 局部内部类</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Inner3</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><p>类似于静态变量</p>
+<h2 id="实例内部类"><a href="#实例内部类" class="headerlink" title="实例内部类"></a>实例内部类</h2><p>成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。</p>
+<p>不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。如果要访问外部类的同名成员，需要以下面的形式进行访问：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">外部类.this.成员变量</span><br><span class="line">外部类.this.成员方法</span><br></pre></td></tr></table></figure>
+
+
+
+<p>虽然成员内部类可以无条件地访问外部类的成员，而外部类想访问成员内部类的成员却不是这么随心所欲了。在外部类中如果要访问成员内部类的成员，必须先创建一个成员内部类的对象，再通过指向这个对象的引用来访问：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Circle &#123;</span><br><span class="line">    private double radius &#x3D; 0;</span><br><span class="line"> </span><br><span class="line">    public Circle(double radius) &#123;</span><br><span class="line">        this.radius &#x3D; radius;</span><br><span class="line">        getDrawInstance().drawSahpe();   &#x2F;&#x2F;必须先创建成员内部类的对象，再进行访问</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    private Draw getDrawInstance() &#123;</span><br><span class="line">        return new Draw();</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    class Draw &#123;     &#x2F;&#x2F;内部类</span><br><span class="line">        public void drawSahpe() &#123;</span><br><span class="line">            System.out.println(radius);  &#x2F;&#x2F;外部类的private成员</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>成员内部类是依附外部类而存在的，也就是说，如果要创建成员内部类的对象，前提是必须存在一个外部类的对象。创建成员内部类对象的一般方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">        &#x2F;&#x2F;第一种方式：</span><br><span class="line">        Outter outter &#x3D; new Outter();</span><br><span class="line">        Outter.Inner inner &#x3D; outter.new Inner();  &#x2F;&#x2F;必须通过Outter对象来创建</span><br><span class="line">         </span><br><span class="line">        &#x2F;&#x2F;第二种方式：</span><br><span class="line">        Outter.Inner inner1 &#x3D; outter.getInnerInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class Outter &#123;</span><br><span class="line">    private Inner inner &#x3D; null;</span><br><span class="line">    public Outter() &#123;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    public Inner getInnerInstance() &#123;</span><br><span class="line">        if(inner &#x3D;&#x3D; null)</span><br><span class="line">            inner &#x3D; new Inner();</span><br><span class="line">        return inner;</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    class Inner &#123;</span><br><span class="line">        public Inner() &#123;</span><br><span class="line">             </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内部类可以拥有 private 访问权限、protected 访问权限、public 访问权限及包访问权限。比如上面的例子，如果成员内部类 Inner 用 private 修饰，则只能在外部类的内部访问，如果用 public 修饰，则任何地方都能访问；如果用 protected 修饰，则只能在同一个包下或者继承外部类的情况下访问；如果是默认访问权限，则只能在同一个包下访问。这一点和外部类有一点不一样，外部类只能被 public 和包访问两种权限修饰。我个人是这么理解的，由于成员内部类看起来像是外部类的一个成员，所以可以像类的成员一样拥有多种权限修饰。</p>
+<p>类似于实例变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Outer &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Outer o &#x3D; new Outer();</span><br><span class="line">        Outer.MyMath myMath &#x3D; o.new MyMath();</span><br><span class="line">        myMath.mysum(new Compute() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public int sum(int x, int y) &#123;</span><br><span class="line">                return x+y;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, 10, 20);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class MyMath&#123;</span><br><span class="line">        public void mysum(Compute c,int x ,int y)&#123;</span><br><span class="line">            int value &#x3D; c.sum(x,y);</span><br><span class="line">            System.out.println(x + &quot;+&quot;+ y + &quot;&#x3D;&quot;+value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    interface comput&#123;</span><br><span class="line">        public int sum(int x,int y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class computImpl implements comput&#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int sum(int x, int y) &#123;</span><br><span class="line">            return x+y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h2><p>类似于局部变量</p>
 ]]></content>
       <categories>
-        <category>JSP</category>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
       </categories>
       <tags>
-        <tag>JSP</tag>
-        <tag>session</tag>
+        <tag>内部类</tag>
       </tags>
   </entry>
   <entry>
@@ -1135,124 +1323,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java IO流详解</title>
-    <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Java之美[从菜鸟到高手演变]之Java中的IO:<a href="https://blog.csdn.net/zhangerqing/article/details/8466532" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8466532</a></p>
-<p>Java IO流学习总结一：输入输出流:<a href="https://blog.csdn.net/zhaoyanjun6/article/details/54292148" target="_blank" rel="noopener">https://blog.csdn.net/zhaoyanjun6/article/details/54292148</a></p>
-<p>史上最骚最全最详细的IO流教程，没有之一！:<a href="https://www.cnblogs.com/yichunguo/p/11775270.html" target="_blank" rel="noopener">https://www.cnblogs.com/yichunguo/p/11775270.html</a></p>
-<p>Java IO:<a href="http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88</a></p>
-</blockquote>
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>Java IO流大概可以分为以下几类：</p>
-<ul>
-<li>磁盘操作：File类</li>
-<li>字节流操作：InputStream，OutputStream</li>
-<li>字符流操作：Reader，Writer</li>
-<li>对象操作：Serializable</li>
-<li>网络操作：socket</li>
-<li>新的输入/输出：NIO</li>
-</ul>
-<h1 id="2-磁盘操作"><a href="#2-磁盘操作" class="headerlink" title="2 磁盘操作"></a>2 磁盘操作</h1><p>File类可以用于获取目录和文件的信息，但他不表示文件的内容。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fileMethod</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File file2 : files) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (file2.isDirectory()) &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件夹:"</span> + file2.getAbsolutePath());</span><br><span class="line">                        fileMethod(file2.getAbsolutePath());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件:"</span> + file2.getAbsolutePath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件不存在!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>从 Java7 开始，可以使用 Paths 和 Files 代替 File。文件的操作更加简便快捷</p>
-<blockquote>
-<p>Java文件处理：Paths和Files：<a href="https://www.jianshu.com/p/3b3c5dbcfae7" target="_blank" rel="noopener">https://www.jianshu.com/p/3b3c5dbcfae7</a></p>
-</blockquote>
-<h1 id="3-字节流操作"><a href="#3-字节流操作" class="headerlink" title="3 字节流操作"></a>3 字节流操作</h1><p>实现文件复制</p>
-<h1 id="4-对象操作"><a href="#4-对象操作" class="headerlink" title="4 对象操作"></a>4 对象操作</h1><blockquote>
-<p>对象的序列化:<a href="https://liuyangjun.blog.csdn.net/article/details/80422143" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/80422143</a></p>
-</blockquote>
-<h1 id="5-网络操作"><a href="#5-网络操作" class="headerlink" title="5 网络操作"></a>5 网络操作</h1><h1 id="6-新的输入-输出（NIO）"><a href="#6-新的输入-输出（NIO）" class="headerlink" title="6 新的输入/输出（NIO）"></a>6 新的输入/输出（NIO）</h1><blockquote>
-<p><a href="https://www.zhihu.com/question/29005375" target="_blank" rel="noopener">https://www.zhihu.com/question/29005375</a></p>
-</blockquote>
-<p>NIO主要有<strong>三个核心部分组成</strong>：</p>
-<ul>
-<li><strong>buffer缓冲区</strong></li>
-<li><strong>Channel管道</strong></li>
-<li><strong>Selector选择器</strong></li>
-</ul>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>IO流</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java内部类详解</title>
-    <url>/2021/01/04/Java%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p><a href="https://www.runoob.com/w3cnote/java-inner-class-intro.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-inner-class-intro.html</a></p>
-<p><a href="https://www.iteye.com/topic/494230#" target="_blank" rel="noopener">https://www.iteye.com/topic/494230#</a></p>
-</blockquote>
-<h1 id="内部类概述"><a href="#内部类概述" class="headerlink" title="内部类概述"></a>内部类概述</h1><blockquote>
-<p>内部类：就是在一个类中定义一个类。举例：在一个类A的内部定义一个类B，类B就被称为内部类</p>
-</blockquote>
-<p><strong>定义格式：</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	修饰符 <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="内部类分类"><a href="#内部类分类" class="headerlink" title="内部类分类"></a>内部类分类</h1><ul>
-<li><p>静态内部类：类似于静态变量</p>
-</li>
-<li><p>实例内部类：类似于实例变量</p>
-</li>
-<li><p>局部内部类：类似于局部变量</p>
-</li>
-</ul>
-<p><strong>注意：</strong></p>
-<ul>
-<li><p>使用内部类编写的代码，可读性很差。能不用尽量不用。</p>
-</li>
-<li><p>匿名内部类是局部内部类的一种</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 由于前面有static，称为静态内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner1</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 没有static称为实例内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner2</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSome</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//局部变量</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">         * 局部内部类</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Inner3</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><p>类似于静态变量</p>
-<h2 id="实例内部类"><a href="#实例内部类" class="headerlink" title="实例内部类"></a>实例内部类</h2><p>成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。</p>
-<p>不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。如果要访问外部类的同名成员，需要以下面的形式进行访问：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">外部类.this.成员变量</span><br><span class="line">外部类.this.成员方法</span><br></pre></td></tr></table></figure>
-
-
-
-<p>虽然成员内部类可以无条件地访问外部类的成员，而外部类想访问成员内部类的成员却不是这么随心所欲了。在外部类中如果要访问成员内部类的成员，必须先创建一个成员内部类的对象，再通过指向这个对象的引用来访问：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Circle &#123;</span><br><span class="line">    private double radius &#x3D; 0;</span><br><span class="line"> </span><br><span class="line">    public Circle(double radius) &#123;</span><br><span class="line">        this.radius &#x3D; radius;</span><br><span class="line">        getDrawInstance().drawSahpe();   &#x2F;&#x2F;必须先创建成员内部类的对象，再进行访问</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    private Draw getDrawInstance() &#123;</span><br><span class="line">        return new Draw();</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    class Draw &#123;     &#x2F;&#x2F;内部类</span><br><span class="line">        public void drawSahpe() &#123;</span><br><span class="line">            System.out.println(radius);  &#x2F;&#x2F;外部类的private成员</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>成员内部类是依附外部类而存在的，也就是说，如果要创建成员内部类的对象，前提是必须存在一个外部类的对象。创建成员内部类对象的一般方式如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">        &#x2F;&#x2F;第一种方式：</span><br><span class="line">        Outter outter &#x3D; new Outter();</span><br><span class="line">        Outter.Inner inner &#x3D; outter.new Inner();  &#x2F;&#x2F;必须通过Outter对象来创建</span><br><span class="line">         </span><br><span class="line">        &#x2F;&#x2F;第二种方式：</span><br><span class="line">        Outter.Inner inner1 &#x3D; outter.getInnerInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class Outter &#123;</span><br><span class="line">    private Inner inner &#x3D; null;</span><br><span class="line">    public Outter() &#123;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    public Inner getInnerInstance() &#123;</span><br><span class="line">        if(inner &#x3D;&#x3D; null)</span><br><span class="line">            inner &#x3D; new Inner();</span><br><span class="line">        return inner;</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    class Inner &#123;</span><br><span class="line">        public Inner() &#123;</span><br><span class="line">             </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>内部类可以拥有 private 访问权限、protected 访问权限、public 访问权限及包访问权限。比如上面的例子，如果成员内部类 Inner 用 private 修饰，则只能在外部类的内部访问，如果用 public 修饰，则任何地方都能访问；如果用 protected 修饰，则只能在同一个包下或者继承外部类的情况下访问；如果是默认访问权限，则只能在同一个包下访问。这一点和外部类有一点不一样，外部类只能被 public 和包访问两种权限修饰。我个人是这么理解的，由于成员内部类看起来像是外部类的一个成员，所以可以像类的成员一样拥有多种权限修饰。</p>
-<p>类似于实例变量</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Outer &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Outer o &#x3D; new Outer();</span><br><span class="line">        Outer.MyMath myMath &#x3D; o.new MyMath();</span><br><span class="line">        myMath.mysum(new Compute() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public int sum(int x, int y) &#123;</span><br><span class="line">                return x+y;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, 10, 20);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class MyMath&#123;</span><br><span class="line">        public void mysum(Compute c,int x ,int y)&#123;</span><br><span class="line">            int value &#x3D; c.sum(x,y);</span><br><span class="line">            System.out.println(x + &quot;+&quot;+ y + &quot;&#x3D;&quot;+value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    interface comput&#123;</span><br><span class="line">        public int sum(int x,int y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class computImpl implements comput&#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int sum(int x, int y) &#123;</span><br><span class="line">            return x+y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h2><p>类似于局部变量</p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>内部类</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java反射详解</title>
     <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1284,6 +1354,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java并发学习笔记</title>
+    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>并发学习</p>
+<a id="more"></a>
+
+<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
+      <categories>
+        <category>并发</category>
+      </categories>
+      <tags>
+        <tag>Java并发</tag>
       </tags>
   </entry>
   <entry>
@@ -1542,10 +1626,9 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
     <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
 <p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
-</blockquote>
-<blockquote>
 <p><a href="https://www.runoob.com/w3cnote/java-annotation.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-annotation.html</a></p>
 </blockquote>
+<h1 id="Annotation-架构"><a href="#Annotation-架构" class="headerlink" title="Annotation 架构"></a>Annotation 架构</h1><p><img src="https://www.runoob.com/wp-content/uploads/2019/08/28123151-d471f82eb2bc4812b46cc5ff3e9e6b82.jpg" alt="img"></p>
 ]]></content>
       <categories>
         <category>编程基础</category>
@@ -1554,6 +1637,68 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>注解</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java设计模式</title>
+    <url>/2020/12/06/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<p>设计模式是Java工程师必备知识，也是面试高频考点。</p>
+<a id="more"></a>
+
+<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><p>总体来说设计模式分为三大类：</p>
+<p><strong>创建型模式</strong>，共五种：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式。</p>
+<p><strong>结构型模式</strong>，共七种：适配器模式、装饰器模式、代理模式、外观模式、桥接模式、组合模式、享元模式。</p>
+<p><strong>行为型模式</strong>，共十一种：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</p>
+<p>其实还有两类：并发型模式和线程池模式。</p>
+<p>用一个图片来整体描述一下：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020120602.png" alt="img"></p>
+<h1 id="2-UML入门"><a href="#2-UML入门" class="headerlink" title="2 UML入门"></a>2 UML入门</h1><blockquote>
+<p><a href="http://ifeve.com/uml-intro/" target="_blank" rel="noopener">http://ifeve.com/uml-intro/</a></p>
+</blockquote>
+<h1 id="3-软件设计七大原则"><a href="#3-软件设计七大原则" class="headerlink" title="3 软件设计七大原则"></a>3 软件设计七大原则</h1><ul>
+<li>开闭原则</li>
+<li>依赖倒置原则</li>
+<li>单一职责原则</li>
+<li>接口隔离原则</li>
+<li>迪米特法则（最少知道原则）</li>
+<li>里式替换原则</li>
+<li>合成/复用原则（组合.复用原则）</li>
+</ul>
+<h1 id="4-简单工程详解"><a href="#4-简单工程详解" class="headerlink" title="4 简单工程详解"></a>4 简单工程详解</h1><h1 id="5-设计模式入门"><a href="#5-设计模式入门" class="headerlink" title="5 设计模式入门"></a>5 设计模式入门</h1><h2 id="1-工厂方法模式详解"><a href="#1-工厂方法模式详解" class="headerlink" title="1.工厂方法模式详解"></a>1.工厂方法模式详解</h2><h2 id="2-抽象工厂模式详解"><a href="#2-抽象工厂模式详解" class="headerlink" title="2. 抽象工厂模式详解"></a>2. 抽象工厂模式详解</h2><h2 id="3-建造者模式详解"><a href="#3-建造者模式详解" class="headerlink" title="3.建造者模式详解"></a>3.建造者模式详解</h2><h2 id="4-单列模式详解"><a href="#4-单列模式详解" class="headerlink" title="4.单列模式详解"></a>4.单列模式详解</h2><h2 id="5-原型模式详解"><a href="#5-原型模式详解" class="headerlink" title="5.原型模式详解"></a>5.原型模式详解</h2><h2 id="6-外观模式详解"><a href="#6-外观模式详解" class="headerlink" title="6. 外观模式详解"></a>6. 外观模式详解</h2><h2 id="7-装饰者模式详解"><a href="#7-装饰者模式详解" class="headerlink" title="7. 装饰者模式详解"></a>7. 装饰者模式详解</h2><h2 id="8-适配者模式详解"><a href="#8-适配者模式详解" class="headerlink" title="8. 适配者模式详解"></a>8. 适配者模式详解</h2><h2 id="9-亨元模式详解"><a href="#9-亨元模式详解" class="headerlink" title="9. 亨元模式详解"></a>9. 亨元模式详解</h2><h2 id="10-组合模式详解"><a href="#10-组合模式详解" class="headerlink" title="10. 组合模式详解"></a>10. 组合模式详解</h2><h2 id="11-桥接模式详解"><a href="#11-桥接模式详解" class="headerlink" title="11.桥接模式详解"></a>11.桥接模式详解</h2><h2 id="12-代理模式详解"><a href="#12-代理模式详解" class="headerlink" title="12.代理模式详解"></a>12.代理模式详解</h2><h2 id="13-模板方法详解"><a href="#13-模板方法详解" class="headerlink" title="13.模板方法详解"></a>13.模板方法详解</h2><h2 id="14-迭代器模式详解"><a href="#14-迭代器模式详解" class="headerlink" title="14.迭代器模式详解"></a>14.迭代器模式详解</h2><h2 id="15-策略模式详解"><a href="#15-策略模式详解" class="headerlink" title="15.策略模式详解"></a>15.策略模式详解</h2><h2 id="16-解释器模式详解"><a href="#16-解释器模式详解" class="headerlink" title="16.解释器模式详解"></a>16.解释器模式详解</h2><h2 id="17-观察者模式详解"><a href="#17-观察者模式详解" class="headerlink" title="17.观察者模式详解"></a>17.观察者模式详解</h2><h2 id="18-备忘录模式详解"><a href="#18-备忘录模式详解" class="headerlink" title="18.备忘录模式详解"></a>18.备忘录模式详解</h2><h2 id="19-命令模式详解"><a href="#19-命令模式详解" class="headerlink" title="19. 命令模式详解"></a>19. 命令模式详解</h2><h2 id="20-中介者模式详解"><a href="#20-中介者模式详解" class="headerlink" title="20.中介者模式详解"></a>20.中介者模式详解</h2><h2 id="21-责任链模式详解"><a href="#21-责任链模式详解" class="headerlink" title="21.责任链模式详解"></a>21.责任链模式详解</h2><h2 id="22-访问者模式详解"><a href="#22-访问者模式详解" class="headerlink" title="22.访问者模式详解"></a>22.访问者模式详解</h2><h2 id="23-状态模式详解"><a href="#23-状态模式详解" class="headerlink" title="23.状态模式详解"></a>23.状态模式详解</h2><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>设计模式</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux安装配置大全</title>
+    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
+    <content><![CDATA[<p>Linux各种版本安装配置</p>
+<a id="more"></a>
+
+<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
+<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
+<h1 id="CentOS7磁盘操作"><a href="#CentOS7磁盘操作" class="headerlink" title="CentOS7磁盘操作"></a>CentOS7磁盘操作</h1><h2 id="linux磁盘分区扩容"><a href="#linux磁盘分区扩容" class="headerlink" title="linux磁盘分区扩容"></a>linux磁盘分区扩容</h2><p>大概分为以下几步：</p>
+<ol>
+<li>分区<code>fdisk</code></li>
+<li>格式化<code>mkfs</code></li>
+<li>挂载<code>mount</code></li>
+</ol>
+<blockquote>
+<p>详细操作：<a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenmh/p/5096592.html</a></p>
+</blockquote>
+<p><strong>其他操作：</strong></p>
+<p><code>du</code> 查看文件数据占用多少磁盘空间<br><code>swap</code>交换分区 是一种通过在磁盘中预先划分一定的空军，然后就讲把内存中暂时不常用的数据临时存放在磁盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题</p>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>Linux系统</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1615,30 +1760,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Linux安装配置大全</title>
-    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
-    <content><![CDATA[<p>Linux各种版本安装配置</p>
-<a id="more"></a>
-
-<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
-<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
-<h1 id="CentOS7磁盘操作"><a href="#CentOS7磁盘操作" class="headerlink" title="CentOS7磁盘操作"></a>CentOS7磁盘操作</h1><h2 id="linux磁盘分区扩容"><a href="#linux磁盘分区扩容" class="headerlink" title="linux磁盘分区扩容"></a>linux磁盘分区扩容</h2><p>大概分为以下几步：</p>
-<ol>
-<li>分区fdisk</li>
-<li>格式化mkfs</li>
-<li>挂载mount</li>
-</ol>
-<blockquote>
-<p>详细操作：<a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenmh/p/5096592.html</a></p>
+    <title>MyBatis-Plus笔记</title>
+    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
 </blockquote>
-<p><strong>其他操作：</strong></p>
-<p>du 查看文件数据占用多少磁盘空间<br>swap交换分区 是一种通过在磁盘中预先划分一定的空军，然后就讲把内存中暂时不常用的数据临时存放在磁盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题</p>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>应用框架</category>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>ORM框架</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
+        <tag>MyBatis-Plus</tag>
       </tags>
   </entry>
   <entry>
@@ -1683,44 +1818,23 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis-Plus笔记</title>
-    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>应用框架</category>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>ORM框架</category>
-      </categories>
-      <tags>
-        <tag>MyBatis-Plus</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
-    <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<p>记录一个小细节</p>
 <a id="more"></a>
 
-<p><strong>DATE</strong>类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以’YYYY-MM-DD’格式显示DATE值，支持的范围是’1000-01-01’到’9999-12-31’。</p>
-<p><strong>TIMESTAMP</strong>列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。</p>
-<p><strong>TIME</strong>数据类型表示一天中的时间。MySQL检索并且以”HH:MM:SS”格式显示TIME值。支持的范围是’00:00:00’到’23:59:59’。</p>
-<p>创建数据库表测试：</p>
-<p><img src="/images/2020111501.png" alt="image-20201115191901682"></p>
-<p><img src="http://www.linuxidc.com/upload/2012_08/120811102669351.jpg" alt="img"></p>
-<p><strong>datetime和timestamp的区别：</strong><br>1.datetime 的日期范围比较大；如果有1970年以前的数据还是要用datetime.但是timestamp 所占存储空间比较小。<br>2.timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新。</p>
-<p>3.timestamp比较受时区timezone的影响以及MYSQL版本和服务器的<strong>SQL</strong> MODE的影响.</p>
-<p>使用一个常用的格式集的任何一个，你可以指定DATETIME、</p>
-<p><strong>DATE和TIMESTAMP值：</strong><br>‘YYYY-MM-DD HH:MM:SS’或’YY-MM-DD HH:MM:SS’格式的一个字符串,允许一种”宽松”的语法:任何标点可用作在日期部分和时间部分之间的分隔符。例如，’98-12-31 11:30:45’、’98.12.31 11+30+45’、’98/12/31 11<em>30</em>45’和‘98@12@31 11^30^45’是等价的。</p>
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
 ]]></content>
       <categories>
-        <category>MySQL</category>
+        <category>MyBatis</category>
       </categories>
       <tags>
-        <tag>MySQL日期类型</tag>
+        <tag>MyBatis缓存</tag>
       </tags>
   </entry>
   <entry>
@@ -1760,6 +1874,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
+    <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
+<a id="more"></a>
+
+<p><strong>DATE</strong>类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以’YYYY-MM-DD’格式显示DATE值，支持的范围是’1000-01-01’到’9999-12-31’。</p>
+<p><strong>TIMESTAMP</strong>列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。</p>
+<p><strong>TIME</strong>数据类型表示一天中的时间。MySQL检索并且以”HH:MM:SS”格式显示TIME值。支持的范围是’00:00:00’到’23:59:59’。</p>
+<p>创建数据库表测试：</p>
+<p><img src="/images/2020111501.png" alt="image-20201115191901682"></p>
+<p><img src="http://www.linuxidc.com/upload/2012_08/120811102669351.jpg" alt="img"></p>
+<p><strong>datetime和timestamp的区别：</strong><br>1.datetime 的日期范围比较大；如果有1970年以前的数据还是要用datetime.但是timestamp 所占存储空间比较小。<br>2.timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新。</p>
+<p>3.timestamp比较受时区timezone的影响以及MYSQL版本和服务器的<strong>SQL</strong> MODE的影响.</p>
+<p>使用一个常用的格式集的任何一个，你可以指定DATETIME、</p>
+<p><strong>DATE和TIMESTAMP值：</strong><br>‘YYYY-MM-DD HH:MM:SS’或’YY-MM-DD HH:MM:SS’格式的一个字符串,允许一种”宽松”的语法:任何标点可用作在日期部分和时间部分之间的分隔符。例如，’98-12-31 11:30:45’、’98.12.31 11+30+45’、’98/12/31 11<em>30</em>45’和‘98@12@31 11^30^45’是等价的。</p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL日期类型</tag>
       </tags>
   </entry>
   <entry>
@@ -3063,6 +3201,14 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Redis学习笔记</title>
+    <url>/2020/12/20/Redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>早先是看周阳老师的视频学习Redis的，但是只处于会用的地步，这里想要系统的学习Redis</p>
+<a id="more"></a>
+
+<h1 id="1-Redis初识"><a href="#1-Redis初识" class="headerlink" title="1 Redis初识"></a>1 Redis初识</h1><h1 id="2-API的理解与使用"><a href="#2-API的理解与使用" class="headerlink" title="2 API的理解与使用"></a>2 API的理解与使用</h1><h1 id="3-Redis客户端的使用"><a href="#3-Redis客户端的使用" class="headerlink" title="3 Redis客户端的使用"></a>3 Redis客户端的使用</h1><h1 id="4-Redis其他功能"><a href="#4-Redis其他功能" class="headerlink" title="4 Redis其他功能"></a>4 Redis其他功能</h1><h1 id="5-Redis持久化的取舍和选择"><a href="#5-Redis持久化的取舍和选择" class="headerlink" title="5 Redis持久化的取舍和选择"></a>5 Redis持久化的取舍和选择</h1><h1 id="6-常见的持久化开发运维问题"><a href="#6-常见的持久化开发运维问题" class="headerlink" title="6 常见的持久化开发运维问题"></a>6 常见的持久化开发运维问题</h1><h1 id="7-Redis复制的原理和优化"><a href="#7-Redis复制的原理和优化" class="headerlink" title="7 Redis复制的原理和优化"></a>7 Redis复制的原理和优化</h1><h1 id="8-Redis-Sentinel"><a href="#8-Redis-Sentinel" class="headerlink" title="8 Redis Sentinel"></a>8 Redis Sentinel</h1><h1 id="9-初识Redis-Cluster"><a href="#9-初识Redis-Cluster" class="headerlink" title="9 初识Redis Cluster"></a>9 初识Redis Cluster</h1><h1 id="10-深入Redis-Cluster"><a href="#10-深入Redis-Cluster" class="headerlink" title="10 深入Redis Cluster"></a>10 深入Redis Cluster</h1><h1 id="11-缓存设计与优化"><a href="#11-缓存设计与优化" class="headerlink" title="11 缓存设计与优化"></a>11 缓存设计与优化</h1><h1 id="12-Redis云平台CacheCloud"><a href="#12-Redis云平台CacheCloud" class="headerlink" title="12 Redis云平台CacheCloud"></a>12 Redis云平台CacheCloud</h1><h1 id="13-总结"><a href="#13-总结" class="headerlink" title="13 总结"></a>13 总结</h1>]]></content>
+  </entry>
+  <entry>
     <title>Redis应用场景</title>
     <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
     <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
@@ -3132,6 +3278,122 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Spring @Configuration和@Component的区别</title>
+    <url>/2021/01/17/Spring-Configuration%E5%92%8C-Component%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Spring Security + OAuth2学习笔记</title>
+    <url>/2020/12/25/Spring-Security-OAuth2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<blockquote>
+<p>学习文章：<a href="http://www.javaboy.org/2020/1102/es-bilibili.html" target="_blank" rel="noopener">http://www.javaboy.org/2020/1102/es-bilibili.html</a></p>
+</blockquote>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>认证：你是谁</p>
+<p>授权：你要干什么</p>
+<h2 id="1-学习路线"><a href="#1-学习路线" class="headerlink" title="1.学习路线"></a>1.学习路线</h2><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122501.png" alt="image-20210109154823729"></p>
+<h2 id="2-章节概述"><a href="#2-章节概述" class="headerlink" title="2.章节概述"></a>2.章节概述</h2><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122502.png" alt="image-20210109154856540"></p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122503.png" alt="image-20210109154916208"></p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122504.png" alt="image-20210109154927463"></p>
+<h2 id="3-学习目的："><a href="#3-学习目的：" class="headerlink" title="3.学习目的："></a>3.学习目的：</h2><p>独立设计一个安全的单体应用</p>
+<p>为微服务开发UAA或集成第三方</p>
+<p>前后端配合时常见的问题处理</p>
+<h2 id="4-环境配置"><a href="#4-环境配置" class="headerlink" title="4.环境配置"></a>4.环境配置</h2><h3 id="前端环境搭建"><a href="#前端环境搭建" class="headerlink" title="前端环境搭建"></a>前端环境搭建</h3><ul>
+<li>Node </li>
+<li>NPM/CNPM </li>
+<li>Vue CLI</li>
+</ul>
+<blockquote>
+<p>安装node.js的目的是使用npm管理项目依赖的软件包，由于网络环境的原因，cnpm作为替代的包管理工具，使用Vue CLI使我们无须理会复杂的配置，更专注Vue.js</p>
+</blockquote>
+<h3 id="后端环境搭建"><a href="#后端环境搭建" class="headerlink" title="后端环境搭建"></a>后端环境搭建</h3><ul>
+<li><p>Java SDK </p>
+</li>
+<li><p>Maven</p>
+</li>
+</ul>
+<h3 id="IDEA的配置"><a href="#IDEA的配置" class="headerlink" title="IDEA的配置"></a>IDEA的配置</h3><ul>
+<li>EnvFile：加载环境变量</li>
+<li>Http Client</li>
+<li>Lombok</li>
+<li>IDEA的热启动配置</li>
+</ul>
+<h3 id="VSCode的配置"><a href="#VSCode的配置" class="headerlink" title="VSCode的配置"></a>VSCode的配置</h3><ul>
+<li><p>Debugger for Chrome</p>
+</li>
+<li><p>Rest Client</p>
+</li>
+<li><p>Vue VS Code Extension Pack</p>
+</li>
+<li><p>Java Extension Pack</p>
+</li>
+</ul>
+<h3 id="Chrome开发者工具"><a href="#Chrome开发者工具" class="headerlink" title="Chrome开发者工具"></a>Chrome开发者工具</h3><ul>
+<li>样式调试</li>
+<li>日志输出</li>
+<li>Debug</li>
+<li>网络抓包监控</li>
+<li>性能和内存调试</li>
+<li>本地存储调试</li>
+<li>Chrome插件</li>
+</ul>
+<h3 id="Vue-DevTools插件"><a href="#Vue-DevTools插件" class="headerlink" title="Vue DevTools插件"></a>Vue DevTools插件</h3><h1 id="1-Spring-Security-入门"><a href="#1-Spring-Security-入门" class="headerlink" title="1 Spring Security 入门"></a>1 Spring Security 入门</h1><h2 id="1-1-认证和授权的概念"><a href="#1-1-认证和授权的概念" class="headerlink" title="1.1 认证和授权的概念"></a>1.1 认证和授权的概念</h2><h3 id="什么是认证"><a href="#什么是认证" class="headerlink" title="什么是认证"></a>什么是认证</h3><p>认证（Authentication）：认证解决“我是谁”的问题</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122505.png" alt="image-20210111150358296"></p>
+<h3 id="什么是授权"><a href="#什么是授权" class="headerlink" title="什么是授权"></a>什么是授权</h3><p>授权（Authorization）：授权解决“我能做什么”的问题</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122506.png" alt="image-20210111142546362"></p>
+<h2 id="1-2-过滤器和过滤器链"><a href="#1-2-过滤器和过滤器链" class="headerlink" title="1.2 过滤器和过滤器链"></a>1.2 过滤器和过滤器链</h2><p>Filter和FilterChain</p>
+<h3 id="Spring-Filters"><a href="#Spring-Filters" class="headerlink" title="Spring Filters"></a>Spring Filters</h3><blockquote>
+<p>任何Spring Web应用本质上只是一个servlet</p>
+<p>Security Filter在HTTP请求到达你的Controller之前过滤每一个传入的HTTP请求</p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122507.png" alt="image-20210122111146348"></p>
+<p>过滤器示例：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210116152805378.png" alt="image-20210116152805378"></p>
+<h3 id="Filter-Chain"><a href="#Filter-Chain" class="headerlink" title="Filter Chain"></a>Filter Chain</h3><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210116152752055.png" alt="image-20210116152752055"></p>
+<h3 id="常见的内建过滤器"><a href="#常见的内建过滤器" class="headerlink" title="常见的内建过滤器"></a>常见的内建过滤器</h3><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210122113200795.png" alt="image-20210122113200795"></p>
+<h2 id="1-3-Http"><a href="#1-3-Http" class="headerlink" title="1.3 Http"></a>1.3 Http</h2><p>http请求</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210122113621694.png" alt="image-20210122113621694"></p>
+<p>熟悉Http的请求/响应的结构</p>
+<p>Filter和客户端交互（获取数据看，返回数据）是通过请求/响应中的字段完成的</p>
+<blockquote>
+<p>响应码：<a href="https://developer.mozilla.org/zh-cn/docs/web/http/status" target="_blank" rel="noopener">https://developer.mozilla.org/zh-cn/docs/web/http/status</a></p>
+</blockquote>
+<p>HTTP Basic Auth认证流程</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210122141938223.png" alt="image-20210122141938223"></p>
+<h2 id="1-4-实战"><a href="#1-4-实战" class="headerlink" title="1.4 实战"></a>1.4 实战</h2><h3 id="安全配置"><a href="#安全配置" class="headerlink" title="安全配置"></a>安全配置</h3><h3 id="定制化登录页"><a href="#定制化登录页" class="headerlink" title="定制化登录页"></a>定制化登录页</h3><h3 id="CSRF攻击和保护"><a href="#CSRF攻击和保护" class="headerlink" title="CSRF攻击和保护"></a>CSRF攻击和保护</h3><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210122144325841.png" alt="image-20210122144325841"></p>
+<p>防止受到CSRF攻击的方式</p>
+<ul>
+<li><p>CSRF Token</p>
+</li>
+<li><p>在响应中设置Cookie的SameSite属性</p>
+</li>
+</ul>
+<p>logout</p>
+<p>rememberMe</p>
+<p>为解决session过期后用户的直接访问问题</p>
+<h3 id="登录成功和失败后的处理"><a href="#登录成功和失败后的处理" class="headerlink" title="登录成功和失败后的处理"></a>登录成功和失败后的处理</h3><h1 id="2-密码的进化和验证"><a href="#2-密码的进化和验证" class="headerlink" title="2 密码的进化和验证"></a>2 密码的进化和验证</h1><h2 id="2-1-密码简史"><a href="#2-1-密码简史" class="headerlink" title="2.1 密码简史"></a>2.1 密码简史</h2><h3 id="密码的发展"><a href="#密码的发展" class="headerlink" title="密码的发展"></a>密码的发展</h3><p>简单密码/明文传输–》设定密码的长度–》密码组合–》二次验证（密码+手机验证码）–》无密码登录（指纹，Face ID）</p>
+<h3 id="密码存储安全进化"><a href="#密码存储安全进化" class="headerlink" title="密码存储安全进化"></a>密码存储安全进化</h3><p>明文–》哈希–》加盐（密码哈希+另外随机生成的哈希值）–》自适应哈希函数（可以配置迭代次数（md5（md5（”plaintext“）））)</p>
+<h3 id="密码编码器"><a href="#密码编码器" class="headerlink" title="密码编码器"></a>密码编码器</h3><h2 id="2-2-Spring-Security对密码哈希的算法支持"><a href="#2-2-Spring-Security对密码哈希的算法支持" class="headerlink" title="2.2 Spring Security对密码哈希的算法支持"></a>2.2 Spring Security对密码哈希的算法支持</h2><h2 id="2-3-密码的验证规则"><a href="#2-3-密码的验证规则" class="headerlink" title="2.3 密码的验证规则"></a>2.3 密码的验证规则</h2><h1 id="3-深入Spring-Security验证"><a href="#3-深入Spring-Security验证" class="headerlink" title="3 深入Spring Security验证"></a>3 深入Spring Security验证</h1><h1 id="4-构建基于JWT的认证"><a href="#4-构建基于JWT的认证" class="headerlink" title="4 构建基于JWT的认证"></a>4 构建基于JWT的认证</h1><h1 id="5-基于角色的用户权限"><a href="#5-基于角色的用户权限" class="headerlink" title="5 基于角色的用户权限"></a>5 基于角色的用户权限</h1><h1 id="6-基于数据库的-RBAC"><a href="#6-基于数据库的-RBAC" class="headerlink" title="6 基于数据库的 RBAC"></a>6 基于数据库的 RBAC</h1><h1 id="7-实现符合-OAuth-2-标准的授权服务器"><a href="#7-实现符合-OAuth-2-标准的授权服务器" class="headerlink" title="7 实现符合 OAuth 2 标准的授权服务器"></a>7 实现符合 OAuth 2 标准的授权服务器</h1><h1 id="8-关于Spring-Security你可以了解的更多"><a href="#8-关于Spring-Security你可以了解的更多" class="headerlink" title="8 关于Spring Security你可以了解的更多"></a>8 关于Spring Security你可以了解的更多</h1>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>认证和鉴权</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot启动时找不到或无法加载主类</title>
     <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -3142,19 +3404,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 </blockquote>
 <p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
       <categories>
         <category>SpringBoot</category>
       </categories>
@@ -3236,6 +3485,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Java</tag>
         <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot源码学习</title>
+    <url>/2020/12/20/SpringBoot%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p>SpringBoot上手非常简单，但是并不能停留在表面。这里开始从源码层面学习</p>
+<a id="more"></a>
+
+<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><h1 id="2-走向自动配置"><a href="#2-走向自动配置" class="headerlink" title="2 走向自动配置"></a>2 走向自动配置</h1><h1 id="3-理解SpringApplication"><a href="#3-理解SpringApplication" class="headerlink" title="3 理解SpringApplication"></a>3 理解SpringApplication</h1><h1 id="4-WebMVC核心"><a href="#4-WebMVC核心" class="headerlink" title="4 WebMVC核心"></a>4 WebMVC核心</h1><h1 id="5-WebMVC视图应用"><a href="#5-WebMVC视图应用" class="headerlink" title="5 WebMVC视图应用"></a>5 WebMVC视图应用</h1><h1 id="6-WebMVC-REST应用"><a href="#6-WebMVC-REST应用" class="headerlink" title="6 WebMVC REST应用"></a>6 WebMVC REST应用</h1><h1 id="7-渐行渐远的Servlet"><a href="#7-渐行渐远的Servlet" class="headerlink" title="7 渐行渐远的Servlet"></a>7 渐行渐远的Servlet</h1><h1 id="8-从Reactive到WebFlux"><a href="#8-从Reactive到WebFlux" class="headerlink" title="8 从Reactive到WebFlux"></a>8 从Reactive到WebFlux</h1><h1 id="9-WebFlux核心"><a href="#9-WebFlux核心" class="headerlink" title="9 WebFlux核心"></a>9 WebFlux核心</h1><h1 id="10-超越外部化配置"><a href="#10-超越外部化配置" class="headerlink" title="10 超越外部化配置"></a>10 超越外部化配置</h1>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot源码</tag>
       </tags>
   </entry>
   <entry>
@@ -3336,8 +3599,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <li>熔断机制</li>
 <li>目的和重要性</li>
 </ul>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210117105845082.png" alt="image-20210117105845082"></p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210117105905190.png" alt="image-20210117105905190"></p>
 ]]></content>
       <categories>
         <category>应用框架</category>
@@ -3346,6 +3607,48 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SpringCloud</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring源码学习</title>
+    <url>/2020/12/20/Spring%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p>Spring学了很久了，但是一直没有深入到源码，希望在接下来的源码学习中有所收获。。。</p>
+<a id="more"></a>
+
+<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><h1 id="2-环境准备"><a href="#2-环境准备" class="headerlink" title="2 环境准备"></a>2 环境准备</h1><h3 id="2-1-环境安装"><a href="#2-1-环境安装" class="headerlink" title="2.1 环境安装"></a>2.1 环境安装</h3><p>安装Idea，JDK，maven并完成相应的配置<br><img src="/images/2020101901.png" alt="image-20201019191945647"></p>
+<p><strong>注意：</strong>当前官方Spring最新版本为5.3.0，文档要求JDK版本需要在 <code>JDK 8 update 262 or later</code>。</p>
+<p>因为JDK官网只能下载到1.8_261，所以我使用的Spring-5.2.9</p>
+<p><img src="/images/2020101902.png" alt="image-20201019192232952"></p>
+<h3 id="2-2-下载和编译"><a href="#2-2-下载和编译" class="headerlink" title="2.2 下载和编译"></a>2.2 下载和编译</h3><h4 id="2-2-1-下载并解压"><a href="#2-2-1-下载并解压" class="headerlink" title="2.2.1 下载并解压"></a>2.2.1 下载并解压</h4><p><img src="/images/2020101903.png" alt="image-20201019192816197"></p>
+<h4 id="2-2-2-修改build-gradle"><a href="#2-2-2-修改build-gradle" class="headerlink" title="2.2.2 修改build.gradle"></a>2.2.2 修改build.gradle</h4><p>在build.gradle添加阿里云的中央仓库地址，提高依赖文件的下载速度</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			mavenCentral()</span><br><span class="line">			maven &#123; url <span class="string">"https://repo.spring.io/libs-spring-framework-build"</span> &#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2020101904.png" alt="image-20201019195803623"></p>
+<p><strong>查看阿里云Maven中央仓库：</strong><a href="https://maven.aliyun.com/mvn/guide" target="_blank" rel="noopener">https://maven.aliyun.com/mvn/guide</a></p>
+<h4 id="2-2-3-安装官方文档进行配置"><a href="#2-2-3-安装官方文档进行配置" class="headerlink" title="2.2.3 安装官方文档进行配置"></a>2.2.3 安装官方文档进行配置</h4><p><img src="/images/2020101906.png" alt="image-20201019200051103"></p>
+<p>1.Precompile <code>spring-oxm</code> with <code>./gradlew :spring-oxm:compileTestJava</code></p>
+<p><img src="/images/2020101907.png" alt="image-20201019201845436"></p>
+<p>2.Import into IntelliJ (File -&gt; New -&gt; Project from Existing Sources -&gt; Navigate to directory -&gt; Select build.gradle)</p>
+<p>导入项目</p>
+<p><img src="/images/2020101908.png" alt="image-20201019211425497"></p>
+<p>3.When prompted exclude the <code>spring-aspects</code> module (or after the import via File-&gt; Project Structure -&gt; Modules)</p>
+<p>因为<code>spring-aspects</code>有自己的编译器(AJC)，AJC会影响JVM的加载，所以需要排除出去</p>
+<p>这里右键项目–》Load/Unload Modules–》选择spring-aspects–》unload–》重新加载即可</p>
+<p><img src="/images/2020101909.png" alt="image-20201019212036285"></p>
+<p>4.Code away</p>
+<p>到这里就完成Spring源码的下载与编译</p>
+<h3 id="2-3-通过一个小demo来测试一下"><a href="#2-3-通过一个小demo来测试一下" class="headerlink" title="2.3 通过一个小demo来测试一下"></a>2.3 通过一个小demo来测试一下</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/01-spring-framework-5.2.9.RELEASE/spring-demo" target="_blank" rel="noopener">spring-demo代码链接</a></p>
+<h3 id="2-4-简易自研框架的编写"><a href="#2-4-简易自研框架的编写" class="headerlink" title="2.4 简易自研框架的编写"></a>2.4 简易自研框架的编写</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/02-simpleframework" target="_blank" rel="noopener">02-simpleframework</a></p>
+<p><img src="/images/2020101910.png" alt="image-20201220101456099"></p>
+<p>jsp运行原理图：</p>
+<p><img src="/images/2020101911.png" alt="image-20201220101615094"></p>
+<h1 id="3-业务系统架子的构建"><a href="#3-业务系统架子的构建" class="headerlink" title="3 业务系统架子的构建"></a>3 业务系统架子的构建</h1><h1 id="4-自研框架IOC实现前奏"><a href="#4-自研框架IOC实现前奏" class="headerlink" title="4 自研框架IOC实现前奏"></a>4 自研框架IOC实现前奏</h1><h1 id="5-自研框架IOC容器的实现"><a href="#5-自研框架IOC容器的实现" class="headerlink" title="5 自研框架IOC容器的实现"></a>5 自研框架IOC容器的实现</h1><h1 id="6-SpringIOC容器源码解析"><a href="#6-SpringIOC容器源码解析" class="headerlink" title="6 SpringIOC容器源码解析"></a>6 SpringIOC容器源码解析</h1><h1 id="7-详解SpringIOC容器的初始化"><a href="#7-详解SpringIOC容器的初始化" class="headerlink" title="7 详解SpringIOC容器的初始化"></a>7 详解SpringIOC容器的初始化</h1><h1 id="8-SpringIOC容器的依赖注入"><a href="#8-SpringIOC容器的依赖注入" class="headerlink" title="8 SpringIOC容器的依赖注入"></a>8 SpringIOC容器的依赖注入</h1><h1 id="9-自研框架AOP的讲解与实现"><a href="#9-自研框架AOP的讲解与实现" class="headerlink" title="9 自研框架AOP的讲解与实现"></a>9 自研框架AOP的讲解与实现</h1><h1 id="10-SpringAOP的源码解析"><a href="#10-SpringAOP的源码解析" class="headerlink" title="10 SpringAOP的源码解析"></a>10 SpringAOP的源码解析</h1><h1 id="11-自研框架MVC的实现"><a href="#11-自研框架MVC的实现" class="headerlink" title="11 自研框架MVC的实现"></a>11 自研框架MVC的实现</h1><h1 id="12-SpringMVC流程分析"><a href="#12-SpringMVC流程分析" class="headerlink" title="12 SpringMVC流程分析"></a>12 SpringMVC流程分析</h1><h1 id="13-总结"><a href="#13-总结" class="headerlink" title="13 总结"></a>13 总结</h1>]]></content>
+      <categories>
+        <category>源码</category>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring源码</tag>
       </tags>
   </entry>
   <entry>
@@ -3579,6 +3882,104 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>UML类图及时序图入门</title>
+    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="UML学习"><a href="#UML学习" class="headerlink" title="UML学习"></a>UML学习</h1><h2 id="UML定义"><a href="#UML定义" class="headerlink" title="UML定义"></a>UML定义</h2><ul>
+<li>统一建模语言（Unified Modeling Language）</li>
+<li>非专利的第三代建模和规约语言</li>
+</ul>
+<h2 id="UML特点"><a href="#UML特点" class="headerlink" title="UML特点"></a>UML特点</h2><ul>
+<li><p>UML是一种开发的方法</p>
+</li>
+<li><p>用于说明，可视化，构建和编写一个正在开发的面向对象的，软件密集系统的制品的开发方法</p>
+</li>
+<li><p>UML展现了一系列最佳工程实践，这些最佳实践在对大规模，复杂系统进行建模方面，特别是在软件架构层次已经被验证有效</p>
+</li>
+</ul>
+<h2 id="UML2-2分类"><a href="#UML2-2分类" class="headerlink" title="UML2.2分类"></a>UML2.2分类</h2><p>UML2.2中一共定义了14种图示，分类如下：</p>
+<ul>
+<li>结构式图形：强调的是系统式的建模</li>
+<li>行为式图形：强调系统模型中触发的事件</li>
+<li>交互式图形：属于行为式图形子集合，强调系统模型中资料流程</li>
+</ul>
+<h3 id="结构式图形"><a href="#结构式图形" class="headerlink" title="结构式图形"></a>结构式图形</h3><ul>
+<li>静态图（类图，对象图，包图）</li>
+<li>实现图（组件图，部署图）</li>
+<li>剖面图</li>
+<li>复合结构图</li>
+</ul>
+<h3 id="行为式图形"><a href="#行为式图形" class="headerlink" title="行为式图形"></a>行为式图形</h3><ul>
+<li>活动图</li>
+<li>状态图</li>
+<li>用例图</li>
+</ul>
+<h3 id="交互式图形"><a href="#交互式图形" class="headerlink" title="交互式图形"></a>交互式图形</h3><ul>
+<li>通信图</li>
+<li>交互概述图（UML2.0）</li>
+<li>时序图（UML2.0）</li>
+<li>时间图（UML2.0）</li>
+</ul>
+<p>UML类图</p>
+<ul>
+<li><p>Class Diagram:用于表示类，接口，实例等之间相互的静态关系</p>
+</li>
+<li><p>虽然名字叫类图，但类图中并不只有类</p>
+</li>
+</ul>
+<p>记忆技巧</p>
+<ul>
+<li>UML箭头方向：从子类指向父类</li>
+<li>提示：可能会认为子类是以父类为基础的，箭头应从父类指向子类</li>
+</ul>
+<p>箭头方向：</p>
+<ul>
+<li>定义子类时需要通过extends关键字指向父类</li>
+<li>子类一定是知道父类定义的，但父类并不知道子类的定义</li>
+<li>只有知道对方信息时才能指向对方</li>
+<li>所以箭头方向是从子类指向父类</li>
+</ul>
+<p>实线-继承|虚线-实现</p>
+<ul>
+<li>空心三角箭头：继承或实现</li>
+<li>实线-继承，is a 关系，扩展目的，不虚，很结实</li>
+<li>虚线-实现，虚线代表“虚”无实体</li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+        <category>UML</category>
+      </categories>
+      <tags>
+        <tag>UML</tag>
+        <tag>时序图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>canal-adapter启动失败问题记录</title>
+    <url>/2020/12/14/canal-adapter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<blockquote>
+<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h1><p>canal-1.4 </p>
+<p>elasticsearch-7.7.1</p>
+<p>jdk1.8</p>
+<p>mysql-5.7.30</p>
+<h1 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2020-12-13 09:39:06.006 [main] INFO  o.s.c.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131: startup date [Sun Dec 13 09:39:05 GMT+08:00 2020]; root of context hierarchy</span><br><span class="line">2020-12-13 09:39:06.521 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;configurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:06.852 [main] INFO  c.a.otter.canal.adapter.launcher.CanalAdapterApplication - No active profile set, falling back to default profiles: default</span><br><span class="line">2020-12-13 09:39:06.884 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@796d3c9f: startup date [Sun Dec 13 09:39:06 GMT+08:00 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131</span><br><span class="line">2020-12-13 09:39:07.640 [main] INFO  org.springframework.cloud.context.scope.GenericScope - BeanFactory id&#x3D;ba9c0aec-0105-3f1f-b89e-e85c68567039</span><br><span class="line">2020-12-13 09:39:07.724 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:09.358 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)</span><br><span class="line">2020-12-13 09:39:09.382 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler [&quot;http-nio-8081&quot;]</span><br><span class="line">2020-12-13 09:39:09.402 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]</span><br><span class="line">2020-12-13 09:39:09.404 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat&#x2F;8.5.29</span><br><span class="line">2020-12-13 09:39:09.421 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;&quot;.;C:\Program Files\Java\jdk-11.0.9\\bin;E:\tomcat\apache-tomcat-8.5.59\bin;&quot;;C:\Program Files\VanDyke Software\Clients\;E:\Python\python3\Scripts\;E:\Python\python3\;E:\Java\maven\apache-maven-3.6.3\bin;E:\IDEA\gradle\gradle-5.4.1\bin;E:\app\admin\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\;rogram Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;人网站\Git\bin;:\;人网站\Git\cmd;it;cmd;D:\;C:\WINDOWS\System32\OpenSSH\;&quot;E:\tomcat\apache-tomcat-8.5.59\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\&quot;;E:\Coding\winhadoop\bin;E:\Git\cmd;E:\node\;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Program Files (x86)\CADSeePlus;E:\tomcat\apache-tomcat-8.5.34\bin;C:\Program Files\Java\jdk1.8.0_261\bin;C:\Program Files\Java\jdk-11.0.9\bin;E:\Python\python3\Scripts\;E:\Python\python3\;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files (x86)\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools;C:\Program Files (x86)\Microsoft Visual Studio\VC98\bin;C:\Qt\Qt5.6.2\5.6\msvc2013\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\个人网站\Git\bin;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;&quot;E:\IDEA\gradle\gradle-5.4.1\bin;&quot;;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\IDEA\IntelliJ IDEA 2019.3.4\bin;;C:\Users\admin\AppData\Local\Pandoc\;C:\Users\admin\AppData\Roaming\npm;E:\vscode\Microsoft VS Code\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;E:\WebStorm\WebStorm 2020.2\bin;;C:\Program Files\Bandizip\;C:\Program Files\JetBrains\PyCharm 2020.1.4\bin;;;.]</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  o.a.catalina.core.ContainerBase.[Tomcat].[localhost].[&#x2F;] - Initializing Spring embedded WebApplicationContext</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2766 ms</span><br><span class="line">2020-12-13 09:39:09.902 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [&#x2F;]</span><br><span class="line">2020-12-13 09:39:09.910 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;characterEncodingFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.913 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;hiddenHttpMethodFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.914 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;httpPutFormContentFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.915 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;requestContextFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:10.094 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">2020-12-13 09:39:10.098 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]</span><br><span class="line">2020-12-13 09:39:10.321 [localhost-startStop-1] WARN  org.apache.catalina.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.Object.wait(Native Method)</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)</span><br><span class="line"> app&#x2F;&#x2F;com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)</span><br><span class="line">2020-12-13 09:39:10.341 [main] INFO  o.s.b.a.logging.ConditionEvaluationReportLoggingListener - </span><br><span class="line"></span><br><span class="line">Error starting ApplicationContext. To display the conditions report re-run your application with &#39;debug&#39; enabled.</span><br><span class="line">2020-12-13 09:39:10.347 [main] ERROR org.springframework.boot.SpringApplication - Application run failed</span><br><span class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:138)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1694)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:579)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:501)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:760)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:869)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)</span><br><span class="line">	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395)</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.CanalAdapterApplication.main(CanalAdapterApplication.java:19)</span><br><span class="line">Caused by: java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:105)</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:85)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.monitor.ApplicationConfigMonitor.init(ApplicationConfigMonitor.java:41)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.base&#x2F;java.lang.reflect.Method.invoke(Method.java:566)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:365)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:308)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:135)</span><br><span class="line">	... 16 common frames omitted</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>canal</category>
+      </categories>
+      <tags>
+        <tag>canal</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>canal中间件学习笔记</title>
     <url>/2020/12/09/canal%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>es准时性索引的构建</p>
@@ -3739,28 +4140,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>canal-adapter启动失败问题记录</title>
-    <url>/2020/12/14/canal-adapter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<blockquote>
-<p>canal:<a href="https://github.com/alibaba/canal" target="_blank" rel="noopener">https://github.com/alibaba/canal</a></p>
-</blockquote>
-<a id="more"></a>
-
-<h1 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h1><p>canal-1.4 </p>
-<p>elasticsearch-7.7.1</p>
-<p>jdk1.8</p>
-<p>mysql-5.7.30</p>
-<h1 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2020-12-13 09:39:06.006 [main] INFO  o.s.c.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131: startup date [Sun Dec 13 09:39:05 GMT+08:00 2020]; root of context hierarchy</span><br><span class="line">2020-12-13 09:39:06.521 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;configurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:06.852 [main] INFO  c.a.otter.canal.adapter.launcher.CanalAdapterApplication - No active profile set, falling back to default profiles: default</span><br><span class="line">2020-12-13 09:39:06.884 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@796d3c9f: startup date [Sun Dec 13 09:39:06 GMT+08:00 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@37efd131</span><br><span class="line">2020-12-13 09:39:07.640 [main] INFO  org.springframework.cloud.context.scope.GenericScope - BeanFactory id&#x3D;ba9c0aec-0105-3f1f-b89e-e85c68567039</span><br><span class="line">2020-12-13 09:39:07.724 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean &#39;org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration&#39; of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d7bfd1f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2020-12-13 09:39:09.358 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)</span><br><span class="line">2020-12-13 09:39:09.382 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler [&quot;http-nio-8081&quot;]</span><br><span class="line">2020-12-13 09:39:09.402 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]</span><br><span class="line">2020-12-13 09:39:09.404 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat&#x2F;8.5.29</span><br><span class="line">2020-12-13 09:39:09.421 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;&quot;.;C:\Program Files\Java\jdk-11.0.9\\bin;E:\tomcat\apache-tomcat-8.5.59\bin;&quot;;C:\Program Files\VanDyke Software\Clients\;E:\Python\python3\Scripts\;E:\Python\python3\;E:\Java\maven\apache-maven-3.6.3\bin;E:\IDEA\gradle\gradle-5.4.1\bin;E:\app\admin\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\;rogram Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;人网站\Git\bin;:\;人网站\Git\cmd;it;cmd;D:\;C:\WINDOWS\System32\OpenSSH\;&quot;E:\tomcat\apache-tomcat-8.5.59\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\&quot;;E:\Coding\winhadoop\bin;E:\Git\cmd;E:\node\;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Program Files (x86)\CADSeePlus;E:\tomcat\apache-tomcat-8.5.34\bin;C:\Program Files\Java\jdk1.8.0_261\bin;C:\Program Files\Java\jdk-11.0.9\bin;E:\Python\python3\Scripts\;E:\Python\python3\;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files (x86)\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools;C:\Program Files (x86)\Microsoft Visual Studio\VC98\bin;C:\Qt\Qt5.6.2\5.6\msvc2013\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\个人网站\Git\bin;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;&quot;E:\IDEA\gradle\gradle-5.4.1\bin;&quot;;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;E:\IDEA\IntelliJ IDEA 2019.3.4\bin;;C:\Users\admin\AppData\Local\Pandoc\;C:\Users\admin\AppData\Roaming\npm;E:\vscode\Microsoft VS Code\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;E:\WebStorm\WebStorm 2020.2\bin;;C:\Program Files\Bandizip\;C:\Program Files\JetBrains\PyCharm 2020.1.4\bin;;;.]</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  o.a.catalina.core.ContainerBase.[Tomcat].[localhost].[&#x2F;] - Initializing Spring embedded WebApplicationContext</span><br><span class="line">2020-12-13 09:39:09.650 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2766 ms</span><br><span class="line">2020-12-13 09:39:09.902 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [&#x2F;]</span><br><span class="line">2020-12-13 09:39:09.910 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;characterEncodingFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.913 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;hiddenHttpMethodFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.914 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;httpPutFormContentFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:09.915 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: &#39;requestContextFilter&#39; to: [&#x2F;*]</span><br><span class="line">2020-12-13 09:39:10.094 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">2020-12-13 09:39:10.098 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]</span><br><span class="line">2020-12-13 09:39:10.321 [localhost-startStop-1] WARN  org.apache.catalina.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.Object.wait(Native Method)</span><br><span class="line"> java.base@11.0.9&#x2F;java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)</span><br><span class="line"> app&#x2F;&#x2F;com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)</span><br><span class="line">2020-12-13 09:39:10.341 [main] INFO  o.s.b.a.logging.ConditionEvaluationReportLoggingListener - </span><br><span class="line"></span><br><span class="line">Error starting ApplicationContext. To display the conditions report re-run your application with &#39;debug&#39; enabled.</span><br><span class="line">2020-12-13 09:39:10.347 [main] ERROR org.springframework.boot.SpringApplication - Application run failed</span><br><span class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#39;applicationConfigMonitor&#39;: Invocation of init method failed; nested exception is java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:138)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1694)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:579)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:501)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:760)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:869)</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)</span><br><span class="line">	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759)</span><br><span class="line">	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395)</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.CanalAdapterApplication.main(CanalAdapterApplication.java:19)</span><br><span class="line">Caused by: java.lang.RuntimeException: Config dir not found.</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:105)</span><br><span class="line">	at com.alibaba.otter.canal.client.adapter.support.Util.getConfDirPath(Util.java:85)</span><br><span class="line">	at com.alibaba.otter.canal.adapter.launcher.monitor.ApplicationConfigMonitor.init(ApplicationConfigMonitor.java:41)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">	at java.base&#x2F;jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.base&#x2F;java.lang.reflect.Method.invoke(Method.java:566)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:365)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:308)</span><br><span class="line">	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:135)</span><br><span class="line">	... 16 common frames omitted</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>canal</category>
-      </categories>
-      <tags>
-        <tag>canal</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>.gitignore的使用</title>
     <url>/2021/01/20/gitignore%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p>很长一段时间忽视了.gitignore的作用，果真还是自己太菜了。。。</p>
@@ -3881,6 +4260,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>hexo博客高级操作</title>
+    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<blockquote>
+<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
+</blockquote>
+<a id="more"></a>]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ubuntu安装VMware Tools</title>
     <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
     <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
@@ -3901,18 +4294,38 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>hexo博客高级操作</title>
-    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<blockquote>
-<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
-</blockquote>
-<a id="more"></a>]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>next</tag>
-      </tags>
+    <title>k8s学习笔记</title>
+    <url>/2021/01/11/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>1.k8s概念和架构</p>
+<p>2.搭建k8s集群</p>
+<ul>
+<li>基于客户端工具kubeadm</li>
+<li>基于二进制包方式</li>
+</ul>
+<p>3.k8s核心概念</p>
+<ul>
+<li>Pod</li>
+<li>控制器 controller</li>
+<li>Service</li>
+<li>调度器 Ingress</li>
+<li>安全机制 RABC</li>
+<li>包管理工具 Helm</li>
+<li>持久存储</li>
+</ul>
+<p>4.搭建集群监控平台系统</p>
+<p>5.从零开始搭建高可用k8s集群</p>
+<p>6.在集群环境部署项目</p>
+<a id="more"></a>
+
+<h1 id="1-k8s概述"><a href="#1-k8s概述" class="headerlink" title="1 k8s概述"></a>1 k8s概述</h1><p>特点：</p>
+<p>轻量级：消耗资源小</p>
+<p>开源</p>
+<p>弹性伸缩</p>
+<p>负载均衡</p>
+<p>1.1 k8s概述和特性</p>
+<p>1.2 k8s架构组件</p>
+<p>1.3 k8s核心概念</p>
+]]></content>
   </entry>
   <entry>
     <title>人民日报给90后的理财计划</title>
@@ -3932,26 +4345,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>理财</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实体类的4种类型</title>
-    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>实体类的4种类型总结</p>
-<a id="more"></a>
-
-<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
-<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
-<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
-<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
-<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
-<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-      </categories>
-      <tags>
-        <tag>Domain Object</tag>
       </tags>
   </entry>
   <entry>
@@ -4087,6 +4480,91 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>ShardingSphere</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实体类的4种类型</title>
+    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>实体类的4种类型总结</p>
+<a id="more"></a>
+
+<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
+<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
+<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
+<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
+<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
+<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>Domain Object</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>微服务的理解</title>
+    <url>/2021/01/08/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<p>微服务架构是当下流行的软件架构风格。</p>
+<blockquote>
+<p>分布式定义：旨在支持应用程序和服务的开发，可以利用物理架构由<strong>多个自治的处理元素</strong>，<strong>不共享主内存</strong>，但<strong>通过</strong>网络发送<strong>消息</strong>合作。           —-Leslie Lamport （莱斯利·兰伯特）</p>
+</blockquote>
+<a id="more"></a>
+
+<p>微服务是一种架构风格</p>
+<ul>
+<li>由一系列微小的服务共同组成</li>
+<li>跑在自己的进程里</li>
+<li>每个服务为独立的业务开发</li>
+<li>独立部署</li>
+<li>分布式的管理</li>
+</ul>
+<p>单体架构的优点：</p>
+<ul>
+<li>容易测试</li>
+<li>容易部署</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><p>开发效率低</p>
+</li>
+<li><p>代码维护难</p>
+</li>
+<li><p>部署不灵活</p>
+</li>
+<li><p>稳定性不高</p>
+</li>
+<li><p>扩展性不够</p>
+</li>
+</ul>
+<p>微服务架构的基础框架/组件</p>
+<ul>
+<li>服务注册发现</li>
+<li>服务网关</li>
+<li>后端通用服务（也称为中间层服务Middle Tier Service）</li>
+<li>前端服务（也称边缘服务Edge Service）</li>
+</ul>
+<p>当下最流行的两大RPC框架分别为：</p>
+<ul>
+<li><p>Dubbo</p>
+</li>
+<li><p>Springcloud</p>
+<p>Springcloud是一个开发工具集，含有多个子项目</p>
+<ol>
+<li>利用SpringBoot的开发遍历</li>
+<li>主要是基于对Netflix开源组件的进一步封装</li>
+<li>SpringCloud最大的作用是简化了分布式开发</li>
+</ol>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>应用框架</category>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+      </categories>
+      <tags>
+        <tag>微服务</tag>
       </tags>
   </entry>
   <entry>
@@ -4718,26 +5196,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>自学感悟</title>
-    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
-    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
-<a id="more"></a>
-
-<p><img src="/images/2020122702.png" alt="img"></p>
-<p><strong>附上Java后端学习路线：</strong></p>
-<blockquote>
-<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
-</blockquote>
-<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
-]]></content>
-      <categories>
-        <category>杂谈</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>算法与数据结构体系</title>
     <url>/2020/12/30/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BD%93%E7%B3%BB/</url>
     <content><![CDATA[<p>算法与数据结构体系学习大纲：</p>
@@ -4801,6 +5259,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>自学感悟</title>
+    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
+    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
+<a id="more"></a>
+
+<p><img src="/images/2020122702.png" alt="img"></p>
+<p><strong>附上Java后端学习路线：</strong></p>
+<blockquote>
+<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
+</blockquote>
+<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
+]]></content>
+      <categories>
+        <category>杂谈</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>记一个小小的强迫症</title>
     <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
     <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
@@ -4814,26 +5292,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
       <tags>
         <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>读《深入浅出MyBatis技术原理与实战》</title>
-    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
-    <content><![CDATA[<p>1.MyBatis简介</p>
-<p>2 MyBatis入门</p>
-<p>3 配置</p>
-<p>4 映射器</p>
-<p>5 动态SQL</p>
-<p>6 MyBatis的解析和运行原理</p>
-<p>7 插件</p>
-<p>8 MyBatis-Spring</p>
-<p>9 实用的场景</p>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -4880,6 +5338,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>读《深入浅出MyBatis技术原理与实战》</title>
+    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
+    <content><![CDATA[<p>1.MyBatis简介</p>
+<p>2 MyBatis入门</p>
+<p>3 配置</p>
+<p>4 映射器</p>
+<p>5 动态SQL</p>
+<p>6 MyBatis的解析和运行原理</p>
+<p>7 插件</p>
+<p>8 MyBatis-Spring</p>
+<p>9 实用的场景</p>
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -5154,32 +5632,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>面向对象五大基本原则</title>
-    <url>/2020/12/25/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BA%94%E5%A4%A7%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/</url>
-    <content><![CDATA[<p>五个基本原则：</p>
-<p><strong>s(</strong> Single-Resposibility Principle <strong>):</strong> 单一职责原则</p>
-<p><strong>o(</strong> Open-Closed principle <strong>):</strong> 开放封闭原则</p>
-<p><strong>l(</strong> Liskov-Substituion Principle <strong>):</strong> 里氏原则</p>
-<p><strong>i(</strong> Interface-Segregation Principle <strong>):</strong> 接口隔离原则</p>
-<p><strong>d(</strong> Dependecy-Inversion Principle <strong>):</strong> 依赖倒置原则</p>
-<p><strong>一个单词：立方体(solid),很好记!!!</strong></p>
-<a id="more"></a>
-
-<h1 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h1><p>单一职责原则（Single-Resposibility Principle）：一个类，最好只做一件事，只有一个引起它的变化。单一职责原则可以看做是低耦合、高内聚在面向对象原则上的引申，将职责定义为引起变化的原因，以提高内聚性来减少引起变化的原因。</p>
-<h1 id="开放封闭原则"><a href="#开放封闭原则" class="headerlink" title="开放封闭原则"></a>开放封闭原则</h1><p>开放封闭原则（Open-Closed principle）：软件实体应该是可扩展的，而不可修改的。也就是，对扩展开放，对修改封闭的。</p>
-<h1 id="里式原则"><a href="#里式原则" class="headerlink" title="里式原则"></a>里式原则</h1><p>子类必须能够替换其基类。这一思想体现为对继承机制的约束规范，只有子类能够替换基类时，才能保证系统在运行期内识别子类，这是保证继承复用的基础。</p>
-<h1 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h1><p>接口隔离原则（Interface-Segregation Principle）：使用多个小的专门的接口，而不要使用一个大的总接口</p>
-<h1 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h1><p>依赖倒置原则（Dependecy-Inversion Principle）：依赖于抽象。具体而言就是高层模块不依赖于底层模块，二者都同依赖于抽象；抽象不依赖于具体，具体依赖于抽象。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-        <category>面向对象</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>通用型支付系统接入电商平台</title>
     <url>/2020/12/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</url>
     <content><![CDATA[<p>一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统</p>
@@ -5320,26 +5772,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<p>记录一个小细节</p>
-<a id="more"></a>
-
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>（转）重定向与转发</title>
     <url>/2018/04/21/%EF%BC%88%E8%BD%AC%EF%BC%89%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -5362,6 +5794,32 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Java Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面向对象五大基本原则</title>
+    <url>/2020/12/25/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BA%94%E5%A4%A7%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/</url>
+    <content><![CDATA[<p>五个基本原则：</p>
+<p><strong>s(</strong> Single-Resposibility Principle <strong>):</strong> 单一职责原则</p>
+<p><strong>o(</strong> Open-Closed principle <strong>):</strong> 开放封闭原则</p>
+<p><strong>l(</strong> Liskov-Substituion Principle <strong>):</strong> 里氏原则</p>
+<p><strong>i(</strong> Interface-Segregation Principle <strong>):</strong> 接口隔离原则</p>
+<p><strong>d(</strong> Dependecy-Inversion Principle <strong>):</strong> 依赖倒置原则</p>
+<p><strong>一个单词：立方体(solid),很好记!!!</strong></p>
+<a id="more"></a>
+
+<h1 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h1><p>单一职责原则（Single-Resposibility Principle）：一个类，最好只做一件事，只有一个引起它的变化。单一职责原则可以看做是低耦合、高内聚在面向对象原则上的引申，将职责定义为引起变化的原因，以提高内聚性来减少引起变化的原因。</p>
+<h1 id="开放封闭原则"><a href="#开放封闭原则" class="headerlink" title="开放封闭原则"></a>开放封闭原则</h1><p>开放封闭原则（Open-Closed principle）：软件实体应该是可扩展的，而不可修改的。也就是，对扩展开放，对修改封闭的。</p>
+<h1 id="里式原则"><a href="#里式原则" class="headerlink" title="里式原则"></a>里式原则</h1><p>子类必须能够替换其基类。这一思想体现为对继承机制的约束规范，只有子类能够替换基类时，才能保证系统在运行期内识别子类，这是保证继承复用的基础。</p>
+<h1 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h1><p>接口隔离原则（Interface-Segregation Principle）：使用多个小的专门的接口，而不要使用一个大的总接口</p>
+<h1 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h1><p>依赖倒置原则（Dependecy-Inversion Principle）：依赖于抽象。具体而言就是高层模块不依赖于底层模块，二者都同依赖于抽象；抽象不依赖于具体，具体依赖于抽象。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+        <category>面向对象</category>
+      </categories>
+      <tags>
+        <tag>面向对象</tag>
       </tags>
   </entry>
 </search>
