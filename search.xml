@@ -317,118 +317,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch7笔记</title>
-    <url>/2020/12/02/ElasticSearch7%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>ElasticSearch7学习笔记</p>
-<a id="more"></a>
-
-<h1 id="ElasticSearch原理及部署"><a href="#ElasticSearch原理及部署" class="headerlink" title="ElasticSearch原理及部署"></a>ElasticSearch原理及部署</h1><blockquote>
-<p>中文官网：<a href="https://www.elastic.co/cn/elasticsearch/" target="_blank" rel="noopener">https://www.elastic.co/cn/elasticsearch/</a></p>
-<p>阮一峰：<a href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
-</blockquote>
-<h2 id="搜索原理"><a href="#搜索原理" class="headerlink" title="搜索原理"></a>搜索原理</h2><p>ElasticSearch是独立的网络上的一个或一组进程节点，对外提供搜索服务（http/transport协议），对内就是一个搜索数据库。</p>
-<p>对于搜索，是以词为单位做最基本的搜索单元，依靠分词器构造分词（其中英文分词器有空格分词器），然后用分词构建倒排索引。</p>
-<p><img src="/images/2020120401.png" alt="image-20201204152921640"></p>
-<p>正向索引</p>
-<p><img src="/images/2020120402.png" alt="image-20201204193628122"></p>
-<p>倒排索引</p>
-<p><img src="/images/2020120403.png" alt="image-20201204193651906"></p>
-<p>试想根据某个词查找，查找出一堆文档，那到底是哪个匹配度更高呢，这时候就需要打分的逻辑</p>
-<ul>
-<li>TF：词频，这个document文档包含了多少个这个词，包含越多表明越相关</li>
-<li>DF：文档频率，包含该词的文档总数目</li>
-<li>IDF：DF取倒数</li>
-<li>打分常用计算公式：TF * IDF</li>
-</ul>
-<h2 id="名词定义"><a href="#名词定义" class="headerlink" title="名词定义"></a>名词定义</h2><p>关系型数据库MySQL对应ElasticSearch：</p>
-<ol>
-<li>MySQL 中的数据库（DataBase），等价于 ES 中的索引（Index）。</li>
-<li>MySQL 中一个数据库下面有 N 张表（Table），等价于1个索引 Index 下面有 N 多类型（Type）。</li>
-<li>MySQL 中一个数据库表（Table）下的数据由多行（Row）多列（column，属性）组成，等价于1个 Type 由多个文档（Document）和多 Field 组成。</li>
-<li>MySQL 中定义表结构、设定字段类型等价于 ES 中的 Mapping。举例说明，在一个关系型数据库里面，Schema 定义了表、每个表的字段，还有表和字段之间的关系。与之对应的，在 ES 中，Mapping 定义索引下的 Type 的字段处理规则，即索引如何建立、索引类型、是否保存原始索引 JSON 文档、是否压缩原始 JSON 文档、是否需要分词处理、如何进行分词处理等。</li>
-<li>MySQL 中的增 insert、删 delete、改 update、查 search 操作等价于 ES 中的增 PUT/POST、删 Delete、改 _update、查 GET。其中的修改指定条件的更新 update 等价于 ES 中的 update_by_query，指定条件的删除等价于 ES 中的 delete_by_query。</li>
-<li>MySQL 中的 group by、avg、sum 等函数类似于 ES 中的 Aggregations 的部分特性。</li>
-<li>MySQL 中的去重 distinct 类似 ES 中的 cardinality 操作。</li>
-<li>MySQL 中的数据迁移等价于 ES 中的 reindex 操作。</li>
-</ol>
-<p><img src="/images/2020120404.png" alt="img"></p>
-<h2 id="分布式原理"><a href="#分布式原理" class="headerlink" title="分布式原理"></a>分布式原理</h2><p><a href="https://www.cnblogs.com/jajian/p/10176604.html" target="_blank" rel="noopener">https://www.cnblogs.com/jajian/p/10176604.html</a></p>
-<h2 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h2><p><a href="https://liuurick.github.io/2020/10/11/ElasticSearch集群搭建/" target="_blank" rel="noopener">https://liuurick.github.io/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</a></p>
-<h1 id="ElasticSearch基础语法及应用"><a href="#ElasticSearch基础语法及应用" class="headerlink" title="ElasticSearch基础语法及应用"></a>ElasticSearch基础语法及应用</h1><h2 id="索引创建，更新，删除"><a href="#索引创建，更新，删除" class="headerlink" title="索引创建，更新，删除"></a>索引创建，更新，删除</h2><blockquote>
-<p>结构化索引，类似MySQL，我们会对索引结构做预定义，包括字段名，字段类型等；</p>
-<p>非结构化索引，就类似Mongo，索引结构未知，根据具体的数据来update索引的mapping。</p>
-<p>那么如何选择两种索引呢，还是跟具体的使用场景有关，结构化相比非结构化，更易优化，性能好些，非结构化相较灵活，只是频繁update索引mapping会有一定的性能损耗。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#1.索引创建</span><br><span class="line">PUT &#x2F;mytest</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#2.索引删除</span><br><span class="line">DELETE &#x2F;mytest</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="索引简单语句"><a href="#索引简单语句" class="headerlink" title="索引简单语句"></a>索引简单语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#3.非结构化方式新建索引</span><br><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;name&quot;: &quot;liubin&quot;,</span><br><span class="line">  &quot;age&quot;: 24</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#4.获取索引记录</span><br><span class="line">GET &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#5.指定字段修改</span><br><span class="line">POST &#x2F;employee&#x2F;_update&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;:&#123;</span><br><span class="line">    &quot;name&quot;: &quot;刘斌&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#6.强制指定创建，若已经存在，则失败</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;123&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#7.删除某个文档</span><br><span class="line">DELETE &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#8.查询全部文档</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#9.使用结构化的方式创建索引</span><br><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line"> &quot;settings&quot;: &#123;</span><br><span class="line">   &quot;number_of_shards&quot;: 1,</span><br><span class="line">   &quot;number_of_replicas&quot;: 1</span><br><span class="line"> &#125; ,</span><br><span class="line"> &quot;mappings&quot;: &#123;</span><br><span class="line">   &quot;properties&quot;: &#123;</span><br><span class="line">     &quot;name&quot;:&#123;&quot;type&quot;: &quot;text&quot;&#125;,</span><br><span class="line">     &quot;age&quot;:&#123;&quot;type&quot;: &quot;integer&quot;&#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#10.添加数据</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;我是打工人&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#11.不带条件查询所有记录</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line"></span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#12.分页查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="索引复杂语句"><a href="#索引复杂语句" class="headerlink" title="索引复杂语句"></a>索引复杂语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#13.带关键字条件的查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#14.带排序</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#15.带filter </span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: [</span><br><span class="line">        &#123;&quot;term&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &quot;30&quot;</span><br><span class="line">        &#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#16.带聚合</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_age&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;age&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>match和term区别：<a href="https://www.cnblogs.com/yjf512/p/4897294.html" target="_blank" rel="noopener">https://www.cnblogs.com/yjf512/p/4897294.html</a></p>
-<p>match 分词查询<br>term 整体查询</p>
-</blockquote>
-<h1 id="ElasticSearch高级语法及应用"><a href="#ElasticSearch高级语法及应用" class="headerlink" title="ElasticSearch高级语法及应用"></a>ElasticSearch高级语法及应用</h1><p>更着重于分词相关的操作</p>
-<h2 id="analyze分析过程"><a href="#analyze分析过程" class="headerlink" title="analyze分析过程"></a>analyze分析过程</h2><p><code>analyse分析=分词的过程：字符过滤器--&gt;字符处理--&gt;分词过滤（分词转换，词干转化）</code></p>
-<ul>
-<li>字符过滤：使用字符过滤器转变字符。</li>
-<li>文本切分为分词：将文本（档）分为单个或多个分词。</li>
-<li>分词过滤：使用分词过滤器转变每个分词。</li>
-<li>分词索引：最终将分词存储在Lucene倒排索引中。</li>
-</ul>
-<p><img src="/images/2020120405.png" alt="20190824003615611858"></p>
-<p>利用analyze api搜索</p>
-<p>先建立索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Eating an apple a day &amp; keeps the doctor away&quot;, </span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>然后搜索</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;: &#123;&quot;name&quot;:&quot;eat&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>没搜到后使用analyze api查看分析处理结果，可以看到没有分出eat，所以搜不到，改成用english分词器做索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>重新创建索引</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">   &quot;number_of_shards&quot; : 1,</span><br><span class="line">   &quot;number_of_replicas&quot; : 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot; : &#123;</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">      &quot;name&quot; : &#123; </span><br><span class="line">        &quot;type&quot; : &quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;,</span><br><span class="line">        &quot;age&quot; : &#123;&quot;type&quot;:&quot;integer&quot;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>在用<code>analyze api</code>，可以看到eat</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="相关性查询手段"><a href="#相关性查询手段" class="headerlink" title="相关性查询手段"></a>相关性查询手段</h2><p>类型：</p>
-<blockquote>
-<p><a href="https://blog.csdn.net/chengyuqiang/article/details/79048800" target="_blank" rel="noopener">https://blog.csdn.net/chengyuqiang/article/details/79048800</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>搜索引擎</category>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ElasticSearch7进阶</title>
     <url>/2020/12/06/ElasticSearch7%E8%BF%9B%E9%98%B6/</url>
     <content><![CDATA[<p>ElasticSearch的进阶学习主要有两种分别是通读文档和案例学习。这里我选择的是通过案例来深入学习es。</p>
@@ -937,30 +825,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>JSP页面El表达式不起作用</title>
-    <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
-<a id="more"></a>
-
-<p>头文件中</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
-<p>jsp约束：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>前端</category>
-        <category>模板框架</category>
-        <category>JSP</category>
-      </categories>
-      <tags>
-        <tag>JSP</tag>
-        <tag>session</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>IDEA配置与常用快捷键</title>
     <url>/2021/01/20/IDEA%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -1016,6 +880,30 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JSP页面El表达式不起作用</title>
+    <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
+<a id="more"></a>
+
+<p>头文件中</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">web-app</span> <span class="meta-keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span></span><br><span class="line"><span class="meta"> <span class="meta-string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时的jsp servlet的版本为2.3，<strong>Servlet2.3或者更早的JSP页面默认是不使用EL表达式的</strong>，即不解析EL表达式，所以要不就是使用更高版本的jsp servlet。这样比较麻烦，这里Java提供了一各属性来解决这个问题，使2.3或更早版本能使用El表达式，该属性为<code>&lt;%@page isELIgnored=&quot;false&quot; %&gt;</code>默认是true，表示暂时不解析，此时我们在jsp页面头文件中设置为false，再次运行，此时jsp页面就会解析El表达式</p>
+<p>jsp约束：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span> <span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>模板框架</category>
+        <category>JSP</category>
+      </categories>
+      <tags>
+        <tag>JSP</tag>
+        <tag>session</tag>
       </tags>
   </entry>
   <entry>
@@ -1092,57 +980,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java IO流详解</title>
-    <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Java之美[从菜鸟到高手演变]之Java中的IO:<a href="https://blog.csdn.net/zhangerqing/article/details/8466532" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8466532</a></p>
-<p>Java IO流学习总结一：输入输出流:<a href="https://blog.csdn.net/zhaoyanjun6/article/details/54292148" target="_blank" rel="noopener">https://blog.csdn.net/zhaoyanjun6/article/details/54292148</a></p>
-<p>史上最骚最全最详细的IO流教程，没有之一！:<a href="https://www.cnblogs.com/yichunguo/p/11775270.html" target="_blank" rel="noopener">https://www.cnblogs.com/yichunguo/p/11775270.html</a></p>
-<p>Java IO:<a href="http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88</a></p>
-</blockquote>
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>Java IO流大概可以分为以下几类：</p>
-<ul>
-<li>磁盘操作：File类</li>
-<li>字节流操作：InputStream，OutputStream</li>
-<li>字符流操作：Reader，Writer</li>
-<li>对象操作：Serializable</li>
-<li>网络操作：socket</li>
-<li>新的输入/输出：NIO</li>
-</ul>
-<h1 id="2-磁盘操作"><a href="#2-磁盘操作" class="headerlink" title="2 磁盘操作"></a>2 磁盘操作</h1><p>File类可以用于获取目录和文件的信息，但他不表示文件的内容。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fileMethod</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File file2 : files) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (file2.isDirectory()) &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件夹:"</span> + file2.getAbsolutePath());</span><br><span class="line">                        fileMethod(file2.getAbsolutePath());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件:"</span> + file2.getAbsolutePath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件不存在!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>从 Java7 开始，可以使用 Paths 和 Files 代替 File。文件的操作更加简便快捷</p>
-<blockquote>
-<p>Java文件处理：Paths和Files：<a href="https://www.jianshu.com/p/3b3c5dbcfae7" target="_blank" rel="noopener">https://www.jianshu.com/p/3b3c5dbcfae7</a></p>
-</blockquote>
-<h1 id="3-字节流操作"><a href="#3-字节流操作" class="headerlink" title="3 字节流操作"></a>3 字节流操作</h1><p>实现文件复制</p>
-<h1 id="4-对象操作"><a href="#4-对象操作" class="headerlink" title="4 对象操作"></a>4 对象操作</h1><blockquote>
-<p>对象的序列化:<a href="https://liuyangjun.blog.csdn.net/article/details/80422143" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/80422143</a></p>
-</blockquote>
-<h1 id="5-网络操作"><a href="#5-网络操作" class="headerlink" title="5 网络操作"></a>5 网络操作</h1><h1 id="6-新的输入-输出（NIO）"><a href="#6-新的输入-输出（NIO）" class="headerlink" title="6 新的输入/输出（NIO）"></a>6 新的输入/输出（NIO）</h1><blockquote>
-<p><a href="https://www.zhihu.com/question/29005375" target="_blank" rel="noopener">https://www.zhihu.com/question/29005375</a></p>
-</blockquote>
-<p>NIO主要有<strong>三个核心部分组成</strong>：</p>
-<ul>
-<li><strong>buffer缓冲区</strong></li>
-<li><strong>Channel管道</strong></li>
-<li><strong>Selector选择器</strong></li>
-</ul>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>IO流</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java内部类详解</title>
     <url>/2021/01/04/Java%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -1207,6 +1044,169 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>内部类</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java IO流详解</title>
+    <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Java之美[从菜鸟到高手演变]之Java中的IO:<a href="https://blog.csdn.net/zhangerqing/article/details/8466532" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8466532</a></p>
+<p>Java IO流学习总结一：输入输出流:<a href="https://blog.csdn.net/zhaoyanjun6/article/details/54292148" target="_blank" rel="noopener">https://blog.csdn.net/zhaoyanjun6/article/details/54292148</a></p>
+<p>史上最骚最全最详细的IO流教程，没有之一！:<a href="https://www.cnblogs.com/yichunguo/p/11775270.html" target="_blank" rel="noopener">https://www.cnblogs.com/yichunguo/p/11775270.html</a></p>
+<p>Java IO:<a href="http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88</a></p>
+</blockquote>
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>Java IO流大概可以分为以下几类：</p>
+<ul>
+<li>磁盘操作：File类</li>
+<li>字节流操作：InputStream，OutputStream</li>
+<li>字符流操作：Reader，Writer</li>
+<li>对象操作：Serializable</li>
+<li>网络操作：socket</li>
+<li>新的输入/输出：NIO</li>
+</ul>
+<h1 id="2-磁盘操作"><a href="#2-磁盘操作" class="headerlink" title="2 磁盘操作"></a>2 磁盘操作</h1><p>File类可以用于获取目录和文件的信息，但他不表示文件的内容。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fileMethod</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File file2 : files) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (file2.isDirectory()) &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件夹:"</span> + file2.getAbsolutePath());</span><br><span class="line">                        fileMethod(file2.getAbsolutePath());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件:"</span> + file2.getAbsolutePath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件不存在!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从 Java7 开始，可以使用 Paths 和 Files 代替 File。文件的操作更加简便快捷</p>
+<blockquote>
+<p>Java文件处理：Paths和Files：<a href="https://www.jianshu.com/p/3b3c5dbcfae7" target="_blank" rel="noopener">https://www.jianshu.com/p/3b3c5dbcfae7</a></p>
+</blockquote>
+<h1 id="3-字节流操作"><a href="#3-字节流操作" class="headerlink" title="3 字节流操作"></a>3 字节流操作</h1><p>实现文件复制</p>
+<h1 id="4-对象操作"><a href="#4-对象操作" class="headerlink" title="4 对象操作"></a>4 对象操作</h1><blockquote>
+<p>对象的序列化:<a href="https://liuyangjun.blog.csdn.net/article/details/80422143" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/80422143</a></p>
+</blockquote>
+<h1 id="5-网络操作"><a href="#5-网络操作" class="headerlink" title="5 网络操作"></a>5 网络操作</h1><h1 id="6-新的输入-输出（NIO）"><a href="#6-新的输入-输出（NIO）" class="headerlink" title="6 新的输入/输出（NIO）"></a>6 新的输入/输出（NIO）</h1><blockquote>
+<p><a href="https://www.zhihu.com/question/29005375" target="_blank" rel="noopener">https://www.zhihu.com/question/29005375</a></p>
+</blockquote>
+<p>NIO主要有<strong>三个核心部分组成</strong>：</p>
+<ul>
+<li><strong>buffer缓冲区</strong></li>
+<li><strong>Channel管道</strong></li>
+<li><strong>Selector选择器</strong></li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>IO流</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch7笔记</title>
+    <url>/2020/12/02/ElasticSearch7%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>ElasticSearch7学习笔记</p>
+<a id="more"></a>
+
+<h1 id="ElasticSearch原理及部署"><a href="#ElasticSearch原理及部署" class="headerlink" title="ElasticSearch原理及部署"></a>ElasticSearch原理及部署</h1><blockquote>
+<p>中文官网：<a href="https://www.elastic.co/cn/elasticsearch/" target="_blank" rel="noopener">https://www.elastic.co/cn/elasticsearch/</a></p>
+<p>阮一峰：<a href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
+</blockquote>
+<h2 id="搜索原理"><a href="#搜索原理" class="headerlink" title="搜索原理"></a>搜索原理</h2><p>ElasticSearch是独立的网络上的一个或一组进程节点，对外提供搜索服务（http/transport协议），对内就是一个搜索数据库。</p>
+<p>对于搜索，是以词为单位做最基本的搜索单元，依靠分词器构造分词（其中英文分词器有空格分词器），然后用分词构建倒排索引。</p>
+<p><img src="/images/2020120401.png" alt="image-20201204152921640"></p>
+<p>正向索引</p>
+<p><img src="/images/2020120402.png" alt="image-20201204193628122"></p>
+<p>倒排索引</p>
+<p><img src="/images/2020120403.png" alt="image-20201204193651906"></p>
+<p>试想根据某个词查找，查找出一堆文档，那到底是哪个匹配度更高呢，这时候就需要打分的逻辑</p>
+<ul>
+<li>TF：词频，这个document文档包含了多少个这个词，包含越多表明越相关</li>
+<li>DF：文档频率，包含该词的文档总数目</li>
+<li>IDF：DF取倒数</li>
+<li>打分常用计算公式：TF * IDF</li>
+</ul>
+<h2 id="名词定义"><a href="#名词定义" class="headerlink" title="名词定义"></a>名词定义</h2><p>关系型数据库MySQL对应ElasticSearch：</p>
+<ol>
+<li>MySQL 中的数据库（DataBase），等价于 ES 中的索引（Index）。</li>
+<li>MySQL 中一个数据库下面有 N 张表（Table），等价于1个索引 Index 下面有 N 多类型（Type）。</li>
+<li>MySQL 中一个数据库表（Table）下的数据由多行（Row）多列（column，属性）组成，等价于1个 Type 由多个文档（Document）和多 Field 组成。</li>
+<li>MySQL 中定义表结构、设定字段类型等价于 ES 中的 Mapping。举例说明，在一个关系型数据库里面，Schema 定义了表、每个表的字段，还有表和字段之间的关系。与之对应的，在 ES 中，Mapping 定义索引下的 Type 的字段处理规则，即索引如何建立、索引类型、是否保存原始索引 JSON 文档、是否压缩原始 JSON 文档、是否需要分词处理、如何进行分词处理等。</li>
+<li>MySQL 中的增 insert、删 delete、改 update、查 search 操作等价于 ES 中的增 PUT/POST、删 Delete、改 _update、查 GET。其中的修改指定条件的更新 update 等价于 ES 中的 update_by_query，指定条件的删除等价于 ES 中的 delete_by_query。</li>
+<li>MySQL 中的 group by、avg、sum 等函数类似于 ES 中的 Aggregations 的部分特性。</li>
+<li>MySQL 中的去重 distinct 类似 ES 中的 cardinality 操作。</li>
+<li>MySQL 中的数据迁移等价于 ES 中的 reindex 操作。</li>
+</ol>
+<p><img src="/images/2020120404.png" alt="img"></p>
+<h2 id="分布式原理"><a href="#分布式原理" class="headerlink" title="分布式原理"></a>分布式原理</h2><p><a href="https://www.cnblogs.com/jajian/p/10176604.html" target="_blank" rel="noopener">https://www.cnblogs.com/jajian/p/10176604.html</a></p>
+<h2 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h2><p><a href="https://liuurick.github.io/2020/10/11/ElasticSearch集群搭建/" target="_blank" rel="noopener">https://liuurick.github.io/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</a></p>
+<h1 id="ElasticSearch基础语法及应用"><a href="#ElasticSearch基础语法及应用" class="headerlink" title="ElasticSearch基础语法及应用"></a>ElasticSearch基础语法及应用</h1><h2 id="索引创建，更新，删除"><a href="#索引创建，更新，删除" class="headerlink" title="索引创建，更新，删除"></a>索引创建，更新，删除</h2><blockquote>
+<p>结构化索引，类似MySQL，我们会对索引结构做预定义，包括字段名，字段类型等；</p>
+<p>非结构化索引，就类似Mongo，索引结构未知，根据具体的数据来update索引的mapping。</p>
+<p>那么如何选择两种索引呢，还是跟具体的使用场景有关，结构化相比非结构化，更易优化，性能好些，非结构化相较灵活，只是频繁update索引mapping会有一定的性能损耗。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#1.索引创建</span><br><span class="line">PUT &#x2F;mytest</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#2.索引删除</span><br><span class="line">DELETE &#x2F;mytest</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="索引简单语句"><a href="#索引简单语句" class="headerlink" title="索引简单语句"></a>索引简单语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#3.非结构化方式新建索引</span><br><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;name&quot;: &quot;liubin&quot;,</span><br><span class="line">  &quot;age&quot;: 24</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#4.获取索引记录</span><br><span class="line">GET &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#5.指定字段修改</span><br><span class="line">POST &#x2F;employee&#x2F;_update&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;:&#123;</span><br><span class="line">    &quot;name&quot;: &quot;刘斌&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#6.强制指定创建，若已经存在，则失败</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;123&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#7.删除某个文档</span><br><span class="line">DELETE &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line"></span><br><span class="line">#8.查询全部文档</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#9.使用结构化的方式创建索引</span><br><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line"> &quot;settings&quot;: &#123;</span><br><span class="line">   &quot;number_of_shards&quot;: 1,</span><br><span class="line">   &quot;number_of_replicas&quot;: 1</span><br><span class="line"> &#125; ,</span><br><span class="line"> &quot;mappings&quot;: &#123;</span><br><span class="line">   &quot;properties&quot;: &#123;</span><br><span class="line">     &quot;name&quot;:&#123;&quot;type&quot;: &quot;text&quot;&#125;,</span><br><span class="line">     &quot;age&quot;:&#123;&quot;type&quot;: &quot;integer&quot;&#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#10.添加数据</span><br><span class="line">POST &#x2F;employee&#x2F;_create&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;我是打工人&quot;,</span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#11.不带条件查询所有记录</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line"></span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#12.分页查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="索引复杂语句"><a href="#索引复杂语句" class="headerlink" title="索引复杂语句"></a>索引复杂语句</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#13.带关键字条件的查询</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#14.带排序</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工人&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#15.带filter </span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: [</span><br><span class="line">        &#123;&quot;term&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &quot;30&quot;</span><br><span class="line">        &#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#16.带聚合</span><br><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;工&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_age&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;age&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>match和term区别：<a href="https://www.cnblogs.com/yjf512/p/4897294.html" target="_blank" rel="noopener">https://www.cnblogs.com/yjf512/p/4897294.html</a></p>
+<p>match 分词查询<br>term 整体查询</p>
+</blockquote>
+<h1 id="ElasticSearch高级语法及应用"><a href="#ElasticSearch高级语法及应用" class="headerlink" title="ElasticSearch高级语法及应用"></a>ElasticSearch高级语法及应用</h1><p>更着重于分词相关的操作</p>
+<h2 id="analyze分析过程"><a href="#analyze分析过程" class="headerlink" title="analyze分析过程"></a>analyze分析过程</h2><p><code>analyse分析=分词的过程：字符过滤器--&gt;字符处理--&gt;分词过滤（分词转换，词干转化）</code></p>
+<ul>
+<li>字符过滤：使用字符过滤器转变字符。</li>
+<li>文本切分为分词：将文本（档）分为单个或多个分词。</li>
+<li>分词过滤：使用分词过滤器转变每个分词。</li>
+<li>分词索引：最终将分词存储在Lucene倒排索引中。</li>
+</ul>
+<p><img src="/images/2020120405.png" alt="20190824003615611858"></p>
+<p>利用analyze api搜索</p>
+<p>先建立索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee&#x2F;_doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Eating an apple a day &amp; keeps the doctor away&quot;, </span><br><span class="line">  &quot;age&quot;: 30</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后搜索</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line"> &quot;query&quot;:&#123;</span><br><span class="line">  &quot;match&quot;: &#123;&quot;name&quot;:&quot;eat&quot;&#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>没搜到后使用analyze api查看分析处理结果，可以看到没有分出eat，所以搜不到，改成用english分词器做索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>重新创建索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT &#x2F;employee</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">   &quot;number_of_shards&quot; : 1,</span><br><span class="line">   &quot;number_of_replicas&quot; : 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot; : &#123;</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">      &quot;name&quot; : &#123; </span><br><span class="line">        &quot;type&quot; : &quot;text&quot;,&quot;analyzer&quot;: &quot;english&quot;&#125;,</span><br><span class="line">        &quot;age&quot; : &#123;&quot;type&quot;:&quot;integer&quot;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在用<code>analyze api</code>，可以看到eat</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;employee&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line"> &quot;field&quot;:&quot;name&quot;,</span><br><span class="line"> &quot;text&quot;:&quot;Eating an apple a day &amp; keeps the doctor away&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关性查询手段"><a href="#相关性查询手段" class="headerlink" title="相关性查询手段"></a>相关性查询手段</h2><p>类型：</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/chengyuqiang/article/details/79048800" target="_blank" rel="noopener">https://blog.csdn.net/chengyuqiang/article/details/79048800</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
       </tags>
   </entry>
   <entry>
@@ -1328,22 +1328,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java反射详解</title>
-    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java容器详解</title>
     <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1362,6 +1346,36 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java反射详解</title>
+    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java并发学习笔记</title>
+    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>并发学习</p>
+<a id="more"></a>
+
+<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
+      <categories>
+        <category>并发</category>
+      </categories>
+      <tags>
+        <tag>Java并发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java异常详解</title>
     <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1377,20 +1391,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>异常</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java并发学习笔记</title>
-    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>并发学习</p>
-<a id="more"></a>
-
-<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
-      <categories>
-        <category>并发</category>
-      </categories>
-      <tags>
-        <tag>Java并发</tag>
       </tags>
   </entry>
   <entry>
@@ -1873,26 +1873,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MySQL数据库集群-PXC方案</title>
-    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>docker中安装pxc集群比较简单，这里尝试在centos7安装MySQL集群</p>
-<a id="more"></a>
-
-<h1 id="一-安装环境"><a href="#一-安装环境" class="headerlink" title="一.安装环境"></a>一.安装环境</h1><p>Centos7</p>
-<p>MySQL：5.7.22</p>
-<p>Mycat</p>
-<h1 id="二-创建PXC集群"><a href="#二-创建PXC集群" class="headerlink" title="二.创建PXC集群"></a>二.创建PXC集群</h1><h2 id="2-1-CentOS安装PerconaServer数据库"><a href="#2-1-CentOS安装PerconaServer数据库" class="headerlink" title="2.1 CentOS安装PerconaServer数据库"></a>2.1 CentOS安装PerconaServer数据库</h2><blockquote>
-<p>官网下载网址：<a href="https://www.percona.com/downloads/Percona-Server-5.7/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/LATEST/</a></p>
-</blockquote>
-<h2 id="2-2-安装PXC组建集群"><a href="#2-2-安装PXC组建集群" class="headerlink" title="2.2 安装PXC组建集群"></a>2.2 安装PXC组建集群</h2><h2 id="2-3-PXC集群的常用管理-数据库集群使用"><a href="#2-3-PXC集群的常用管理-数据库集群使用" class="headerlink" title="2.3 PXC集群的常用管理-数据库集群使用"></a>2.3 PXC集群的常用管理-数据库集群使用</h2><h2 id="2-4-PXC集群的常用管理-状态参数"><a href="#2-4-PXC集群的常用管理-状态参数" class="headerlink" title="2.4 PXC集群的常用管理-状态参数"></a>2.4 PXC集群的常用管理-状态参数</h2><h2 id="2-5-PXC节点的上线与关闭"><a href="#2-5-PXC节点的上线与关闭" class="headerlink" title="2.5 PXC节点的上线与关闭"></a>2.5 PXC节点的上线与关闭</h2><h2 id="2-6-MySQL集群中间件比较"><a href="#2-6-MySQL集群中间件比较" class="headerlink" title="2.6 MySQL集群中间件比较"></a>2.6 MySQL集群中间件比较</h2><h2 id="2-7-配置MyCat负载均衡"><a href="#2-7-配置MyCat负载均衡" class="headerlink" title="2.7 配置MyCat负载均衡"></a>2.7 配置MyCat负载均衡</h2><h2 id="2-8-数据切分"><a href="#2-8-数据切分" class="headerlink" title="2.8 数据切分"></a>2.8 数据切分</h2><h2 id="2-9-父子表"><a href="#2-9-父子表" class="headerlink" title="2.9 父子表"></a>2.9 父子表</h2><h2 id="2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群"><a href="#2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群" class="headerlink" title="2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群"></a>2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群</h2><h2 id="2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"><a href="#2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP" class="headerlink" title="2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"></a>2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP</h2><h2 id="2-12-Sysbench基准测试-安装Sysbench"><a href="#2-12-Sysbench基准测试-安装Sysbench" class="headerlink" title="2.12 Sysbench基准测试-安装Sysbench"></a>2.12 Sysbench基准测试-安装Sysbench</h2><h2 id="2-13-Sysbench基准测试-使用Sysbench"><a href="#2-13-Sysbench基准测试-使用Sysbench" class="headerlink" title="2.13 Sysbench基准测试-使用Sysbench"></a>2.13 Sysbench基准测试-使用Sysbench</h2><h2 id="2-14-tpcc-mysql压力测试"><a href="#2-14-tpcc-mysql压力测试" class="headerlink" title="2.14 tpcc-mysql压力测试"></a>2.14 tpcc-mysql压力测试</h2><h1 id="三-PXC集群原理"><a href="#三-PXC集群原理" class="headerlink" title="三.PXC集群原理"></a>三.PXC集群原理</h1><h2 id="3-1-binlog日志"><a href="#3-1-binlog日志" class="headerlink" title="3.1 binlog日志"></a>3.1 binlog日志</h2><h2 id="3-2-PXC同步原理"><a href="#3-2-PXC同步原理" class="headerlink" title="3.2 PXC同步原理"></a>3.2 PXC同步原理</h2><h1 id="四-业务需求与MySQL架构设计"><a href="#四-业务需求与MySQL架构设计" class="headerlink" title="四. 业务需求与MySQL架构设计"></a>四. 业务需求与MySQL架构设计</h1><h2 id="4-1-MySQL的5种特殊架构设计"><a href="#4-1-MySQL的5种特殊架构设计" class="headerlink" title="4.1 MySQL的5种特殊架构设计"></a>4.1 MySQL的5种特殊架构设计</h2><h2 id="4-2-数据库设计原则"><a href="#4-2-数据库设计原则" class="headerlink" title="4.2 数据库设计原则"></a>4.2 数据库设计原则</h2><h1 id="五-数据库常见业务处理"><a href="#五-数据库常见业务处理" class="headerlink" title="五.数据库常见业务处理"></a>五.数据库常见业务处理</h1><h1 id="六-数据备份与恢复"><a href="#六-数据备份与恢复" class="headerlink" title="六.数据备份与恢复"></a>六.数据备份与恢复</h1>]]></content>
-      <categories>
-        <category>PXC</category>
-      </categories>
-      <tags>
-        <tag>PXC集群</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL高级</title>
     <url>/2020/11/20/MySQL%E9%AB%98%E7%BA%A7/</url>
     <content><![CDATA[<p>MySQL的深入学习主要分为5个部分，分别是：</p>
@@ -2291,6 +2271,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>MySQL数据库集群-PXC方案</title>
+    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>docker中安装pxc集群比较简单，这里尝试在centos7安装MySQL集群</p>
+<a id="more"></a>
+
+<h1 id="一-安装环境"><a href="#一-安装环境" class="headerlink" title="一.安装环境"></a>一.安装环境</h1><p>Centos7</p>
+<p>MySQL：5.7.22</p>
+<p>Mycat</p>
+<h1 id="二-创建PXC集群"><a href="#二-创建PXC集群" class="headerlink" title="二.创建PXC集群"></a>二.创建PXC集群</h1><h2 id="2-1-CentOS安装PerconaServer数据库"><a href="#2-1-CentOS安装PerconaServer数据库" class="headerlink" title="2.1 CentOS安装PerconaServer数据库"></a>2.1 CentOS安装PerconaServer数据库</h2><blockquote>
+<p>官网下载网址：<a href="https://www.percona.com/downloads/Percona-Server-5.7/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/LATEST/</a></p>
+</blockquote>
+<h2 id="2-2-安装PXC组建集群"><a href="#2-2-安装PXC组建集群" class="headerlink" title="2.2 安装PXC组建集群"></a>2.2 安装PXC组建集群</h2><h2 id="2-3-PXC集群的常用管理-数据库集群使用"><a href="#2-3-PXC集群的常用管理-数据库集群使用" class="headerlink" title="2.3 PXC集群的常用管理-数据库集群使用"></a>2.3 PXC集群的常用管理-数据库集群使用</h2><h2 id="2-4-PXC集群的常用管理-状态参数"><a href="#2-4-PXC集群的常用管理-状态参数" class="headerlink" title="2.4 PXC集群的常用管理-状态参数"></a>2.4 PXC集群的常用管理-状态参数</h2><h2 id="2-5-PXC节点的上线与关闭"><a href="#2-5-PXC节点的上线与关闭" class="headerlink" title="2.5 PXC节点的上线与关闭"></a>2.5 PXC节点的上线与关闭</h2><h2 id="2-6-MySQL集群中间件比较"><a href="#2-6-MySQL集群中间件比较" class="headerlink" title="2.6 MySQL集群中间件比较"></a>2.6 MySQL集群中间件比较</h2><h2 id="2-7-配置MyCat负载均衡"><a href="#2-7-配置MyCat负载均衡" class="headerlink" title="2.7 配置MyCat负载均衡"></a>2.7 配置MyCat负载均衡</h2><h2 id="2-8-数据切分"><a href="#2-8-数据切分" class="headerlink" title="2.8 数据切分"></a>2.8 数据切分</h2><h2 id="2-9-父子表"><a href="#2-9-父子表" class="headerlink" title="2.9 父子表"></a>2.9 父子表</h2><h2 id="2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群"><a href="#2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群" class="headerlink" title="2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群"></a>2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群</h2><h2 id="2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"><a href="#2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP" class="headerlink" title="2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"></a>2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP</h2><h2 id="2-12-Sysbench基准测试-安装Sysbench"><a href="#2-12-Sysbench基准测试-安装Sysbench" class="headerlink" title="2.12 Sysbench基准测试-安装Sysbench"></a>2.12 Sysbench基准测试-安装Sysbench</h2><h2 id="2-13-Sysbench基准测试-使用Sysbench"><a href="#2-13-Sysbench基准测试-使用Sysbench" class="headerlink" title="2.13 Sysbench基准测试-使用Sysbench"></a>2.13 Sysbench基准测试-使用Sysbench</h2><h2 id="2-14-tpcc-mysql压力测试"><a href="#2-14-tpcc-mysql压力测试" class="headerlink" title="2.14 tpcc-mysql压力测试"></a>2.14 tpcc-mysql压力测试</h2><h1 id="三-PXC集群原理"><a href="#三-PXC集群原理" class="headerlink" title="三.PXC集群原理"></a>三.PXC集群原理</h1><h2 id="3-1-binlog日志"><a href="#3-1-binlog日志" class="headerlink" title="3.1 binlog日志"></a>3.1 binlog日志</h2><h2 id="3-2-PXC同步原理"><a href="#3-2-PXC同步原理" class="headerlink" title="3.2 PXC同步原理"></a>3.2 PXC同步原理</h2><h1 id="四-业务需求与MySQL架构设计"><a href="#四-业务需求与MySQL架构设计" class="headerlink" title="四. 业务需求与MySQL架构设计"></a>四. 业务需求与MySQL架构设计</h1><h2 id="4-1-MySQL的5种特殊架构设计"><a href="#4-1-MySQL的5种特殊架构设计" class="headerlink" title="4.1 MySQL的5种特殊架构设计"></a>4.1 MySQL的5种特殊架构设计</h2><h2 id="4-2-数据库设计原则"><a href="#4-2-数据库设计原则" class="headerlink" title="4.2 数据库设计原则"></a>4.2 数据库设计原则</h2><h1 id="五-数据库常见业务处理"><a href="#五-数据库常见业务处理" class="headerlink" title="五.数据库常见业务处理"></a>五.数据库常见业务处理</h1><h1 id="六-数据备份与恢复"><a href="#六-数据备份与恢复" class="headerlink" title="六.数据备份与恢复"></a>六.数据备份与恢复</h1>]]></content>
+      <categories>
+        <category>PXC</category>
+      </categories>
+      <tags>
+        <tag>PXC集群</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Mycat学习笔记</title>
     <url>/2021/01/12/Mycat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p><strong>中间件</strong>：是介于应用系统和系统软件之间的一类软件</p>
@@ -2675,91 +2675,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>注解</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PXC方案的一些改进</title>
-    <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
-    <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
-<p>主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据</p>
-<a id="more"></a>
-
-<h3 id="1-负载均衡的高可用方案"><a href="#1-负载均衡的高可用方案" class="headerlink" title="1.负载均衡的高可用方案"></a>1.负载均衡的高可用方案</h3><p>虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。</p>
-<h4 id="1-1-安装Keepalived"><a href="#1-1-安装Keepalived" class="headerlink" title="1.1 安装Keepalived"></a>1.1 安装Keepalived</h4><p>进入容器<br><code>docker exec -it h1 bash</code><br>在容器中安装<br><code>apt-get update</code><br><code>apt-get install keepalived</code></p>
-<h4 id="1-2-Keepalived配置文件"><a href="#1-2-Keepalived配置文件" class="headerlink" title="1.2 Keepalived配置文件"></a>1.2 Keepalived配置文件</h4><p>在容器中<br><code>vim /etc/keepalived/keepalived.conf</code><br>如果容器没有安装vim，请输入命令：<code>apt-get install vim</code><br>然后在文件里贴上配置</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.10.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>state 是keepalived的身份（MASTER主服务，BACKUP备服务器）。主服务要抢占虚拟IP，备用服务器不会抢占IP</li>
-<li>interface 网卡设备</li>
-<li>virtual_router_id 虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是 0 ～ 255</li>
-<li>priority 权重</li>
-<li>advert_int 心跳检测秒，MASTER与BACKUP节点间同步检查的时间间。主备之间必须一致。</li>
-<li>authentication 主从服务器验证方式。主备必须使用相同的密码才能正常通信</li>
-<li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
-</ul>
-<h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
-<p><img src="/images/2020110901.png" alt="image-20201109224438458"></p>
-<p><img src="/images/2020110902.png" alt="image-20201109225321905"></p>
-<h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
-<p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
-<p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
-<h4 id="2-2-热备份："><a href="#2-2-热备份：" class="headerlink" title="2.2 热备份："></a>2.2 热备份：</h4><p>热备份是在系统运行的状态下备份数据，也是难度最大的备份，Mysql常见的热备份有LVM和XtraBackup两种方案。<br>这里我使用的是XtraBackup方案实现热备份，XtraBackup是一款基于InnoDB的在线热备工具，具有开源免费，支持在线热备，占用磁盘空间小，能够非常快速地备份与恢复Mysql数据库等特点</p>
-<p><strong>优势：</strong></p>
-<ul>
-<li><p>备份过程中不锁表、快速可靠</p>
-</li>
-<li><p>备份过程中不会打断正在执行的事务</p>
-</li>
-<li><p>能够基于压缩等功能节约磁盘空间和流量</p>
-</li>
-</ul>
-<p><strong>每天进行一次增量备份，每周进行一次全量备份</strong></p>
-<p><strong>全量备份：</strong>备份全部数据。备份过程时间长，占用空间大</p>
-<p><strong>增量备份：</strong>只备份变化的数据。备份时间短，占用空间小</p>
-<h4 id="2-3-全量数据热备份"><a href="#2-3-全量数据热备份" class="headerlink" title="2.3 全量数据热备份"></a>2.3 全量数据热备份</h4><p>1.创建数据卷</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
-
-<p>2.选择数据节点映射数据卷</p>
-<p>​    先停止节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
-
-<p>​    删除node1重新创建</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker rm node1</span><br></pre></td></tr></table></figure>
-
-<p>​    创建node1</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">docker run -d -p <span class="number">3306</span>:<span class="number">3306</span> -e MYSQL_ROOT_PASSWORD=<span class="number">123456</span> -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=<span class="number">123456</span> -v v1:/<span class="keyword">var</span>/lib/mysql -v backup:/<span class="keyword">data</span> --privileged -e CLUSTER_JOIN=node2 --name=node1 --net=net1 --ip <span class="number">172.10</span><span class="number">.0</span><span class="number">.2</span> pxc</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>PXC容器中安装XtraBackup，并执行备份</strong></p>
-<p>进入节点</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it node1 bash</span><br></pre></td></tr></table></figure>
-
-<p>执行</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install percona-xtrabackup<span class="number">-24</span></span><br></pre></td></tr></table></figure>
-
-<p>全量备份</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> /<span class="keyword">data</span>/backup/full</span><br></pre></td></tr></table></figure>
-
-<p>容器内备份数据</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;data&#x2F;backup&#x2F;full</span><br><span class="line">退出容器</span><br><span class="line">exit</span><br><span class="line">查看数据卷目录</span><br><span class="line">docker inspect backup</span><br><span class="line">进入备份目录</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-4-全量数据冷还原"><a href="#2-4-全量数据冷还原" class="headerlink" title="2.4 全量数据冷还原"></a>2.4 全量数据冷还原</h4><p>数据库可以热备份，但是不能热还原。为了避免恢复过程中的数据同步。我们采用空白的MySQL还原数据，然后再建立PXC集群；还原数据前要将未提交的事务回滚，还原数据之后重启MySQL。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">rm -rf /<span class="keyword">var</span>/lib/mysql<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
-
-<p>事务回滚</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --apply-back /<span class="keyword">data</span>/backup/full/</span><br></pre></td></tr></table></figure>
-
-<p>全量数据冷还原</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>PXC</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>MySQL集群</tag>
       </tags>
   </entry>
   <entry>
@@ -3179,32 +3094,88 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Redis应用场景</title>
-    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
-    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
+    <title>PXC方案的一些改进</title>
+    <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
+<p>主要分为两点：1.负载均衡的高可用方案  2.引入热备份数据</p>
 <a id="more"></a>
 
-<blockquote>
-<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
-</blockquote>
-<blockquote>
-<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
-</blockquote>
-<p>Redis常见场景主要有以下几种:</p>
-<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
-<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
-<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
-<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
-<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
-<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
-<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
-<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
+<h3 id="1-负载均衡的高可用方案"><a href="#1-负载均衡的高可用方案" class="headerlink" title="1.负载均衡的高可用方案"></a>1.负载均衡的高可用方案</h3><p>虽然之前的MySQL集群也有负载均衡，但是haproxy是单节点的，不具备高可用。。。</p>
+<h4 id="1-1-安装Keepalived"><a href="#1-1-安装Keepalived" class="headerlink" title="1.1 安装Keepalived"></a>1.1 安装Keepalived</h4><p>进入容器<br><code>docker exec -it h1 bash</code><br>在容器中安装<br><code>apt-get update</code><br><code>apt-get install keepalived</code></p>
+<h4 id="1-2-Keepalived配置文件"><a href="#1-2-Keepalived配置文件" class="headerlink" title="1.2 Keepalived配置文件"></a>1.2 Keepalived配置文件</h4><p>在容器中<br><code>vim /etc/keepalived/keepalived.conf</code><br>如果容器没有安装vim，请输入命令：<code>apt-get install vim</code><br>然后在文件里贴上配置</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.10.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>state 是keepalived的身份（MASTER主服务，BACKUP备服务器）。主服务要抢占虚拟IP，备用服务器不会抢占IP</li>
+<li>interface 网卡设备</li>
+<li>virtual_router_id 虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是 0 ～ 255</li>
+<li>priority 权重</li>
+<li>advert_int 心跳检测秒，MASTER与BACKUP节点间同步检查的时间间。主备之间必须一致。</li>
+<li>authentication 主从服务器验证方式。主备必须使用相同的密码才能正常通信</li>
+<li>virtual_ipaddress 虚拟IP地址，可以设置多个虚拟IP地址，每行一个</li>
+</ul>
+<h4 id="1-3-启动keepalived"><a href="#1-3-启动keepalived" class="headerlink" title="1.3 启动keepalived"></a>1.3 启动keepalived</h4><p>在容器里输入命令：<code>service keepalived start</code><br>因为不能直接停止容器，所以为了正常退出不关闭容器，使用Ctrl+P+Q进行退出容器<br>检验：在宿主机中，我们使用：ping 172.10.0.201，检测是否真正启动</p>
+<p><img src="/images/2020110901.png" alt="image-20201109224438458"></p>
+<p><img src="/images/2020110902.png" alt="image-20201109225321905"></p>
+<h3 id="2-MySQL集群-热备份数据"><a href="#2-MySQL集群-热备份数据" class="headerlink" title="2.MySQL集群 热备份数据"></a>2.MySQL集群 热备份数据</h3><h4 id="2-1-冷备份："><a href="#2-1-冷备份：" class="headerlink" title="2.1 冷备份："></a>2.1 冷备份：</h4><p>冷备份是一种常见的备份方式，通常做法是先关闭数据库，然后在拷贝数据文件。</p>
+<p>这种方式简单安全，mysqldump就是典型的冷备份技术。</p>
+<p>冷备份的弊端也很大，比如大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择<br>当然在之前提到的PXC集群中，我们可以中断某个节点，单独备份数据，再上线。</p>
+<h4 id="2-2-热备份："><a href="#2-2-热备份：" class="headerlink" title="2.2 热备份："></a>2.2 热备份：</h4><p>热备份是在系统运行的状态下备份数据，也是难度最大的备份，Mysql常见的热备份有LVM和XtraBackup两种方案。<br>这里我使用的是XtraBackup方案实现热备份，XtraBackup是一款基于InnoDB的在线热备工具，具有开源免费，支持在线热备，占用磁盘空间小，能够非常快速地备份与恢复Mysql数据库等特点</p>
+<p><strong>优势：</strong></p>
+<ul>
+<li><p>备份过程中不锁表、快速可靠</p>
+</li>
+<li><p>备份过程中不会打断正在执行的事务</p>
+</li>
+<li><p>能够基于压缩等功能节约磁盘空间和流量</p>
+</li>
+</ul>
+<p><strong>每天进行一次增量备份，每周进行一次全量备份</strong></p>
+<p><strong>全量备份：</strong>备份全部数据。备份过程时间长，占用空间大</p>
+<p><strong>增量备份：</strong>只备份变化的数据。备份时间短，占用空间小</p>
+<h4 id="2-3-全量数据热备份"><a href="#2-3-全量数据热备份" class="headerlink" title="2.3 全量数据热备份"></a>2.3 全量数据热备份</h4><p>1.创建数据卷</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
+
+<p>2.选择数据节点映射数据卷</p>
+<p>​    先停止节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
+
+<p>​    删除node1重新创建</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker rm node1</span><br></pre></td></tr></table></figure>
+
+<p>​    创建node1</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">docker run -d -p <span class="number">3306</span>:<span class="number">3306</span> -e MYSQL_ROOT_PASSWORD=<span class="number">123456</span> -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=<span class="number">123456</span> -v v1:/<span class="keyword">var</span>/lib/mysql -v backup:/<span class="keyword">data</span> --privileged -e CLUSTER_JOIN=node2 --name=node1 --net=net1 --ip <span class="number">172.10</span><span class="number">.0</span><span class="number">.2</span> pxc</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>PXC容器中安装XtraBackup，并执行备份</strong></p>
+<p>进入节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it node1 bash</span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install percona-xtrabackup<span class="number">-24</span></span><br></pre></td></tr></table></figure>
+
+<p>全量备份</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> /<span class="keyword">data</span>/backup/full</span><br></pre></td></tr></table></figure>
+
+<p>容器内备份数据</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;data&#x2F;backup&#x2F;full</span><br><span class="line">退出容器</span><br><span class="line">exit</span><br><span class="line">查看数据卷目录</span><br><span class="line">docker inspect backup</span><br><span class="line">进入备份目录</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-全量数据冷还原"><a href="#2-4-全量数据冷还原" class="headerlink" title="2.4 全量数据冷还原"></a>2.4 全量数据冷还原</h4><p>数据库可以热备份，但是不能热还原。为了避免恢复过程中的数据同步。我们采用空白的MySQL还原数据，然后再建立PXC集群；还原数据前要将未提交的事务回滚，还原数据之后重启MySQL。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">rm -rf /<span class="keyword">var</span>/lib/mysql<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
+
+<p>事务回滚</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --apply-back /<span class="keyword">data</span>/backup/full/</span><br></pre></td></tr></table></figure>
+
+<p>全量数据冷还原</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">innobackupex --user=root --password=<span class="number">123456</span> --<span class="built_in">copy</span>-back /data/backup/full/</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Redis</category>
+        <category>PXC</category>
       </categories>
       <tags>
-        <tag>Redis</tag>
+        <tag>Docker</tag>
+        <tag>MySQL集群</tag>
       </tags>
   </entry>
   <entry>
@@ -3248,9 +3219,46 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Spring @Configuration和@Component的区别</title>
-    <url>/2021/01/17/Spring-Configuration%E5%92%8C-Component%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[]]></content>
+    <title>Redis应用场景</title>
+    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+</blockquote>
+<blockquote>
+<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+</blockquote>
+<p>Redis常见场景主要有以下几种:</p>
+<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
+<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
+<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
+<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
+<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
+<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
+<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
+<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
+]]></content>
+      <categories>
+        <category>Redis</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
+      </tags>
   </entry>
   <entry>
     <title>Spring Security + OAuth2学习笔记</title>
@@ -3351,19 +3359,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot启动时找不到或无法加载主类</title>
     <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -3452,20 +3447,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot源码学习</title>
-    <url>/2020/12/20/SpringBoot%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p>SpringBoot上手非常简单，但是并不能停留在表面。这里开始从源码层面学习</p>
-<a id="more"></a>
-
-<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><h1 id="2-走向自动配置"><a href="#2-走向自动配置" class="headerlink" title="2 走向自动配置"></a>2 走向自动配置</h1><h1 id="3-理解SpringApplication"><a href="#3-理解SpringApplication" class="headerlink" title="3 理解SpringApplication"></a>3 理解SpringApplication</h1><h1 id="4-WebMVC核心"><a href="#4-WebMVC核心" class="headerlink" title="4 WebMVC核心"></a>4 WebMVC核心</h1><h1 id="5-WebMVC视图应用"><a href="#5-WebMVC视图应用" class="headerlink" title="5 WebMVC视图应用"></a>5 WebMVC视图应用</h1><h1 id="6-WebMVC-REST应用"><a href="#6-WebMVC-REST应用" class="headerlink" title="6 WebMVC REST应用"></a>6 WebMVC REST应用</h1><h1 id="7-渐行渐远的Servlet"><a href="#7-渐行渐远的Servlet" class="headerlink" title="7 渐行渐远的Servlet"></a>7 渐行渐远的Servlet</h1><h1 id="8-从Reactive到WebFlux"><a href="#8-从Reactive到WebFlux" class="headerlink" title="8 从Reactive到WebFlux"></a>8 从Reactive到WebFlux</h1><h1 id="9-WebFlux核心"><a href="#9-WebFlux核心" class="headerlink" title="9 WebFlux核心"></a>9 WebFlux核心</h1><h1 id="10-超越外部化配置"><a href="#10-超越外部化配置" class="headerlink" title="10 超越外部化配置"></a>10 超越外部化配置</h1>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot源码</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
@@ -3512,6 +3493,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot源码学习</title>
+    <url>/2020/12/20/SpringBoot%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p>SpringBoot上手非常简单，但是并不能停留在表面。这里开始从源码层面学习</p>
+<a id="more"></a>
+
+<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><h1 id="2-走向自动配置"><a href="#2-走向自动配置" class="headerlink" title="2 走向自动配置"></a>2 走向自动配置</h1><h1 id="3-理解SpringApplication"><a href="#3-理解SpringApplication" class="headerlink" title="3 理解SpringApplication"></a>3 理解SpringApplication</h1><h1 id="4-WebMVC核心"><a href="#4-WebMVC核心" class="headerlink" title="4 WebMVC核心"></a>4 WebMVC核心</h1><h1 id="5-WebMVC视图应用"><a href="#5-WebMVC视图应用" class="headerlink" title="5 WebMVC视图应用"></a>5 WebMVC视图应用</h1><h1 id="6-WebMVC-REST应用"><a href="#6-WebMVC-REST应用" class="headerlink" title="6 WebMVC REST应用"></a>6 WebMVC REST应用</h1><h1 id="7-渐行渐远的Servlet"><a href="#7-渐行渐远的Servlet" class="headerlink" title="7 渐行渐远的Servlet"></a>7 渐行渐远的Servlet</h1><h1 id="8-从Reactive到WebFlux"><a href="#8-从Reactive到WebFlux" class="headerlink" title="8 从Reactive到WebFlux"></a>8 从Reactive到WebFlux</h1><h1 id="9-WebFlux核心"><a href="#9-WebFlux核心" class="headerlink" title="9 WebFlux核心"></a>9 WebFlux核心</h1><h1 id="10-超越外部化配置"><a href="#10-超越外部化配置" class="headerlink" title="10 超越外部化配置"></a>10 超越外部化配置</h1>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot源码</tag>
       </tags>
   </entry>
   <entry>
@@ -4149,49 +4144,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git命令操作笔记</title>
-    <url>/2019/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
-<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
-<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
-<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
-</blockquote>
-<p><img src="/images/2018062701.png" alt="image"></p>
-<p>创建一个目录用于存放仓库，或在有内容的目录下操作。</p>
-<p>然后切换到此目录下初始化：<code>git --bare init</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status 查看仓库状态</span><br><span class="line">branches 分支目录</span><br><span class="line">config 定义项目特有的配置选项</span><br><span class="line">description 仅供git web使用</span><br><span class="line">HEAD 当前分支</span><br><span class="line">hooks 包含git钩子文件</span><br><span class="line">info 包含一个全局排除文件</span><br><span class="line">objects 存放所有数据内容，有info、pack两个子文件夹</span><br><span class="line">refs 存放只想数据（分支）的提交对象的指针</span><br><span class="line">index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成</span><br><span class="line">工作目录 暂存区 本地仓库 远程仓库</span><br><span class="line">git add git commit git push</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add FILE 添加file到暂存区</span><br><span class="line">git add . 添加目录中所有改动过的文件到暂存区</span><br><span class="line">git rm --cached FILE 将暂存区的FILE 撤回到工作区</span><br><span class="line">git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）</span><br><span class="line">git commit -m "add newfile a" 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）</span><br><span class="line">【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m "输入的备注"添加到本地仓库】</span><br><span class="line">修改文件名两种方式：</span><br><span class="line">1.mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）</span><br><span class="line">git rm --cached a</span><br><span class="line">git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）</span><br><span class="line">git commit -m "modified a a.txt" a改名a.txt并提交</span><br><span class="line">2.git mv old new 直接更改文件名，改完直接git commit提交即可</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git diff 比对工作目录与缓存区有什么不同</span><br><span class="line">git diff --cached 比对暂存区与本地仓库有什么不同</span><br><span class="line"></span><br><span class="line">ls检查下当前目录下是否有仓库信息，</span><br><span class="line">git remote add origin git@10.0.0.227:web/control.git 创建远程仓库origin</span><br><span class="line">git remote 查看当前远程仓库的名称</span><br><span class="line">git remote remove origin 删除远程仓库origin</span><br></pre></td></tr></table></figure>
-
-<h1 id="日志命令"><a href="#日志命令" class="headerlink" title="日志命令"></a>日志命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git log 查看历史提交信息</span><br><span class="line">git log --online 查看历史提交信息的哈希值</span><br><span class="line">git log --online --decorate 历史提交信息并查看当前指针位置</span><br><span class="line">git log -p 展示具体变化内容</span><br><span class="line">git log -1 展示一条提交信息的内容</span><br><span class="line">git log -1 -p 展示详细具体的最后一条变更的信息内容</span><br></pre></td></tr></table></figure>
-
-<h1 id="初始化命令"><a href="#初始化命令" class="headerlink" title="初始化命令"></a>初始化命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard xx 恢复到从前的位置</span><br><span class="line">git reflog 查看所有历史提交信息，包括回复到指定位置之前的</span><br><span class="line">git reset --hard xxx 前后都能回滚 来回滚</span><br></pre></td></tr></table></figure>
-
-<h1 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch 查看分支</span><br><span class="line">git branch fenzhi 创建分支fenzhi</span><br><span class="line">git checkout fenzhi 切换分支fenzhi</span><br><span class="line">git checkout -b testing 创建并切换到分支testing</span><br><span class="line">删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复</span><br><span class="line">git branch -d testing 删除分支testing</span><br><span class="line">git merge testing 合并分支</span><br><span class="line">冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</span><br></pre></td></tr></table></figure>
-
-<h1 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.0 -m "hehe" 当前状态打标签为V1.0</span><br><span class="line">git tag -a V1.0 haxizhi -m "hehe" 把某个哈希状态的状态打标签</span><br><span class="line">git show v1.0 查看某个标签的信息</span><br><span class="line">git reset --hard v2.0 回滚数据到V2.0</span><br><span class="line">git tag -d v2.0 删除V2.0标签的数据</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git常见命令</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>git常见错误</title>
     <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
     <content><![CDATA[<p>记录git常见错误</p>
@@ -4235,23 +4187,46 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>ubuntu安装VMware Tools</title>
-    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
-    <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
+    <title>git命令操作笔记</title>
+    <url>/2019/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
 <a id="more"></a>
 
-<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
 <blockquote>
-<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
+<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
+<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
+<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
+<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
 </blockquote>
-<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
-<p>解压完成之后即可运行安装文件安装wmware tools</p>
+<p><img src="/images/2018062701.png" alt="image"></p>
+<p>创建一个目录用于存放仓库，或在有内容的目录下操作。</p>
+<p>然后切换到此目录下初始化：<code>git --bare init</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status 查看仓库状态</span><br><span class="line">branches 分支目录</span><br><span class="line">config 定义项目特有的配置选项</span><br><span class="line">description 仅供git web使用</span><br><span class="line">HEAD 当前分支</span><br><span class="line">hooks 包含git钩子文件</span><br><span class="line">info 包含一个全局排除文件</span><br><span class="line">objects 存放所有数据内容，有info、pack两个子文件夹</span><br><span class="line">refs 存放只想数据（分支）的提交对象的指针</span><br><span class="line">index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成</span><br><span class="line">工作目录 暂存区 本地仓库 远程仓库</span><br><span class="line">git add git commit git push</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add FILE 添加file到暂存区</span><br><span class="line">git add . 添加目录中所有改动过的文件到暂存区</span><br><span class="line">git rm --cached FILE 将暂存区的FILE 撤回到工作区</span><br><span class="line">git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）</span><br><span class="line">git commit -m "add newfile a" 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）</span><br><span class="line">【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m "输入的备注"添加到本地仓库】</span><br><span class="line">修改文件名两种方式：</span><br><span class="line">1.mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）</span><br><span class="line">git rm --cached a</span><br><span class="line">git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）</span><br><span class="line">git commit -m "modified a a.txt" a改名a.txt并提交</span><br><span class="line">2.git mv old new 直接更改文件名，改完直接git commit提交即可</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git diff 比对工作目录与缓存区有什么不同</span><br><span class="line">git diff --cached 比对暂存区与本地仓库有什么不同</span><br><span class="line"></span><br><span class="line">ls检查下当前目录下是否有仓库信息，</span><br><span class="line">git remote add origin git@10.0.0.227:web/control.git 创建远程仓库origin</span><br><span class="line">git remote 查看当前远程仓库的名称</span><br><span class="line">git remote remove origin 删除远程仓库origin</span><br></pre></td></tr></table></figure>
+
+<h1 id="日志命令"><a href="#日志命令" class="headerlink" title="日志命令"></a>日志命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git log 查看历史提交信息</span><br><span class="line">git log --online 查看历史提交信息的哈希值</span><br><span class="line">git log --online --decorate 历史提交信息并查看当前指针位置</span><br><span class="line">git log -p 展示具体变化内容</span><br><span class="line">git log -1 展示一条提交信息的内容</span><br><span class="line">git log -1 -p 展示详细具体的最后一条变更的信息内容</span><br></pre></td></tr></table></figure>
+
+<h1 id="初始化命令"><a href="#初始化命令" class="headerlink" title="初始化命令"></a>初始化命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard xx 恢复到从前的位置</span><br><span class="line">git reflog 查看所有历史提交信息，包括回复到指定位置之前的</span><br><span class="line">git reset --hard xxx 前后都能回滚 来回滚</span><br></pre></td></tr></table></figure>
+
+<h1 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch 查看分支</span><br><span class="line">git branch fenzhi 创建分支fenzhi</span><br><span class="line">git checkout fenzhi 切换分支fenzhi</span><br><span class="line">git checkout -b testing 创建并切换到分支testing</span><br><span class="line">删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复</span><br><span class="line">git branch -d testing 删除分支testing</span><br><span class="line">git merge testing 合并分支</span><br><span class="line">冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</span><br></pre></td></tr></table></figure>
+
+<h1 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.0 -m "hehe" 当前状态打标签为V1.0</span><br><span class="line">git tag -a V1.0 haxizhi -m "hehe" 把某个哈希状态的状态打标签</span><br><span class="line">git show v1.0 查看某个标签的信息</span><br><span class="line">git reset --hard v2.0 回滚数据到V2.0</span><br><span class="line">git tag -d v2.0 删除V2.0标签的数据</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <categories>
-        <category>Ubuntu</category>
+        <category>git</category>
       </categories>
       <tags>
-        <tag>Ubuntu</tag>
+        <tag>git常见命令</tag>
       </tags>
   </entry>
   <entry>
@@ -4297,6 +4272,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ubuntu安装VMware Tools</title>
+    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
+    <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
+<a id="more"></a>
+
+<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
+<blockquote>
+<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
+</blockquote>
+<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
+<p>解压完成之后即可运行安装文件安装wmware tools</p>
+]]></content>
+      <categories>
+        <category>Ubuntu</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
