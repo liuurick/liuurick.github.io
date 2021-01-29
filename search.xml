@@ -28,12 +28,44 @@
 <h1 id="ClassVisitor开发"><a href="#ClassVisitor开发" class="headerlink" title="ClassVisitor开发"></a>ClassVisitor开发</h1><h1 id="MethodVisitor开发"><a href="#MethodVisitor开发" class="headerlink" title="MethodVisitor开发"></a>MethodVisitor开发</h1><h1 id="实现模拟AOP功能"><a href="#实现模拟AOP功能" class="headerlink" title="实现模拟AOP功能"></a>实现模拟AOP功能</h1>]]></content>
   </entry>
   <entry>
+    <title>Arthas使用与进阶</title>
+    <url>/2021/01/17/Arthas%E4%BD%BF%E7%94%A8%E4%B8%8E%E8%BF%9B%E9%98%B6/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<p><em>Arthas</em>（阿尔萨斯）是阿里巴巴开源的Java诊断工具</p>
+<blockquote>
+<p>开源地址：<a href="https://github.com/alibaba/arthas" target="_blank" rel="noopener">https://github.com/alibaba/arthas</a><br>官方文档：<a href="https://alibaba.github.io/arthas" target="_blank" rel="noopener">https://alibaba.github.io/arthas</a></p>
+</blockquote>
+<h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/install-detail.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/install-detail.html</a></p>
+<p><a href="https://blog.csdn.net/monokai/article/details/107457772" target="_blank" rel="noopener">https://blog.csdn.net/monokai/article/details/107457772</a></p>
+</blockquote>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/quick-start.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/quick-start.html</a></p>
+</blockquote>
+<h1 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/advanced-use.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/advanced-use.html</a></p>
+</blockquote>
+<h1 id="Arthas-脑图—常用命令汇总"><a href="#Arthas-脑图—常用命令汇总" class="headerlink" title="Arthas 脑图—常用命令汇总:"></a>Arthas 脑图—常用命令汇总:</h1><blockquote>
+<p><a href="https://github.com/alibaba/arthas/issues/1003" target="_blank" rel="noopener">https://github.com/alibaba/arthas/issues/1003</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>运维知识</category>
+        <category>Java诊断工具</category>
+      </categories>
+      <tags>
+        <tag>Arthas</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Centos7上安装docker</title>
     <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
     <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
 <a id="more"></a>
 
-<h2 id="一、安装docker"><a href="#一、安装docker" class="headerlink" title="一、安装docker"></a>一、安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
+<h2 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1 安装docker"></a>1 安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
 <p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
 
@@ -68,7 +100,7 @@
 
 
 
-<h2 id="二、配置镜像加速"><a href="#二、配置镜像加速" class="headerlink" title="二、配置镜像加速"></a>二、配置镜像加速</h2><blockquote>
+<h2 id="2-配置镜像加速"><a href="#2-配置镜像加速" class="headerlink" title="2 配置镜像加速"></a>2 配置镜像加速</h2><blockquote>
 <p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
 </blockquote>
 <p>Docker客户端版本需要大于 1.10.0 </p>
@@ -79,7 +111,7 @@
 
 
 
-<h2 id="三、问题"><a href="#三、问题" class="headerlink" title="三、问题"></a>三、问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
+<h2 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
 
 <p>2.卸载旧版本的包</p>
@@ -97,42 +129,12 @@
 <p>导入密钥重新安装Docker</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>Docker</category>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>虚拟化/容器化</category>
       </categories>
       <tags>
         <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Arthas使用与进阶</title>
-    <url>/2021/01/17/Arthas%E4%BD%BF%E7%94%A8%E4%B8%8E%E8%BF%9B%E9%98%B6/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<p><em>Arthas</em>（阿尔萨斯）是阿里巴巴开源的Java诊断工具</p>
-<blockquote>
-<p>开源地址：<a href="https://github.com/alibaba/arthas" target="_blank" rel="noopener">https://github.com/alibaba/arthas</a><br>官方文档：<a href="https://alibaba.github.io/arthas" target="_blank" rel="noopener">https://alibaba.github.io/arthas</a></p>
-</blockquote>
-<h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><blockquote>
-<p><a href="https://arthas.aliyun.com/doc/install-detail.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/install-detail.html</a></p>
-<p><a href="https://blog.csdn.net/monokai/article/details/107457772" target="_blank" rel="noopener">https://blog.csdn.net/monokai/article/details/107457772</a></p>
-</blockquote>
-<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><blockquote>
-<p><a href="https://arthas.aliyun.com/doc/quick-start.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/quick-start.html</a></p>
-</blockquote>
-<h1 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h1><blockquote>
-<p><a href="https://arthas.aliyun.com/doc/advanced-use.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/advanced-use.html</a></p>
-</blockquote>
-<h1 id="Arthas-脑图—常用命令汇总"><a href="#Arthas-脑图—常用命令汇总" class="headerlink" title="Arthas 脑图—常用命令汇总:"></a>Arthas 脑图—常用命令汇总:</h1><blockquote>
-<p><a href="https://github.com/alibaba/arthas/issues/1003" target="_blank" rel="noopener">https://github.com/alibaba/arthas/issues/1003</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>运维知识</category>
-        <category>Java诊断工具</category>
-      </categories>
-      <tags>
-        <tag>Arthas</tag>
       </tags>
   </entry>
   <entry>
@@ -382,11 +384,36 @@
 
 ]]></content>
       <categories>
-        <category>RabbitMQ</category>
+        <category>后端</category>
+        <category>中间件</category>
+        <category>消息队列</category>
       </categories>
       <tags>
         <tag>Docker</tag>
         <tag>RabbitMQ</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>虚拟化/容器化</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
       </tags>
   </entry>
   <entry>
@@ -467,7 +494,9 @@
 <p><img src="/images/2020110205.png" alt="image-20201102120404832"></p>
 ]]></content>
       <categories>
-        <category>PXC</category>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>数据库集群</category>
       </categories>
       <tags>
         <tag>Docker</tag>
@@ -475,29 +504,9 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
-
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker命令</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker设置镜像自启动</title>
     <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>Docker便捷小技巧：</p>
+    <content><![CDATA[<p>Docker便捷小技巧</p>
 <a id="more"></a>
 
 <p>1.发现没启动</p>
@@ -509,7 +518,9 @@
 <p>4.重启测试一下</p>
 ]]></content>
       <categories>
-        <category>Docker</category>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>虚拟化/容器化</category>
       </categories>
       <tags>
         <tag>Docker</tag>
@@ -1066,6 +1077,64 @@
       </tags>
   </entry>
   <entry>
+    <title>IDEA配置与常用快捷键</title>
+    <url>/2021/01/20/IDEA%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-IDEA配置"><a href="#1-IDEA配置" class="headerlink" title="1 IDEA配置"></a>1 IDEA配置</h1><p>1.1 整合maven</p>
+<p>1.2 JDK配置</p>
+<p>1.3 编码设置为UTF8</p>
+<h2 id="1-4-启动时不自动打开上一次的项目"><a href="#1-4-启动时不自动打开上一次的项目" class="headerlink" title="1.4 启动时不自动打开上一次的项目"></a>1.4 启动时不自动打开上一次的项目</h2><p>取消勾选</p>
+<p><img src="/images/2021012001.png" alt="image"></p>
+<h1 id="2-常用快捷键"><a href="#2-常用快捷键" class="headerlink" title="2 常用快捷键"></a>2 常用快捷键</h1><p><strong>快捷键技巧：</strong></p>
+<p>对于Windows：HotKey Explorer，HotKey Commander，快捷键说明</p>
+<p>对于macOS：CheatSheet</p>
+<p><strong>查看快捷键文档：</strong></p>
+<p>Helper–》Keymap Preference</p>
+<h2 id="2-1-代码格式化"><a href="#2-1-代码格式化" class="headerlink" title="2.1 代码格式化"></a>2.1 代码格式化</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-常用插件"><a href="#3-常用插件" class="headerlink" title="3 常用插件"></a>3 常用插件</h1><table>
+<thead>
+<tr>
+<th>Plugins</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Maven Helper</td>
+<td>检测maven依赖冲突的问题</td>
+</tr>
+<tr>
+<td>Lombok</td>
+<td>让代码更简洁</td>
+</tr>
+<tr>
+<td>CodeGlance</td>
+<td>代码缩放图</td>
+</tr>
+<tr>
+<td>Alibaba Java Coding</td>
+<td>扫描Java代码潜在的代码隐患，提升代码质量</td>
+</tr>
+<tr>
+<td>Save Actions</td>
+<td>保存自动格式化</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>集成开发环境</category>
+        <category>IDEA</category>
+      </categories>
+      <tags>
+        <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hadoop集群搭建</title>
     <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<blockquote>
@@ -1153,64 +1222,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Hadoop集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IDEA配置与常用快捷键</title>
-    <url>/2021/01/20/IDEA%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="1-IDEA配置"><a href="#1-IDEA配置" class="headerlink" title="1 IDEA配置"></a>1 IDEA配置</h1><p>1.1 整合maven</p>
-<p>1.2 JDK配置</p>
-<p>1.3 编码设置为UTF8</p>
-<h2 id="1-4-启动时不自动打开上一次的项目"><a href="#1-4-启动时不自动打开上一次的项目" class="headerlink" title="1.4 启动时不自动打开上一次的项目"></a>1.4 启动时不自动打开上一次的项目</h2><p>取消勾选</p>
-<p><img src="/images/2021012001.png" alt="image"></p>
-<h1 id="2-常用快捷键"><a href="#2-常用快捷键" class="headerlink" title="2 常用快捷键"></a>2 常用快捷键</h1><p><strong>快捷键技巧：</strong></p>
-<p>对于Windows：HotKey Explorer，HotKey Commander，快捷键说明</p>
-<p>对于macOS：CheatSheet</p>
-<p><strong>查看快捷键文档：</strong></p>
-<p>Helper–》Keymap Preference</p>
-<h2 id="2-1-代码格式化"><a href="#2-1-代码格式化" class="headerlink" title="2.1 代码格式化"></a>2.1 代码格式化</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="3-常用插件"><a href="#3-常用插件" class="headerlink" title="3 常用插件"></a>3 常用插件</h1><table>
-<thead>
-<tr>
-<th>Plugins</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Maven Helper</td>
-<td>检测maven依赖冲突的问题</td>
-</tr>
-<tr>
-<td>Lombok</td>
-<td>让代码更简洁</td>
-</tr>
-<tr>
-<td>CodeGlance</td>
-<td>代码缩放图</td>
-</tr>
-<tr>
-<td>Alibaba Java Coding</td>
-<td>扫描Java代码潜在的代码隐患，提升代码质量</td>
-</tr>
-<tr>
-<td>Save Actions</td>
-<td>保存自动格式化</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>集成开发环境</category>
-        <category>IDEA</category>
-      </categories>
-      <tags>
-        <tag>IDEA</tag>
       </tags>
   </entry>
   <entry>
@@ -1311,46 +1322,11 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java IO流详解</title>
-    <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Java之美[从菜鸟到高手演变]之Java中的IO:<a href="https://blog.csdn.net/zhangerqing/article/details/8466532" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8466532</a></p>
-<p>Java IO流学习总结一：输入输出流:<a href="https://blog.csdn.net/zhaoyanjun6/article/details/54292148" target="_blank" rel="noopener">https://blog.csdn.net/zhaoyanjun6/article/details/54292148</a></p>
-<p>史上最骚最全最详细的IO流教程，没有之一！:<a href="https://www.cnblogs.com/yichunguo/p/11775270.html" target="_blank" rel="noopener">https://www.cnblogs.com/yichunguo/p/11775270.html</a></p>
-<p>Java IO:<a href="http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88</a></p>
+    <title>Java反射详解</title>
+    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
 </blockquote>
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>Java IO流大概可以分为以下几类：</p>
-<ul>
-<li>磁盘操作：File类</li>
-<li>字节流操作：InputStream，OutputStream</li>
-<li>字符流操作：Reader，Writer</li>
-<li>对象操作：Serializable</li>
-<li>网络操作：socket</li>
-<li>新的输入/输出：NIO</li>
-</ul>
-<h1 id="2-磁盘操作"><a href="#2-磁盘操作" class="headerlink" title="2 磁盘操作"></a>2 磁盘操作</h1><p>File类可以用于获取目录和文件的信息，但他不表示文件的内容。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fileMethod</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File file2 : files) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (file2.isDirectory()) &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件夹:"</span> + file2.getAbsolutePath());</span><br><span class="line">                        fileMethod(file2.getAbsolutePath());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件:"</span> + file2.getAbsolutePath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件不存在!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>从 Java7 开始，可以使用 Paths 和 Files 代替 File。文件的操作更加简便快捷</p>
-<blockquote>
-<p>Java文件处理：Paths和Files：<a href="https://www.jianshu.com/p/3b3c5dbcfae7" target="_blank" rel="noopener">https://www.jianshu.com/p/3b3c5dbcfae7</a></p>
-</blockquote>
-<h1 id="3-字节流操作"><a href="#3-字节流操作" class="headerlink" title="3 字节流操作"></a>3 字节流操作</h1><p>实现文件复制</p>
-<h1 id="4-对象操作"><a href="#4-对象操作" class="headerlink" title="4 对象操作"></a>4 对象操作</h1><blockquote>
-<p>对象的序列化:<a href="https://liuyangjun.blog.csdn.net/article/details/80422143" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/80422143</a></p>
-</blockquote>
-<h1 id="5-网络操作"><a href="#5-网络操作" class="headerlink" title="5 网络操作"></a>5 网络操作</h1><h1 id="6-新的输入-输出（NIO）"><a href="#6-新的输入-输出（NIO）" class="headerlink" title="6 新的输入/输出（NIO）"></a>6 新的输入/输出（NIO）</h1><blockquote>
-<p><a href="https://www.zhihu.com/question/29005375" target="_blank" rel="noopener">https://www.zhihu.com/question/29005375</a></p>
-</blockquote>
-<p>NIO主要有<strong>三个核心部分组成</strong>：</p>
-<ul>
-<li><strong>buffer缓冲区</strong></li>
-<li><strong>Channel管道</strong></li>
-<li><strong>Selector选择器</strong></li>
-</ul>
 ]]></content>
       <categories>
         <category>编程基础</category>
@@ -1358,7 +1334,25 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>JavaSE基础</category>
       </categories>
       <tags>
-        <tag>IO流</tag>
+        <tag>反射</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java容器详解</title>
+    <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.jianshu.com/p/8ef342da8732" target="_blank" rel="noopener">https://www.jianshu.com/p/8ef342da8732</a></p>
+<p><a href="https://blog.csdn.net/feiyanaffection/article/details/81394745" target="_blank" rel="noopener">https://blog.csdn.net/feiyanaffection/article/details/81394745</a></p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201228151026979.png" alt="image-20201228151026979"></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -1426,6 +1420,75 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>内部类</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java IO流详解</title>
+    <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Java之美[从菜鸟到高手演变]之Java中的IO:<a href="https://blog.csdn.net/zhangerqing/article/details/8466532" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8466532</a></p>
+<p>Java IO流学习总结一：输入输出流:<a href="https://blog.csdn.net/zhaoyanjun6/article/details/54292148" target="_blank" rel="noopener">https://blog.csdn.net/zhaoyanjun6/article/details/54292148</a></p>
+<p>史上最骚最全最详细的IO流教程，没有之一！:<a href="https://www.cnblogs.com/yichunguo/p/11775270.html" target="_blank" rel="noopener">https://www.cnblogs.com/yichunguo/p/11775270.html</a></p>
+<p>Java IO:<a href="http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88</a></p>
+</blockquote>
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>Java IO流大概可以分为以下几类：</p>
+<ul>
+<li>磁盘操作：File类</li>
+<li>字节流操作：InputStream，OutputStream</li>
+<li>字符流操作：Reader，Writer</li>
+<li>对象操作：Serializable</li>
+<li>网络操作：socket</li>
+<li>新的输入/输出：NIO</li>
+</ul>
+<h1 id="2-磁盘操作"><a href="#2-磁盘操作" class="headerlink" title="2 磁盘操作"></a>2 磁盘操作</h1><p>File类可以用于获取目录和文件的信息，但他不表示文件的内容。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fileMethod</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File file2 : files) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (file2.isDirectory()) &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件夹:"</span> + file2.getAbsolutePath());</span><br><span class="line">                        fileMethod(file2.getAbsolutePath());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件:"</span> + file2.getAbsolutePath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件不存在!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从 Java7 开始，可以使用 Paths 和 Files 代替 File。文件的操作更加简便快捷</p>
+<blockquote>
+<p>Java文件处理：Paths和Files：<a href="https://www.jianshu.com/p/3b3c5dbcfae7" target="_blank" rel="noopener">https://www.jianshu.com/p/3b3c5dbcfae7</a></p>
+</blockquote>
+<h1 id="3-字节流操作"><a href="#3-字节流操作" class="headerlink" title="3 字节流操作"></a>3 字节流操作</h1><p>实现文件复制</p>
+<h1 id="4-对象操作"><a href="#4-对象操作" class="headerlink" title="4 对象操作"></a>4 对象操作</h1><blockquote>
+<p>对象的序列化:<a href="https://liuyangjun.blog.csdn.net/article/details/80422143" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/80422143</a></p>
+</blockquote>
+<h1 id="5-网络操作"><a href="#5-网络操作" class="headerlink" title="5 网络操作"></a>5 网络操作</h1><h1 id="6-新的输入-输出（NIO）"><a href="#6-新的输入-输出（NIO）" class="headerlink" title="6 新的输入/输出（NIO）"></a>6 新的输入/输出（NIO）</h1><blockquote>
+<p><a href="https://www.zhihu.com/question/29005375" target="_blank" rel="noopener">https://www.zhihu.com/question/29005375</a></p>
+</blockquote>
+<p>NIO主要有<strong>三个核心部分组成</strong>：</p>
+<ul>
+<li><strong>buffer缓冲区</strong></li>
+<li><strong>Channel管道</strong></li>
+<li><strong>Selector选择器</strong></li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>IO流</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java异常详解</title>
+    <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
+<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
+</blockquote>
+<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>异常</tag>
       </tags>
   </entry>
   <entry>
@@ -1547,11 +1610,13 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java反射详解</title>
-    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
+    <title>Java注解详解</title>
+    <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
-<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
+<p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
+<p><a href="https://www.runoob.com/w3cnote/java-annotation.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-annotation.html</a></p>
 </blockquote>
+<h1 id="Annotation-架构"><a href="#Annotation-架构" class="headerlink" title="Annotation 架构"></a>Annotation 架构</h1><p><img src="https://www.runoob.com/wp-content/uploads/2019/08/28123151-d471f82eb2bc4812b46cc5ff3e9e6b82.jpg" alt="img"></p>
 ]]></content>
       <categories>
         <category>编程基础</category>
@@ -1559,57 +1624,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>JavaSE基础</category>
       </categories>
       <tags>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java容器详解</title>
-    <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.jianshu.com/p/8ef342da8732" target="_blank" rel="noopener">https://www.jianshu.com/p/8ef342da8732</a></p>
-<p><a href="https://blog.csdn.net/feiyanaffection/article/details/81394745" target="_blank" rel="noopener">https://blog.csdn.net/feiyanaffection/article/details/81394745</a></p>
-</blockquote>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201228151026979.png" alt="image-20201228151026979"></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>集合</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java并发学习笔记</title>
-    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>并发学习</p>
-<a id="more"></a>
-
-<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
-      <categories>
-        <category>并发</category>
-      </categories>
-      <tags>
-        <tag>Java并发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java异常详解</title>
-    <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
-<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
-</blockquote>
-<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>异常</tag>
+        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -1636,6 +1651,37 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>接口</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java并发学习笔记</title>
+    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>并发学习</p>
+<a id="more"></a>
+
+<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
+      <categories>
+        <category>并发</category>
+      </categories>
+      <tags>
+        <tag>Java并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis-Plus笔记</title>
+    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>应用框架</category>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>ORM框架</category>
+      </categories>
+      <tags>
+        <tag>MyBatis-Plus</tag>
       </tags>
   </entry>
   <entry>
@@ -1846,24 +1892,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java注解详解</title>
-    <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
-<p><a href="https://www.runoob.com/w3cnote/java-annotation.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-annotation.html</a></p>
-</blockquote>
-<h1 id="Annotation-架构"><a href="#Annotation-架构" class="headerlink" title="Annotation 架构"></a>Annotation 架构</h1><p><img src="https://www.runoob.com/wp-content/uploads/2019/08/28123151-d471f82eb2bc4812b46cc5ff3e9e6b82.jpg" alt="img"></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java面向对象详解</title>
     <url>/2020/12/27/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -1951,64 +1979,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis-Plus笔记</title>
-    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>应用框架</category>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>ORM框架</category>
-      </categories>
-      <tags>
-        <tag>MyBatis-Plus</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MyBatis三剑客</title>
-    <url>/2020/11/19/MyBatis%E4%B8%89%E5%89%91%E5%AE%A2/</url>
-    <content><![CDATA[<p>MyBatis-generator</p>
-<p>MyBatis-plugin</p>
-<p>MyBatis-PageHelper</p>
-<a id="more"></a>
-
-<h1 id="Mybatis-generator代码自动生成"><a href="#Mybatis-generator代码自动生成" class="headerlink" title="Mybatis-generator代码自动生成"></a>Mybatis-generator代码自动生成</h1><p>mybatis-generator是一款流行的自动代码生成工具。</p>
-<p>这里简述一下开发步骤：</p>
-<h2 id="1-maven依赖配置"><a href="#1-maven依赖配置" class="headerlink" title="1.maven依赖配置"></a>1.maven依赖配置</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.generator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-generator-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">overwrite</span>&gt;</span>true<span class="tag">&lt;/<span class="name">overwrite</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.0.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-新建配置文件generatorConfig-xml"><a href="#2-新建配置文件generatorConfig-xml" class="headerlink" title="2.新建配置文件generatorConfig.xml"></a>2.新建配置文件generatorConfig.xml</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">generatorConfiguration</span></span></span><br><span class="line"><span class="meta">  <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 配置生成器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">generatorConfiguration</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用$&#123;propertyKey&#125;的方式来引用配置项</span></span><br><span class="line"><span class="comment">    resource：配置资源加载地址，使用resource，MBG从classpath开始找，比如com/myproject/generatorConfig.properties        </span></span><br><span class="line"><span class="comment">    url：配置资源加载地质，使用URL的方式，比如file:///C:/myfolder/generatorConfig.properties.</span></span><br><span class="line"><span class="comment">    注意，两个属性只能选址一个;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用</span></span><br><span class="line"><span class="comment">&lt;properties resource="" url="" /&gt;</span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">&lt;!-- 在MBG工作的时候，需要额外加载的依赖包</span></span><br><span class="line"><span class="comment">     location属性指明加载jar/zip包的全路径</span></span><br><span class="line"><span class="comment">&lt;classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" /&gt;</span></span><br><span class="line"><span class="comment">  --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">    context:生成一组对象的环境 </span></span><br><span class="line"><span class="comment">    id:必选，上下文id，用于在生成错误时提示</span></span><br><span class="line"><span class="comment">    defaultModelType:指定生成对象的样式</span></span><br><span class="line"><span class="comment">        1，conditional：类似hierarchical；</span></span><br><span class="line"><span class="comment">        2，flat：所有内容（主键，blob）等全部生成在一个对象中；</span></span><br><span class="line"><span class="comment">        3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)</span></span><br><span class="line"><span class="comment">    targetRuntime:</span></span><br><span class="line"><span class="comment">        1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；</span></span><br><span class="line"><span class="comment">        2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；</span></span><br><span class="line"><span class="comment">    introspectedColumnImpl：类全限定名，用于扩展MBG</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">context</span> <span class="attr">id</span>=<span class="string">"mysql"</span> <span class="attr">defaultModelType</span>=<span class="string">"hierarchical"</span> <span class="attr">targetRuntime</span>=<span class="string">"MyBatis3Simple"</span> &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；</span></span><br><span class="line"><span class="comment">        一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">     </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"autoDelimitKeywords"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 生成的Java文件的编码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"javaFileEncoding"</span> <span class="attr">value</span>=<span class="string">"UTF-8"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 格式化java代码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"javaFormatter"</span> <span class="attr">value</span>=<span class="string">"org.mybatis.generator.api.dom.DefaultJavaFormatter"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 格式化XML代码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"xmlFormatter"</span> <span class="attr">value</span>=<span class="string">"org.mybatis.generator.api.dom.DefaultXmlFormatter"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"beginningDelimiter"</span> <span class="attr">value</span>=<span class="string">"`"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"endingDelimiter"</span> <span class="attr">value</span>=<span class="string">"`"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 必须要有的，使用这个配置链接数据库</span></span><br><span class="line"><span class="comment">        @<span class="doctag">TODO:</span>是否可以扩展</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">jdbcConnection</span> <span class="attr">driverClass</span>=<span class="string">"com.mysql.jdbc.Driver"</span> <span class="attr">connectionURL</span>=<span class="string">"jdbc:mysql:///pss"</span> <span class="attr">userId</span>=<span class="string">"root"</span> <span class="attr">password</span>=<span class="string">"admin"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 这里面可以设置property属性，每一个property属性都设置到配置的Driver上 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">jdbcConnection</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- java类型处理器 </span></span><br><span class="line"><span class="comment">        用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；</span></span><br><span class="line"><span class="comment">        注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型； </span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaTypeResolver</span> <span class="attr">type</span>=<span class="string">"org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">            true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型</span></span><br><span class="line"><span class="comment">            false：默认,</span></span><br><span class="line"><span class="comment">                scale&gt;0;length&gt;18：使用BigDecimal;</span></span><br><span class="line"><span class="comment">                scale=0;length[10,18]：使用Long；</span></span><br><span class="line"><span class="comment">                scale=0;length[5,9]：使用Integer；</span></span><br><span class="line"><span class="comment">                scale=0;length&lt;5：使用Short；</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"forceBigDecimals"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaTypeResolver</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- java模型创建器，是必须要的元素</span></span><br><span class="line"><span class="comment">        负责：1，key类（见context的defaultModelType）；2，java类；3，查询类</span></span><br><span class="line"><span class="comment">        targetPackage：生成的类要放的包，真实的包受enableSubPackages属性控制；</span></span><br><span class="line"><span class="comment">        targetProject：目标项目，指定一个存在的目录下，生成的内容会放到指定目录中，如果目录不存在，MBG不会自动建目录</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"com._520it.mybatis.domain"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/java"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--  for MyBatis3/MyBatis3Simple</span></span><br><span class="line"><span class="comment">            自动为每一个生成的类创建一个构造方法，构造方法包含了所有的field；而不是使用setter；</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"constructorBased"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- for MyBatis3 / MyBatis3Simple</span></span><br><span class="line"><span class="comment">            是否创建一个不可变的类，如果为true，</span></span><br><span class="line"><span class="comment">            那么MBG会创建一个没有setter方法的类，取而代之的是类似constructorBased的类</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"immutable"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 设置一个根对象，</span></span><br><span class="line"><span class="comment">            如果设置了这个根对象，那么生成的keyClass或者recordClass会继承这个类；在Table的rootClass属性中可以覆盖该选项</span></span><br><span class="line"><span class="comment">            注意：如果在key class或者record class中有root class相同的属性，MBG就不会重新生成这些属性了，包括：</span></span><br><span class="line"><span class="comment">                1，属性名相同，类型相同，有相同的getter/setter方法；</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"rootClass"</span> <span class="attr">value</span>=<span class="string">"com._520it.mybatis.domain.BaseDomain"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 设置是否在getter方法中，对String类型字段调用trim()方法 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"trimStrings"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaModelGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 生成SQL map的XML文件生成器，</span></span><br><span class="line"><span class="comment">        注意，在Mybatis3之后，我们可以使用mapper.xml文件+Mapper接口（或者不用mapper接口），</span></span><br><span class="line"><span class="comment">            或者只使用Mapper接口+Annotation，所以，如果 javaClientGenerator配置中配置了需要生成XML的话，这个元素就必须配置</span></span><br><span class="line"><span class="comment">        targetPackage/targetProject:同javaModelGenerator</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"com._520it.mybatis.mapper"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/resources"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sqlMapGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口 </span></span><br><span class="line"><span class="comment">        targetPackage/targetProject:同javaModelGenerator</span></span><br><span class="line"><span class="comment">        type：选择怎么生成mapper接口（在MyBatis3/MyBatis3Simple下）：</span></span><br><span class="line"><span class="comment">            1，ANNOTATEDMAPPER：会生成使用Mapper接口+Annotation的方式创建（SQL生成在annotation中），不会生成对应的XML；</span></span><br><span class="line"><span class="comment">            2，MIXEDMAPPER：使用混合配置，会生成Mapper接口，并适当添加合适的Annotation，但是XML会生成在XML中；</span></span><br><span class="line"><span class="comment">            3，XMLMAPPER：会生成Mapper接口，接口完全依赖XML；</span></span><br><span class="line"><span class="comment">        注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"com._520it.mybatis.mapper"</span> <span class="attr">type</span>=<span class="string">"ANNOTATEDMAPPER"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/java"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查</span></span><br><span class="line"><span class="comment">        &lt;property name="rootInterface" value=""/&gt;</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaClientGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 选择一个table来生成相关文件，可以有一个或多个table，必须要有table元素</span></span><br><span class="line"><span class="comment">        选择的table会生成一下文件：</span></span><br><span class="line"><span class="comment">        1，SQL map文件</span></span><br><span class="line"><span class="comment">        2，生成一个主键类；</span></span><br><span class="line"><span class="comment">        3，除了BLOB和主键的其他字段的类；</span></span><br><span class="line"><span class="comment">        4，包含BLOB的类；</span></span><br><span class="line"><span class="comment">        5，一个用户生成动态查询的条件类（selectByExample, deleteByExample），可选；</span></span><br><span class="line"><span class="comment">        6，Mapper接口（可选）</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        tableName（必要）：要生成对象的表名；</span></span><br><span class="line"><span class="comment">        注意：大小写敏感问题。正常情况下，MBG会自动的去识别数据库标识符的大小写敏感度，在一般情况下，MBG会</span></span><br><span class="line"><span class="comment">            根据设置的schema，catalog或tablename去查询数据表，按照下面的流程：</span></span><br><span class="line"><span class="comment">            1，如果schema，catalog或tablename中有空格，那么设置的是什么格式，就精确的使用指定的大小写格式去查询；</span></span><br><span class="line"><span class="comment">            2，否则，如果数据库的标识符使用大写的，那么MBG自动把表名变成大写再查找；</span></span><br><span class="line"><span class="comment">            3，否则，如果数据库的标识符使用小写的，那么MBG自动把表名变成小写再查找；</span></span><br><span class="line"><span class="comment">            4，否则，使用指定的大小写格式查询；</span></span><br><span class="line"><span class="comment">        另外的，如果在创建表的时候，使用的""把数据库对象规定大小写，就算数据库标识符是使用的大写，在这种情况下也会使用给定的大小写来创建表名；</span></span><br><span class="line"><span class="comment">        这个时候，请设置delimitIdentifiers="true"即可保留大小写格式；</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        可选：</span></span><br><span class="line"><span class="comment">        1，schema：数据库的schema；</span></span><br><span class="line"><span class="comment">        2，catalog：数据库的catalog；</span></span><br><span class="line"><span class="comment">        3，alias：为数据表设置的别名，如果设置了alias，那么生成的所有的SELECT SQL语句中，列名会变成：alias_actualColumnName</span></span><br><span class="line"><span class="comment">        4，domainObjectName：生成的domain类的名字，如果不设置，直接使用表名作为domain类的名字；可以设置为somepck.domainName，那么会自动把domainName类再放到somepck包里面；</span></span><br><span class="line"><span class="comment">        5，enableInsert（默认true）：指定是否生成insert语句；</span></span><br><span class="line"><span class="comment">        6，enableSelectByPrimaryKey（默认true）：指定是否生成按照主键查询对象的语句（就是getById或get）；</span></span><br><span class="line"><span class="comment">        7，enableSelectByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询语句；</span></span><br><span class="line"><span class="comment">        8，enableUpdateByPrimaryKey（默认true）：指定是否生成按照主键修改对象的语句（即update)；</span></span><br><span class="line"><span class="comment">        9，enableDeleteByPrimaryKey（默认true）：指定是否生成按照主键删除对象的语句（即delete）；</span></span><br><span class="line"><span class="comment">        10，enableDeleteByExample（默认true）：MyBatis3Simple为false，指定是否生成动态删除语句；</span></span><br><span class="line"><span class="comment">        11，enableCountByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询总条数语句（用于分页的总条数查询）；</span></span><br><span class="line"><span class="comment">        12，enableUpdateByExample（默认true）：MyBatis3Simple为false，指定是否生成动态修改语句（只修改对象中不为空的属性）；</span></span><br><span class="line"><span class="comment">        13，modelType：参考context元素的defaultModelType，相当于覆盖；</span></span><br><span class="line"><span class="comment">        14，delimitIdentifiers：参考tableName的解释，注意，默认的delimitIdentifiers是双引号，如果类似MYSQL这样的数据库，使用的是`（反引号，那么还需要设置context的beginningDelimiter和endingDelimiter属性）</span></span><br><span class="line"><span class="comment">        15，delimitAllColumns：设置是否所有生成的SQL中的列名都使用标识符引起来。默认为false，delimitIdentifiers参考context的属性</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">"userinfo"</span> &gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 参考 javaModelGenerator 的 constructorBased属性--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"constructorBased"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 默认为false，如果设置为true，在生成的SQL中，table名字不会加上catalog或schema； --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"ignoreQualifiersAtRuntime"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 参考 javaModelGenerator 的 immutable 属性 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"immutable"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 指定是否只生成domain类，如果设置为true，只生成domain类，如果还配置了sqlMapGenerator，那么在mapper XML文件中，只生成resultMap元素 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"modelOnly"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 参考 javaModelGenerator 的 rootClass 属性 </span></span><br><span class="line"><span class="comment">        &lt;property name="rootClass" value=""/&gt;</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 参考javaClientGenerator 的  rootInterface 属性</span></span><br><span class="line"><span class="comment">        &lt;property name="rootInterface" value=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 如果设置了runtimeCatalog，那么在生成的SQL中，使用该指定的catalog，而不是table元素上的catalog </span></span><br><span class="line"><span class="comment">        &lt;property name="runtimeCatalog" value=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 如果设置了runtimeSchema，那么在生成的SQL中，使用该指定的schema，而不是table元素上的schema </span></span><br><span class="line"><span class="comment">        &lt;property name="runtimeSchema" value=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 如果设置了runtimeTableName，那么在生成的SQL中，使用该指定的tablename，而不是table元素上的tablename </span></span><br><span class="line"><span class="comment">        &lt;property name="runtimeTableName" value=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 注意，该属性只针对MyBatis3Simple有用；</span></span><br><span class="line"><span class="comment">            如果选择的runtime是MyBatis3Simple，那么会生成一个SelectAll方法，如果指定了selectAllOrderByClause，那么会在该SQL中添加指定的这个order条件；</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"selectAllOrderByClause"</span> <span class="attr">value</span>=<span class="string">"age desc,username asc"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"useActualColumnNames"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- generatedKey用于生成生成主键的方法，</span></span><br><span class="line"><span class="comment">            如果设置了该元素，MBG会在生成的&lt;insert&gt;元素中生成一条正确的&lt;selectKey&gt;元素，该元素可选</span></span><br><span class="line"><span class="comment">            column:主键的列名；</span></span><br><span class="line"><span class="comment">            sqlStatement：要生成的selectKey语句，有以下可选项：</span></span><br><span class="line"><span class="comment">                Cloudscape:相当于selectKey的SQL为： VALUES IDENTITY_VAL_LOCAL()</span></span><br><span class="line"><span class="comment">                DB2       :相当于selectKey的SQL为： VALUES IDENTITY_VAL_LOCAL()</span></span><br><span class="line"><span class="comment">                DB2_MF    :相当于selectKey的SQL为：SELECT IDENTITY_VAL_LOCAL() FROM SYSIBM.SYSDUMMY1</span></span><br><span class="line"><span class="comment">                Derby      :相当于selectKey的SQL为：VALUES IDENTITY_VAL_LOCAL()</span></span><br><span class="line"><span class="comment">                HSQLDB      :相当于selectKey的SQL为：CALL IDENTITY()</span></span><br><span class="line"><span class="comment">                Informix  :相当于selectKey的SQL为：select dbinfo('sqlca.sqlerrd1') from systables where tabid=1</span></span><br><span class="line"><span class="comment">                MySql      :相当于selectKey的SQL为：SELECT LAST_INSERT_ID()</span></span><br><span class="line"><span class="comment">                SqlServer :相当于selectKey的SQL为：SELECT SCOPE_IDENTITY()</span></span><br><span class="line"><span class="comment">                SYBASE      :相当于selectKey的SQL为：SELECT @@IDENTITY</span></span><br><span class="line"><span class="comment">                JDBC      :相当于在生成的insert元素上添加useGeneratedKeys="true"和keyProperty属性</span></span><br><span class="line"><span class="comment">        &lt;generatedKey column="" sqlStatement=""/&gt;</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">            该元素会在根据表中列名计算对象属性名之前先重命名列名，非常适合用于表中的列都有公用的前缀字符串的时候，</span></span><br><span class="line"><span class="comment">            比如列名为：CUST_ID,CUST_NAME,CUST_EMAIL,CUST_ADDRESS等；</span></span><br><span class="line"><span class="comment">            那么就可以设置searchString为"^CUST_"，并使用空白替换，那么生成的Customer对象中的属性名称就不是</span></span><br><span class="line"><span class="comment">            custId,custName等，而是先被替换为ID,NAME,EMAIL,然后变成属性：id，name，email；</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">            注意，MBG是使用java.util.regex.Matcher.replaceAll来替换searchString和replaceString的，</span></span><br><span class="line"><span class="comment">            如果使用了columnOverride元素，该属性无效；</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        &lt;columnRenamingRule searchString="" replaceString=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="comment">&lt;!-- 用来修改表中某个列的属性，MBG会使用修改后的列来生成domain的属性；</span></span><br><span class="line"><span class="comment">             column:要重新设置的列名；</span></span><br><span class="line"><span class="comment">             注意，一个table元素中可以有多个columnOverride元素哈~</span></span><br><span class="line"><span class="comment">          --&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"username"</span>&gt;</span></span><br><span class="line">             <span class="comment">&lt;!-- 使用property属性来指定列要生成的属性名称 --&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"property"</span> <span class="attr">value</span>=<span class="string">"userName"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">             <span class="comment">&lt;!-- javaType用于指定生成的domain的属性类型，使用类型的全限定名</span></span><br><span class="line"><span class="comment">             &lt;property name="javaType" value=""/&gt;</span></span><br><span class="line"><span class="comment">              --&gt;</span></span><br><span class="line"></span><br><span class="line">             <span class="comment">&lt;!-- jdbcType用于指定该列的JDBC类型 </span></span><br><span class="line"><span class="comment">             &lt;property name="jdbcType" value=""/&gt;</span></span><br><span class="line"><span class="comment">              --&gt;</span></span><br><span class="line"></span><br><span class="line">             <span class="comment">&lt;!-- typeHandler 用于指定该列使用到的TypeHandler，如果要指定，配置类型处理器的全限定名</span></span><br><span class="line"><span class="comment">                 注意，mybatis中，不会生成到mybatis-config.xml中的typeHandler</span></span><br><span class="line"><span class="comment">                 只会生成类似：where id = #&#123;id,jdbcType=BIGINT,typeHandler=com._520it.mybatis.MyTypeHandler&#125;的参数描述</span></span><br><span class="line"><span class="comment">             &lt;property name="jdbcType" value=""/&gt;</span></span><br><span class="line"><span class="comment">             --&gt;</span></span><br><span class="line"></span><br><span class="line">             <span class="comment">&lt;!-- 参考table元素的delimitAllColumns配置，默认为false</span></span><br><span class="line"><span class="comment">             &lt;property name="delimitedColumnName" value=""/&gt;</span></span><br><span class="line"><span class="comment">              --&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">columnOverride</span>&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="comment">&lt;!-- ignoreColumn设置一个MGB忽略的列，如果设置了改列，那么在生成的domain中，生成的SQL中，都不会有该列出现 </span></span><br><span class="line"><span class="comment">             column:指定要忽略的列的名字；</span></span><br><span class="line"><span class="comment">             delimitedColumnName：参考table元素的delimitAllColumns配置，默认为false</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">             注意，一个table元素中可以有多个ignoreColumn元素</span></span><br><span class="line"><span class="comment">         &lt;ignoreColumn column="deptId" delimitedColumnName=""/&gt;</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">context</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">generatorConfiguration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-执行"><a href="#3-执行" class="headerlink" title="3.执行"></a>3.执行</h2><p>命令行界面<code>mvn mybatis-generator:generate</code></p>
-<h1 id="Mybatis-plugin插件"><a href="#Mybatis-plugin插件" class="headerlink" title="Mybatis-plugin插件"></a>Mybatis-plugin插件</h1><p><a href="https://github.com/rockjava/intellij-mybatis-plugin" target="_blank" rel="noopener">mybatis-plugin插件详情</a></p>
-<h2 id="1-特点："><a href="#1-特点：" class="headerlink" title="1.特点："></a>1.特点：</h2><ul>
-<li>提供Mapper接口与配置文件中对应SQL的导航</li>
-<li>编辑XML文件时自动补全</li>
-<li>自动检查Mapper XML文件中ID冲突</li>
-<li>自动检查Mapper XML文件中错误的属性值</li>
-<li>等等</li>
-</ul>
-<h2 id="2-个人推荐"><a href="#2-个人推荐" class="headerlink" title="2.个人推荐"></a>2.个人推荐</h2><p>mybatis-plugin是需要购买授权的，这里我推荐MyBatisX</p>
-<p><img src="/images/2020111904.png" alt="image-20201119203540933"></p>
-<h1 id="Mybatis-PageHelper"><a href="#Mybatis-PageHelper" class="headerlink" title="Mybatis-PageHelper"></a>Mybatis-PageHelper</h1><p>开源网站：<a href="https://github.com/pagehelper/Mybatis-PageHelper" target="_blank" rel="noopener">https://github.com/pagehelper/Mybatis-PageHelper</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.github.pagehelper&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;pagehelper-spring-boot-starter&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.2.13&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://liuurick.github.io/2020/10/25/SpringBoot集成MyBatis的分页插件PageHelper/" target="_blank" rel="noopener">Mybatis-PageHelper个人博客记录</a></p>
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>Mybatis-generator</tag>
-        <tag>Mybatis-plugin</tag>
-        <tag>Mybatis-PageHelper</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MyBatis二级缓存的一个小细节</title>
     <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
     <content><![CDATA[<p>记录一个小细节</p>
@@ -2068,6 +2038,47 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>MyBatis三剑客</title>
+    <url>/2020/11/19/MyBatis%E4%B8%89%E5%89%91%E5%AE%A2/</url>
+    <content><![CDATA[<p>MyBatis-generator</p>
+<p>MyBatis-plugin</p>
+<p>MyBatis-PageHelper</p>
+<a id="more"></a>
+
+<h1 id="Mybatis-generator代码自动生成"><a href="#Mybatis-generator代码自动生成" class="headerlink" title="Mybatis-generator代码自动生成"></a>Mybatis-generator代码自动生成</h1><p>mybatis-generator是一款流行的自动代码生成工具。</p>
+<p>这里简述一下开发步骤：</p>
+<h2 id="1-maven依赖配置"><a href="#1-maven依赖配置" class="headerlink" title="1.maven依赖配置"></a>1.maven依赖配置</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.generator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-generator-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">overwrite</span>&gt;</span>true<span class="tag">&lt;/<span class="name">overwrite</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.0.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-新建配置文件generatorConfig-xml"><a href="#2-新建配置文件generatorConfig-xml" class="headerlink" title="2.新建配置文件generatorConfig.xml"></a>2.新建配置文件generatorConfig.xml</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">generatorConfiguration</span></span></span><br><span class="line"><span class="meta">  <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 配置生成器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">generatorConfiguration</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用$&#123;propertyKey&#125;的方式来引用配置项</span></span><br><span class="line"><span class="comment">    resource：配置资源加载地址，使用resource，MBG从classpath开始找，比如com/myproject/generatorConfig.properties        </span></span><br><span class="line"><span class="comment">    url：配置资源加载地质，使用URL的方式，比如file:///C:/myfolder/generatorConfig.properties.</span></span><br><span class="line"><span class="comment">    注意，两个属性只能选址一个;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用</span></span><br><span class="line"><span class="comment">&lt;properties resource="" url="" /&gt;</span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">&lt;!-- 在MBG工作的时候，需要额外加载的依赖包</span></span><br><span class="line"><span class="comment">     location属性指明加载jar/zip包的全路径</span></span><br><span class="line"><span class="comment">&lt;classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" /&gt;</span></span><br><span class="line"><span class="comment">  --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">    context:生成一组对象的环境 </span></span><br><span class="line"><span class="comment">    id:必选，上下文id，用于在生成错误时提示</span></span><br><span class="line"><span class="comment">    defaultModelType:指定生成对象的样式</span></span><br><span class="line"><span class="comment">        1，conditional：类似hierarchical；</span></span><br><span class="line"><span class="comment">        2，flat：所有内容（主键，blob）等全部生成在一个对象中；</span></span><br><span class="line"><span class="comment">        3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)</span></span><br><span class="line"><span class="comment">    targetRuntime:</span></span><br><span class="line"><span class="comment">        1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；</span></span><br><span class="line"><span class="comment">        2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；</span></span><br><span class="line"><span class="comment">    introspectedColumnImpl：类全限定名，用于扩展MBG</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">context</span> <span class="attr">id</span>=<span class="string">"mysql"</span> <span class="attr">defaultModelType</span>=<span class="string">"hierarchical"</span> <span class="attr">targetRuntime</span>=<span class="string">"MyBatis3Simple"</span> &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；</span></span><br><span class="line"><span class="comment">        一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">     </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"autoDelimitKeywords"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 生成的Java文件的编码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"javaFileEncoding"</span> <span class="attr">value</span>=<span class="string">"UTF-8"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 格式化java代码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"javaFormatter"</span> <span class="attr">value</span>=<span class="string">"org.mybatis.generator.api.dom.DefaultJavaFormatter"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 格式化XML代码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"xmlFormatter"</span> <span class="attr">value</span>=<span class="string">"org.mybatis.generator.api.dom.DefaultXmlFormatter"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"beginningDelimiter"</span> <span class="attr">value</span>=<span class="string">"`"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"endingDelimiter"</span> <span class="attr">value</span>=<span class="string">"`"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 必须要有的，使用这个配置链接数据库</span></span><br><span class="line"><span class="comment">        @<span class="doctag">TODO:</span>是否可以扩展</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">jdbcConnection</span> <span class="attr">driverClass</span>=<span class="string">"com.mysql.jdbc.Driver"</span> <span class="attr">connectionURL</span>=<span class="string">"jdbc:mysql:///pss"</span> <span class="attr">userId</span>=<span class="string">"root"</span> <span class="attr">password</span>=<span class="string">"admin"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 这里面可以设置property属性，每一个property属性都设置到配置的Driver上 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">jdbcConnection</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- java类型处理器 </span></span><br><span class="line"><span class="comment">        用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；</span></span><br><span class="line"><span class="comment">        注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型； </span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaTypeResolver</span> <span class="attr">type</span>=<span class="string">"org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">            true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型</span></span><br><span class="line"><span class="comment">            false：默认,</span></span><br><span class="line"><span class="comment">                scale&gt;0;length&gt;18：使用BigDecimal;</span></span><br><span class="line"><span class="comment">                scale=0;length[10,18]：使用Long；</span></span><br><span class="line"><span class="comment">                scale=0;length[5,9]：使用Integer；</span></span><br><span class="line"><span class="comment">                scale=0;length&lt;5：使用Short；</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"forceBigDecimals"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaTypeResolver</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- java模型创建器，是必须要的元素</span></span><br><span class="line"><span class="comment">        负责：1，key类（见context的defaultModelType）；2，java类；3，查询类</span></span><br><span class="line"><span class="comment">        targetPackage：生成的类要放的包，真实的包受enableSubPackages属性控制；</span></span><br><span class="line"><span class="comment">        targetProject：目标项目，指定一个存在的目录下，生成的内容会放到指定目录中，如果目录不存在，MBG不会自动建目录</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"com._520it.mybatis.domain"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/java"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--  for MyBatis3/MyBatis3Simple</span></span><br><span class="line"><span class="comment">            自动为每一个生成的类创建一个构造方法，构造方法包含了所有的field；而不是使用setter；</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"constructorBased"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- for MyBatis3 / MyBatis3Simple</span></span><br><span class="line"><span class="comment">            是否创建一个不可变的类，如果为true，</span></span><br><span class="line"><span class="comment">            那么MBG会创建一个没有setter方法的类，取而代之的是类似constructorBased的类</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"immutable"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 设置一个根对象，</span></span><br><span class="line"><span class="comment">            如果设置了这个根对象，那么生成的keyClass或者recordClass会继承这个类；在Table的rootClass属性中可以覆盖该选项</span></span><br><span class="line"><span class="comment">            注意：如果在key class或者record class中有root class相同的属性，MBG就不会重新生成这些属性了，包括：</span></span><br><span class="line"><span class="comment">                1，属性名相同，类型相同，有相同的getter/setter方法；</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"rootClass"</span> <span class="attr">value</span>=<span class="string">"com._520it.mybatis.domain.BaseDomain"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 设置是否在getter方法中，对String类型字段调用trim()方法 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"trimStrings"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaModelGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 生成SQL map的XML文件生成器，</span></span><br><span class="line"><span class="comment">        注意，在Mybatis3之后，我们可以使用mapper.xml文件+Mapper接口（或者不用mapper接口），</span></span><br><span class="line"><span class="comment">            或者只使用Mapper接口+Annotation，所以，如果 javaClientGenerator配置中配置了需要生成XML的话，这个元素就必须配置</span></span><br><span class="line"><span class="comment">        targetPackage/targetProject:同javaModelGenerator</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"com._520it.mybatis.mapper"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/resources"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sqlMapGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口 </span></span><br><span class="line"><span class="comment">        targetPackage/targetProject:同javaModelGenerator</span></span><br><span class="line"><span class="comment">        type：选择怎么生成mapper接口（在MyBatis3/MyBatis3Simple下）：</span></span><br><span class="line"><span class="comment">            1，ANNOTATEDMAPPER：会生成使用Mapper接口+Annotation的方式创建（SQL生成在annotation中），不会生成对应的XML；</span></span><br><span class="line"><span class="comment">            2，MIXEDMAPPER：使用混合配置，会生成Mapper接口，并适当添加合适的Annotation，但是XML会生成在XML中；</span></span><br><span class="line"><span class="comment">            3，XMLMAPPER：会生成Mapper接口，接口完全依赖XML；</span></span><br><span class="line"><span class="comment">        注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"com._520it.mybatis.mapper"</span> <span class="attr">type</span>=<span class="string">"ANNOTATEDMAPPER"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/java"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查</span></span><br><span class="line"><span class="comment">        &lt;property name="rootInterface" value=""/&gt;</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaClientGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 选择一个table来生成相关文件，可以有一个或多个table，必须要有table元素</span></span><br><span class="line"><span class="comment">        选择的table会生成一下文件：</span></span><br><span class="line"><span class="comment">        1，SQL map文件</span></span><br><span class="line"><span class="comment">        2，生成一个主键类；</span></span><br><span class="line"><span class="comment">        3，除了BLOB和主键的其他字段的类；</span></span><br><span class="line"><span class="comment">        4，包含BLOB的类；</span></span><br><span class="line"><span class="comment">        5，一个用户生成动态查询的条件类（selectByExample, deleteByExample），可选；</span></span><br><span class="line"><span class="comment">        6，Mapper接口（可选）</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        tableName（必要）：要生成对象的表名；</span></span><br><span class="line"><span class="comment">        注意：大小写敏感问题。正常情况下，MBG会自动的去识别数据库标识符的大小写敏感度，在一般情况下，MBG会</span></span><br><span class="line"><span class="comment">            根据设置的schema，catalog或tablename去查询数据表，按照下面的流程：</span></span><br><span class="line"><span class="comment">            1，如果schema，catalog或tablename中有空格，那么设置的是什么格式，就精确的使用指定的大小写格式去查询；</span></span><br><span class="line"><span class="comment">            2，否则，如果数据库的标识符使用大写的，那么MBG自动把表名变成大写再查找；</span></span><br><span class="line"><span class="comment">            3，否则，如果数据库的标识符使用小写的，那么MBG自动把表名变成小写再查找；</span></span><br><span class="line"><span class="comment">            4，否则，使用指定的大小写格式查询；</span></span><br><span class="line"><span class="comment">        另外的，如果在创建表的时候，使用的""把数据库对象规定大小写，就算数据库标识符是使用的大写，在这种情况下也会使用给定的大小写来创建表名；</span></span><br><span class="line"><span class="comment">        这个时候，请设置delimitIdentifiers="true"即可保留大小写格式；</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        可选：</span></span><br><span class="line"><span class="comment">        1，schema：数据库的schema；</span></span><br><span class="line"><span class="comment">        2，catalog：数据库的catalog；</span></span><br><span class="line"><span class="comment">        3，alias：为数据表设置的别名，如果设置了alias，那么生成的所有的SELECT SQL语句中，列名会变成：alias_actualColumnName</span></span><br><span class="line"><span class="comment">        4，domainObjectName：生成的domain类的名字，如果不设置，直接使用表名作为domain类的名字；可以设置为somepck.domainName，那么会自动把domainName类再放到somepck包里面；</span></span><br><span class="line"><span class="comment">        5，enableInsert（默认true）：指定是否生成insert语句；</span></span><br><span class="line"><span class="comment">        6，enableSelectByPrimaryKey（默认true）：指定是否生成按照主键查询对象的语句（就是getById或get）；</span></span><br><span class="line"><span class="comment">        7，enableSelectByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询语句；</span></span><br><span class="line"><span class="comment">        8，enableUpdateByPrimaryKey（默认true）：指定是否生成按照主键修改对象的语句（即update)；</span></span><br><span class="line"><span class="comment">        9，enableDeleteByPrimaryKey（默认true）：指定是否生成按照主键删除对象的语句（即delete）；</span></span><br><span class="line"><span class="comment">        10，enableDeleteByExample（默认true）：MyBatis3Simple为false，指定是否生成动态删除语句；</span></span><br><span class="line"><span class="comment">        11，enableCountByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询总条数语句（用于分页的总条数查询）；</span></span><br><span class="line"><span class="comment">        12，enableUpdateByExample（默认true）：MyBatis3Simple为false，指定是否生成动态修改语句（只修改对象中不为空的属性）；</span></span><br><span class="line"><span class="comment">        13，modelType：参考context元素的defaultModelType，相当于覆盖；</span></span><br><span class="line"><span class="comment">        14，delimitIdentifiers：参考tableName的解释，注意，默认的delimitIdentifiers是双引号，如果类似MYSQL这样的数据库，使用的是`（反引号，那么还需要设置context的beginningDelimiter和endingDelimiter属性）</span></span><br><span class="line"><span class="comment">        15，delimitAllColumns：设置是否所有生成的SQL中的列名都使用标识符引起来。默认为false，delimitIdentifiers参考context的属性</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">"userinfo"</span> &gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 参考 javaModelGenerator 的 constructorBased属性--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"constructorBased"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 默认为false，如果设置为true，在生成的SQL中，table名字不会加上catalog或schema； --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"ignoreQualifiersAtRuntime"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 参考 javaModelGenerator 的 immutable 属性 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"immutable"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 指定是否只生成domain类，如果设置为true，只生成domain类，如果还配置了sqlMapGenerator，那么在mapper XML文件中，只生成resultMap元素 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"modelOnly"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 参考 javaModelGenerator 的 rootClass 属性 </span></span><br><span class="line"><span class="comment">        &lt;property name="rootClass" value=""/&gt;</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 参考javaClientGenerator 的  rootInterface 属性</span></span><br><span class="line"><span class="comment">        &lt;property name="rootInterface" value=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 如果设置了runtimeCatalog，那么在生成的SQL中，使用该指定的catalog，而不是table元素上的catalog </span></span><br><span class="line"><span class="comment">        &lt;property name="runtimeCatalog" value=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 如果设置了runtimeSchema，那么在生成的SQL中，使用该指定的schema，而不是table元素上的schema </span></span><br><span class="line"><span class="comment">        &lt;property name="runtimeSchema" value=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 如果设置了runtimeTableName，那么在生成的SQL中，使用该指定的tablename，而不是table元素上的tablename </span></span><br><span class="line"><span class="comment">        &lt;property name="runtimeTableName" value=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 注意，该属性只针对MyBatis3Simple有用；</span></span><br><span class="line"><span class="comment">            如果选择的runtime是MyBatis3Simple，那么会生成一个SelectAll方法，如果指定了selectAllOrderByClause，那么会在该SQL中添加指定的这个order条件；</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"selectAllOrderByClause"</span> <span class="attr">value</span>=<span class="string">"age desc,username asc"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"useActualColumnNames"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- generatedKey用于生成生成主键的方法，</span></span><br><span class="line"><span class="comment">            如果设置了该元素，MBG会在生成的&lt;insert&gt;元素中生成一条正确的&lt;selectKey&gt;元素，该元素可选</span></span><br><span class="line"><span class="comment">            column:主键的列名；</span></span><br><span class="line"><span class="comment">            sqlStatement：要生成的selectKey语句，有以下可选项：</span></span><br><span class="line"><span class="comment">                Cloudscape:相当于selectKey的SQL为： VALUES IDENTITY_VAL_LOCAL()</span></span><br><span class="line"><span class="comment">                DB2       :相当于selectKey的SQL为： VALUES IDENTITY_VAL_LOCAL()</span></span><br><span class="line"><span class="comment">                DB2_MF    :相当于selectKey的SQL为：SELECT IDENTITY_VAL_LOCAL() FROM SYSIBM.SYSDUMMY1</span></span><br><span class="line"><span class="comment">                Derby      :相当于selectKey的SQL为：VALUES IDENTITY_VAL_LOCAL()</span></span><br><span class="line"><span class="comment">                HSQLDB      :相当于selectKey的SQL为：CALL IDENTITY()</span></span><br><span class="line"><span class="comment">                Informix  :相当于selectKey的SQL为：select dbinfo('sqlca.sqlerrd1') from systables where tabid=1</span></span><br><span class="line"><span class="comment">                MySql      :相当于selectKey的SQL为：SELECT LAST_INSERT_ID()</span></span><br><span class="line"><span class="comment">                SqlServer :相当于selectKey的SQL为：SELECT SCOPE_IDENTITY()</span></span><br><span class="line"><span class="comment">                SYBASE      :相当于selectKey的SQL为：SELECT @@IDENTITY</span></span><br><span class="line"><span class="comment">                JDBC      :相当于在生成的insert元素上添加useGeneratedKeys="true"和keyProperty属性</span></span><br><span class="line"><span class="comment">        &lt;generatedKey column="" sqlStatement=""/&gt;</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">            该元素会在根据表中列名计算对象属性名之前先重命名列名，非常适合用于表中的列都有公用的前缀字符串的时候，</span></span><br><span class="line"><span class="comment">            比如列名为：CUST_ID,CUST_NAME,CUST_EMAIL,CUST_ADDRESS等；</span></span><br><span class="line"><span class="comment">            那么就可以设置searchString为"^CUST_"，并使用空白替换，那么生成的Customer对象中的属性名称就不是</span></span><br><span class="line"><span class="comment">            custId,custName等，而是先被替换为ID,NAME,EMAIL,然后变成属性：id，name，email；</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">            注意，MBG是使用java.util.regex.Matcher.replaceAll来替换searchString和replaceString的，</span></span><br><span class="line"><span class="comment">            如果使用了columnOverride元素，该属性无效；</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        &lt;columnRenamingRule searchString="" replaceString=""/&gt;</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="comment">&lt;!-- 用来修改表中某个列的属性，MBG会使用修改后的列来生成domain的属性；</span></span><br><span class="line"><span class="comment">             column:要重新设置的列名；</span></span><br><span class="line"><span class="comment">             注意，一个table元素中可以有多个columnOverride元素哈~</span></span><br><span class="line"><span class="comment">          --&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"username"</span>&gt;</span></span><br><span class="line">             <span class="comment">&lt;!-- 使用property属性来指定列要生成的属性名称 --&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"property"</span> <span class="attr">value</span>=<span class="string">"userName"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">             <span class="comment">&lt;!-- javaType用于指定生成的domain的属性类型，使用类型的全限定名</span></span><br><span class="line"><span class="comment">             &lt;property name="javaType" value=""/&gt;</span></span><br><span class="line"><span class="comment">              --&gt;</span></span><br><span class="line"></span><br><span class="line">             <span class="comment">&lt;!-- jdbcType用于指定该列的JDBC类型 </span></span><br><span class="line"><span class="comment">             &lt;property name="jdbcType" value=""/&gt;</span></span><br><span class="line"><span class="comment">              --&gt;</span></span><br><span class="line"></span><br><span class="line">             <span class="comment">&lt;!-- typeHandler 用于指定该列使用到的TypeHandler，如果要指定，配置类型处理器的全限定名</span></span><br><span class="line"><span class="comment">                 注意，mybatis中，不会生成到mybatis-config.xml中的typeHandler</span></span><br><span class="line"><span class="comment">                 只会生成类似：where id = #&#123;id,jdbcType=BIGINT,typeHandler=com._520it.mybatis.MyTypeHandler&#125;的参数描述</span></span><br><span class="line"><span class="comment">             &lt;property name="jdbcType" value=""/&gt;</span></span><br><span class="line"><span class="comment">             --&gt;</span></span><br><span class="line"></span><br><span class="line">             <span class="comment">&lt;!-- 参考table元素的delimitAllColumns配置，默认为false</span></span><br><span class="line"><span class="comment">             &lt;property name="delimitedColumnName" value=""/&gt;</span></span><br><span class="line"><span class="comment">              --&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">columnOverride</span>&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="comment">&lt;!-- ignoreColumn设置一个MGB忽略的列，如果设置了改列，那么在生成的domain中，生成的SQL中，都不会有该列出现 </span></span><br><span class="line"><span class="comment">             column:指定要忽略的列的名字；</span></span><br><span class="line"><span class="comment">             delimitedColumnName：参考table元素的delimitAllColumns配置，默认为false</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">             注意，一个table元素中可以有多个ignoreColumn元素</span></span><br><span class="line"><span class="comment">         &lt;ignoreColumn column="deptId" delimitedColumnName=""/&gt;</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">context</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">generatorConfiguration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-执行"><a href="#3-执行" class="headerlink" title="3.执行"></a>3.执行</h2><p>命令行界面<code>mvn mybatis-generator:generate</code></p>
+<h1 id="Mybatis-plugin插件"><a href="#Mybatis-plugin插件" class="headerlink" title="Mybatis-plugin插件"></a>Mybatis-plugin插件</h1><p><a href="https://github.com/rockjava/intellij-mybatis-plugin" target="_blank" rel="noopener">mybatis-plugin插件详情</a></p>
+<h2 id="1-特点："><a href="#1-特点：" class="headerlink" title="1.特点："></a>1.特点：</h2><ul>
+<li>提供Mapper接口与配置文件中对应SQL的导航</li>
+<li>编辑XML文件时自动补全</li>
+<li>自动检查Mapper XML文件中ID冲突</li>
+<li>自动检查Mapper XML文件中错误的属性值</li>
+<li>等等</li>
+</ul>
+<h2 id="2-个人推荐"><a href="#2-个人推荐" class="headerlink" title="2.个人推荐"></a>2.个人推荐</h2><p>mybatis-plugin是需要购买授权的，这里我推荐MyBatisX</p>
+<p><img src="/images/2020111904.png" alt="image-20201119203540933"></p>
+<h1 id="Mybatis-PageHelper"><a href="#Mybatis-PageHelper" class="headerlink" title="Mybatis-PageHelper"></a>Mybatis-PageHelper</h1><p>开源网站：<a href="https://github.com/pagehelper/Mybatis-PageHelper" target="_blank" rel="noopener">https://github.com/pagehelper/Mybatis-PageHelper</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.github.pagehelper&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;pagehelper-spring-boot-starter&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.2.13&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://liuurick.github.io/2020/10/25/SpringBoot集成MyBatis的分页插件PageHelper/" target="_blank" rel="noopener">Mybatis-PageHelper个人博客记录</a></p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+      <tags>
+        <tag>Mybatis-generator</tag>
+        <tag>Mybatis-plugin</tag>
+        <tag>Mybatis-PageHelper</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
     <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
@@ -2109,6 +2120,75 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>PXC集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
+    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>注解</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Mycat学习笔记</title>
+    <url>/2021/01/12/Mycat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><strong>中间件</strong>：是介于应用系统和系统软件之间的一类软件</p>
+<p><strong>数据库中间件</strong>：连接Java应用程序和数据库</p>
+<a id="more"></a>
+
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><blockquote>
+<p>Mycat官方文档：<a href="https://github.com/MyCATApache/Mycat-Server/wiki" target="_blank" rel="noopener">https://github.com/MyCATApache/Mycat-Server/wiki</a></p>
+<p>Mycat语雀官方文档：<a href="https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944" target="_blank" rel="noopener">https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944</a></p>
+</blockquote>
+<p>Mycat是一款流行的数据库中间件，由cobar演进而来</p>
+<p>为什么使用Mycat</p>
+<ul>
+<li>java与数据库紧耦合</li>
+<li>高访问量高并发对数据库压力较大</li>
+<li>读写请求数据不一致</li>
+</ul>
+<p>Mycat作用</p>
+<ul>
+<li>读写分离</li>
+</ul>
+<p><img src="/images/2021011201.png" alt="image-20210125155408275"></p>
+<ul>
+<li>数据分片</li>
+</ul>
+<p>垂直拆分（分库）、水平拆分（分表）、垂直+水平拆分（分库分表）</p>
+<p><img src="/images/2021011202.png" alt="image-20210125155436300"></p>
+<ul>
+<li>多数据源整合</li>
+</ul>
+<p><img src="/images/2021011203.png" alt="image-20210125155512988"></p>
+<p>Mycat原理：</p>
+<p>Mycat原理就两个字<strong>拦截</strong></p>
+<p><img src="/images/2021011204.png" alt="image-20210125203845447"></p>
+<h1 id="2-Mycat安装启动"><a href="#2-Mycat安装启动" class="headerlink" title="2 Mycat安装启动"></a>2 Mycat安装启动</h1><p>常见安装方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.rpm安装</span><br><span class="line">  .rpm安装包，安装顺序安装</span><br><span class="line">2.yum安装</span><br><span class="line">  需要联网安装</span><br><span class="line">3.Docker安装</span><br><span class="line">4.解压后即可使用</span><br><span class="line">5.解压后编译安装</span><br></pre></td></tr></table></figure>
+
+
+
+<p>配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">schema.xml：定义逻辑库，表、分片节点等内容</span><br><span class="line">rule.xml：定义分片规则</span><br><span class="line">server.xml：定义用户以及系统相关变量，如端口等</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>应用框架</category>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>分库分表</category>
+      </categories>
+      <tags>
+        <tag>Mycat</tag>
       </tags>
   </entry>
   <entry>
@@ -2510,64 +2590,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Mycat学习笔记</title>
-    <url>/2021/01/12/Mycat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><strong>中间件</strong>：是介于应用系统和系统软件之间的一类软件</p>
-<p><strong>数据库中间件</strong>：连接Java应用程序和数据库</p>
-<a id="more"></a>
-
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><blockquote>
-<p>Mycat官方文档：<a href="https://github.com/MyCATApache/Mycat-Server/wiki" target="_blank" rel="noopener">https://github.com/MyCATApache/Mycat-Server/wiki</a></p>
-<p>Mycat语雀官方文档：<a href="https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944" target="_blank" rel="noopener">https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944</a></p>
-</blockquote>
-<p>Mycat是一款流行的数据库中间件，由cobar演进而来</p>
-<p>为什么使用Mycat</p>
-<ul>
-<li>java与数据库紧耦合</li>
-<li>高访问量高并发对数据库压力较大</li>
-<li>读写请求数据不一致</li>
-</ul>
-<p>Mycat作用</p>
-<ul>
-<li>读写分离</li>
-</ul>
-<p><img src="/images/2021011201.png" alt="image-20210125155408275"></p>
-<ul>
-<li>数据分片</li>
-</ul>
-<p>垂直拆分（分库）、水平拆分（分表）、垂直+水平拆分（分库分表）</p>
-<p><img src="/images/2021011202.png" alt="image-20210125155436300"></p>
-<ul>
-<li>多数据源整合</li>
-</ul>
-<p><img src="/images/2021011203.png" alt="image-20210125155512988"></p>
-<p>Mycat原理：</p>
-<p>Mycat原理就两个字<strong>拦截</strong></p>
-<p><img src="/images/2021011204.png" alt="image-20210125203845447"></p>
-<h1 id="2-Mycat安装启动"><a href="#2-Mycat安装启动" class="headerlink" title="2 Mycat安装启动"></a>2 Mycat安装启动</h1><p>常见安装方式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.rpm安装</span><br><span class="line">  .rpm安装包，安装顺序安装</span><br><span class="line">2.yum安装</span><br><span class="line">  需要联网安装</span><br><span class="line">3.Docker安装</span><br><span class="line">4.解压后即可使用</span><br><span class="line">5.解压后编译安装</span><br></pre></td></tr></table></figure>
-
-
-
-<p>配置文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">schema.xml：定义逻辑库，表、分片节点等内容</span><br><span class="line">rule.xml：定义分片规则</span><br><span class="line">server.xml：定义用户以及系统相关变量，如端口等</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>应用框架</category>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>分库分表</category>
-      </categories>
-      <tags>
-        <tag>Mycat</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Nginx安装及其配置</title>
     <url>/2020/07/31/Nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -2883,17 +2905,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
-    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -3398,35 +3409,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Redis应用场景</title>
-    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
-    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
-</blockquote>
-<blockquote>
-<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
-</blockquote>
-<p>Redis常见场景主要有以下几种:</p>
-<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
-<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
-<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
-<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
-<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
-<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
-<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
-<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
-]]></content>
-      <categories>
-        <category>Redis</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
@@ -3464,6 +3446,48 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis应用场景</title>
+    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+</blockquote>
+<blockquote>
+<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+</blockquote>
+<p>Redis常见场景主要有以下几种:</p>
+<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
+<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
+<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
+<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
+<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
+<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
+<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
+<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
+]]></content>
+      <categories>
+        <category>Redis</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -3565,16 +3589,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
+    <title>SpringBoot源码学习</title>
+    <url>/2020/12/20/SpringBoot%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p>SpringBoot上手非常简单，但是并不能停留在表面。这里开始从源码层面学习</p>
+<a id="more"></a>
+
+<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><h1 id="2-走向自动配置"><a href="#2-走向自动配置" class="headerlink" title="2 走向自动配置"></a>2 走向自动配置</h1><h1 id="3-理解SpringApplication"><a href="#3-理解SpringApplication" class="headerlink" title="3 理解SpringApplication"></a>3 理解SpringApplication</h1><h1 id="4-WebMVC核心"><a href="#4-WebMVC核心" class="headerlink" title="4 WebMVC核心"></a>4 WebMVC核心</h1><h1 id="5-WebMVC视图应用"><a href="#5-WebMVC视图应用" class="headerlink" title="5 WebMVC视图应用"></a>5 WebMVC视图应用</h1><h1 id="6-WebMVC-REST应用"><a href="#6-WebMVC-REST应用" class="headerlink" title="6 WebMVC REST应用"></a>6 WebMVC REST应用</h1><h1 id="7-渐行渐远的Servlet"><a href="#7-渐行渐远的Servlet" class="headerlink" title="7 渐行渐远的Servlet"></a>7 渐行渐远的Servlet</h1><h1 id="8-从Reactive到WebFlux"><a href="#8-从Reactive到WebFlux" class="headerlink" title="8 从Reactive到WebFlux"></a>8 从Reactive到WebFlux</h1><h1 id="9-WebFlux核心"><a href="#9-WebFlux核心" class="headerlink" title="9 WebFlux核心"></a>9 WebFlux核心</h1><h1 id="10-超越外部化配置"><a href="#10-超越外部化配置" class="headerlink" title="10 超越外部化配置"></a>10 超越外部化配置</h1>]]></content>
       <categories>
         <category>SpringBoot</category>
       </categories>
       <tags>
-        <tag>SpringBoot错误</tag>
+        <tag>SpringBoot源码</tag>
       </tags>
   </entry>
   <entry>
@@ -3666,20 +3691,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot源码学习</title>
-    <url>/2020/12/20/SpringBoot%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p>SpringBoot上手非常简单，但是并不能停留在表面。这里开始从源码层面学习</p>
-<a id="more"></a>
-
-<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><h1 id="2-走向自动配置"><a href="#2-走向自动配置" class="headerlink" title="2 走向自动配置"></a>2 走向自动配置</h1><h1 id="3-理解SpringApplication"><a href="#3-理解SpringApplication" class="headerlink" title="3 理解SpringApplication"></a>3 理解SpringApplication</h1><h1 id="4-WebMVC核心"><a href="#4-WebMVC核心" class="headerlink" title="4 WebMVC核心"></a>4 WebMVC核心</h1><h1 id="5-WebMVC视图应用"><a href="#5-WebMVC视图应用" class="headerlink" title="5 WebMVC视图应用"></a>5 WebMVC视图应用</h1><h1 id="6-WebMVC-REST应用"><a href="#6-WebMVC-REST应用" class="headerlink" title="6 WebMVC REST应用"></a>6 WebMVC REST应用</h1><h1 id="7-渐行渐远的Servlet"><a href="#7-渐行渐远的Servlet" class="headerlink" title="7 渐行渐远的Servlet"></a>7 渐行渐远的Servlet</h1><h1 id="8-从Reactive到WebFlux"><a href="#8-从Reactive到WebFlux" class="headerlink" title="8 从Reactive到WebFlux"></a>8 从Reactive到WebFlux</h1><h1 id="9-WebFlux核心"><a href="#9-WebFlux核心" class="headerlink" title="9 WebFlux核心"></a>9 WebFlux核心</h1><h1 id="10-超越外部化配置"><a href="#10-超越外部化配置" class="headerlink" title="10 超越外部化配置"></a>10 超越外部化配置</h1>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot源码</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
@@ -3712,6 +3723,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Java</tag>
         <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot项目测试模板</title>
+    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -3777,20 +3802,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SpringCloud</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot项目测试模板</title>
-    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -4324,45 +4335,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>.gitignore的使用</title>
-    <url>/2021/01/20/gitignore%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>很长一段时间忽视了.gitignore的作用，果真还是自己太菜了。。。</p>
-<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p>官方文档：<a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a></p>
-</blockquote>
-<h1 id="Java官方模板"><a href="#Java官方模板" class="headerlink" title="Java官方模板"></a>Java官方模板</h1><p>.gitignore文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Log file</span><br><span class="line">*.log</span><br><span class="line"></span><br><span class="line"># BlueJ files</span><br><span class="line">*.ctxt</span><br><span class="line"></span><br><span class="line"># Mobile Tools for Java (J2ME)</span><br><span class="line">.mtj.tmp&#x2F;</span><br><span class="line"></span><br><span class="line"># Package Files #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.nar</span><br><span class="line">*.ear</span><br><span class="line">*.zip</span><br><span class="line">*.tar.gz</span><br><span class="line">*.rar</span><br><span class="line"></span><br><span class="line"># virtual machine crash logs, see http:&#x2F;&#x2F;www.java.com&#x2F;en&#x2F;download&#x2F;help&#x2F;error_hotspot.xml</span><br><span class="line">hs_err_pid*</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="个人常用模板"><a href="#个人常用模板" class="headerlink" title="个人常用模板"></a>个人常用模板</h1><p>.gitignore文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file #</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Eclipse #</span><br><span class="line">.project</span><br><span class="line">.classpath</span><br><span class="line">.settings&#x2F;</span><br><span class="line"></span><br><span class="line"># Intellij #</span><br><span class="line">*.ipr</span><br><span class="line">*.iml</span><br><span class="line">*.iws</span><br><span class="line">.idea&#x2F;</span><br><span class="line"></span><br><span class="line"># Maven #</span><br><span class="line">target&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle #</span><br><span class="line">build</span><br><span class="line">.gradle</span><br><span class="line"></span><br><span class="line"># Log file #</span><br><span class="line">*.log</span><br><span class="line">log&#x2F;</span><br><span class="line"></span><br><span class="line"># out #</span><br><span class="line">**&#x2F;out&#x2F;</span><br><span class="line"></span><br><span class="line"># Mac #</span><br><span class="line">.DS_Store</span><br><span class="line"></span><br><span class="line"># others #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.zip</span><br><span class="line">*.tar</span><br><span class="line">*.tar.gz</span><br><span class="line">*.pid</span><br><span class="line">*.orig</span><br><span class="line">temp&#x2F;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="可能遇到的问题"><a href="#可能遇到的问题" class="headerlink" title="可能遇到的问题"></a>可能遇到的问题</h1><h2 id="gitignore规则不生效"><a href="#gitignore规则不生效" class="headerlink" title=".gitignore规则不生效"></a>.gitignore规则不生效</h2><p>.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。</p>
-<p>解决方法就是先把本地缓存删除（改变成未track状态），然后再提交:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git rm -r --cached .</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">'update .gitignore'</span></span><br></pre></td></tr></table></figure>
-
-<p>如果你确实想添加该文件，可以用-f强制添加到Git：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git add -f xxx.class</span><br></pre></td></tr></table></figure>
-
-<p>或者你发现，可能是.gitignore写得有问题，需要找出来到底哪个规则写错了，</p>
-<p>可以用<code>git check-ignore</code>命令检查：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git check-ignore -v xxx.class</span><br><span class="line">.gitignore:3:*.class    xxx.class</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>代码管理工具</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>gitignore</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>git命令操作笔记</title>
     <url>/2019/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4449,6 +4421,65 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>.gitignore的使用</title>
+    <url>/2021/01/20/gitignore%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>很长一段时间忽视了.gitignore的作用，果真还是自己太菜了。。。</p>
+<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>官方文档：<a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a></p>
+</blockquote>
+<h1 id="Java官方模板"><a href="#Java官方模板" class="headerlink" title="Java官方模板"></a>Java官方模板</h1><p>.gitignore文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Log file</span><br><span class="line">*.log</span><br><span class="line"></span><br><span class="line"># BlueJ files</span><br><span class="line">*.ctxt</span><br><span class="line"></span><br><span class="line"># Mobile Tools for Java (J2ME)</span><br><span class="line">.mtj.tmp&#x2F;</span><br><span class="line"></span><br><span class="line"># Package Files #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.nar</span><br><span class="line">*.ear</span><br><span class="line">*.zip</span><br><span class="line">*.tar.gz</span><br><span class="line">*.rar</span><br><span class="line"></span><br><span class="line"># virtual machine crash logs, see http:&#x2F;&#x2F;www.java.com&#x2F;en&#x2F;download&#x2F;help&#x2F;error_hotspot.xml</span><br><span class="line">hs_err_pid*</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="个人常用模板"><a href="#个人常用模板" class="headerlink" title="个人常用模板"></a>个人常用模板</h1><p>.gitignore文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file #</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Eclipse #</span><br><span class="line">.project</span><br><span class="line">.classpath</span><br><span class="line">.settings&#x2F;</span><br><span class="line"></span><br><span class="line"># Intellij #</span><br><span class="line">*.ipr</span><br><span class="line">*.iml</span><br><span class="line">*.iws</span><br><span class="line">.idea&#x2F;</span><br><span class="line"></span><br><span class="line"># Maven #</span><br><span class="line">target&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle #</span><br><span class="line">build</span><br><span class="line">.gradle</span><br><span class="line"></span><br><span class="line"># Log file #</span><br><span class="line">*.log</span><br><span class="line">log&#x2F;</span><br><span class="line"></span><br><span class="line"># out #</span><br><span class="line">**&#x2F;out&#x2F;</span><br><span class="line"></span><br><span class="line"># Mac #</span><br><span class="line">.DS_Store</span><br><span class="line"></span><br><span class="line"># others #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.zip</span><br><span class="line">*.tar</span><br><span class="line">*.tar.gz</span><br><span class="line">*.pid</span><br><span class="line">*.orig</span><br><span class="line">temp&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="可能遇到的问题"><a href="#可能遇到的问题" class="headerlink" title="可能遇到的问题"></a>可能遇到的问题</h1><h2 id="gitignore规则不生效"><a href="#gitignore规则不生效" class="headerlink" title=".gitignore规则不生效"></a>.gitignore规则不生效</h2><p>.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。</p>
+<p>解决方法就是先把本地缓存删除（改变成未track状态），然后再提交:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git rm -r --cached .</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">'update .gitignore'</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你确实想添加该文件，可以用-f强制添加到Git：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git add -f xxx.class</span><br></pre></td></tr></table></figure>
+
+<p>或者你发现，可能是.gitignore写得有问题，需要找出来到底哪个规则写错了，</p>
+<p>可以用<code>git check-ignore</code>命令检查：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git check-ignore -v xxx.class</span><br><span class="line">.gitignore:3:*.class    xxx.class</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>代码管理工具</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>gitignore</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ubuntu安装VMware Tools</title>
+    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
+    <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
+<a id="more"></a>
+
+<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
+<blockquote>
+<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
+</blockquote>
+<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
+<p>解压完成之后即可运行安装文件安装wmware tools</p>
+]]></content>
+      <categories>
+        <category>Ubuntu</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>k8s学习笔记</title>
     <url>/2021/01/11/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4495,23 +4526,73 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>ubuntu安装VMware Tools</title>
-    <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
-    <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
-<a id="more"></a>
-
-<p>VMware的安装非常简单，就不详细阐述了，这里主要是记录一个罕见的问题。</p>
-<blockquote>
-<p>报错：在解压wmware tools时ubuntu报出没有足够的空间提取的错误</p>
-</blockquote>
-<p>这里需要通过归档管理器打开文件<br><img src="/images/2020080301.png" alt="解压"><br>然后在解压安装即可<br><img src="/images/2020080302.png" alt="解压"></p>
-<p>解压完成之后即可运行安装文件安装wmware tools</p>
-]]></content>
+    <title>人身保险购买指南</title>
+    <url>/2021/01/29/%E4%BA%BA%E8%BA%AB%E4%BF%9D%E9%99%A9%E8%B4%AD%E4%B9%B0%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[]]></content>
       <categories>
-        <category>Ubuntu</category>
+        <category>保险</category>
       </categories>
       <tags>
-        <tag>Ubuntu</tag>
+        <tag>保险</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人民日报给90后的理财计划</title>
+    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>人民日报给90后的理财计划</p>
+<a id="more"></a>
+
+<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="image"></p>
+<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="image"></p>
+<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="image"></p>
+<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="image"></p>
+<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="image"></p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><img src="/images/2020102506.png" alt="image-20201227160018479"></p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>理财</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单例模式详解</title>
+    <url>/2021/01/28/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><blockquote>
+<p>定义：保证一个类仅有一个实例，并提供一个全局访问点</p>
+<p>类型：创建型</p>
+</blockquote>
+<h1 id="2-适用场景"><a href="#2-适用场景" class="headerlink" title="2 适用场景"></a>2 适用场景</h1><p>想确保任何情况下都绝对只有一个实例</p>
+<h1 id="3-优缺点"><a href="#3-优缺点" class="headerlink" title="3 优缺点"></a>3 优缺点</h1><p>优点：</p>
+<ul>
+<li><p>在内存中只有一个实例，减少了内存开销</p>
+</li>
+<li><p>可以避免对资源的多重占用</p>
+</li>
+<li><p>设计全局访问点，严格控制访问</p>
+</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>没有接口，扩展困难</li>
+</ul>
+<p>单例-重点</p>
+<p>私有构造器</p>
+<p>线程安全</p>
+<p>延迟加载</p>
+<p>序列化与反序列化安全</p>
+<p>反射</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+        <category>设计模式</category>
+      </categories>
+      <tags>
+        <tag>单例模式</tag>
       </tags>
   </entry>
   <entry>
@@ -4662,26 +4743,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>人民日报给90后的理财计划</title>
-    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
-    <content><![CDATA[<p>人民日报给90后的理财计划</p>
-<a id="more"></a>
-
-<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="image"></p>
-<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="image"></p>
-<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="image"></p>
-<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="image"></p>
-<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="image"></p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><img src="/images/2020102506.png" alt="image-20201227160018479"></p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>理财</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实体类的4种类型</title>
     <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p>实体类的4种类型总结</p>
@@ -4699,45 +4760,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Domain Object</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>单例模式详解</title>
-    <url>/2021/01/28/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><blockquote>
-<p>定义：保证一个类仅有一个实例，并提供一个全局访问点</p>
-<p>类型：创建型</p>
-</blockquote>
-<h1 id="2-适用场景"><a href="#2-适用场景" class="headerlink" title="2 适用场景"></a>2 适用场景</h1><p>想确保任何情况下都绝对只有一个实例</p>
-<h1 id="3-优缺点"><a href="#3-优缺点" class="headerlink" title="3 优缺点"></a>3 优缺点</h1><p>优点：</p>
-<ul>
-<li><p>在内存中只有一个实例，减少了内存开销</p>
-</li>
-<li><p>可以避免对资源的多重占用</p>
-</li>
-<li><p>设计全局访问点，严格控制访问</p>
-</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>没有接口，扩展困难</li>
-</ul>
-<p>单例-重点</p>
-<p>私有构造器</p>
-<p>线程安全</p>
-<p>延迟加载</p>
-<p>序列化与反序列化安全</p>
-<p>反射</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-        <category>设计模式</category>
-      </categories>
-      <tags>
-        <tag>单例模式</tag>
       </tags>
   </entry>
   <entry>
@@ -4866,6 +4888,29 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>打新股和打新债</title>
+    <url>/2021/01/24/%E6%89%93%E6%96%B0%E8%82%A1%E5%92%8C%E6%89%93%E6%96%B0%E5%80%BA/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="打新股"><a href="#打新股" class="headerlink" title="打新股"></a>打新股</h1><blockquote>
+<p>打新股是什么：<a href="https://zhuanlan.zhihu.com/p/113203500" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/113203500</a></p>
+<p>如何打新股：<a href="https://www.zhihu.com/question/28207862" target="_blank" rel="noopener">https://www.zhihu.com/question/28207862</a></p>
+</blockquote>
+<h1 id="打新债"><a href="#打新债" class="headerlink" title="打新债"></a>打新债</h1><blockquote>
+<p>如何打新债：<a href="https://zhuanlan.zhihu.com/p/67077214" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67077214</a></p>
+</blockquote>
+<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>打新股和打新债一样具备风险，投资一定要用自己的闲钱</p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>打新股</tag>
+        <tag>打新债</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>快速构建SSM开发环境</title>
     <url>/2020/12/01/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BASSM%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>记录一下SSM的搭建过程。</p>
@@ -4932,29 +4977,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SSM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>打新股和打新债</title>
-    <url>/2021/01/24/%E6%89%93%E6%96%B0%E8%82%A1%E5%92%8C%E6%89%93%E6%96%B0%E5%80%BA/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="打新股"><a href="#打新股" class="headerlink" title="打新股"></a>打新股</h1><blockquote>
-<p>打新股是什么：<a href="https://zhuanlan.zhihu.com/p/113203500" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/113203500</a></p>
-<p>如何打新股：<a href="https://www.zhihu.com/question/28207862" target="_blank" rel="noopener">https://www.zhihu.com/question/28207862</a></p>
-</blockquote>
-<h1 id="打新债"><a href="#打新债" class="headerlink" title="打新债"></a>打新债</h1><blockquote>
-<p>如何打新债：<a href="https://zhuanlan.zhihu.com/p/67077214" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67077214</a></p>
-</blockquote>
-<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>打新股和打新债一样具备风险，投资一定要用自己的闲钱</p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>打新股</tag>
-        <tag>打新债</tag>
       </tags>
   </entry>
   <entry>
@@ -5293,6 +5315,33 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<p>操作系统课设</p>
@@ -5379,33 +5428,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>    
-
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>看懂四个指标（PE/PB/ROE/股息率）</title>
     <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -5426,6 +5448,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>理财</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学感悟</title>
+    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
+    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
+<a id="more"></a>
+
+<p><img src="/images/2020122702.png" alt="img"></p>
+<p><strong>附上Java后端学习路线：</strong></p>
+<blockquote>
+<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
+</blockquote>
+<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
+]]></content>
+      <categories>
+        <category>杂谈</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
       </tags>
   </entry>
   <entry>
@@ -5492,26 +5534,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>自学感悟</title>
-    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
-    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
-<a id="more"></a>
-
-<p><img src="/images/2020122702.png" alt="img"></p>
-<p><strong>附上Java后端学习路线：</strong></p>
-<blockquote>
-<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
-</blockquote>
-<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
-]]></content>
-      <categories>
-        <category>杂谈</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记一个小小的强迫症</title>
     <url>/2020/09/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E7%9A%84%E5%BC%BA%E8%BF%AB%E7%97%87/</url>
     <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><a id="more"></a>
@@ -5525,6 +5547,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
       <tags>
         <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>读《深入浅出MyBatis技术原理与实战》</title>
+    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
+    <content><![CDATA[<p>1.MyBatis简介</p>
+<p>2 MyBatis入门</p>
+<p>3 配置</p>
+<p>4 映射器</p>
+<p>5 动态SQL</p>
+<p>6 MyBatis的解析和运行原理</p>
+<p>7 插件</p>
+<p>8 MyBatis-Spring</p>
+<p>9 实用的场景</p>
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -5571,26 +5613,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>多线程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>读《深入浅出MyBatis技术原理与实战》</title>
-    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
-    <content><![CDATA[<p>1.MyBatis简介</p>
-<p>2 MyBatis入门</p>
-<p>3 配置</p>
-<p>4 映射器</p>
-<p>5 动态SQL</p>
-<p>6 MyBatis的解析和运行原理</p>
-<p>7 插件</p>
-<p>8 MyBatis-Spring</p>
-<p>9 实用的场景</p>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
