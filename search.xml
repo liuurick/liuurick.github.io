@@ -28,38 +28,6 @@
 <h1 id="ClassVisitor开发"><a href="#ClassVisitor开发" class="headerlink" title="ClassVisitor开发"></a>ClassVisitor开发</h1><h1 id="MethodVisitor开发"><a href="#MethodVisitor开发" class="headerlink" title="MethodVisitor开发"></a>MethodVisitor开发</h1><h1 id="实现模拟AOP功能"><a href="#实现模拟AOP功能" class="headerlink" title="实现模拟AOP功能"></a>实现模拟AOP功能</h1>]]></content>
   </entry>
   <entry>
-    <title>Arthas使用与进阶</title>
-    <url>/2021/01/17/Arthas%E4%BD%BF%E7%94%A8%E4%B8%8E%E8%BF%9B%E9%98%B6/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<p><em>Arthas</em>（阿尔萨斯）是阿里巴巴开源的Java诊断工具</p>
-<blockquote>
-<p>开源地址：<a href="https://github.com/alibaba/arthas" target="_blank" rel="noopener">https://github.com/alibaba/arthas</a><br>官方文档：<a href="https://alibaba.github.io/arthas" target="_blank" rel="noopener">https://alibaba.github.io/arthas</a></p>
-</blockquote>
-<h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><blockquote>
-<p><a href="https://arthas.aliyun.com/doc/install-detail.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/install-detail.html</a></p>
-<p><a href="https://blog.csdn.net/monokai/article/details/107457772" target="_blank" rel="noopener">https://blog.csdn.net/monokai/article/details/107457772</a></p>
-</blockquote>
-<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><blockquote>
-<p><a href="https://arthas.aliyun.com/doc/quick-start.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/quick-start.html</a></p>
-</blockquote>
-<h1 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h1><blockquote>
-<p><a href="https://arthas.aliyun.com/doc/advanced-use.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/advanced-use.html</a></p>
-</blockquote>
-<h1 id="Arthas-脑图—常用命令汇总"><a href="#Arthas-脑图—常用命令汇总" class="headerlink" title="Arthas 脑图—常用命令汇总:"></a>Arthas 脑图—常用命令汇总:</h1><blockquote>
-<p><a href="https://github.com/alibaba/arthas/issues/1003" target="_blank" rel="noopener">https://github.com/alibaba/arthas/issues/1003</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>运维知识</category>
-        <category>Java诊断工具</category>
-      </categories>
-      <tags>
-        <tag>Arthas</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Centos7上安装docker</title>
     <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
     <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
@@ -135,6 +103,225 @@
       </categories>
       <tags>
         <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Debug调试学习</title>
+    <url>/2021/01/28/Debug%E8%B0%83%E8%AF%95%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-Debug概述"><a href="#1-Debug概述" class="headerlink" title="1 Debug概述"></a>1 Debug概述</h1><ul>
+<li><p>Debug能帮助我们做什么？</p>
+<ol>
+<li>追踪代码的运行流程。</li>
+<li>程序运行异常定位。</li>
+<li>线上问题追踪。</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>Debug对于程序学习者的意义</p>
+<ol>
+<li>通过调试能够更好的查看程序的执行流程。</li>
+<li>复杂的程序逻辑，通过老师的口述讲解，很难理解清楚，这个时候借助调试能够很好的帮助同学们理解程序。</li>
+<li>定位问题，提高自我解决问题的能力。</li>
+</ol>
+</li>
+</ul>
+<h1 id="2-IDEA中的Debug步骤"><a href="#2-IDEA中的Debug步骤" class="headerlink" title="2 IDEA中的Debug步骤"></a>2 IDEA中的Debug步骤</h1><ul>
+<li><p>设置断点（F9）</p>
+</li>
+<li><p>调试程序（8个按钮）</p>
+<p><img src="/images/2021012801.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>按钮</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/images/2021012802.png" alt=""></td>
+<td>(Alt + F10)：如果你的光标在其它行或其它页面，点击这个按钮可跳转到当前代码执行的行</td>
+</tr>
+<tr>
+<td><img src="/images/2021012803.png" alt=""></td>
+<td>(F8)：步过，一行一行地往下走，如果这一行上有方法不会进入方法。</td>
+</tr>
+<tr>
+<td><img src="/images/2021012804.png" alt="2019-09-28_162345"></td>
+<td>(F7)：步入。如果当前行有方法，可以进入方法内部，一般用于进入自定义方法内，不会进入官方类库的方法。</td>
+</tr>
+<tr>
+<td><img src="/images/2021012805.png" alt="2019-09-28_164200"></td>
+<td>(Alt + Shift + F7)：强制步入，能进入任何方法，查看底层源码的时候可以用这个进入官方类库的方法。</td>
+</tr>
+<tr>
+<td><img src="/images/2021012806.png" alt="2019-09-28_164215"></td>
+<td>(Shift + F8)：步出，从步入的方法内退出到方法调用处，此时方法已执行完毕，只是还没有完成赋值。</td>
+</tr>
+<tr>
+<td><img src="/images/2021012807.png" alt="2019-09-28_164428"></td>
+<td>回退断点。</td>
+</tr>
+<tr>
+<td><img src="/images/2021012815.png" alt=""></td>
+<td>(Alt + F9)：运行到光标处，你可以将光标定位到你需要查看的那一行，然后使用这个功能，代码会运行至光标行，而不需要打断点。</td>
+</tr>
+<tr>
+<td><img src="/images/2021012808.png" alt="2019-09-28_164437"></td>
+<td>(Alt + F8)：计算表达式。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>观察变量</p>
+<ul>
+<li>查看变量有三种方式：<ul>
+<li>程序区查看变量</li>
+<li>Debugger的Variables中查看变量</li>
+<li>鼠标悬停到变量名上会弹出当前变量的值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>查看输出</p>
+</li>
+</ul>
+<h1 id="3-跳转到当前代码执行的行"><a href="#3-跳转到当前代码执行的行" class="headerlink" title="3 跳转到当前代码执行的行"></a>3 跳转到当前代码执行的行</h1><ul>
+<li><p>跳转到当前代码执行的行（Alt + F10）<img src="/images/2021012802.png" alt="2019-09-28_164437"></p>
+</li>
+<li><p>作用</p>
+<ul>
+<li>使程序窗口切换到当前正在运行的程序处。</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-步过调试的使用"><a href="#4-步过调试的使用" class="headerlink" title="4 步过调试的使用"></a>4 步过调试的使用</h1><ul>
+<li>步过调试<ul>
+<li>步过调试按钮（F8）<img src="/images/2021012810.png" alt=""></li>
+</ul>
+</li>
+<li>作用<ul>
+<li>步过，一行一行地往下走，如果遇到方法不会进入方法</li>
+<li>常用于调试过程中不想进入调用的方法体的情况。</li>
+</ul>
+</li>
+</ul>
+<h1 id="5-步入调试的使用"><a href="#5-步入调试的使用" class="headerlink" title="5 步入调试的使用"></a>5 步入调试的使用</h1><ul>
+<li><p>步入调试</p>
+<ul>
+<li>步过调试按钮（F7）<img src="/images/2021012811.png" alt=""></li>
+</ul>
+</li>
+<li><p>作用</p>
+<ul>
+<li><p>步入，一行一行地往下走，如果这一行上有方法，则进入方法内部。</p>
+</li>
+<li><p>一般用于进入自定义方法内，不会进入官方类库的方法。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="6-强制步入调试的使用"><a href="#6-强制步入调试的使用" class="headerlink" title="6 强制步入调试的使用"></a>6 强制步入调试的使用</h1><ul>
+<li><p>强制步入调试</p>
+<ul>
+<li>强制步入调试按钮（Alt + Shift + F7）<img src="/images/2021012812.png" alt="2019-09-28_164200"></li>
+</ul>
+</li>
+<li><p>作用</p>
+<ul>
+<li><p>进入官方类库方法</p>
+</li>
+<li><p>帮助我们学习和查看JDK源码</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="7-步出调试的使用"><a href="#7-步出调试的使用" class="headerlink" title="7 步出调试的使用"></a>7 步出调试的使用</h1><ul>
+<li><p>步出调试</p>
+<ul>
+<li>步出调试按钮（Shift + F8）<img src="/images/2021012813.png" alt=""></li>
+</ul>
+</li>
+<li><p>作用</p>
+<ul>
+<li>从方法内退出到方法调用处。</li>
+<li>调试的时候，有时候会跳入到自己不想查看的方法体，这个时候使用步出。</li>
+</ul>
+</li>
+</ul>
+<h1 id="8-回退断点调试的使用"><a href="#8-回退断点调试的使用" class="headerlink" title="8 回退断点调试的使用"></a>8 回退断点调试的使用</h1><ul>
+<li><p>回退断点</p>
+<ul>
+<li>回退断点按钮 <img src="/images/2021012814.png" alt=""></li>
+</ul>
+</li>
+<li><p>作用</p>
+<ul>
+<li><p>回退到当前方法的调用处。</p>
+</li>
+<li><p>当想重新查看该方法体的执行过程时，不用重新启动Debug，可以使用回退断点方式。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="9-运行到光标处"><a href="#9-运行到光标处" class="headerlink" title="9 运行到光标处"></a>9 运行到光标处</h1><ul>
+<li>运行到光标处<ul>
+<li>运行光标处按钮 （F9）<img src="/images/2021012815.png" alt=""></li>
+<li>作用<ul>
+<li>使程序运行到光标处，而无需设置断点。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="10-计算表达式"><a href="#10-计算表达式" class="headerlink" title="10 计算表达式"></a>10 计算表达式</h1><ul>
+<li><p>计算表达式</p>
+<ul>
+<li><p>计算表达式按钮（Alt + F8）<img src="/images/2021012808.png" alt=""></p>
+<p><img src="/images/2021012816.png" alt="image-20210128172159840"></p>
+</li>
+</ul>
+</li>
+<li><p>作用</p>
+<ul>
+<li>设置变量，在计算表达式的框里，可以改变变量的值，这样有时候就能很方便我们去调试各种值的情况了。 </li>
+</ul>
+</li>
+</ul>
+<h1 id="11-条件断点"><a href="#11-条件断点" class="headerlink" title="11 条件断点"></a>11 条件断点</h1><ul>
+<li><p>条件断点</p>
+<ul>
+<li><p><strong>右键单击断点处</strong>，可以设置进入断点的条件</p>
+<p><img src="/images/2021012817.png" alt="image-20210128172101075"></p>
+</li>
+</ul>
+</li>
+<li><p>作用</p>
+<ul>
+<li>通过设置断点条件，在满足条件时，才停在断点处，否则直接运行。</li>
+</ul>
+</li>
+</ul>
+<h1 id="12-多线程调试"><a href="#12-多线程调试" class="headerlink" title="12 多线程调试"></a>12 多线程调试</h1><ul>
+<li><p>步骤</p>
+<ul>
+<li><p>多线程调试，需要调整断点挂起级别为Thread</p>
+<p><img src="/images/2021012818.png" alt="image-20210128172128757"></p>
+</li>
+<li><p>Frame中选择线程进行调试</p>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>Debug</category>
+      </categories>
+      <tags>
+        <tag>Debug</tag>
       </tags>
   </entry>
   <entry>
@@ -285,6 +472,38 @@
       </tags>
   </entry>
   <entry>
+    <title>Arthas使用与进阶</title>
+    <url>/2021/01/17/Arthas%E4%BD%BF%E7%94%A8%E4%B8%8E%E8%BF%9B%E9%98%B6/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<p><em>Arthas</em>（阿尔萨斯）是阿里巴巴开源的Java诊断工具</p>
+<blockquote>
+<p>开源地址：<a href="https://github.com/alibaba/arthas" target="_blank" rel="noopener">https://github.com/alibaba/arthas</a><br>官方文档：<a href="https://alibaba.github.io/arthas" target="_blank" rel="noopener">https://alibaba.github.io/arthas</a></p>
+</blockquote>
+<h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/install-detail.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/install-detail.html</a></p>
+<p><a href="https://blog.csdn.net/monokai/article/details/107457772" target="_blank" rel="noopener">https://blog.csdn.net/monokai/article/details/107457772</a></p>
+</blockquote>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/quick-start.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/quick-start.html</a></p>
+</blockquote>
+<h1 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h1><blockquote>
+<p><a href="https://arthas.aliyun.com/doc/advanced-use.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/advanced-use.html</a></p>
+</blockquote>
+<h1 id="Arthas-脑图—常用命令汇总"><a href="#Arthas-脑图—常用命令汇总" class="headerlink" title="Arthas 脑图—常用命令汇总:"></a>Arthas 脑图—常用命令汇总:</h1><blockquote>
+<p><a href="https://github.com/alibaba/arthas/issues/1003" target="_blank" rel="noopener">https://github.com/alibaba/arthas/issues/1003</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>运维知识</category>
+        <category>Java诊断工具</category>
+      </categories>
+      <tags>
+        <tag>Arthas</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker设置镜像自启动</title>
     <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
     <content><![CDATA[<p>Docker便捷小技巧</p>
@@ -321,6 +540,7 @@
 <p><img src="/images/2020081801.png" alt=""></p>
 ]]></content>
       <categories>
+        <category>编程基础</category>
         <category>MySQL</category>
       </categories>
       <tags>
@@ -1006,6 +1226,79 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>JVM学习笔记</title>
+    <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-为什么学习JVM"><a href="#1-为什么学习JVM" class="headerlink" title="1 为什么学习JVM"></a>1 为什么学习JVM</h1><p>1.面试需要</p>
+<p>2.更深入的理解Java</p>
+<ul>
+<li>一个类是如何加载到JVM的</li>
+<li>它在JVM中是如何存储的</li>
+<li>如何运行的</li>
+<li>方法是如何调用的</li>
+<li>运行时内存怎么分配的</li>
+<li>产生垃圾后是如何回收的</li>
+</ul>
+<p>3.排查解决故障</p>
+<ul>
+<li>内存溢出导致宕机了</li>
+<li>CPU使用率居高不下</li>
+<li>频繁卡顿</li>
+<li>应用越跑越慢</li>
+</ul>
+<p>4.性能调优</p>
+<ul>
+<li>合理的分配内存</li>
+<li>调整参数</li>
+<li>选择GC垃圾回收器</li>
+<li>第三方中间件的适配</li>
+</ul>
+<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><p><strong>认识JVM</strong>：是什么，有什么，能干什么</p>
+<blockquote>
+<p>JVM：Java Virtual Machine，也就是Java虚拟机</p>
+<p>虚拟机：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统<br>JVM是通过软件来模拟Java字节码的指令集，是Java程序的运行环境</p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201224105252066.png" alt="image-20201224105252066"></p>
+<p><strong>JVM主要功能</strong></p>
+<ol>
+<li>通过ClassLoader寻找和装载class文件</li>
+<li>解释字节码成为指令并执行，提供class文件的运行环境</li>
+<li>进行运行期间的内存分配和垃圾回收</li>
+<li>提供与硬件交互的平台</li>
+</ol>
+<p>​    JVM跨平台特征</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201224105219618.png" alt="image-20201224105219618"></p>
+<h2 id="JVM规范作用及其核心"><a href="#JVM规范作用及其核心" class="headerlink" title="JVM规范作用及其核心"></a>JVM规范作用及其核心</h2><blockquote>
+<p>Java虚拟机规范为不同的硬件平台提供了一种编译Java技术代码的规范</p>
+<p>该规范是Java软件独立于平台，因为编译针对作为虚拟机的“一般机器”而做</p>
+</blockquote>
+<p><strong>JVM规范定义的主要内容</strong>：</p>
+<p>可以看官方文档</p>
+<ul>
+<li>字节码指令集（相当于中央处理器CPU）</li>
+<li>Class文件的格式</li>
+<li>数据类型和值</li>
+<li>运行时数据区</li>
+<li>栈帧</li>
+<li>特殊方法</li>
+<li>类库</li>
+<li>异常</li>
+<li>虚拟机的启动，加载，链接和初始化</li>
+</ul>
+<p>虚拟机规范内容很多，了解即可</p>
+<h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JSP页面El表达式不起作用</title>
     <url>/2020/11/22/JSP%E9%A1%B5%E9%9D%A2El%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
     <content><![CDATA[<p>首先查看web.xml文件 查看jsp servlet版本是多少？</p>
@@ -1030,281 +1323,46 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Debug调试学习</title>
-    <url>/2021/01/28/Debug%E8%B0%83%E8%AF%95%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="1-Debug概述"><a href="#1-Debug概述" class="headerlink" title="1 Debug概述"></a>1 Debug概述</h1><ul>
-<li><p>Debug能帮助我们做什么？</p>
-<ol>
-<li>追踪代码的运行流程。</li>
-<li>程序运行异常定位。</li>
-<li>线上问题追踪。</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li><p>Debug对于程序学习者的意义</p>
-<ol>
-<li>通过调试能够更好的查看程序的执行流程。</li>
-<li>复杂的程序逻辑，通过老师的口述讲解，很难理解清楚，这个时候借助调试能够很好的帮助同学们理解程序。</li>
-<li>定位问题，提高自我解决问题的能力。</li>
-</ol>
-</li>
-</ul>
-<h1 id="2-IDEA中的Debug步骤"><a href="#2-IDEA中的Debug步骤" class="headerlink" title="2 IDEA中的Debug步骤"></a>2 IDEA中的Debug步骤</h1><ul>
-<li><p>设置断点（F9）</p>
-</li>
-<li><p>调试程序（8个按钮）</p>
-<p><img src="/images/2021012801.png" alt=""></p>
-<table>
-<thead>
-<tr>
-<th>按钮</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="/images/2021012802.png" alt=""></td>
-<td>(Alt + F10)：如果你的光标在其它行或其它页面，点击这个按钮可跳转到当前代码执行的行</td>
-</tr>
-<tr>
-<td><img src="/images/2021012803.png" alt=""></td>
-<td>(F8)：步过，一行一行地往下走，如果这一行上有方法不会进入方法。</td>
-</tr>
-<tr>
-<td><img src="/images/2021012804.png" alt="2019-09-28_162345"></td>
-<td>(F7)：步入。如果当前行有方法，可以进入方法内部，一般用于进入自定义方法内，不会进入官方类库的方法。</td>
-</tr>
-<tr>
-<td><img src="/images/2021012805.png" alt="2019-09-28_164200"></td>
-<td>(Alt + Shift + F7)：强制步入，能进入任何方法，查看底层源码的时候可以用这个进入官方类库的方法。</td>
-</tr>
-<tr>
-<td><img src="/images/2021012806.png" alt="2019-09-28_164215"></td>
-<td>(Shift + F8)：步出，从步入的方法内退出到方法调用处，此时方法已执行完毕，只是还没有完成赋值。</td>
-</tr>
-<tr>
-<td><img src="/images/2021012807.png" alt="2019-09-28_164428"></td>
-<td>回退断点。</td>
-</tr>
-<tr>
-<td><img src="/images/2021012815.png" alt=""></td>
-<td>(Alt + F9)：运行到光标处，你可以将光标定位到你需要查看的那一行，然后使用这个功能，代码会运行至光标行，而不需要打断点。</td>
-</tr>
-<tr>
-<td><img src="/images/2021012808.png" alt="2019-09-28_164437"></td>
-<td>(Alt + F8)：计算表达式。</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>观察变量</p>
-<ul>
-<li>查看变量有三种方式：<ul>
-<li>程序区查看变量</li>
-<li>Debugger的Variables中查看变量</li>
-<li>鼠标悬停到变量名上会弹出当前变量的值</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>查看输出</p>
-</li>
-</ul>
-<h1 id="3-跳转到当前代码执行的行"><a href="#3-跳转到当前代码执行的行" class="headerlink" title="3 跳转到当前代码执行的行"></a>3 跳转到当前代码执行的行</h1><ul>
-<li><p>跳转到当前代码执行的行（Alt + F10）<img src="/images/2021012802.png" alt="2019-09-28_164437"></p>
-</li>
-<li><p>作用</p>
-<ul>
-<li>使程序窗口切换到当前正在运行的程序处。</li>
-</ul>
-</li>
-</ul>
-<h1 id="4-步过调试的使用"><a href="#4-步过调试的使用" class="headerlink" title="4 步过调试的使用"></a>4 步过调试的使用</h1><ul>
-<li>步过调试<ul>
-<li>步过调试按钮（F8）<img src="/images/2021012810.png" alt=""></li>
-</ul>
-</li>
-<li>作用<ul>
-<li>步过，一行一行地往下走，如果遇到方法不会进入方法</li>
-<li>常用于调试过程中不想进入调用的方法体的情况。</li>
-</ul>
-</li>
-</ul>
-<h1 id="5-步入调试的使用"><a href="#5-步入调试的使用" class="headerlink" title="5 步入调试的使用"></a>5 步入调试的使用</h1><ul>
-<li><p>步入调试</p>
-<ul>
-<li>步过调试按钮（F7）<img src="/images/2021012811.png" alt=""></li>
-</ul>
-</li>
-<li><p>作用</p>
-<ul>
-<li><p>步入，一行一行地往下走，如果这一行上有方法，则进入方法内部。</p>
-</li>
-<li><p>一般用于进入自定义方法内，不会进入官方类库的方法。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="6-强制步入调试的使用"><a href="#6-强制步入调试的使用" class="headerlink" title="6 强制步入调试的使用"></a>6 强制步入调试的使用</h1><ul>
-<li><p>强制步入调试</p>
-<ul>
-<li>强制步入调试按钮（Alt + Shift + F7）<img src="/images/2021012812.png" alt="2019-09-28_164200"></li>
-</ul>
-</li>
-<li><p>作用</p>
-<ul>
-<li><p>进入官方类库方法</p>
-</li>
-<li><p>帮助我们学习和查看JDK源码</p>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="7-步出调试的使用"><a href="#7-步出调试的使用" class="headerlink" title="7 步出调试的使用"></a>7 步出调试的使用</h1><ul>
-<li><p>步出调试</p>
-<ul>
-<li>步出调试按钮（Shift + F8）<img src="/images/2021012813.png" alt=""></li>
-</ul>
-</li>
-<li><p>作用</p>
-<ul>
-<li>从方法内退出到方法调用处。</li>
-<li>调试的时候，有时候会跳入到自己不想查看的方法体，这个时候使用步出。</li>
-</ul>
-</li>
-</ul>
-<h1 id="8-回退断点调试的使用"><a href="#8-回退断点调试的使用" class="headerlink" title="8 回退断点调试的使用"></a>8 回退断点调试的使用</h1><ul>
-<li><p>回退断点</p>
-<ul>
-<li>回退断点按钮 <img src="/images/2021012814.png" alt=""></li>
-</ul>
-</li>
-<li><p>作用</p>
-<ul>
-<li><p>回退到当前方法的调用处。</p>
-</li>
-<li><p>当想重新查看该方法体的执行过程时，不用重新启动Debug，可以使用回退断点方式。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="9-运行到光标处"><a href="#9-运行到光标处" class="headerlink" title="9 运行到光标处"></a>9 运行到光标处</h1><ul>
-<li>运行到光标处<ul>
-<li>运行光标处按钮 （F9）<img src="/images/2021012815.png" alt=""></li>
-<li>作用<ul>
-<li>使程序运行到光标处，而无需设置断点。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="10-计算表达式"><a href="#10-计算表达式" class="headerlink" title="10 计算表达式"></a>10 计算表达式</h1><ul>
-<li><p>计算表达式</p>
-<ul>
-<li><p>计算表达式按钮（Alt + F8）<img src="/images/2021012808.png" alt=""></p>
-<p><img src="/images/2021012816.png" alt="image-20210128172159840"></p>
-</li>
-</ul>
-</li>
-<li><p>作用</p>
-<ul>
-<li>设置变量，在计算表达式的框里，可以改变变量的值，这样有时候就能很方便我们去调试各种值的情况了。 </li>
-</ul>
-</li>
-</ul>
-<h1 id="11-条件断点"><a href="#11-条件断点" class="headerlink" title="11 条件断点"></a>11 条件断点</h1><ul>
-<li><p>条件断点</p>
-<ul>
-<li><p><strong>右键单击断点处</strong>，可以设置进入断点的条件</p>
-<p><img src="/images/2021012817.png" alt="image-20210128172101075"></p>
-</li>
-</ul>
-</li>
-<li><p>作用</p>
-<ul>
-<li>通过设置断点条件，在满足条件时，才停在断点处，否则直接运行。</li>
-</ul>
-</li>
-</ul>
-<h1 id="12-多线程调试"><a href="#12-多线程调试" class="headerlink" title="12 多线程调试"></a>12 多线程调试</h1><ul>
-<li><p>步骤</p>
-<ul>
-<li><p>多线程调试，需要调整断点挂起级别为Thread</p>
-<p><img src="/images/2021012818.png" alt="image-20210128172128757"></p>
-</li>
-<li><p>Frame中选择线程进行调试</p>
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>Debug</category>
-      </categories>
-      <tags>
-        <tag>Debug</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java内部类详解</title>
-    <url>/2021/01/04/Java%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%A6%E8%A7%A3/</url>
+    <title>Java IO流详解</title>
+    <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>[TOC]</p>
 <a id="more"></a>
 
 <blockquote>
-<p><a href="https://www.runoob.com/w3cnote/java-inner-class-intro.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-inner-class-intro.html</a></p>
-<p><a href="https://www.iteye.com/topic/494230#" target="_blank" rel="noopener">https://www.iteye.com/topic/494230#</a></p>
+<p>Java之美[从菜鸟到高手演变]之Java中的IO:<a href="https://blog.csdn.net/zhangerqing/article/details/8466532" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8466532</a></p>
+<p>Java IO流学习总结一：输入输出流:<a href="https://blog.csdn.net/zhaoyanjun6/article/details/54292148" target="_blank" rel="noopener">https://blog.csdn.net/zhaoyanjun6/article/details/54292148</a></p>
+<p>史上最骚最全最详细的IO流教程，没有之一！:<a href="https://www.cnblogs.com/yichunguo/p/11775270.html" target="_blank" rel="noopener">https://www.cnblogs.com/yichunguo/p/11775270.html</a></p>
+<p>Java IO:<a href="http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88</a></p>
 </blockquote>
-<h1 id="内部类概述"><a href="#内部类概述" class="headerlink" title="内部类概述"></a>内部类概述</h1><blockquote>
-<p>内部类：就是在一个类中定义一个类。举例：在一个类A的内部定义一个类B，类B就被称为内部类</p>
-</blockquote>
-<p><strong>定义格式：</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	修饰符 <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="内部类分类"><a href="#内部类分类" class="headerlink" title="内部类分类"></a>内部类分类</h1><ul>
-<li><p>静态内部类：类似于静态变量</p>
-</li>
-<li><p>实例内部类：类似于实例变量</p>
-</li>
-<li><p>局部内部类：类似于局部变量</p>
-</li>
-</ul>
-<p><strong>注意：</strong></p>
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>Java IO流大概可以分为以下几类：</p>
 <ul>
-<li><p>使用内部类编写的代码，可读性很差。能不用尽量不用。</p>
-</li>
-<li><p>匿名内部类是局部内部类的一种</p>
-</li>
+<li>磁盘操作：File类</li>
+<li>字节流操作：InputStream，OutputStream</li>
+<li>字符流操作：Reader，Writer</li>
+<li>对象操作：Serializable</li>
+<li>网络操作：socket</li>
+<li>新的输入/输出：NIO</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 由于前面有static，称为静态内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner1</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 没有static称为实例内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner2</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSome</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//局部变量</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">         * 局部内部类</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Inner3</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="2-磁盘操作"><a href="#2-磁盘操作" class="headerlink" title="2 磁盘操作"></a>2 磁盘操作</h1><p>File类可以用于获取目录和文件的信息，但他不表示文件的内容。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fileMethod</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File file2 : files) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (file2.isDirectory()) &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件夹:"</span> + file2.getAbsolutePath());</span><br><span class="line">                        fileMethod(file2.getAbsolutePath());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件:"</span> + file2.getAbsolutePath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件不存在!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-
-
-<h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><p>类似于静态变量</p>
-<h2 id="实例内部类"><a href="#实例内部类" class="headerlink" title="实例内部类"></a>实例内部类</h2><p>成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。</p>
-<p>不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。如果要访问外部类的同名成员，需要以下面的形式进行访问：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">外部类.this.成员变量</span><br><span class="line">外部类.this.成员方法</span><br></pre></td></tr></table></figure>
-
-
-
-<p>虽然成员内部类可以无条件地访问外部类的成员，而外部类想访问成员内部类的成员却不是这么随心所欲了。在外部类中如果要访问成员内部类的成员，必须先创建一个成员内部类的对象，再通过指向这个对象的引用来访问：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Circle &#123;</span><br><span class="line">    private double radius &#x3D; 0;</span><br><span class="line"> </span><br><span class="line">    public Circle(double radius) &#123;</span><br><span class="line">        this.radius &#x3D; radius;</span><br><span class="line">        getDrawInstance().drawSahpe();   &#x2F;&#x2F;必须先创建成员内部类的对象，再进行访问</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    private Draw getDrawInstance() &#123;</span><br><span class="line">        return new Draw();</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    class Draw &#123;     &#x2F;&#x2F;内部类</span><br><span class="line">        public void drawSahpe() &#123;</span><br><span class="line">            System.out.println(radius);  &#x2F;&#x2F;外部类的private成员</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>成员内部类是依附外部类而存在的，也就是说，如果要创建成员内部类的对象，前提是必须存在一个外部类的对象。创建成员内部类对象的一般方式如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">        &#x2F;&#x2F;第一种方式：</span><br><span class="line">        Outter outter &#x3D; new Outter();</span><br><span class="line">        Outter.Inner inner &#x3D; outter.new Inner();  &#x2F;&#x2F;必须通过Outter对象来创建</span><br><span class="line">         </span><br><span class="line">        &#x2F;&#x2F;第二种方式：</span><br><span class="line">        Outter.Inner inner1 &#x3D; outter.getInnerInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class Outter &#123;</span><br><span class="line">    private Inner inner &#x3D; null;</span><br><span class="line">    public Outter() &#123;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    public Inner getInnerInstance() &#123;</span><br><span class="line">        if(inner &#x3D;&#x3D; null)</span><br><span class="line">            inner &#x3D; new Inner();</span><br><span class="line">        return inner;</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    class Inner &#123;</span><br><span class="line">        public Inner() &#123;</span><br><span class="line">             </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>内部类可以拥有 private 访问权限、protected 访问权限、public 访问权限及包访问权限。比如上面的例子，如果成员内部类 Inner 用 private 修饰，则只能在外部类的内部访问，如果用 public 修饰，则任何地方都能访问；如果用 protected 修饰，则只能在同一个包下或者继承外部类的情况下访问；如果是默认访问权限，则只能在同一个包下访问。这一点和外部类有一点不一样，外部类只能被 public 和包访问两种权限修饰。我个人是这么理解的，由于成员内部类看起来像是外部类的一个成员，所以可以像类的成员一样拥有多种权限修饰。</p>
-<p>类似于实例变量</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Outer &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Outer o &#x3D; new Outer();</span><br><span class="line">        Outer.MyMath myMath &#x3D; o.new MyMath();</span><br><span class="line">        myMath.mysum(new Compute() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public int sum(int x, int y) &#123;</span><br><span class="line">                return x+y;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, 10, 20);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class MyMath&#123;</span><br><span class="line">        public void mysum(Compute c,int x ,int y)&#123;</span><br><span class="line">            int value &#x3D; c.sum(x,y);</span><br><span class="line">            System.out.println(x + &quot;+&quot;+ y + &quot;&#x3D;&quot;+value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    interface comput&#123;</span><br><span class="line">        public int sum(int x,int y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class computImpl implements comput&#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int sum(int x, int y) &#123;</span><br><span class="line">            return x+y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h2><p>类似于局部变量</p>
+<p>从 Java7 开始，可以使用 Paths 和 Files 代替 File。文件的操作更加简便快捷</p>
+<blockquote>
+<p>Java文件处理：Paths和Files：<a href="https://www.jianshu.com/p/3b3c5dbcfae7" target="_blank" rel="noopener">https://www.jianshu.com/p/3b3c5dbcfae7</a></p>
+</blockquote>
+<h1 id="3-字节流操作"><a href="#3-字节流操作" class="headerlink" title="3 字节流操作"></a>3 字节流操作</h1><p>实现文件复制</p>
+<h1 id="4-对象操作"><a href="#4-对象操作" class="headerlink" title="4 对象操作"></a>4 对象操作</h1><blockquote>
+<p>对象的序列化:<a href="https://liuyangjun.blog.csdn.net/article/details/80422143" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/80422143</a></p>
+</blockquote>
+<h1 id="5-网络操作"><a href="#5-网络操作" class="headerlink" title="5 网络操作"></a>5 网络操作</h1><h1 id="6-新的输入-输出（NIO）"><a href="#6-新的输入-输出（NIO）" class="headerlink" title="6 新的输入/输出（NIO）"></a>6 新的输入/输出（NIO）</h1><blockquote>
+<p><a href="https://www.zhihu.com/question/29005375" target="_blank" rel="noopener">https://www.zhihu.com/question/29005375</a></p>
+</blockquote>
+<p>NIO主要有<strong>三个核心部分组成</strong>：</p>
+<ul>
+<li><strong>buffer缓冲区</strong></li>
+<li><strong>Channel管道</strong></li>
+<li><strong>Selector选择器</strong></li>
+</ul>
 ]]></content>
       <categories>
         <category>编程基础</category>
@@ -1312,7 +1370,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <category>JavaSE基础</category>
       </categories>
       <tags>
-        <tag>内部类</tag>
+        <tag>IO流</tag>
       </tags>
   </entry>
   <entry>
@@ -1452,57 +1510,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java IO流详解</title>
-    <url>/2020/12/27/Java-IO%E6%B5%81%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Java之美[从菜鸟到高手演变]之Java中的IO:<a href="https://blog.csdn.net/zhangerqing/article/details/8466532" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8466532</a></p>
-<p>Java IO流学习总结一：输入输出流:<a href="https://blog.csdn.net/zhaoyanjun6/article/details/54292148" target="_blank" rel="noopener">https://blog.csdn.net/zhaoyanjun6/article/details/54292148</a></p>
-<p>史上最骚最全最详细的IO流教程，没有之一！:<a href="https://www.cnblogs.com/yichunguo/p/11775270.html" target="_blank" rel="noopener">https://www.cnblogs.com/yichunguo/p/11775270.html</a></p>
-<p>Java IO:<a href="http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">http://www.cyc2018.xyz/Java/Java%20IO.html#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88</a></p>
-</blockquote>
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>Java IO流大概可以分为以下几类：</p>
-<ul>
-<li>磁盘操作：File类</li>
-<li>字节流操作：InputStream，OutputStream</li>
-<li>字符流操作：Reader，Writer</li>
-<li>对象操作：Serializable</li>
-<li>网络操作：socket</li>
-<li>新的输入/输出：NIO</li>
-</ul>
-<h1 id="2-磁盘操作"><a href="#2-磁盘操作" class="headerlink" title="2 磁盘操作"></a>2 磁盘操作</h1><p>File类可以用于获取目录和文件的信息，但他不表示文件的内容。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fileMethod</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File file2 : files) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (file2.isDirectory()) &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件夹:"</span> + file2.getAbsolutePath());</span><br><span class="line">                        fileMethod(file2.getAbsolutePath());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"文件:"</span> + file2.getAbsolutePath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件不存在!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>从 Java7 开始，可以使用 Paths 和 Files 代替 File。文件的操作更加简便快捷</p>
-<blockquote>
-<p>Java文件处理：Paths和Files：<a href="https://www.jianshu.com/p/3b3c5dbcfae7" target="_blank" rel="noopener">https://www.jianshu.com/p/3b3c5dbcfae7</a></p>
-</blockquote>
-<h1 id="3-字节流操作"><a href="#3-字节流操作" class="headerlink" title="3 字节流操作"></a>3 字节流操作</h1><p>实现文件复制</p>
-<h1 id="4-对象操作"><a href="#4-对象操作" class="headerlink" title="4 对象操作"></a>4 对象操作</h1><blockquote>
-<p>对象的序列化:<a href="https://liuyangjun.blog.csdn.net/article/details/80422143" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/80422143</a></p>
-</blockquote>
-<h1 id="5-网络操作"><a href="#5-网络操作" class="headerlink" title="5 网络操作"></a>5 网络操作</h1><h1 id="6-新的输入-输出（NIO）"><a href="#6-新的输入-输出（NIO）" class="headerlink" title="6 新的输入/输出（NIO）"></a>6 新的输入/输出（NIO）</h1><blockquote>
-<p><a href="https://www.zhihu.com/question/29005375" target="_blank" rel="noopener">https://www.zhihu.com/question/29005375</a></p>
-</blockquote>
-<p>NIO主要有<strong>三个核心部分组成</strong>：</p>
-<ul>
-<li><strong>buffer缓冲区</strong></li>
-<li><strong>Channel管道</strong></li>
-<li><strong>Selector选择器</strong></li>
-</ul>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>IO流</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java反射详解</title>
     <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1533,6 +1540,24 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java异常详解</title>
+    <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
+<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
+</blockquote>
+<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>异常</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java接口详解</title>
     <url>/2020/12/27/Java%E6%8E%A5%E5%8F%A3%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1556,24 +1581,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>接口</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java异常详解</title>
-    <url>/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
-<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
-</blockquote>
-<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>异常</tag>
       </tags>
   </entry>
   <entry>
@@ -1784,6 +1791,73 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java内部类详解</title>
+    <url>/2021/01/04/Java%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p><a href="https://www.runoob.com/w3cnote/java-inner-class-intro.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-inner-class-intro.html</a></p>
+<p><a href="https://www.iteye.com/topic/494230#" target="_blank" rel="noopener">https://www.iteye.com/topic/494230#</a></p>
+</blockquote>
+<h1 id="内部类概述"><a href="#内部类概述" class="headerlink" title="内部类概述"></a>内部类概述</h1><blockquote>
+<p>内部类：就是在一个类中定义一个类。举例：在一个类A的内部定义一个类B，类B就被称为内部类</p>
+</blockquote>
+<p><strong>定义格式：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	修饰符 <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="内部类分类"><a href="#内部类分类" class="headerlink" title="内部类分类"></a>内部类分类</h1><ul>
+<li><p>静态内部类：类似于静态变量</p>
+</li>
+<li><p>实例内部类：类似于实例变量</p>
+</li>
+<li><p>局部内部类：类似于局部变量</p>
+</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li><p>使用内部类编写的代码，可读性很差。能不用尽量不用。</p>
+</li>
+<li><p>匿名内部类是局部内部类的一种</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 由于前面有static，称为静态内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner1</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 没有static称为实例内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner2</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSome</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//局部变量</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">         * 局部内部类</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Inner3</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><p>类似于静态变量</p>
+<h2 id="实例内部类"><a href="#实例内部类" class="headerlink" title="实例内部类"></a>实例内部类</h2><p>成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。</p>
+<p>不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。如果要访问外部类的同名成员，需要以下面的形式进行访问：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">外部类.this.成员变量</span><br><span class="line">外部类.this.成员方法</span><br></pre></td></tr></table></figure>
+
+
+
+<p>虽然成员内部类可以无条件地访问外部类的成员，而外部类想访问成员内部类的成员却不是这么随心所欲了。在外部类中如果要访问成员内部类的成员，必须先创建一个成员内部类的对象，再通过指向这个对象的引用来访问：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Circle &#123;</span><br><span class="line">    private double radius &#x3D; 0;</span><br><span class="line"> </span><br><span class="line">    public Circle(double radius) &#123;</span><br><span class="line">        this.radius &#x3D; radius;</span><br><span class="line">        getDrawInstance().drawSahpe();   &#x2F;&#x2F;必须先创建成员内部类的对象，再进行访问</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    private Draw getDrawInstance() &#123;</span><br><span class="line">        return new Draw();</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    class Draw &#123;     &#x2F;&#x2F;内部类</span><br><span class="line">        public void drawSahpe() &#123;</span><br><span class="line">            System.out.println(radius);  &#x2F;&#x2F;外部类的private成员</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>成员内部类是依附外部类而存在的，也就是说，如果要创建成员内部类的对象，前提是必须存在一个外部类的对象。创建成员内部类对象的一般方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">        &#x2F;&#x2F;第一种方式：</span><br><span class="line">        Outter outter &#x3D; new Outter();</span><br><span class="line">        Outter.Inner inner &#x3D; outter.new Inner();  &#x2F;&#x2F;必须通过Outter对象来创建</span><br><span class="line">         </span><br><span class="line">        &#x2F;&#x2F;第二种方式：</span><br><span class="line">        Outter.Inner inner1 &#x3D; outter.getInnerInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class Outter &#123;</span><br><span class="line">    private Inner inner &#x3D; null;</span><br><span class="line">    public Outter() &#123;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    public Inner getInnerInstance() &#123;</span><br><span class="line">        if(inner &#x3D;&#x3D; null)</span><br><span class="line">            inner &#x3D; new Inner();</span><br><span class="line">        return inner;</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    class Inner &#123;</span><br><span class="line">        public Inner() &#123;</span><br><span class="line">             </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内部类可以拥有 private 访问权限、protected 访问权限、public 访问权限及包访问权限。比如上面的例子，如果成员内部类 Inner 用 private 修饰，则只能在外部类的内部访问，如果用 public 修饰，则任何地方都能访问；如果用 protected 修饰，则只能在同一个包下或者继承外部类的情况下访问；如果是默认访问权限，则只能在同一个包下访问。这一点和外部类有一点不一样，外部类只能被 public 和包访问两种权限修饰。我个人是这么理解的，由于成员内部类看起来像是外部类的一个成员，所以可以像类的成员一样拥有多种权限修饰。</p>
+<p>类似于实例变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Outer &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Outer o &#x3D; new Outer();</span><br><span class="line">        Outer.MyMath myMath &#x3D; o.new MyMath();</span><br><span class="line">        myMath.mysum(new Compute() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public int sum(int x, int y) &#123;</span><br><span class="line">                return x+y;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, 10, 20);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class MyMath&#123;</span><br><span class="line">        public void mysum(Compute c,int x ,int y)&#123;</span><br><span class="line">            int value &#x3D; c.sum(x,y);</span><br><span class="line">            System.out.println(x + &quot;+&quot;+ y + &quot;&#x3D;&quot;+value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    interface comput&#123;</span><br><span class="line">        public int sum(int x,int y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class computImpl implements comput&#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int sum(int x, int y) &#123;</span><br><span class="line">            return x+y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h2><p>类似于局部变量</p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>内部类</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java注解详解</title>
     <url>/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1889,6 +1963,23 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>MyBatis-Plus笔记</title>
+    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>应用框架</category>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>ORM框架</category>
+      </categories>
+      <tags>
+        <tag>MyBatis-Plus</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MyBatis三剑客</title>
     <url>/2020/11/19/MyBatis%E4%B8%89%E5%89%91%E5%AE%A2/</url>
     <content><![CDATA[<p>MyBatis-generator</p>
@@ -1930,20 +2021,23 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis-Plus笔记</title>
-    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
-</blockquote>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<p>记录一个小细节</p>
+<a id="more"></a>
+
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
 ]]></content>
       <categories>
-        <category>应用框架</category>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>ORM框架</category>
+        <category>MyBatis</category>
       </categories>
       <tags>
-        <tag>MyBatis-Plus</tag>
+        <tag>MyBatis缓存</tag>
       </tags>
   </entry>
   <entry>
@@ -1987,6 +2081,28 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>MySQL数据库集群-PXC方案</title>
+    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>docker中安装pxc集群比较简单，这里尝试在centos7安装MySQL集群</p>
+<a id="more"></a>
+
+<h1 id="一-安装环境"><a href="#一-安装环境" class="headerlink" title="一.安装环境"></a>一.安装环境</h1><p>Centos7</p>
+<p>MySQL：5.7.22</p>
+<p>Mycat</p>
+<h1 id="二-创建PXC集群"><a href="#二-创建PXC集群" class="headerlink" title="二.创建PXC集群"></a>二.创建PXC集群</h1><h2 id="2-1-CentOS安装PerconaServer数据库"><a href="#2-1-CentOS安装PerconaServer数据库" class="headerlink" title="2.1 CentOS安装PerconaServer数据库"></a>2.1 CentOS安装PerconaServer数据库</h2><blockquote>
+<p>官网下载网址：<a href="https://www.percona.com/downloads/Percona-Server-5.7/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/LATEST/</a></p>
+</blockquote>
+<h2 id="2-2-安装PXC组建集群"><a href="#2-2-安装PXC组建集群" class="headerlink" title="2.2 安装PXC组建集群"></a>2.2 安装PXC组建集群</h2><h2 id="2-3-PXC集群的常用管理-数据库集群使用"><a href="#2-3-PXC集群的常用管理-数据库集群使用" class="headerlink" title="2.3 PXC集群的常用管理-数据库集群使用"></a>2.3 PXC集群的常用管理-数据库集群使用</h2><h2 id="2-4-PXC集群的常用管理-状态参数"><a href="#2-4-PXC集群的常用管理-状态参数" class="headerlink" title="2.4 PXC集群的常用管理-状态参数"></a>2.4 PXC集群的常用管理-状态参数</h2><h2 id="2-5-PXC节点的上线与关闭"><a href="#2-5-PXC节点的上线与关闭" class="headerlink" title="2.5 PXC节点的上线与关闭"></a>2.5 PXC节点的上线与关闭</h2><h2 id="2-6-MySQL集群中间件比较"><a href="#2-6-MySQL集群中间件比较" class="headerlink" title="2.6 MySQL集群中间件比较"></a>2.6 MySQL集群中间件比较</h2><h2 id="2-7-配置MyCat负载均衡"><a href="#2-7-配置MyCat负载均衡" class="headerlink" title="2.7 配置MyCat负载均衡"></a>2.7 配置MyCat负载均衡</h2><h2 id="2-8-数据切分"><a href="#2-8-数据切分" class="headerlink" title="2.8 数据切分"></a>2.8 数据切分</h2><h2 id="2-9-父子表"><a href="#2-9-父子表" class="headerlink" title="2.9 父子表"></a>2.9 父子表</h2><h2 id="2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群"><a href="#2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群" class="headerlink" title="2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群"></a>2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群</h2><h2 id="2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"><a href="#2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP" class="headerlink" title="2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"></a>2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP</h2><h2 id="2-12-Sysbench基准测试-安装Sysbench"><a href="#2-12-Sysbench基准测试-安装Sysbench" class="headerlink" title="2.12 Sysbench基准测试-安装Sysbench"></a>2.12 Sysbench基准测试-安装Sysbench</h2><h2 id="2-13-Sysbench基准测试-使用Sysbench"><a href="#2-13-Sysbench基准测试-使用Sysbench" class="headerlink" title="2.13 Sysbench基准测试-使用Sysbench"></a>2.13 Sysbench基准测试-使用Sysbench</h2><h2 id="2-14-tpcc-mysql压力测试"><a href="#2-14-tpcc-mysql压力测试" class="headerlink" title="2.14 tpcc-mysql压力测试"></a>2.14 tpcc-mysql压力测试</h2><h1 id="三-PXC集群原理"><a href="#三-PXC集群原理" class="headerlink" title="三.PXC集群原理"></a>三.PXC集群原理</h1><h2 id="3-1-binlog日志"><a href="#3-1-binlog日志" class="headerlink" title="3.1 binlog日志"></a>3.1 binlog日志</h2><h2 id="3-2-PXC同步原理"><a href="#3-2-PXC同步原理" class="headerlink" title="3.2 PXC同步原理"></a>3.2 PXC同步原理</h2><h1 id="四-业务需求与MySQL架构设计"><a href="#四-业务需求与MySQL架构设计" class="headerlink" title="四. 业务需求与MySQL架构设计"></a>四. 业务需求与MySQL架构设计</h1><h2 id="4-1-MySQL的5种特殊架构设计"><a href="#4-1-MySQL的5种特殊架构设计" class="headerlink" title="4.1 MySQL的5种特殊架构设计"></a>4.1 MySQL的5种特殊架构设计</h2><h2 id="4-2-数据库设计原则"><a href="#4-2-数据库设计原则" class="headerlink" title="4.2 数据库设计原则"></a>4.2 数据库设计原则</h2><h1 id="五-数据库常见业务处理"><a href="#五-数据库常见业务处理" class="headerlink" title="五.数据库常见业务处理"></a>五.数据库常见业务处理</h1><h1 id="六-数据备份与恢复"><a href="#六-数据备份与恢复" class="headerlink" title="六.数据备份与恢复"></a>六.数据备份与恢复</h1>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>数据库集群</category>
+      </categories>
+      <tags>
+        <tag>PXC集群</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL数据库中的Date,DateTime,TimeStamp和Time类型</title>
     <url>/2020/11/18/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84Date-DateTime-TimeStamp%E5%92%8CTime%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p><strong>DATETIME</strong>类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以’YYYY-MM-DD HH:MM:SS’格式显示DATETIME值，支持的范围是’1000-01-01 00:00:00’到’9999-12-31 23:59:59’。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）</p>
@@ -2012,118 +2128,61 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>JVM学习笔记</title>
-    <url>/2020/12/20/JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>[TOC]</p>
+    <title>Mycat学习笔记</title>
+    <url>/2021/01/12/Mycat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><strong>中间件</strong>：是介于应用系统和系统软件之间的一类软件</p>
+<p><strong>数据库中间件</strong>：连接Java应用程序和数据库</p>
 <a id="more"></a>
 
-<h1 id="1-为什么学习JVM"><a href="#1-为什么学习JVM" class="headerlink" title="1 为什么学习JVM"></a>1 为什么学习JVM</h1><p>1.面试需要</p>
-<p>2.更深入的理解Java</p>
-<ul>
-<li>一个类是如何加载到JVM的</li>
-<li>它在JVM中是如何存储的</li>
-<li>如何运行的</li>
-<li>方法是如何调用的</li>
-<li>运行时内存怎么分配的</li>
-<li>产生垃圾后是如何回收的</li>
-</ul>
-<p>3.排查解决故障</p>
-<ul>
-<li>内存溢出导致宕机了</li>
-<li>CPU使用率居高不下</li>
-<li>频繁卡顿</li>
-<li>应用越跑越慢</li>
-</ul>
-<p>4.性能调优</p>
-<ul>
-<li>合理的分配内存</li>
-<li>调整参数</li>
-<li>选择GC垃圾回收器</li>
-<li>第三方中间件的适配</li>
-</ul>
-<h1 id="2-认识JVM规范"><a href="#2-认识JVM规范" class="headerlink" title="2 认识JVM规范"></a>2 认识JVM规范</h1><p><strong>认识JVM</strong>：是什么，有什么，能干什么</p>
-<blockquote>
-<p>JVM：Java Virtual Machine，也就是Java虚拟机</p>
-<p>虚拟机：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统<br>JVM是通过软件来模拟Java字节码的指令集，是Java程序的运行环境</p>
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><blockquote>
+<p>Mycat官方文档：<a href="https://github.com/MyCATApache/Mycat-Server/wiki" target="_blank" rel="noopener">https://github.com/MyCATApache/Mycat-Server/wiki</a></p>
+<p>Mycat语雀官方文档：<a href="https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944" target="_blank" rel="noopener">https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944</a></p>
 </blockquote>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201224105252066.png" alt="image-20201224105252066"></p>
-<p><strong>JVM主要功能</strong></p>
-<ol>
-<li>通过ClassLoader寻找和装载class文件</li>
-<li>解释字节码成为指令并执行，提供class文件的运行环境</li>
-<li>进行运行期间的内存分配和垃圾回收</li>
-<li>提供与硬件交互的平台</li>
-</ol>
-<p>​    JVM跨平台特征</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201224105219618.png" alt="image-20201224105219618"></p>
-<h2 id="JVM规范作用及其核心"><a href="#JVM规范作用及其核心" class="headerlink" title="JVM规范作用及其核心"></a>JVM规范作用及其核心</h2><blockquote>
-<p>Java虚拟机规范为不同的硬件平台提供了一种编译Java技术代码的规范</p>
-<p>该规范是Java软件独立于平台，因为编译针对作为虚拟机的“一般机器”而做</p>
-</blockquote>
-<p><strong>JVM规范定义的主要内容</strong>：</p>
-<p>可以看官方文档</p>
+<p>Mycat是一款流行的数据库中间件，由cobar演进而来</p>
+<p>为什么使用Mycat</p>
 <ul>
-<li>字节码指令集（相当于中央处理器CPU）</li>
-<li>Class文件的格式</li>
-<li>数据类型和值</li>
-<li>运行时数据区</li>
-<li>栈帧</li>
-<li>特殊方法</li>
-<li>类库</li>
-<li>异常</li>
-<li>虚拟机的启动，加载，链接和初始化</li>
+<li>java与数据库紧耦合</li>
+<li>高访问量高并发对数据库压力较大</li>
+<li>读写请求数据不一致</li>
 </ul>
-<p>虚拟机规范内容很多，了解即可</p>
-<h1 id="3-类加载、连接和初始化"><a href="#3-类加载、连接和初始化" class="headerlink" title="3.类加载、连接和初始化"></a>3.类加载、连接和初始化</h1><h1 id="4-内存分配"><a href="#4-内存分配" class="headerlink" title="4 内存分配"></a>4 内存分配</h1><h1 id="5-字节码执行引擎"><a href="#5-字节码执行引擎" class="headerlink" title="5 字节码执行引擎"></a>5 字节码执行引擎</h1><h1 id="6-垃圾回收"><a href="#6-垃圾回收" class="headerlink" title="6 垃圾回收"></a>6 垃圾回收</h1><h1 id="7-高效并发"><a href="#7-高效并发" class="headerlink" title="7  高效并发"></a>7  高效并发</h1><h1 id="8-性能监控与故障处理工具"><a href="#8-性能监控与故障处理工具" class="headerlink" title="8 性能监控与故障处理工具"></a>8 性能监控与故障处理工具</h1><h1 id="9-JVM调优"><a href="#9-JVM调优" class="headerlink" title="9 JVM调优"></a>9 JVM调优</h1>]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<p>记录一个小细节</p>
-<a id="more"></a>
+<p>Mycat作用</p>
+<ul>
+<li>读写分离</li>
+</ul>
+<p><img src="/images/2021011201.png" alt="image-20210125155408275"></p>
+<ul>
+<li>数据分片</li>
+</ul>
+<p>垂直拆分（分库）、水平拆分（分表）、垂直+水平拆分（分库分表）</p>
+<p><img src="/images/2021011202.png" alt="image-20210125155436300"></p>
+<ul>
+<li>多数据源整合</li>
+</ul>
+<p><img src="/images/2021011203.png" alt="image-20210125155512988"></p>
+<p>Mycat原理：</p>
+<p>Mycat原理就两个字<strong>拦截</strong></p>
+<p><img src="/images/2021011204.png" alt="image-20210125203845447"></p>
+<h1 id="2-Mycat安装启动"><a href="#2-Mycat安装启动" class="headerlink" title="2 Mycat安装启动"></a>2 Mycat安装启动</h1><p>常见安装方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.rpm安装</span><br><span class="line">  .rpm安装包，安装顺序安装</span><br><span class="line">2.yum安装</span><br><span class="line">  需要联网安装</span><br><span class="line">3.Docker安装</span><br><span class="line">4.解压后即可使用</span><br><span class="line">5.解压后编译安装</span><br></pre></td></tr></table></figure>
 
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
+
+<p>配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">schema.xml：定义逻辑库，表、分片节点等内容</span><br><span class="line">rule.xml：定义分片规则</span><br><span class="line">server.xml：定义用户以及系统相关变量，如端口等</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 ]]></content>
       <categories>
-        <category>MyBatis</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL数据库集群-PXC方案</title>
-    <url>/2020/12/13/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E7%BE%A4-PXC%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>docker中安装pxc集群比较简单，这里尝试在centos7安装MySQL集群</p>
-<a id="more"></a>
-
-<h1 id="一-安装环境"><a href="#一-安装环境" class="headerlink" title="一.安装环境"></a>一.安装环境</h1><p>Centos7</p>
-<p>MySQL：5.7.22</p>
-<p>Mycat</p>
-<h1 id="二-创建PXC集群"><a href="#二-创建PXC集群" class="headerlink" title="二.创建PXC集群"></a>二.创建PXC集群</h1><h2 id="2-1-CentOS安装PerconaServer数据库"><a href="#2-1-CentOS安装PerconaServer数据库" class="headerlink" title="2.1 CentOS安装PerconaServer数据库"></a>2.1 CentOS安装PerconaServer数据库</h2><blockquote>
-<p>官网下载网址：<a href="https://www.percona.com/downloads/Percona-Server-5.7/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.7/LATEST/</a></p>
-</blockquote>
-<h2 id="2-2-安装PXC组建集群"><a href="#2-2-安装PXC组建集群" class="headerlink" title="2.2 安装PXC组建集群"></a>2.2 安装PXC组建集群</h2><h2 id="2-3-PXC集群的常用管理-数据库集群使用"><a href="#2-3-PXC集群的常用管理-数据库集群使用" class="headerlink" title="2.3 PXC集群的常用管理-数据库集群使用"></a>2.3 PXC集群的常用管理-数据库集群使用</h2><h2 id="2-4-PXC集群的常用管理-状态参数"><a href="#2-4-PXC集群的常用管理-状态参数" class="headerlink" title="2.4 PXC集群的常用管理-状态参数"></a>2.4 PXC集群的常用管理-状态参数</h2><h2 id="2-5-PXC节点的上线与关闭"><a href="#2-5-PXC节点的上线与关闭" class="headerlink" title="2.5 PXC节点的上线与关闭"></a>2.5 PXC节点的上线与关闭</h2><h2 id="2-6-MySQL集群中间件比较"><a href="#2-6-MySQL集群中间件比较" class="headerlink" title="2.6 MySQL集群中间件比较"></a>2.6 MySQL集群中间件比较</h2><h2 id="2-7-配置MyCat负载均衡"><a href="#2-7-配置MyCat负载均衡" class="headerlink" title="2.7 配置MyCat负载均衡"></a>2.7 配置MyCat负载均衡</h2><h2 id="2-8-数据切分"><a href="#2-8-数据切分" class="headerlink" title="2.8 数据切分"></a>2.8 数据切分</h2><h2 id="2-9-父子表"><a href="#2-9-父子表" class="headerlink" title="2.9 父子表"></a>2.9 父子表</h2><h2 id="2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群"><a href="#2-10-组建双机热备的MyCat集群-构建高可用的MyCat集群" class="headerlink" title="2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群"></a>2.10 组建双机热备的MyCat集群-构建高可用的MyCat集群</h2><h2 id="2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"><a href="#2-11-组建双机热备的MyCat集群-利用keepalived抢占虚拟IP" class="headerlink" title="2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP"></a>2.11 组建双机热备的MyCat集群-利用keepalived抢占虚拟IP</h2><h2 id="2-12-Sysbench基准测试-安装Sysbench"><a href="#2-12-Sysbench基准测试-安装Sysbench" class="headerlink" title="2.12 Sysbench基准测试-安装Sysbench"></a>2.12 Sysbench基准测试-安装Sysbench</h2><h2 id="2-13-Sysbench基准测试-使用Sysbench"><a href="#2-13-Sysbench基准测试-使用Sysbench" class="headerlink" title="2.13 Sysbench基准测试-使用Sysbench"></a>2.13 Sysbench基准测试-使用Sysbench</h2><h2 id="2-14-tpcc-mysql压力测试"><a href="#2-14-tpcc-mysql压力测试" class="headerlink" title="2.14 tpcc-mysql压力测试"></a>2.14 tpcc-mysql压力测试</h2><h1 id="三-PXC集群原理"><a href="#三-PXC集群原理" class="headerlink" title="三.PXC集群原理"></a>三.PXC集群原理</h1><h2 id="3-1-binlog日志"><a href="#3-1-binlog日志" class="headerlink" title="3.1 binlog日志"></a>3.1 binlog日志</h2><h2 id="3-2-PXC同步原理"><a href="#3-2-PXC同步原理" class="headerlink" title="3.2 PXC同步原理"></a>3.2 PXC同步原理</h2><h1 id="四-业务需求与MySQL架构设计"><a href="#四-业务需求与MySQL架构设计" class="headerlink" title="四. 业务需求与MySQL架构设计"></a>四. 业务需求与MySQL架构设计</h1><h2 id="4-1-MySQL的5种特殊架构设计"><a href="#4-1-MySQL的5种特殊架构设计" class="headerlink" title="4.1 MySQL的5种特殊架构设计"></a>4.1 MySQL的5种特殊架构设计</h2><h2 id="4-2-数据库设计原则"><a href="#4-2-数据库设计原则" class="headerlink" title="4.2 数据库设计原则"></a>4.2 数据库设计原则</h2><h1 id="五-数据库常见业务处理"><a href="#五-数据库常见业务处理" class="headerlink" title="五.数据库常见业务处理"></a>五.数据库常见业务处理</h1><h1 id="六-数据备份与恢复"><a href="#六-数据备份与恢复" class="headerlink" title="六.数据备份与恢复"></a>六.数据备份与恢复</h1>]]></content>
-      <categories>
+        <category>应用框架</category>
         <category>后端</category>
         <category>数据库</category>
-        <category>数据库集群</category>
+        <category>分库分表</category>
       </categories>
       <tags>
-        <tag>PXC集群</tag>
+        <tag>Mycat</tag>
       </tags>
   </entry>
   <entry>
@@ -2445,75 +2504,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Mycat学习笔记</title>
-    <url>/2021/01/12/Mycat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><strong>中间件</strong>：是介于应用系统和系统软件之间的一类软件</p>
-<p><strong>数据库中间件</strong>：连接Java应用程序和数据库</p>
-<a id="more"></a>
-
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><blockquote>
-<p>Mycat官方文档：<a href="https://github.com/MyCATApache/Mycat-Server/wiki" target="_blank" rel="noopener">https://github.com/MyCATApache/Mycat-Server/wiki</a></p>
-<p>Mycat语雀官方文档：<a href="https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944" target="_blank" rel="noopener">https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944</a></p>
-</blockquote>
-<p>Mycat是一款流行的数据库中间件，由cobar演进而来</p>
-<p>为什么使用Mycat</p>
-<ul>
-<li>java与数据库紧耦合</li>
-<li>高访问量高并发对数据库压力较大</li>
-<li>读写请求数据不一致</li>
-</ul>
-<p>Mycat作用</p>
-<ul>
-<li>读写分离</li>
-</ul>
-<p><img src="/images/2021011201.png" alt="image-20210125155408275"></p>
-<ul>
-<li>数据分片</li>
-</ul>
-<p>垂直拆分（分库）、水平拆分（分表）、垂直+水平拆分（分库分表）</p>
-<p><img src="/images/2021011202.png" alt="image-20210125155436300"></p>
-<ul>
-<li>多数据源整合</li>
-</ul>
-<p><img src="/images/2021011203.png" alt="image-20210125155512988"></p>
-<p>Mycat原理：</p>
-<p>Mycat原理就两个字<strong>拦截</strong></p>
-<p><img src="/images/2021011204.png" alt="image-20210125203845447"></p>
-<h1 id="2-Mycat安装启动"><a href="#2-Mycat安装启动" class="headerlink" title="2 Mycat安装启动"></a>2 Mycat安装启动</h1><p>常见安装方式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.rpm安装</span><br><span class="line">  .rpm安装包，安装顺序安装</span><br><span class="line">2.yum安装</span><br><span class="line">  需要联网安装</span><br><span class="line">3.Docker安装</span><br><span class="line">4.解压后即可使用</span><br><span class="line">5.解压后编译安装</span><br></pre></td></tr></table></figure>
-
-
-
-<p>配置文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">schema.xml：定义逻辑库，表、分片节点等内容</span><br><span class="line">rule.xml：定义分片规则</span><br><span class="line">server.xml：定义用户以及系统相关变量，如端口等</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>应用框架</category>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>分库分表</category>
-      </categories>
-      <tags>
-        <tag>Mycat</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
-    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PXC方案的一些改进</title>
     <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
     <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
@@ -2596,6 +2586,17 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Docker</tag>
         <tag>MySQL集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
+    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -3015,6 +3016,46 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Redis集群搭建</title>
+    <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+
+<h3 id="1、Redis集群方案比较"><a href="#1、Redis集群方案比较" class="headerlink" title="1、Redis集群方案比较"></a>1、Redis集群方案比较</h3><ul>
+<li><strong>哨兵模式</strong></li>
+</ul>
+<p><img src="/images/2020073001.jpg" alt="img"></p>
+<p>在redis3.0以前的版本要实现集群一般是借助哨兵sentinel工具来监控master节点的状态，如果master节点异常，则会做主从切换，将某一台slave作为master，哨兵的配置略微复杂，并且性能和高可用性等各方面表现一般，特别是在主从切换的瞬间存在访问瞬断的情况</p>
+<ul>
+<li><strong>高可用集群模式</strong></li>
+</ul>
+<p><img src="/images/2020073002.png" alt="img"></p>
+<p>redis集群是一个由多个主从节点群组成的分布式服务器群，它具有复制、高可用和分片特性。Redis集群不需要sentinel哨兵也能完成节点移除和故障转移的功能。需要将每个节点设置成集群模式，这种集群模式没有中心节点，可水平扩展，据官方文档称可以线性扩展到1000节点。redis集群的性能和高可用性均优于之前版本的哨兵模式，且集群配置非常简单。</p>
+<h3 id="2、redis高可用集群搭建"><a href="#2、redis高可用集群搭建" class="headerlink" title="2、redis高可用集群搭建"></a>2、redis高可用集群搭建</h3><ul>
+<li><strong>redis安装</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">下载地址：http:&#x2F;&#x2F;redis.io&#x2F;download</span><br><span class="line">安装步骤：</span><br><span class="line"># 安装gcc</span><br><span class="line">yum install gcc</span><br><span class="line"></span><br><span class="line"># 把下载好的redis-3.0.0-rc2.tar.gz放在&#x2F;usr&#x2F;local文件夹下，并解压</span><br><span class="line">tar -zxvf redis-3.0.0-rc2.tar.gz</span><br><span class="line"></span><br><span class="line"># 进入到解压好的redis-3.0.0目录下，进行编译</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"># 进入到redis-3.0.0&#x2F;src目录下进行安装，安装完成验证src目录下是否已经生成了redis-server 、redis-cil</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"># 建立俩个文件夹存放redis命令和配置文件</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 把redis-3.0.0下的redis.conf复制到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc下</span><br><span class="line">cp redis.conf &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;</span><br><span class="line"></span><br><span class="line"># 移动redis-3.0.0&#x2F;src里的几个文件到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin下</span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 启动并指定配置文件</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;redis.conf（注意要使用后台启动，所以修改redis.conf里的daemonize改为yes)</span><br><span class="line"></span><br><span class="line"># 验证启动是否成功</span><br><span class="line">ps -ef | grep redis </span><br><span class="line"></span><br><span class="line"># 查看是否有redis服务或者查看端口</span><br><span class="line">netstat -tunpl | grep 6379</span><br><span class="line"></span><br><span class="line"># 进入redis客户端 </span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli </span><br><span class="line"></span><br><span class="line"># 退出客户端</span><br><span class="line">quit</span><br><span class="line"></span><br><span class="line"># 退出redis服务： </span><br><span class="line">（1）pkill redis-server </span><br><span class="line">（2）kill 进程号                       </span><br><span class="line">（3）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli shutdown</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>redis集群搭建</strong></li>
+</ul>
+<p>redis集群需要至少要三个master节点，我们这里搭建三个master节点，并且给每个master再搭建一个slave节点，总共6个redis节点，由于节点数较多，这里采用在一台机器上创建6个redis实例，并将这6个redis实例配置成集群模式，所以这里搭建的是伪分布式集群模式，当然真正的分布式集群的配置方法几乎一样，搭建伪分布式集群的步骤如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一步：在&#x2F;usr&#x2F;local下创建文件夹redis-cluster，然后在其下面分别创建6个文件夾如下</span><br><span class="line">（1）mkdir -p &#x2F;usr&#x2F;local&#x2F;redis-cluster</span><br><span class="line">（2）mkdir 8001、 mkdir 8002、 mkdir 8003、 mkdir 8004、 mkdir 8005、 mkdir 8006</span><br><span class="line"></span><br><span class="line">第一步：把之前的redis.conf配置文件copy到8001下，修改如下内容：</span><br><span class="line">（1）daemonize yes</span><br><span class="line">（2）port 8001（分别对每个机器的端口号进行设置）</span><br><span class="line">（3）bind 192.168.0.61（必须要绑定当前机器的ip，这里方便redis集群定位机器，不绑定可能会出现循环查找集群节点机器的情况）</span><br><span class="line">（4）dir &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;8001&#x2F;（指定数据文件存放位置，必须要指定不同的目录位置，不然会丢失数据）</span><br><span class="line">（5）cluster-enabled yes（启动集群模式）</span><br><span class="line">（6）cluster-config-file nodes-8001.conf（这里800x最好和port对应上）</span><br><span class="line">（7）cluster-node-timeout 5000</span><br><span class="line">（8）appendonly yes</span><br><span class="line"></span><br><span class="line">第三步：把修改后的配置文件，分别 copy到各个文夹下，注意每个文件要修改第2、4、6项里的端口号</span><br><span class="line">快捷复制命令：%s&#x2F;原目标&#x2F;目标地址&#x2F;g    </span><br><span class="line">第四步：由于 redis集群需要使用 ruby命令，所以我们需要安装 ruby</span><br><span class="line">（1）yum install ruby</span><br><span class="line">（2）yum install rubygems</span><br><span class="line">（3）gem install redis --version 3.0.0（安装redis和 ruby的接囗）</span><br><span class="line"></span><br><span class="line">第五步：分别启动6个redis实例，然后检查是否启动成功</span><br><span class="line">（1）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;800*&#x2F;redis.conf</span><br><span class="line">（2）ps -ef | grep redis 查看是否启动成功</span><br><span class="line"></span><br><span class="line">第六步：在redis的安装目录下执行 redis-trib.rb命令</span><br><span class="line">（1）cd &#x2F;usr&#x2F;local&#x2F;redis-3.0.0&#x2F;src</span><br><span class="line">（2）.&#x2F;redis-trib.rb create --replicas 1 192.168.0.61:8001 192.168.0.61:8002 192.168.0.61:8003 192.168.0.61:8004 192.168.0.61:8005 192.168.0.61:8006</span><br><span class="line">新版本：redis-cli --cluster create 192.168.200.10:8001 192.168.200.10:8002  192.168.200.10:8003 192.168.200.10:8004 192.168.200.10:8005 192.168.200.10:8006  --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">第七步：验证集群：</span><br><span class="line">（1）连接任意一个客户端即可：.&#x2F;redis-cli -c -h -p (-c表示集群模式，指定ip地址和端口号）如：&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800*</span><br><span class="line">（2）进行验证： cluster info（查看集群信息）、cluster nodes（查看节点列表）</span><br><span class="line">（3）进行数据操作验证</span><br><span class="line">（4）关闭集群则需要逐个进行关闭，使用命令：</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800* shutdown</span><br><span class="line"></span><br><span class="line">PS：当出现集群无法启动时，删除redis的临时数据文件，再次重新启动每一个redis服务，然后重新构造集群环境。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3、Java操作redis集群"><a href="#3、Java操作redis集群" class="headerlink" title="3、Java操作redis集群"></a>3、Java操作redis集群</h3><p>借助redis的java客户端jedis可以操作以上集群，引用jedis版本的maven坐标如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;redis.clients&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jedis&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.9.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Java编写访问redis集群的代码非常简单，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">import redis.clients.jedis.HostAndPort;</span><br><span class="line">import redis.clients.jedis.JedisCluster;</span><br><span class="line">import redis.clients.jedis.JedisPoolConfig;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 访问redis集群</span><br><span class="line"> * @author aaron.rao</span><br><span class="line"> *</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class RedisCluster </span><br><span class="line">&#123;</span><br><span class="line">    public static void main(String[] args) throws IOException</span><br><span class="line">    &#123;</span><br><span class="line">        Set&lt;HostAndPort&gt; jedisClusterNode &#x3D; new HashSet&lt;HostAndPort&gt;();</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8001));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8002));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8003));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8004));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8005));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8006));</span><br><span class="line">        </span><br><span class="line">        JedisPoolConfig config &#x3D; new JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(100);</span><br><span class="line">        config.setMaxIdle(10);</span><br><span class="line">        config.setTestOnBorrow(true);</span><br><span class="line">        JedisCluster jedisCluster &#x3D; new JedisCluster(jedisClusterNode, 6000, 10, config);</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;student&quot;, &quot;aaron&quot;));</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;age&quot;, &quot;18&quot;));</span><br><span class="line">        </span><br><span class="line">        System.out.println(jedisCluster.get(&quot;student&quot;));</span><br><span class="line">        System.out.println(jedisCluster.get(&quot;age&quot;));</span><br><span class="line">        </span><br><span class="line">        jedisCluster.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">运行效果如下：</span><br><span class="line">OK</span><br><span class="line">OK</span><br><span class="line">aaron</span><br><span class="line">18</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Redis集群</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Spring Security + OAuth2学习笔记</title>
     <url>/2020/12/25/Spring-Security-OAuth2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -3113,6 +3154,35 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
   </entry>
   <entry>
+    <title>Redis应用场景</title>
+    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+</blockquote>
+<blockquote>
+<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+</blockquote>
+<p>Redis常见场景主要有以下几种:</p>
+<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
+<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
+<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
+<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
+<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
+<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
+<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
+<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
+]]></content>
+      <categories>
+        <category>Redis</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot前台页面get不到js,css文件</title>
     <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
@@ -3123,46 +3193,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis集群搭建</title>
-    <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
-
-<h3 id="1、Redis集群方案比较"><a href="#1、Redis集群方案比较" class="headerlink" title="1、Redis集群方案比较"></a>1、Redis集群方案比较</h3><ul>
-<li><strong>哨兵模式</strong></li>
-</ul>
-<p><img src="/images/2020073001.jpg" alt="img"></p>
-<p>在redis3.0以前的版本要实现集群一般是借助哨兵sentinel工具来监控master节点的状态，如果master节点异常，则会做主从切换，将某一台slave作为master，哨兵的配置略微复杂，并且性能和高可用性等各方面表现一般，特别是在主从切换的瞬间存在访问瞬断的情况</p>
-<ul>
-<li><strong>高可用集群模式</strong></li>
-</ul>
-<p><img src="/images/2020073002.png" alt="img"></p>
-<p>redis集群是一个由多个主从节点群组成的分布式服务器群，它具有复制、高可用和分片特性。Redis集群不需要sentinel哨兵也能完成节点移除和故障转移的功能。需要将每个节点设置成集群模式，这种集群模式没有中心节点，可水平扩展，据官方文档称可以线性扩展到1000节点。redis集群的性能和高可用性均优于之前版本的哨兵模式，且集群配置非常简单。</p>
-<h3 id="2、redis高可用集群搭建"><a href="#2、redis高可用集群搭建" class="headerlink" title="2、redis高可用集群搭建"></a>2、redis高可用集群搭建</h3><ul>
-<li><strong>redis安装</strong></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">下载地址：http:&#x2F;&#x2F;redis.io&#x2F;download</span><br><span class="line">安装步骤：</span><br><span class="line"># 安装gcc</span><br><span class="line">yum install gcc</span><br><span class="line"></span><br><span class="line"># 把下载好的redis-3.0.0-rc2.tar.gz放在&#x2F;usr&#x2F;local文件夹下，并解压</span><br><span class="line">tar -zxvf redis-3.0.0-rc2.tar.gz</span><br><span class="line"></span><br><span class="line"># 进入到解压好的redis-3.0.0目录下，进行编译</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"># 进入到redis-3.0.0&#x2F;src目录下进行安装，安装完成验证src目录下是否已经生成了redis-server 、redis-cil</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"># 建立俩个文件夹存放redis命令和配置文件</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc</span><br><span class="line">mkdir -p &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 把redis-3.0.0下的redis.conf复制到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc下</span><br><span class="line">cp redis.conf &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;</span><br><span class="line"></span><br><span class="line"># 移动redis-3.0.0&#x2F;src里的几个文件到&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin下</span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line"></span><br><span class="line"># 启动并指定配置文件</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;redis.conf（注意要使用后台启动，所以修改redis.conf里的daemonize改为yes)</span><br><span class="line"></span><br><span class="line"># 验证启动是否成功</span><br><span class="line">ps -ef | grep redis </span><br><span class="line"></span><br><span class="line"># 查看是否有redis服务或者查看端口</span><br><span class="line">netstat -tunpl | grep 6379</span><br><span class="line"></span><br><span class="line"># 进入redis客户端 </span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli </span><br><span class="line"></span><br><span class="line"># 退出客户端</span><br><span class="line">quit</span><br><span class="line"></span><br><span class="line"># 退出redis服务： </span><br><span class="line">（1）pkill redis-server </span><br><span class="line">（2）kill 进程号                       </span><br><span class="line">（3）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli shutdown</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>redis集群搭建</strong></li>
-</ul>
-<p>redis集群需要至少要三个master节点，我们这里搭建三个master节点，并且给每个master再搭建一个slave节点，总共6个redis节点，由于节点数较多，这里采用在一台机器上创建6个redis实例，并将这6个redis实例配置成集群模式，所以这里搭建的是伪分布式集群模式，当然真正的分布式集群的配置方法几乎一样，搭建伪分布式集群的步骤如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一步：在&#x2F;usr&#x2F;local下创建文件夹redis-cluster，然后在其下面分别创建6个文件夾如下</span><br><span class="line">（1）mkdir -p &#x2F;usr&#x2F;local&#x2F;redis-cluster</span><br><span class="line">（2）mkdir 8001、 mkdir 8002、 mkdir 8003、 mkdir 8004、 mkdir 8005、 mkdir 8006</span><br><span class="line"></span><br><span class="line">第一步：把之前的redis.conf配置文件copy到8001下，修改如下内容：</span><br><span class="line">（1）daemonize yes</span><br><span class="line">（2）port 8001（分别对每个机器的端口号进行设置）</span><br><span class="line">（3）bind 192.168.0.61（必须要绑定当前机器的ip，这里方便redis集群定位机器，不绑定可能会出现循环查找集群节点机器的情况）</span><br><span class="line">（4）dir &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;8001&#x2F;（指定数据文件存放位置，必须要指定不同的目录位置，不然会丢失数据）</span><br><span class="line">（5）cluster-enabled yes（启动集群模式）</span><br><span class="line">（6）cluster-config-file nodes-8001.conf（这里800x最好和port对应上）</span><br><span class="line">（7）cluster-node-timeout 5000</span><br><span class="line">（8）appendonly yes</span><br><span class="line"></span><br><span class="line">第三步：把修改后的配置文件，分别 copy到各个文夹下，注意每个文件要修改第2、4、6项里的端口号</span><br><span class="line">快捷复制命令：%s&#x2F;原目标&#x2F;目标地址&#x2F;g    </span><br><span class="line">第四步：由于 redis集群需要使用 ruby命令，所以我们需要安装 ruby</span><br><span class="line">（1）yum install ruby</span><br><span class="line">（2）yum install rubygems</span><br><span class="line">（3）gem install redis --version 3.0.0（安装redis和 ruby的接囗）</span><br><span class="line"></span><br><span class="line">第五步：分别启动6个redis实例，然后检查是否启动成功</span><br><span class="line">（1）&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis-cluster&#x2F;800*&#x2F;redis.conf</span><br><span class="line">（2）ps -ef | grep redis 查看是否启动成功</span><br><span class="line"></span><br><span class="line">第六步：在redis的安装目录下执行 redis-trib.rb命令</span><br><span class="line">（1）cd &#x2F;usr&#x2F;local&#x2F;redis-3.0.0&#x2F;src</span><br><span class="line">（2）.&#x2F;redis-trib.rb create --replicas 1 192.168.0.61:8001 192.168.0.61:8002 192.168.0.61:8003 192.168.0.61:8004 192.168.0.61:8005 192.168.0.61:8006</span><br><span class="line">新版本：redis-cli --cluster create 192.168.200.10:8001 192.168.200.10:8002  192.168.200.10:8003 192.168.200.10:8004 192.168.200.10:8005 192.168.200.10:8006  --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">第七步：验证集群：</span><br><span class="line">（1）连接任意一个客户端即可：.&#x2F;redis-cli -c -h -p (-c表示集群模式，指定ip地址和端口号）如：&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800*</span><br><span class="line">（2）进行验证： cluster info（查看集群信息）、cluster nodes（查看节点列表）</span><br><span class="line">（3）进行数据操作验证</span><br><span class="line">（4）关闭集群则需要逐个进行关闭，使用命令：</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis-cli -c -h 192.168.0.61 -p 800* shutdown</span><br><span class="line"></span><br><span class="line">PS：当出现集群无法启动时，删除redis的临时数据文件，再次重新启动每一个redis服务，然后重新构造集群环境。</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="3、Java操作redis集群"><a href="#3、Java操作redis集群" class="headerlink" title="3、Java操作redis集群"></a>3、Java操作redis集群</h3><p>借助redis的java客户端jedis可以操作以上集群，引用jedis版本的maven坐标如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;redis.clients&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jedis&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.9.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p>Java编写访问redis集群的代码非常简单，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">import redis.clients.jedis.HostAndPort;</span><br><span class="line">import redis.clients.jedis.JedisCluster;</span><br><span class="line">import redis.clients.jedis.JedisPoolConfig;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 访问redis集群</span><br><span class="line"> * @author aaron.rao</span><br><span class="line"> *</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class RedisCluster </span><br><span class="line">&#123;</span><br><span class="line">    public static void main(String[] args) throws IOException</span><br><span class="line">    &#123;</span><br><span class="line">        Set&lt;HostAndPort&gt; jedisClusterNode &#x3D; new HashSet&lt;HostAndPort&gt;();</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8001));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8002));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8003));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8004));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8005));</span><br><span class="line">        jedisClusterNode.add(new HostAndPort(&quot;192.168.0.61&quot;, 8006));</span><br><span class="line">        </span><br><span class="line">        JedisPoolConfig config &#x3D; new JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(100);</span><br><span class="line">        config.setMaxIdle(10);</span><br><span class="line">        config.setTestOnBorrow(true);</span><br><span class="line">        JedisCluster jedisCluster &#x3D; new JedisCluster(jedisClusterNode, 6000, 10, config);</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;student&quot;, &quot;aaron&quot;));</span><br><span class="line">        System.out.println(jedisCluster.set(&quot;age&quot;, &quot;18&quot;));</span><br><span class="line">        </span><br><span class="line">        System.out.println(jedisCluster.get(&quot;student&quot;));</span><br><span class="line">        System.out.println(jedisCluster.get(&quot;age&quot;));</span><br><span class="line">        </span><br><span class="line">        jedisCluster.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">运行效果如下：</span><br><span class="line">OK</span><br><span class="line">OK</span><br><span class="line">aaron</span><br><span class="line">18</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Redis集群</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
       </tags>
   </entry>
   <entry>
@@ -3268,6 +3298,20 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot项目测试模板</title>
+    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><a id="more"></a>
@@ -3300,20 +3344,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Java</tag>
         <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot项目测试模板</title>
-    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -3379,48 +3409,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SpringCloud</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Spring源码学习</title>
-    <url>/2020/12/20/Spring%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p>Spring学了很久了，但是一直没有深入到源码，希望在接下来的源码学习中有所收获。。。</p>
-<a id="more"></a>
-
-<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><h1 id="2-环境准备"><a href="#2-环境准备" class="headerlink" title="2 环境准备"></a>2 环境准备</h1><h3 id="2-1-环境安装"><a href="#2-1-环境安装" class="headerlink" title="2.1 环境安装"></a>2.1 环境安装</h3><p>安装Idea，JDK，maven并完成相应的配置<br><img src="/images/2020101901.png" alt="image-20201019191945647"></p>
-<p><strong>注意：</strong>当前官方Spring最新版本为5.3.0，文档要求JDK版本需要在 <code>JDK 8 update 262 or later</code>。</p>
-<p>因为JDK官网只能下载到1.8_261，所以我使用的Spring-5.2.9</p>
-<p><img src="/images/2020101902.png" alt="image-20201019192232952"></p>
-<h3 id="2-2-下载和编译"><a href="#2-2-下载和编译" class="headerlink" title="2.2 下载和编译"></a>2.2 下载和编译</h3><h4 id="2-2-1-下载并解压"><a href="#2-2-1-下载并解压" class="headerlink" title="2.2.1 下载并解压"></a>2.2.1 下载并解压</h4><p><img src="/images/2020101903.png" alt="image-20201019192816197"></p>
-<h4 id="2-2-2-修改build-gradle"><a href="#2-2-2-修改build-gradle" class="headerlink" title="2.2.2 修改build.gradle"></a>2.2.2 修改build.gradle</h4><p>在build.gradle添加阿里云的中央仓库地址，提高依赖文件的下载速度</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			mavenCentral()</span><br><span class="line">			maven &#123; url <span class="string">"https://repo.spring.io/libs-spring-framework-build"</span> &#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2020101904.png" alt="image-20201019195803623"></p>
-<p><strong>查看阿里云Maven中央仓库：</strong><a href="https://maven.aliyun.com/mvn/guide" target="_blank" rel="noopener">https://maven.aliyun.com/mvn/guide</a></p>
-<h4 id="2-2-3-安装官方文档进行配置"><a href="#2-2-3-安装官方文档进行配置" class="headerlink" title="2.2.3 安装官方文档进行配置"></a>2.2.3 安装官方文档进行配置</h4><p><img src="/images/2020101906.png" alt="image-20201019200051103"></p>
-<p>1.Precompile <code>spring-oxm</code> with <code>./gradlew :spring-oxm:compileTestJava</code></p>
-<p><img src="/images/2020101907.png" alt="image-20201019201845436"></p>
-<p>2.Import into IntelliJ (File -&gt; New -&gt; Project from Existing Sources -&gt; Navigate to directory -&gt; Select build.gradle)</p>
-<p>导入项目</p>
-<p><img src="/images/2020101908.png" alt="image-20201019211425497"></p>
-<p>3.When prompted exclude the <code>spring-aspects</code> module (or after the import via File-&gt; Project Structure -&gt; Modules)</p>
-<p>因为<code>spring-aspects</code>有自己的编译器(AJC)，AJC会影响JVM的加载，所以需要排除出去</p>
-<p>这里右键项目–》Load/Unload Modules–》选择spring-aspects–》unload–》重新加载即可</p>
-<p><img src="/images/2020101909.png" alt="image-20201019212036285"></p>
-<p>4.Code away</p>
-<p>到这里就完成Spring源码的下载与编译</p>
-<h3 id="2-3-通过一个小demo来测试一下"><a href="#2-3-通过一个小demo来测试一下" class="headerlink" title="2.3 通过一个小demo来测试一下"></a>2.3 通过一个小demo来测试一下</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/01-spring-framework-5.2.9.RELEASE/spring-demo" target="_blank" rel="noopener">spring-demo代码链接</a></p>
-<h3 id="2-4-简易自研框架的编写"><a href="#2-4-简易自研框架的编写" class="headerlink" title="2.4 简易自研框架的编写"></a>2.4 简易自研框架的编写</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/02-simpleframework" target="_blank" rel="noopener">02-simpleframework</a></p>
-<p><img src="/images/2020101910.png" alt="image-20201220101456099"></p>
-<p>jsp运行原理图：</p>
-<p><img src="/images/2020101911.png" alt="image-20201220101615094"></p>
-<h1 id="3-业务系统架子的构建"><a href="#3-业务系统架子的构建" class="headerlink" title="3 业务系统架子的构建"></a>3 业务系统架子的构建</h1><h1 id="4-自研框架IOC实现前奏"><a href="#4-自研框架IOC实现前奏" class="headerlink" title="4 自研框架IOC实现前奏"></a>4 自研框架IOC实现前奏</h1><h1 id="5-自研框架IOC容器的实现"><a href="#5-自研框架IOC容器的实现" class="headerlink" title="5 自研框架IOC容器的实现"></a>5 自研框架IOC容器的实现</h1><h1 id="6-SpringIOC容器源码解析"><a href="#6-SpringIOC容器源码解析" class="headerlink" title="6 SpringIOC容器源码解析"></a>6 SpringIOC容器源码解析</h1><h1 id="7-详解SpringIOC容器的初始化"><a href="#7-详解SpringIOC容器的初始化" class="headerlink" title="7 详解SpringIOC容器的初始化"></a>7 详解SpringIOC容器的初始化</h1><h1 id="8-SpringIOC容器的依赖注入"><a href="#8-SpringIOC容器的依赖注入" class="headerlink" title="8 SpringIOC容器的依赖注入"></a>8 SpringIOC容器的依赖注入</h1><h1 id="9-自研框架AOP的讲解与实现"><a href="#9-自研框架AOP的讲解与实现" class="headerlink" title="9 自研框架AOP的讲解与实现"></a>9 自研框架AOP的讲解与实现</h1><h1 id="10-SpringAOP的源码解析"><a href="#10-SpringAOP的源码解析" class="headerlink" title="10 SpringAOP的源码解析"></a>10 SpringAOP的源码解析</h1><h1 id="11-自研框架MVC的实现"><a href="#11-自研框架MVC的实现" class="headerlink" title="11 自研框架MVC的实现"></a>11 自研框架MVC的实现</h1><h1 id="12-SpringMVC流程分析"><a href="#12-SpringMVC流程分析" class="headerlink" title="12 SpringMVC流程分析"></a>12 SpringMVC流程分析</h1><h1 id="13-总结"><a href="#13-总结" class="headerlink" title="13 总结"></a>13 总结</h1>]]></content>
-      <categories>
-        <category>源码</category>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>Spring源码</tag>
       </tags>
   </entry>
   <entry>
@@ -3654,6 +3642,48 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Spring源码学习</title>
+    <url>/2020/12/20/Spring%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p>Spring学了很久了，但是一直没有深入到源码，希望在接下来的源码学习中有所收获。。。</p>
+<a id="more"></a>
+
+<h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1 概览"></a>1 概览</h1><h1 id="2-环境准备"><a href="#2-环境准备" class="headerlink" title="2 环境准备"></a>2 环境准备</h1><h3 id="2-1-环境安装"><a href="#2-1-环境安装" class="headerlink" title="2.1 环境安装"></a>2.1 环境安装</h3><p>安装Idea，JDK，maven并完成相应的配置<br><img src="/images/2020101901.png" alt="image-20201019191945647"></p>
+<p><strong>注意：</strong>当前官方Spring最新版本为5.3.0，文档要求JDK版本需要在 <code>JDK 8 update 262 or later</code>。</p>
+<p>因为JDK官网只能下载到1.8_261，所以我使用的Spring-5.2.9</p>
+<p><img src="/images/2020101902.png" alt="image-20201019192232952"></p>
+<h3 id="2-2-下载和编译"><a href="#2-2-下载和编译" class="headerlink" title="2.2 下载和编译"></a>2.2 下载和编译</h3><h4 id="2-2-1-下载并解压"><a href="#2-2-1-下载并解压" class="headerlink" title="2.2.1 下载并解压"></a>2.2.1 下载并解压</h4><p><img src="/images/2020101903.png" alt="image-20201019192816197"></p>
+<h4 id="2-2-2-修改build-gradle"><a href="#2-2-2-修改build-gradle" class="headerlink" title="2.2.2 修改build.gradle"></a>2.2.2 修改build.gradle</h4><p>在build.gradle添加阿里云的中央仓库地址，提高依赖文件的下载速度</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			maven &#123; url <span class="string">'https://maven.aliyun.com/repository/public'</span>&#125;</span><br><span class="line">			mavenCentral()</span><br><span class="line">			maven &#123; url <span class="string">"https://repo.spring.io/libs-spring-framework-build"</span> &#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2020101904.png" alt="image-20201019195803623"></p>
+<p><strong>查看阿里云Maven中央仓库：</strong><a href="https://maven.aliyun.com/mvn/guide" target="_blank" rel="noopener">https://maven.aliyun.com/mvn/guide</a></p>
+<h4 id="2-2-3-安装官方文档进行配置"><a href="#2-2-3-安装官方文档进行配置" class="headerlink" title="2.2.3 安装官方文档进行配置"></a>2.2.3 安装官方文档进行配置</h4><p><img src="/images/2020101906.png" alt="image-20201019200051103"></p>
+<p>1.Precompile <code>spring-oxm</code> with <code>./gradlew :spring-oxm:compileTestJava</code></p>
+<p><img src="/images/2020101907.png" alt="image-20201019201845436"></p>
+<p>2.Import into IntelliJ (File -&gt; New -&gt; Project from Existing Sources -&gt; Navigate to directory -&gt; Select build.gradle)</p>
+<p>导入项目</p>
+<p><img src="/images/2020101908.png" alt="image-20201019211425497"></p>
+<p>3.When prompted exclude the <code>spring-aspects</code> module (or after the import via File-&gt; Project Structure -&gt; Modules)</p>
+<p>因为<code>spring-aspects</code>有自己的编译器(AJC)，AJC会影响JVM的加载，所以需要排除出去</p>
+<p>这里右键项目–》Load/Unload Modules–》选择spring-aspects–》unload–》重新加载即可</p>
+<p><img src="/images/2020101909.png" alt="image-20201019212036285"></p>
+<p>4.Code away</p>
+<p>到这里就完成Spring源码的下载与编译</p>
+<h3 id="2-3-通过一个小demo来测试一下"><a href="#2-3-通过一个小demo来测试一下" class="headerlink" title="2.3 通过一个小demo来测试一下"></a>2.3 通过一个小demo来测试一下</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/01-spring-framework-5.2.9.RELEASE/spring-demo" target="_blank" rel="noopener">spring-demo代码链接</a></p>
+<h3 id="2-4-简易自研框架的编写"><a href="#2-4-简易自研框架的编写" class="headerlink" title="2.4 简易自研框架的编写"></a>2.4 简易自研框架的编写</h3><p><a href="https://github.com/liuurick/spring-learning/tree/master/02-simpleframework" target="_blank" rel="noopener">02-simpleframework</a></p>
+<p><img src="/images/2020101910.png" alt="image-20201220101456099"></p>
+<p>jsp运行原理图：</p>
+<p><img src="/images/2020101911.png" alt="image-20201220101615094"></p>
+<h1 id="3-业务系统架子的构建"><a href="#3-业务系统架子的构建" class="headerlink" title="3 业务系统架子的构建"></a>3 业务系统架子的构建</h1><h1 id="4-自研框架IOC实现前奏"><a href="#4-自研框架IOC实现前奏" class="headerlink" title="4 自研框架IOC实现前奏"></a>4 自研框架IOC实现前奏</h1><h1 id="5-自研框架IOC容器的实现"><a href="#5-自研框架IOC容器的实现" class="headerlink" title="5 自研框架IOC容器的实现"></a>5 自研框架IOC容器的实现</h1><h1 id="6-SpringIOC容器源码解析"><a href="#6-SpringIOC容器源码解析" class="headerlink" title="6 SpringIOC容器源码解析"></a>6 SpringIOC容器源码解析</h1><h1 id="7-详解SpringIOC容器的初始化"><a href="#7-详解SpringIOC容器的初始化" class="headerlink" title="7 详解SpringIOC容器的初始化"></a>7 详解SpringIOC容器的初始化</h1><h1 id="8-SpringIOC容器的依赖注入"><a href="#8-SpringIOC容器的依赖注入" class="headerlink" title="8 SpringIOC容器的依赖注入"></a>8 SpringIOC容器的依赖注入</h1><h1 id="9-自研框架AOP的讲解与实现"><a href="#9-自研框架AOP的讲解与实现" class="headerlink" title="9 自研框架AOP的讲解与实现"></a>9 自研框架AOP的讲解与实现</h1><h1 id="10-SpringAOP的源码解析"><a href="#10-SpringAOP的源码解析" class="headerlink" title="10 SpringAOP的源码解析"></a>10 SpringAOP的源码解析</h1><h1 id="11-自研框架MVC的实现"><a href="#11-自研框架MVC的实现" class="headerlink" title="11 自研框架MVC的实现"></a>11 自研框架MVC的实现</h1><h1 id="12-SpringMVC流程分析"><a href="#12-SpringMVC流程分析" class="headerlink" title="12 SpringMVC流程分析"></a>12 SpringMVC流程分析</h1><h1 id="13-总结"><a href="#13-总结" class="headerlink" title="13 总结"></a>13 总结</h1>]]></content>
+      <categories>
+        <category>源码</category>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring源码</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UML类图及时序图入门</title>
     <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -3727,6 +3757,45 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>UML</tag>
         <tag>时序图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>.gitignore的使用</title>
+    <url>/2021/01/20/gitignore%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>很长一段时间忽视了.gitignore的作用，果真还是自己太菜了。。。</p>
+<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>官方文档：<a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a></p>
+</blockquote>
+<h1 id="Java官方模板"><a href="#Java官方模板" class="headerlink" title="Java官方模板"></a>Java官方模板</h1><p>.gitignore文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Log file</span><br><span class="line">*.log</span><br><span class="line"></span><br><span class="line"># BlueJ files</span><br><span class="line">*.ctxt</span><br><span class="line"></span><br><span class="line"># Mobile Tools for Java (J2ME)</span><br><span class="line">.mtj.tmp&#x2F;</span><br><span class="line"></span><br><span class="line"># Package Files #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.nar</span><br><span class="line">*.ear</span><br><span class="line">*.zip</span><br><span class="line">*.tar.gz</span><br><span class="line">*.rar</span><br><span class="line"></span><br><span class="line"># virtual machine crash logs, see http:&#x2F;&#x2F;www.java.com&#x2F;en&#x2F;download&#x2F;help&#x2F;error_hotspot.xml</span><br><span class="line">hs_err_pid*</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="个人常用模板"><a href="#个人常用模板" class="headerlink" title="个人常用模板"></a>个人常用模板</h1><p>.gitignore文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file #</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Eclipse #</span><br><span class="line">.project</span><br><span class="line">.classpath</span><br><span class="line">.settings&#x2F;</span><br><span class="line"></span><br><span class="line"># Intellij #</span><br><span class="line">*.ipr</span><br><span class="line">*.iml</span><br><span class="line">*.iws</span><br><span class="line">.idea&#x2F;</span><br><span class="line"></span><br><span class="line"># Maven #</span><br><span class="line">target&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle #</span><br><span class="line">build</span><br><span class="line">.gradle</span><br><span class="line"></span><br><span class="line"># Log file #</span><br><span class="line">*.log</span><br><span class="line">log&#x2F;</span><br><span class="line"></span><br><span class="line"># out #</span><br><span class="line">**&#x2F;out&#x2F;</span><br><span class="line"></span><br><span class="line"># Mac #</span><br><span class="line">.DS_Store</span><br><span class="line"></span><br><span class="line"># others #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.zip</span><br><span class="line">*.tar</span><br><span class="line">*.tar.gz</span><br><span class="line">*.pid</span><br><span class="line">*.orig</span><br><span class="line">temp&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="可能遇到的问题"><a href="#可能遇到的问题" class="headerlink" title="可能遇到的问题"></a>可能遇到的问题</h1><h2 id="gitignore规则不生效"><a href="#gitignore规则不生效" class="headerlink" title=".gitignore规则不生效"></a>.gitignore规则不生效</h2><p>.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。</p>
+<p>解决方法就是先把本地缓存删除（改变成未track状态），然后再提交:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git rm -r --cached .</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">'update .gitignore'</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你确实想添加该文件，可以用-f强制添加到Git：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git add -f xxx.class</span><br></pre></td></tr></table></figure>
+
+<p>或者你发现，可能是.gitignore写得有问题，需要找出来到底哪个规则写错了，</p>
+<p>可以用<code>git check-ignore</code>命令检查：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git check-ignore -v xxx.class</span><br><span class="line">.gitignore:3:*.class    xxx.class</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>代码管理工具</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>gitignore</tag>
       </tags>
   </entry>
   <entry>
@@ -3912,117 +3981,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>.gitignore的使用</title>
-    <url>/2021/01/20/gitignore%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>很长一段时间忽视了.gitignore的作用，果真还是自己太菜了。。。</p>
-<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p>官方文档：<a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a></p>
-</blockquote>
-<h1 id="Java官方模板"><a href="#Java官方模板" class="headerlink" title="Java官方模板"></a>Java官方模板</h1><p>.gitignore文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Log file</span><br><span class="line">*.log</span><br><span class="line"></span><br><span class="line"># BlueJ files</span><br><span class="line">*.ctxt</span><br><span class="line"></span><br><span class="line"># Mobile Tools for Java (J2ME)</span><br><span class="line">.mtj.tmp&#x2F;</span><br><span class="line"></span><br><span class="line"># Package Files #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.nar</span><br><span class="line">*.ear</span><br><span class="line">*.zip</span><br><span class="line">*.tar.gz</span><br><span class="line">*.rar</span><br><span class="line"></span><br><span class="line"># virtual machine crash logs, see http:&#x2F;&#x2F;www.java.com&#x2F;en&#x2F;download&#x2F;help&#x2F;error_hotspot.xml</span><br><span class="line">hs_err_pid*</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="个人常用模板"><a href="#个人常用模板" class="headerlink" title="个人常用模板"></a>个人常用模板</h1><p>.gitignore文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Compiled class file #</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Eclipse #</span><br><span class="line">.project</span><br><span class="line">.classpath</span><br><span class="line">.settings&#x2F;</span><br><span class="line"></span><br><span class="line"># Intellij #</span><br><span class="line">*.ipr</span><br><span class="line">*.iml</span><br><span class="line">*.iws</span><br><span class="line">.idea&#x2F;</span><br><span class="line"></span><br><span class="line"># Maven #</span><br><span class="line">target&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle #</span><br><span class="line">build</span><br><span class="line">.gradle</span><br><span class="line"></span><br><span class="line"># Log file #</span><br><span class="line">*.log</span><br><span class="line">log&#x2F;</span><br><span class="line"></span><br><span class="line"># out #</span><br><span class="line">**&#x2F;out&#x2F;</span><br><span class="line"></span><br><span class="line"># Mac #</span><br><span class="line">.DS_Store</span><br><span class="line"></span><br><span class="line"># others #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.zip</span><br><span class="line">*.tar</span><br><span class="line">*.tar.gz</span><br><span class="line">*.pid</span><br><span class="line">*.orig</span><br><span class="line">temp&#x2F;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="可能遇到的问题"><a href="#可能遇到的问题" class="headerlink" title="可能遇到的问题"></a>可能遇到的问题</h1><h2 id="gitignore规则不生效"><a href="#gitignore规则不生效" class="headerlink" title=".gitignore规则不生效"></a>.gitignore规则不生效</h2><p>.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。</p>
-<p>解决方法就是先把本地缓存删除（改变成未track状态），然后再提交:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git rm -r --cached .</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">'update .gitignore'</span></span><br></pre></td></tr></table></figure>
-
-<p>如果你确实想添加该文件，可以用-f强制添加到Git：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git add -f xxx.class</span><br></pre></td></tr></table></figure>
-
-<p>或者你发现，可能是.gitignore写得有问题，需要找出来到底哪个规则写错了，</p>
-<p>可以用<code>git check-ignore</code>命令检查：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git check-ignore -v xxx.class</span><br><span class="line">.gitignore:3:*.class    xxx.class</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>代码管理工具</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>gitignore</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git命令操作笔记</title>
-    <url>/2019/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
-<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
-<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
-<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
-</blockquote>
-<p><img src="/images/2018062701.png" alt="image"></p>
-<p>创建一个目录用于存放仓库，或在有内容的目录下操作。</p>
-<p>然后切换到此目录下初始化：<code>git --bare init</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status 查看仓库状态</span><br><span class="line">branches 分支目录</span><br><span class="line">config 定义项目特有的配置选项</span><br><span class="line">description 仅供git web使用</span><br><span class="line">HEAD 当前分支</span><br><span class="line">hooks 包含git钩子文件</span><br><span class="line">info 包含一个全局排除文件</span><br><span class="line">objects 存放所有数据内容，有info、pack两个子文件夹</span><br><span class="line">refs 存放只想数据（分支）的提交对象的指针</span><br><span class="line">index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成</span><br><span class="line">工作目录 暂存区 本地仓库 远程仓库</span><br><span class="line">git add git commit git push</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add FILE 添加file到暂存区</span><br><span class="line">git add . 添加目录中所有改动过的文件到暂存区</span><br><span class="line">git rm --cached FILE 将暂存区的FILE 撤回到工作区</span><br><span class="line">git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）</span><br><span class="line">git commit -m "add newfile a" 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）</span><br><span class="line">【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m "输入的备注"添加到本地仓库】</span><br><span class="line">修改文件名两种方式：</span><br><span class="line">1.mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）</span><br><span class="line">git rm --cached a</span><br><span class="line">git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）</span><br><span class="line">git commit -m "modified a a.txt" a改名a.txt并提交</span><br><span class="line">2.git mv old new 直接更改文件名，改完直接git commit提交即可</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git diff 比对工作目录与缓存区有什么不同</span><br><span class="line">git diff --cached 比对暂存区与本地仓库有什么不同</span><br><span class="line"></span><br><span class="line">ls检查下当前目录下是否有仓库信息，</span><br><span class="line">git remote add origin git@10.0.0.227:web/control.git 创建远程仓库origin</span><br><span class="line">git remote 查看当前远程仓库的名称</span><br><span class="line">git remote remove origin 删除远程仓库origin</span><br></pre></td></tr></table></figure>
-
-<h1 id="日志命令"><a href="#日志命令" class="headerlink" title="日志命令"></a>日志命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git log 查看历史提交信息</span><br><span class="line">git log --online 查看历史提交信息的哈希值</span><br><span class="line">git log --online --decorate 历史提交信息并查看当前指针位置</span><br><span class="line">git log -p 展示具体变化内容</span><br><span class="line">git log -1 展示一条提交信息的内容</span><br><span class="line">git log -1 -p 展示详细具体的最后一条变更的信息内容</span><br></pre></td></tr></table></figure>
-
-<h1 id="初始化命令"><a href="#初始化命令" class="headerlink" title="初始化命令"></a>初始化命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard xx 恢复到从前的位置</span><br><span class="line">git reflog 查看所有历史提交信息，包括回复到指定位置之前的</span><br><span class="line">git reset --hard xxx 前后都能回滚 来回滚</span><br></pre></td></tr></table></figure>
-
-<h1 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch 查看分支</span><br><span class="line">git branch fenzhi 创建分支fenzhi</span><br><span class="line">git checkout fenzhi 切换分支fenzhi</span><br><span class="line">git checkout -b testing 创建并切换到分支testing</span><br><span class="line">删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复</span><br><span class="line">git branch -d testing 删除分支testing</span><br><span class="line">git merge testing 合并分支</span><br><span class="line">冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</span><br></pre></td></tr></table></figure>
-
-<h1 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.0 -m "hehe" 当前状态打标签为V1.0</span><br><span class="line">git tag -a V1.0 haxizhi -m "hehe" 把某个哈希状态的状态打标签</span><br><span class="line">git show v1.0 查看某个标签的信息</span><br><span class="line">git reset --hard v2.0 回滚数据到V2.0</span><br><span class="line">git tag -d v2.0 删除V2.0标签的数据</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git常见命令</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git常见错误</title>
-    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>记录git常见错误</p>
-<a id="more"></a>
-
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
-<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-<p>1.git Could not read from remote repository</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.error: failed to push some refs to xxx</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git常见错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo博客高级操作</title>
     <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<blockquote>
@@ -4083,6 +4041,35 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>git常见错误</title>
+    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>记录git常见错误</p>
+<a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
+<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+<p>1.git Could not read from remote repository</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.error: failed to push some refs to xxx</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git常见错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ubuntu安装VMware Tools</title>
     <url>/2020/08/03/ubuntu%E5%AE%89%E8%A3%85VMware%20Tools/</url>
     <content><![CDATA[<p>VMware Tools罕见问题的记录</p>
@@ -4100,6 +4087,49 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git命令操作笔记</title>
+    <url>/2019/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>git官网教程：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a></p>
+<p>codesheep：<a href="https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/DQVVYOWdOPuRsy3m0fg6Xg</a></p>
+<p>图解Git：<a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">https://marklodato.github.io/visual-git-guide/index-zh-cn.html</a></p>
+<p>Pro Git：<a href="https://bingohuang.gitbooks.io/progit2/content/" target="_blank" rel="noopener">https://bingohuang.gitbooks.io/progit2/content/</a></p>
+</blockquote>
+<p><img src="/images/2018062701.png" alt="image"></p>
+<p>创建一个目录用于存放仓库，或在有内容的目录下操作。</p>
+<p>然后切换到此目录下初始化：<code>git --bare init</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status 查看仓库状态</span><br><span class="line">branches 分支目录</span><br><span class="line">config 定义项目特有的配置选项</span><br><span class="line">description 仅供git web使用</span><br><span class="line">HEAD 当前分支</span><br><span class="line">hooks 包含git钩子文件</span><br><span class="line">info 包含一个全局排除文件</span><br><span class="line">objects 存放所有数据内容，有info、pack两个子文件夹</span><br><span class="line">refs 存放只想数据（分支）的提交对象的指针</span><br><span class="line">index 保存暂存区信息，在执行git 初始化的时候这个文件还不存在,git add 后生成</span><br><span class="line">工作目录 暂存区 本地仓库 远程仓库</span><br><span class="line">git add git commit git push</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add FILE 添加file到暂存区</span><br><span class="line">git add . 添加目录中所有改动过的文件到暂存区</span><br><span class="line">git rm --cached FILE 将暂存区的FILE 撤回到工作区</span><br><span class="line">git rm -f FILE 同时删除暂存区、工作区的FILE（即直接删除暂存区的文件）</span><br><span class="line">git commit -m "add newfile a" 添加到本地仓库（相当于做了一次快照，可根据引号中内容恢复）</span><br><span class="line">【真正意义上的通过版本控制系统管理文件：工作目录必须有代码文件，通过git add file添加到暂存区，通过git commit -m "输入的备注"添加到本地仓库】</span><br><span class="line">修改文件名两种方式：</span><br><span class="line">1.mv a a.txt 即先删除a 然后生成了a.txt，所以改名不用这个 （删除本地文件）</span><br><span class="line">git rm --cached a</span><br><span class="line">git add a.txt 然后git status 即可看到这两条命令即是rename （删除暂存区文件）</span><br><span class="line">git commit -m "modified a a.txt" a改名a.txt并提交</span><br><span class="line">2.git mv old new 直接更改文件名，改完直接git commit提交即可</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git diff 比对工作目录与缓存区有什么不同</span><br><span class="line">git diff --cached 比对暂存区与本地仓库有什么不同</span><br><span class="line"></span><br><span class="line">ls检查下当前目录下是否有仓库信息，</span><br><span class="line">git remote add origin git@10.0.0.227:web/control.git 创建远程仓库origin</span><br><span class="line">git remote 查看当前远程仓库的名称</span><br><span class="line">git remote remove origin 删除远程仓库origin</span><br></pre></td></tr></table></figure>
+
+<h1 id="日志命令"><a href="#日志命令" class="headerlink" title="日志命令"></a>日志命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git log 查看历史提交信息</span><br><span class="line">git log --online 查看历史提交信息的哈希值</span><br><span class="line">git log --online --decorate 历史提交信息并查看当前指针位置</span><br><span class="line">git log -p 展示具体变化内容</span><br><span class="line">git log -1 展示一条提交信息的内容</span><br><span class="line">git log -1 -p 展示详细具体的最后一条变更的信息内容</span><br></pre></td></tr></table></figure>
+
+<h1 id="初始化命令"><a href="#初始化命令" class="headerlink" title="初始化命令"></a>初始化命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard xx 恢复到从前的位置</span><br><span class="line">git reflog 查看所有历史提交信息，包括回复到指定位置之前的</span><br><span class="line">git reset --hard xxx 前后都能回滚 来回滚</span><br></pre></td></tr></table></figure>
+
+<h1 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch 查看分支</span><br><span class="line">git branch fenzhi 创建分支fenzhi</span><br><span class="line">git checkout fenzhi 切换分支fenzhi</span><br><span class="line">git checkout -b testing 创建并切换到分支testing</span><br><span class="line">删除分支要先切换到master然后删除创建的testing ,删除也会给自动创建一个快照，可恢复</span><br><span class="line">git branch -d testing 删除分支testing</span><br><span class="line">git merge testing 合并分支</span><br><span class="line">冲突时，直接编辑冲突的文件，例如：vi aaa 然后去掉大于号、小于号、等于号，然后选择保留的代码，可都保留。</span><br></pre></td></tr></table></figure>
+
+<h1 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.0 -m "hehe" 当前状态打标签为V1.0</span><br><span class="line">git tag -a V1.0 haxizhi -m "hehe" 把某个哈希状态的状态打标签</span><br><span class="line">git show v1.0 查看某个标签的信息</span><br><span class="line">git reset --hard v2.0 回滚数据到V2.0</span><br><span class="line">git tag -d v2.0 删除V2.0标签的数据</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git常见命令</tag>
       </tags>
   </entry>
   <entry>
@@ -4294,26 +4324,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>实体类的4种类型</title>
-    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>实体类的4种类型总结</p>
-<a id="more"></a>
-
-<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
-<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
-<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
-<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
-<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
-<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-      </categories>
-      <tags>
-        <tag>Domain Object</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>单例模式详解</title>
     <url>/2021/01/28/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4350,6 +4360,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>单例模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实体类的4种类型</title>
+    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>实体类的4种类型总结</p>
+<a id="more"></a>
+
+<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
+<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
+<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
+<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
+<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
+<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>Domain Object</tag>
       </tags>
   </entry>
   <entry>
@@ -4483,29 +4513,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>打新股和打新债</title>
-    <url>/2021/01/24/%E6%89%93%E6%96%B0%E8%82%A1%E5%92%8C%E6%89%93%E6%96%B0%E5%80%BA/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="打新股"><a href="#打新股" class="headerlink" title="打新股"></a>打新股</h1><blockquote>
-<p>打新股是什么：<a href="https://zhuanlan.zhihu.com/p/113203500" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/113203500</a></p>
-<p>如何打新股：<a href="https://www.zhihu.com/question/28207862" target="_blank" rel="noopener">https://www.zhihu.com/question/28207862</a></p>
-</blockquote>
-<h1 id="打新债"><a href="#打新债" class="headerlink" title="打新债"></a>打新债</h1><blockquote>
-<p>如何打新债：<a href="https://zhuanlan.zhihu.com/p/67077214" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67077214</a></p>
-</blockquote>
-<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>打新股和打新债一样具备风险，投资一定要用自己的闲钱</p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>打新股</tag>
-        <tag>打新债</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>快速构建SSM开发环境</title>
     <url>/2020/12/01/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BASSM%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>记录一下SSM的搭建过程。</p>
@@ -4572,6 +4579,29 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SSM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>打新股和打新债</title>
+    <url>/2021/01/24/%E6%89%93%E6%96%B0%E8%82%A1%E5%92%8C%E6%89%93%E6%96%B0%E5%80%BA/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="打新股"><a href="#打新股" class="headerlink" title="打新股"></a>打新股</h1><blockquote>
+<p>打新股是什么：<a href="https://zhuanlan.zhihu.com/p/113203500" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/113203500</a></p>
+<p>如何打新股：<a href="https://www.zhihu.com/question/28207862" target="_blank" rel="noopener">https://www.zhihu.com/question/28207862</a></p>
+</blockquote>
+<h1 id="打新债"><a href="#打新债" class="headerlink" title="打新债"></a>打新债</h1><blockquote>
+<p>如何打新债：<a href="https://zhuanlan.zhihu.com/p/67077214" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67077214</a></p>
+</blockquote>
+<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>打新股和打新债一样具备风险，投资一定要用自己的闲钱</p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>打新股</tag>
+        <tag>打新债</tag>
       </tags>
   </entry>
   <entry>
@@ -4910,6 +4940,33 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<p>操作系统课设</p>
@@ -4996,30 +5053,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <title>看懂四个指标（PE/PB/ROE/股息率）</title>
+    <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
     <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>    
+<a id="more"></a>
 
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p><strong>市盈率PE</strong> (Price-to-Earning Ratio)：指当前总市值除以一年的总净利润。<strong>市盈率越低，说明越是低估</strong></p>
+<p><strong>市净率 PB</strong> (Price-to-Book Ratio)：指每股股价除以每股净资产，或总市值除以净资产。<strong>1倍以下就是低市净率。</strong></p>
+<p><strong>净资产收益率ROE</strong>（Rate of Return on Common Stockholders’ Equity）：是指净利润除以净资产。代表着股东股权投资的报酬率，代表着公司赚钱的能力。按照格雷厄姆的标准，<strong>盈利收益率大于10%才是值得投资的企业</strong>。</p>
+<p><strong>股息率（Dividend Yield Ratio）</strong>：是一年的总派息额与当时市价的比例。</p>
+<p><strong>PE/PB百分位</strong>：这个指标是跟历史数据比较，看看现在的数据是在一个什么区域。<strong>百分位5%，代表现在的估值比过去95%的时间低。</strong></p>
+<blockquote>
+<p>一文教你看四个指标（PE/PB/ROE/股息率）：<a href="https://zhuanlan.zhihu.com/p/61254326" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61254326</a></p>
+<p>指数基金估值之PE, PB, ROE：<a href="https://zhuanlan.zhihu.com/p/111568187" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/111568187</a></p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JVM</category>
+        <category>理财</category>
       </categories>
       <tags>
-        <tag>JVM</tag>
-        <tag>Java</tag>
+        <tag>理财</tag>
       </tags>
   </entry>
   <entry>
@@ -5086,29 +5139,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>看懂四个指标（PE/PB/ROE/股息率）</title>
-    <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<p><strong>市盈率PE</strong> (Price-to-Earning Ratio)：指当前总市值除以一年的总净利润。<strong>市盈率越低，说明越是低估</strong></p>
-<p><strong>市净率 PB</strong> (Price-to-Book Ratio)：指每股股价除以每股净资产，或总市值除以净资产。<strong>1倍以下就是低市净率。</strong></p>
-<p><strong>净资产收益率ROE</strong>（Rate of Return on Common Stockholders’ Equity）：是指净利润除以净资产。代表着股东股权投资的报酬率，代表着公司赚钱的能力。按照格雷厄姆的标准，<strong>盈利收益率大于10%才是值得投资的企业</strong>。</p>
-<p><strong>股息率（Dividend Yield Ratio）</strong>：是一年的总派息额与当时市价的比例。</p>
-<p><strong>PE/PB百分位</strong>：这个指标是跟历史数据比较，看看现在的数据是在一个什么区域。<strong>百分位5%，代表现在的估值比过去95%的时间低。</strong></p>
-<blockquote>
-<p>一文教你看四个指标（PE/PB/ROE/股息率）：<a href="https://zhuanlan.zhihu.com/p/61254326" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61254326</a></p>
-<p>指数基金估值之PE, PB, ROE：<a href="https://zhuanlan.zhihu.com/p/111568187" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/111568187</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>理财</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>自学感悟</title>
     <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
     <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
@@ -5142,26 +5172,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
       <tags>
         <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>读《深入浅出MyBatis技术原理与实战》</title>
-    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
-    <content><![CDATA[<p>1.MyBatis简介</p>
-<p>2 MyBatis入门</p>
-<p>3 配置</p>
-<p>4 映射器</p>
-<p>5 动态SQL</p>
-<p>6 MyBatis的解析和运行原理</p>
-<p>7 插件</p>
-<p>8 MyBatis-Spring</p>
-<p>9 实用的场景</p>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -5208,6 +5218,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>读《深入浅出MyBatis技术原理与实战》</title>
+    <url>/2020/12/20/%E8%AF%BB%E3%80%8A%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMyBatis%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E3%80%8B/</url>
+    <content><![CDATA[<p>1.MyBatis简介</p>
+<p>2 MyBatis入门</p>
+<p>3 配置</p>
+<p>4 映射器</p>
+<p>5 动态SQL</p>
+<p>6 MyBatis的解析和运行原理</p>
+<p>7 插件</p>
+<p>8 MyBatis-Spring</p>
+<p>9 实用的场景</p>
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -5604,6 +5634,31 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>重定向与转发的理解</title>
+    <url>/2018/04/21/%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<p>重定向（redirect）与转发（forward）</p>
+<a id="more"></a>
+
+<h3 id="解释一"><a href="#解释一" class="headerlink" title="解释一　　"></a>解释一　　</h3><p>一句话，转发是服务器行为，重定向是客户端行为。为什么这样说呢，这就要看两个动作的工作流程：</p>
+<p><strong>转发过程：</strong>客户浏览器发送http请求—》web服务器接受此请求–》调用内部的一个方法在容器内部完成请求处理和转发动作—》将目标资源发送给客户；在这里，转发的路径必须是同一个web容器下的url，其不能转向到其他的web路径上去，中间传递的是自己的容器内的request。在客户浏览器路径栏显示的仍然是其第一次访问的路径，也就是说客户是感觉不到服务器做了转发的。转发行为是浏览器只做了一次访问请求。</p>
+<p><strong>重定向过程：</strong>客户浏览器发送http请求—》web服务器接受后发送302状态码响应及对应新的location给客户浏览器—》客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址—-》服务器根据此请求寻找资源并发送给客户。在这里location可以重定向到任意URL，既然是浏览器重新发出了请求，则就没有什么request传递的概念了。在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。</p>
+<h3 id="解释二"><a href="#解释二" class="headerlink" title="解释二"></a>解释二</h3><p>重定向，其实是两次request,<br>第一次，客户端request  A,服务器响应，并response回来，告诉浏览器，你应该去B。这个时候IE可以看到地址变了，而且历史的回退按钮也亮了。重定向可以访问自己web应用以外的资源。在重定向的过程中，传输的信息会被丢失。</p>
+<p><strong>例子：</strong></p>
+<p><img src="/images/2020102301.png" alt="img"><br>请求转发是服务器内部把对一个request/response的处理权，移交给另外一个<br>对于客户端而言，它只知道自己最早请求的那个A，而不知道中间的B，甚至C、D。 传输的信息不会丢失。</p>
+<p> <strong>例子：</strong></p>
+<p><img src="/images/2020102302.png" alt="img"></p>
+<h3 id="解释三"><a href="#解释三" class="headerlink" title="解释三"></a>解释三</h3><p>假设你去办理某个执照， </p>
+<p><strong>重定向：</strong>你先去了A局，A局的人说：“这个事情不归我们管，去B局”，然后，你就从A退了出来，自己乘车去了B局。 </p>
+<p><strong>转发：</strong>你先去了A局，A局看了以后，知道这个事情其实应该B局来管，但是他没有把你退回来，而是让你坐一会儿，自己到后面办公室联系了B的人，让他们办好后，送了过来。</p>
+]]></content>
+      <categories>
+        <category>Java Web</category>
+      </categories>
+      <tags>
+        <tag>Java Web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>防火墙管理</title>
     <url>/2019/01/11/%E9%98%B2%E7%81%AB%E5%A2%99%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<p>防火墙常用命令</p>
@@ -5645,60 +5700,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>面向对象</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis应用场景</title>
-    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
-    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
-</blockquote>
-<blockquote>
-<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
-</blockquote>
-<p>Redis常见场景主要有以下几种:</p>
-<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
-<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
-<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
-<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
-<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
-<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
-<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
-<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
-]]></content>
-      <categories>
-        <category>Redis</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重定向与转发的理解</title>
-    <url>/2018/04/21/%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<p>重定向（redirect）与转发（forward）</p>
-<a id="more"></a>
-
-<h3 id="解释一"><a href="#解释一" class="headerlink" title="解释一　　"></a>解释一　　</h3><p>一句话，转发是服务器行为，重定向是客户端行为。为什么这样说呢，这就要看两个动作的工作流程：</p>
-<p><strong>转发过程：</strong>客户浏览器发送http请求—》web服务器接受此请求–》调用内部的一个方法在容器内部完成请求处理和转发动作—》将目标资源发送给客户；在这里，转发的路径必须是同一个web容器下的url，其不能转向到其他的web路径上去，中间传递的是自己的容器内的request。在客户浏览器路径栏显示的仍然是其第一次访问的路径，也就是说客户是感觉不到服务器做了转发的。转发行为是浏览器只做了一次访问请求。</p>
-<p><strong>重定向过程：</strong>客户浏览器发送http请求—》web服务器接受后发送302状态码响应及对应新的location给客户浏览器—》客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址—-》服务器根据此请求寻找资源并发送给客户。在这里location可以重定向到任意URL，既然是浏览器重新发出了请求，则就没有什么request传递的概念了。在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。</p>
-<h3 id="解释二"><a href="#解释二" class="headerlink" title="解释二"></a>解释二</h3><p>重定向，其实是两次request,<br>第一次，客户端request  A,服务器响应，并response回来，告诉浏览器，你应该去B。这个时候IE可以看到地址变了，而且历史的回退按钮也亮了。重定向可以访问自己web应用以外的资源。在重定向的过程中，传输的信息会被丢失。</p>
-<p><strong>例子：</strong></p>
-<p><img src="/images/2020102301.png" alt="img"><br>请求转发是服务器内部把对一个request/response的处理权，移交给另外一个<br>对于客户端而言，它只知道自己最早请求的那个A，而不知道中间的B，甚至C、D。 传输的信息不会丢失。</p>
-<p> <strong>例子：</strong></p>
-<p><img src="/images/2020102302.png" alt="img"></p>
-<h3 id="解释三"><a href="#解释三" class="headerlink" title="解释三"></a>解释三</h3><p>假设你去办理某个执照， </p>
-<p><strong>重定向：</strong>你先去了A局，A局的人说：“这个事情不归我们管，去B局”，然后，你就从A退了出来，自己乘车去了B局。 </p>
-<p><strong>转发：</strong>你先去了A局，A局看了以后，知道这个事情其实应该B局来管，但是他没有把你退回来，而是让你坐一会儿，自己到后面办公室联系了B的人，让他们办好后，送了过来。</p>
-]]></content>
-      <categories>
-        <category>Java Web</category>
-      </categories>
-      <tags>
-        <tag>Java Web</tag>
       </tags>
   </entry>
   <entry>
@@ -6559,6 +6560,7 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 </blockquote>
 ]]></content>
       <categories>
+        <category>编程基础</category>
         <category>MySQL</category>
       </categories>
       <tags>
