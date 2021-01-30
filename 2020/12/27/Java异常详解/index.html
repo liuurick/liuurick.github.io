@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="异常:https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chenssy&#x2F;p&#x2F;3438130.html https:&#x2F;&#x2F;blog.csdn.net&#x2F;zhangerqing&#x2F;article&#x2F;details&#x2F;8248186">
+  <meta name="description" content="[TOC]">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java异常详解">
 <meta property="og:url" content="http://yoursite.com/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="lb Blog">
-<meta property="og:description" content="异常:https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chenssy&#x2F;p&#x2F;3438130.html https:&#x2F;&#x2F;blog.csdn.net&#x2F;zhangerqing&#x2F;article&#x2F;details&#x2F;8248186">
+<meta property="og:description" content="[TOC]">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png">
+<meta property="og:image" content="http://yoursite.com/images/2020122703.png">
 <meta property="article:published_time" content="2020-12-27T10:31:53.000Z">
-<meta property="article:modified_time" content="2021-01-02T03:48:24.021Z">
+<meta property="article:modified_time" content="2021-01-30T08:10:18.226Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="异常">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png">
+<meta name="twitter:image" content="http://yoursite.com/images/2020122703.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/27/Java%E5%BC%82%E5%B8%B8%E8%AF%A6%E8%A7%A3/">
 
@@ -250,11 +250,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
-<p>异常:<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
-<p><a href="https://blog.csdn.net/zhangerqing/article/details/8248186" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/8248186</a></p>
+        <p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p>java提高篇—–异常(一)：<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
+<p>java提高篇—–异常(二)：<a href="https://www.cnblogs.com/chenssy/p/3453039.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3453039.html</a></p>
 </blockquote>
-<p><img src="https://images0.cnblogs.com/blog/381060/201311/22185952-834d92bc2bfe498f9a33414cc7a2c8a4.png" alt="1354439580_6933"></p>
+<h1 id="异常类体系"><a href="#异常类体系" class="headerlink" title="异常类体系"></a>异常类体系</h1><p>​        Throwable是所有异常的超类，两个直接子类分别为Exception和Error，其中Exception又可分为运行时异常和非运行时异常，这两种异常有很大的区别，也称之为不检查异常（Unchecked Exception）和检查异常（Checked Exception）。</p>
+<p>​        其中CheckException发生在编译阶段，必须要使用try…catch（或者throws）否则编译不通过。而UncheckedException发生在运行期，具有不确定性，主要是由于程序的逻辑问题所引起的，难以排查，我们一般都需要纵观全局才能够发现这类的异常错误，所以在程序设计中我们需要认真考虑，好好写代码，尽量处理异常，即使产生了异常，也能尽量保证程序朝着有利方向发展。</p>
+<p><img src="/images/2020122703.png" alt="1354439580_6933"></p>
+<h1 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h1><p>   Java自定义异常的使用要经历如下四个步骤：</p>
+<ol>
+<li>定义一个类继承Throwable或其子类。</li>
+<li>添加构造方法(当然也可以不用添加，使用默认构造方法)。</li>
+<li>在某个方法类抛出该异常。</li>
+<li>捕捉该异常。</li>
+</ol>
+<h1 id="异常链"><a href="#异常链" class="headerlink" title="异常链"></a>异常链</h1><p>​        在设计模式中有一个叫做责任链模式，该模式是将多个对象链接成一条链，客户端的请求沿着这条链传递直到被接收、处理。同样Java异常机制也提供了这样一条链：异常链。</p>
+<p>​        <strong>通过使用异常链，我们可以提高代码的可理解性、系统的可维护性和友好性。</strong></p>
 
     </div>
 
@@ -338,6 +352,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#异常类体系"><span class="nav-text">异常类体系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义异常"><span class="nav-text">自定义异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常链"><span class="nav-text">异常链</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -353,7 +368,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

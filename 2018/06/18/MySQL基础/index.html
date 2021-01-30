@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="mysql基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL基础">
+<meta property="og:url" content="http://yoursite.com/2018/06/18/MySQL%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="mysql基础">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-06-18T01:33:11.000Z">
+<meta property="article:modified_time" content="2021-01-30T02:33:20.376Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/06/18/MySQL%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL基础 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/18/MySQL%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-18 09:33:11" itemprop="dateCreated datePublished" datetime="2018-06-18T09:33:11+08:00">2018-06-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">编程基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>mysql基础</p>
+<a id="more"></a>
+
+<blockquote>
+<p><a href="https://www.cnblogs.com/lms520/p/5427685.html" target="_blank" rel="noopener">https://www.cnblogs.com/lms520/p/5427685.html</a></p>
+</blockquote>
+<h1 id="1-课前准备！"><a href="#1-课前准备！" class="headerlink" title="1.课前准备！"></a>1.课前准备！</h1><p>开启mysql服务：1).配置环境变量;2).net start mysql</p>
+<p>将该sql文件导入到你的数据库中，以下所有操作都是基于该数据库表操作的！！！</p>
+<p>建表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> goods (</span><br><span class="line">  goods_id mediumint(<span class="number">8</span>) <span class="keyword">unsigned</span> primary <span class="keyword">key</span> auto_increment,</span><br><span class="line">  goods_name <span class="built_in">varchar</span>(<span class="number">120</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">''</span>,</span><br><span class="line">  cat_id <span class="built_in">smallint</span>(<span class="number">5</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">'0'</span>,</span><br><span class="line">  brand_id <span class="built_in">smallint</span>(<span class="number">5</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">'0'</span>,</span><br><span class="line">  goods_sn <span class="built_in">char</span>(<span class="number">15</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">''</span>,</span><br><span class="line">  goods_number <span class="built_in">smallint</span>(<span class="number">5</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">'0'</span>,</span><br><span class="line">  shop_price <span class="built_in">decimal</span>(<span class="number">10</span>,<span class="number">2</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">'0.00'</span>,</span><br><span class="line">  market_price <span class="built_in">decimal</span>(<span class="number">10</span>,<span class="number">2</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">'0.00'</span>,</span><br><span class="line">  click_count <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">'0'</span></span><br><span class="line">) <span class="keyword">engine</span>=myisam <span class="keyword">default</span> <span class="keyword">charset</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">`goods`</span> <span class="keyword">values</span> (<span class="number">1</span>,<span class="string">'kd876'</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="string">'ecs000000'</span>,<span class="number">1</span>,<span class="number">1388.00</span>,<span class="number">1665.60</span>,<span class="number">9</span>),</span><br><span class="line">(<span class="number">4</span>,<span class="string">'诺基亚n85原装充电器'</span>,<span class="number">8</span>,<span class="number">1</span>,<span class="string">'ecs000004'</span>,<span class="number">17</span>,<span class="number">58.00</span>,<span class="number">69.60</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">3</span>,<span class="string">'诺基亚原装5800耳机'</span>,<span class="number">8</span>,<span class="number">1</span>,<span class="string">'ecs000002'</span>,<span class="number">24</span>,<span class="number">68.00</span>,<span class="number">81.60</span>,<span class="number">3</span>),</span><br><span class="line">(<span class="number">5</span>,<span class="string">'索爱原装m2卡读卡器'</span>,<span class="number">11</span>,<span class="number">7</span>,<span class="string">'ecs000005'</span>,<span class="number">8</span>,<span class="number">20.00</span>,<span class="number">24.00</span>,<span class="number">3</span>),</span><br><span class="line">(<span class="number">6</span>,<span class="string">'胜创kingmax内存卡'</span>,<span class="number">11</span>,<span class="number">0</span>,<span class="string">'ecs000006'</span>,<span class="number">15</span>,<span class="number">42.00</span>,<span class="number">50.40</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">7</span>,<span class="string">'诺基亚n85原装立体声耳机hs-82'</span>,<span class="number">8</span>,<span class="number">1</span>,<span class="string">'ecs000007'</span>,<span class="number">20</span>,<span class="number">100.00</span>,<span class="number">120.00</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">8</span>,<span class="string">'飞利浦9@9v'</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="string">'ecs000008'</span>,<span class="number">1</span>,<span class="number">399.00</span>,<span class="number">478.79</span>,<span class="number">10</span>),</span><br><span class="line">(<span class="number">9</span>,<span class="string">'诺基亚e66'</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'ecs000009'</span>,<span class="number">4</span>,<span class="number">2298.00</span>,<span class="number">2757.60</span>,<span class="number">20</span>),</span><br><span class="line">(<span class="number">10</span>,<span class="string">'索爱c702c'</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="string">'ecs000010'</span>,<span class="number">7</span>,<span class="number">1328.00</span>,<span class="number">1593.60</span>,<span class="number">11</span>),</span><br><span class="line">(<span class="number">11</span>,<span class="string">'索爱c702c'</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="string">'ecs000011'</span>,<span class="number">1</span>,<span class="number">1300.00</span>,<span class="number">0.00</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">12</span>,<span class="string">'摩托罗拉a810'</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="string">'ecs000012'</span>,<span class="number">8</span>,<span class="number">983.00</span>,<span class="number">1179.60</span>,<span class="number">13</span>),</span><br><span class="line">(<span class="number">13</span>,<span class="string">'诺基亚5320 xpressmusic'</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'ecs000013'</span>,<span class="number">8</span>,<span class="number">1311.00</span>,<span class="number">1573.20</span>,<span class="number">13</span>),</span><br><span class="line">(<span class="number">14</span>,<span class="string">'诺基亚5800xm'</span>,<span class="number">4</span>,<span class="number">1</span>,<span class="string">'ecs000014'</span>,<span class="number">1</span>,<span class="number">2625.00</span>,<span class="number">3150.00</span>,<span class="number">6</span>),</span><br><span class="line">(<span class="number">15</span>,<span class="string">'摩托罗拉a810'</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="string">'ecs000015'</span>,<span class="number">3</span>,<span class="number">788.00</span>,<span class="number">945.60</span>,<span class="number">8</span>),</span><br><span class="line">(<span class="number">16</span>,<span class="string">'恒基伟业g101'</span>,<span class="number">2</span>,<span class="number">11</span>,<span class="string">'ecs000016'</span>,<span class="number">0</span>,<span class="number">823.33</span>,<span class="number">988.00</span>,<span class="number">3</span>),</span><br><span class="line">(<span class="number">17</span>,<span class="string">'夏新n7'</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="string">'ecs000017'</span>,<span class="number">1</span>,<span class="number">2300.00</span>,<span class="number">2760.00</span>,<span class="number">2</span>),</span><br><span class="line">(<span class="number">18</span>,<span class="string">'夏新t5'</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="string">'ecs000018'</span>,<span class="number">1</span>,<span class="number">2878.00</span>,<span class="number">3453.60</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">19</span>,<span class="string">'三星sgh-f258'</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="string">'ecs000019'</span>,<span class="number">12</span>,<span class="number">858.00</span>,<span class="number">1029.60</span>,<span class="number">7</span>),</span><br><span class="line">(<span class="number">20</span>,<span class="string">'三星bc01'</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="string">'ecs000020'</span>,<span class="number">12</span>,<span class="number">280.00</span>,<span class="number">336.00</span>,<span class="number">14</span>),</span><br><span class="line">(<span class="number">21</span>,<span class="string">'金立 a30'</span>,<span class="number">3</span>,<span class="number">10</span>,<span class="string">'ecs000021'</span>,<span class="number">40</span>,<span class="number">2000.00</span>,<span class="number">2400.00</span>,<span class="number">4</span>),</span><br><span class="line">(<span class="number">22</span>,<span class="string">'多普达touch hd'</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="string">'ecs000022'</span>,<span class="number">1</span>,<span class="number">5999.00</span>,<span class="number">7198.80</span>,<span class="number">16</span>),</span><br><span class="line">(<span class="number">23</span>,<span class="string">'诺基亚n96'</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="string">'ecs000023'</span>,<span class="number">8</span>,<span class="number">3700.00</span>,<span class="number">4440.00</span>,<span class="number">17</span>),</span><br><span class="line">(<span class="number">24</span>,<span class="string">'p806'</span>,<span class="number">3</span>,<span class="number">9</span>,<span class="string">'ecs000024'</span>,<span class="number">100</span>,<span class="number">2000.00</span>,<span class="number">2400.00</span>,<span class="number">35</span>),</span><br><span class="line">(<span class="number">25</span>,<span class="string">'小灵通/固话50元充值卡'</span>,<span class="number">13</span>,<span class="number">0</span>,<span class="string">'ecs000025'</span>,<span class="number">2</span>,<span class="number">48.00</span>,<span class="number">57.59</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">26</span>,<span class="string">'小灵通/固话20元充值卡'</span>,<span class="number">13</span>,<span class="number">0</span>,<span class="string">'ecs000026'</span>,<span class="number">2</span>,<span class="number">19.00</span>,<span class="number">22.80</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">27</span>,<span class="string">'联通100元充值卡'</span>,<span class="number">15</span>,<span class="number">0</span>,<span class="string">'ecs000027'</span>,<span class="number">2</span>,<span class="number">95.00</span>,<span class="number">100.00</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">28</span>,<span class="string">'联通50元充值卡'</span>,<span class="number">15</span>,<span class="number">0</span>,<span class="string">'ecs000028'</span>,<span class="number">0</span>,<span class="number">45.00</span>,<span class="number">50.00</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">29</span>,<span class="string">'移动100元充值卡'</span>,<span class="number">14</span>,<span class="number">0</span>,<span class="string">'ecs000029'</span>,<span class="number">0</span>,<span class="number">90.00</span>,<span class="number">0.00</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">30</span>,<span class="string">'移动20元充值卡'</span>,<span class="number">14</span>,<span class="number">0</span>,<span class="string">'ecs000030'</span>,<span class="number">9</span>,<span class="number">18.00</span>,<span class="number">21.00</span>,<span class="number">1</span>),</span><br><span class="line">(<span class="number">31</span>,<span class="string">'摩托罗拉e8 '</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="string">'ecs000031'</span>,<span class="number">1</span>,<span class="number">1337.00</span>,<span class="number">1604.39</span>,<span class="number">5</span>),</span><br><span class="line">(<span class="number">32</span>,<span class="string">'诺基亚n85'</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'ecs000032'</span>,<span class="number">4</span>,<span class="number">3010.00</span>,<span class="number">3612.00</span>,<span class="number">9</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">category</span> (</span><br><span class="line">cat_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> auto_increment primary <span class="keyword">key</span>,</span><br><span class="line">cat_name <span class="built_in">varchar</span>(<span class="number">90</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">''</span>,</span><br><span class="line">parent_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span></span><br><span class="line">)<span class="keyword">engine</span> myisam <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`category`</span> <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">1</span>,<span class="string">'手机类型'</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">2</span>,<span class="string">'CDMA手机'</span>,<span class="number">1</span>),</span><br><span class="line">(<span class="number">3</span>,<span class="string">'GSM手机'</span>,<span class="number">1</span>),</span><br><span class="line">(<span class="number">4</span>,<span class="string">'3G手机'</span>,<span class="number">1</span>),</span><br><span class="line">(<span class="number">5</span>,<span class="string">'双模手机'</span>,<span class="number">1</span>),</span><br><span class="line">(<span class="number">6</span>,<span class="string">'手机配件'</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">7</span>,<span class="string">'充电器'</span>,<span class="number">6</span>),</span><br><span class="line">(<span class="number">8</span>,<span class="string">'耳机'</span>,<span class="number">6</span>),</span><br><span class="line">(<span class="number">9</span>,<span class="string">'电池'</span>,<span class="number">6</span>),</span><br><span class="line">(<span class="number">11</span>,<span class="string">'读卡器和内存卡'</span>,<span class="number">6</span>),</span><br><span class="line">(<span class="number">12</span>,<span class="string">'充值卡'</span>,<span class="number">0</span>),</span><br><span class="line">(<span class="number">13</span>,<span class="string">'小灵通/固话充值卡'</span>,<span class="number">12</span>),</span><br><span class="line">(<span class="number">14</span>,<span class="string">'移动手机充值卡'</span>,<span class="number">12</span>),</span><br><span class="line">(<span class="number">15</span>,<span class="string">'联通手机充值卡'</span>,<span class="number">12</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`result`</span> (</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`subject`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`score`</span> <span class="built_in">tinyint</span>(<span class="number">4</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=MyISAM <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">result</span></span><br><span class="line"><span class="keyword">values</span></span><br><span class="line">(<span class="string">'张三'</span>,<span class="string">'数学'</span>,<span class="number">90</span>),</span><br><span class="line">(<span class="string">'张三'</span>,<span class="string">'语文'</span>,<span class="number">50</span>),</span><br><span class="line">(<span class="string">'张三'</span>,<span class="string">'地理'</span>,<span class="number">40</span>),</span><br><span class="line">(<span class="string">'李四'</span>,<span class="string">'语文'</span>,<span class="number">55</span>),</span><br><span class="line">(<span class="string">'李四'</span>,<span class="string">'政治'</span>,<span class="number">45</span>),</span><br><span class="line">(<span class="string">'王五'</span>,<span class="string">'政治'</span>,<span class="number">30</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> a (</span><br><span class="line"><span class="keyword">id</span> <span class="built_in">char</span>(<span class="number">1</span>),</span><br><span class="line"><span class="keyword">num</span> <span class="built_in">int</span></span><br><span class="line">)<span class="keyword">engine</span> myisam <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> a <span class="keyword">values</span> (<span class="string">'a'</span>,<span class="number">5</span>),(<span class="string">'b'</span>,<span class="number">10</span>),(<span class="string">'c'</span>,<span class="number">15</span>),(<span class="string">'d'</span>,<span class="number">10</span>);</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> b (</span><br><span class="line"><span class="keyword">id</span> <span class="built_in">char</span>(<span class="number">1</span>),</span><br><span class="line"><span class="keyword">num</span> <span class="built_in">int</span></span><br><span class="line">)<span class="keyword">engine</span> myisam <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> b <span class="keyword">values</span> (<span class="string">'b'</span>,<span class="number">5</span>),(<span class="string">'c'</span>,<span class="number">15</span>),(<span class="string">'d'</span>,<span class="number">20</span>),(<span class="string">'e'</span>,<span class="number">99</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> m(</span><br><span class="line">     <span class="keyword">mid</span> <span class="built_in">int</span>,</span><br><span class="line">     hid <span class="built_in">int</span>,</span><br><span class="line">     gid <span class="built_in">int</span>,</span><br><span class="line">     mres <span class="built_in">varchar</span>(<span class="number">10</span>),</span><br><span class="line">     matime <span class="built_in">date</span></span><br><span class="line">)<span class="keyword">engine</span> myisam <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t (</span><br><span class="line">     tid <span class="built_in">int</span>,</span><br><span class="line">     tname <span class="built_in">varchar</span>(<span class="number">20</span>)</span><br><span class="line">)<span class="keyword">engine</span> myisam <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> m</span><br><span class="line">     <span class="keyword">values</span></span><br><span class="line">     (<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="string">'2:0'</span>,<span class="string">'2006-05-21'</span>),</span><br><span class="line">     (<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">'1:2'</span>,<span class="string">'2006-06-21'</span>),</span><br><span class="line">     (<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'2:5'</span>,<span class="string">'2006-06-25'</span>),</span><br><span class="line">     (<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="string">'3:2'</span>,<span class="string">'2006-07-21'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t</span><br><span class="line">     <span class="keyword">values</span></span><br><span class="line">     (<span class="number">1</span>,<span class="string">'国安'</span>),</span><br><span class="line">     (<span class="number">2</span>,<span class="string">'申花'</span>),</span><br><span class="line">     (<span class="number">3</span>,<span class="string">'布尔联队'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> mian ( <span class="keyword">num</span> <span class="built_in">int</span>) <span class="keyword">engine</span> myisam;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> mian <span class="keyword">values</span></span><br><span class="line">(<span class="number">3</span>),</span><br><span class="line">(<span class="number">12</span>),</span><br><span class="line">(<span class="number">15</span>),</span><br><span class="line">(<span class="number">25</span>),</span><br><span class="line">(<span class="number">23</span>),</span><br><span class="line">(<span class="number">29</span>),</span><br><span class="line">(<span class="number">34</span>),</span><br><span class="line">(<span class="number">37</span>),</span><br><span class="line">(<span class="number">32</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">user</span> (</span><br><span class="line">uid <span class="built_in">int</span> primary <span class="keyword">key</span> auto_increment,</span><br><span class="line"><span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="string">''</span>,</span><br><span class="line">age <span class="built_in">smallint</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="number">0</span></span><br><span class="line">) <span class="keyword">engine</span> myisam <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> boy (</span><br><span class="line">    hid <span class="built_in">char</span>(<span class="number">1</span>),</span><br><span class="line">     bname <span class="built_in">varchar</span>(<span class="number">20</span>)</span><br><span class="line">)<span class="keyword">engine</span> myisam <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> boy (bname,hid)</span><br><span class="line">     <span class="keyword">values</span></span><br><span class="line">     (<span class="string">'屌丝'</span>,<span class="string">'A'</span>),</span><br><span class="line">     (<span class="string">'杨过'</span>,<span class="string">'B'</span>),</span><br><span class="line">     (<span class="string">'陈冠希'</span>,<span class="string">'C'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> girl (</span><br><span class="line">    hid <span class="built_in">char</span>(<span class="number">1</span>),</span><br><span class="line">     gname <span class="built_in">varchar</span>(<span class="number">20</span>)</span><br><span class="line">     )<span class="keyword">engine</span> myisam <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> girl(gname,hid)</span><br><span class="line">     <span class="keyword">values</span></span><br><span class="line">     (<span class="string">'小龙女'</span>,<span class="string">'B'</span>),</span><br><span class="line">     (<span class="string">'张柏芝'</span>,<span class="string">'C'</span>),</span><br><span class="line">     (<span class="string">'死宅女'</span>,<span class="string">'D'</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>1.数据库查询的重要思想:将查询的结果集当成一张新关系二维”表”</strong></p>
+<p><strong>2.数据表==&gt;二维多列的一个表结构</strong></p>
+<p><strong>注意</strong>：此处只是告诉你一些在校期间MySQL需要掌握的知识！但是如何用PHP来操作这些知识，需要不断练习</p>
+<h2 id="1-1-数据库–客户端"><a href="#1-1-数据库–客户端" class="headerlink" title="1.1 数据库–客户端"></a>1.1 数据库–客户端</h2><p><strong>mysqld –服务器端==&gt;安装mysql之后，内存中就有这个这个服务了!</strong></p>
+<p>mysql – 客户端 ==&gt;连通服务所使用的软件 <code>mysql -h localhost -uroot -p</code> ==&gt;客户端有很多【例如:网络服务(服务器端)==浏览器(IE/Firefox)】</p>
+<p>表==(多个表)===&gt;数据库===(多个数据库)==&gt;数据库服务 </p>
+<h2 id="1-2-phpmyadmin允许空密码登录配置"><a href="#1-2-phpmyadmin允许空密码登录配置" class="headerlink" title="1.2 phpmyadmin允许空密码登录配置"></a>1.2 phpmyadmin允许空密码登录配置</h2><p>==&gt;config.sample.inc.php–&gt;复制(config.inc.php)==&gt;$cfg[‘Servers’][$i][‘AllowNoPassword’] = true;</p>
+<h2 id="1-3-什么是SQL-Structured-Query-Language-结构查询语句"><a href="#1-3-什么是SQL-Structured-Query-Language-结构查询语句" class="headerlink" title="1.3 什么是SQL(Structured Query Language) 结构查询语句"></a>1.3 什么是SQL(Structured Query Language) 结构查询语句</h2><p>—–SQL语句是一种what型语言【想要什么，给你】，而非how语言【要我怎么做才能给你】–php….编程语言</p>
+<h2 id="1-4-SQL语言分类"><a href="#1-4-SQL语言分类" class="headerlink" title="1.4 SQL语言分类:"></a>1.4 SQL语言分类:</h2><p>1)DML is Data Manipulation Languages statements .Some examples:数据库操作语言，SQL中处理数据【使用者角度–接触率占据80%】–相当于”员工” </p>
+<p>2)DDLis Data Definition Language statements.Some example:数据定义语言，用于定义管理SQL数据库中所有对象–建表，建库，建视图….等【建设的角度–接触率15%】–相当于”总经理” </p>
+<p>3)DCL is Data Control Language statements.Some example:数据控制语言，用于授予或回收访问数据库的某种权限，并控制数据库操作事务发生的时间及效果，对数据库实行监视…等【管理者角度–接触率5%】—相当于”董事长”</p>
+<h2 id="1-5-我常用的表操作语句"><a href="#1-5-我常用的表操作语句" class="headerlink" title="1.5 我常用的表操作语句:"></a>1.5 我常用的表操作语句:</h2><ol>
+<li><p>mysql -h localhost -uroot -p123456 – 以root用户连接本地数据库</p>
+</li>
+<li><p>show databases; – 查看MySQL服务中所有的数据库</p>
+</li>
+<li><p>use database; – 更改操作的数据库对象</p>
+</li>
+<li><p>c –取消执行当前未输入mysql语句</p>
+</li>
+<li><p>show tables; – 查看该操作数据库对象中所有的数据表名和视图名</p>
+</li>
+<li><p>desc table_name/view_name;–查看表/视图结构；</p>
+</li>
+<li><p>truncate table_name; –清空表数据【表结构依然不变】– 和delete from table_name;是不同的</p>
+</li>
+<li><p>show create table table_name/view; –查看建表/视图过程</p>
+</li>
+<li><p>show table status [\G]; – 查看数据库中所有表信息【\G:以竖行显示信息】</p>
+</li>
+<li><p>show table status where name = table_name [\G]; – 查看数据库中指定表信息【\G:以竖行显示信息】</p>
+</li>
+<li><p>rename table_name; –改表名</p>
+</li>
+<li><p>drop table table_name; –删除表</p>
+</li>
+<li><p>drop view view_name; – 删除视图</p>
+</li>
+</ol>
+<h1 id="2-SQL语言之DML部分-数据库操作语言【搬运数据】–”员工”"><a href="#2-SQL语言之DML部分-数据库操作语言【搬运数据】–”员工”" class="headerlink" title="2 SQL语言之DML部分@数据库操作语言【搬运数据】–”员工”"></a>2 SQL语言之DML部分@数据库操作语言【搬运数据】–”员工”</h1><h2 id="2-1-常用操作-增-insert-删-delete-改-update-查-select"><a href="#2-1-常用操作-增-insert-删-delete-改-update-查-select" class="headerlink" title="2.1 常用操作:增[insert] 删[delete] 改[update] 查[select]"></a>2.1 常用操作:增[insert] 删[delete] 改[update] 查[select]</h2><h3 id="1-INSERT"><a href="#1-INSERT" class="headerlink" title="1.INSERT:"></a>1.INSERT:</h3><p><code>insert into table_name (col1, col2,....) values (value1, value2,....)---</code><strong>“插入值”与”列”要一一对应</strong></p>
+<h3 id="2-DELETE"><a href="#2-DELETE" class="headerlink" title="2.DELETE"></a>2.DELETE</h3><p><code>deletefrom表名where条件【不加条件删除整个表】--对于关系型数据库:”增&quot;和&quot;删&quot;都是相对整个一行数据来说的</code></p>
+<h3 id="3-UPDATE"><a href="#3-UPDATE" class="headerlink" title="3.UPDATE"></a>3.UPDATE</h3><p><code>update 表名set列1=新值1,列2=新值2...where条件---修改指定列(修改所有就不用加where)</code></p>
+<h3 id="4-★★★SELECT★★★"><a href="#4-★★★SELECT★★★" class="headerlink" title="4.★★★SELECT★★★"></a>4.★★★SELECT★★★</h3><p><code>select(列1,列2,列3,....)from表名where条件 limit 0,100;[时间函数：select uid,userid,username,email,FROM_UNIXTIME(addtime,&#39;%Y年%m月%d&#39;) from members]</code></p>
+<p><strong>【更新和删除操作要注意:where条件记得要加，除非对生活心灰意冷了否则还是加上比较好–不加影响的将是整个表的数据】</strong></p>
+<hr>
+<ol>
+<li><code>select的5种子句:</code></li>
+<li><code>where子句；--条件查询</code></li>
+<li><code>groupby子句；--分组查询</code></li>
+<li><code>having 子句；--筛选查询</code></li>
+<li><code>order by子句；--排序查询</code></li>
+<li><code>limit 子句；--范围查询</code></li>
+</ol>
+<p><strong>5种子句写的时候要有严格的顺序：where | group by | having | order by | limit</strong></p>
+<hr>
+<h2 id="2-2-SELECT条件查询模型深入理解【重点】"><a href="#2-2-SELECT条件查询模型深入理解【重点】" class="headerlink" title="2.2 SELECT条件查询模型深入理解【重点】"></a>2.2 SELECT条件查询模型深入理解【重点】</h2><p><strong>====列是”变量”=====变量就可以计算=====</strong></p>
+<p><strong>select uid, name, age+1 from user;–从user表中查找所有uid, name,age三列，并给age列所在值+1</strong></p>
+<p><strong>==where是”表达式”==值为真【true】假【false】==</strong></p>
+<p><strong>select * from user where id=5;–从user表中查找所有列，当id为5</strong></p>
+<p><strong>【判断所在行id=5?==&gt;返回true则输出】</strong></p>
+<p><strong>select * from user where 1;–从user表中查找所有列，当条件恒真–【输出所有】<br>select * from user where 0;–从user表中查找所有列，当条件恒假–【返回Empty】</strong></p>
+<p><strong>select 语句还可以配合算数运算符、逻辑运算符和位运算符以及相关函数写出更高效率的查询语句</strong></p>
+<p>【当然要注意运算符的优先级】</p>
+<p>查询的实质：对磁盘上的数据文件进行查询得到结果集，并将结果集存放到内存中，其余就是对内存结果集的操作</p>
+<h3 id="2-2-1-查询练习"><a href="#2-2-1-查询练习" class="headerlink" title="2.2.1 查询练习:"></a>2.2.1 查询练习:</h3><p>查询出第4和第11列的信息:<br>select goods_id, goods_name, shop_price from goods where goods_id =4 or goods_id=11;<br>select goods_id, goods_name, shop_price from goods where goods_id in(4,11);<br>查询出第4到第11列间的信息:<br>select goods_id, goods_name, shop_price from goods where goods_id&gt;4 and goods_id &lt; 11;<br>select goods_id, goods_name, shop_price from goods where goods_id between 4 and 11;</p>
+<h4 id="模糊查询-like-–-通配任意字符-通配单一字符"><a href="#模糊查询-like-–-通配任意字符-通配单一字符" class="headerlink" title="模糊查询(like)–%通配任意字符; _ 通配单一字符"></a>模糊查询(like)–%通配任意字符; _ 通配单一字符</h4><p><strong>取出名字以”诺基亚”开头的商品<br>select goods_id,cat_id,goods_name,shop_price from e cs_goods where goods_name like ‘诺基亚%’;</strong></p>
+<p><strong>取出名字为”诺基亚Nxx”的手机<br>select goods_id,cat_id,goods_name,shop_price from ecs_goods where goods_name like ‘诺基亚N__’;</strong></p>
+<p><strong>取出名字不以”诺基亚”开头的商品</strong></p>
+<p><strong>select goods_id,cat_id,goods_name,shop_price from ecs_goos where goods_name not like ‘诺基亚%’;</strong></p>
+<p><strong>当涉及到多重条件查询需要用到运算符,and , or ,not,…之类的来修饰条件时候：<br>1)一定要先弄清楚条件之间的分类<br>2)使用( ) 将其分类–避免因为优先级问题</strong></p>
+<hr>
+<p><strong>一道关于查询的面试题</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">有如下表和数组</span><br><span class="line">把num值处于[20,29]之间,改为20:update main set num&#x3D;20 where num between 20 and 29;</span><br><span class="line">num值处于[30,39]之间的,改为30:mian表</span><br><span class="line">+------+</span><br><span class="line">| num |</span><br><span class="line">+------+</span><br><span class="line">| 3 |</span><br><span class="line">| 12 |</span><br><span class="line">| 15 |</span><br><span class="line">| 25 |</span><br><span class="line">| 23 |</span><br><span class="line">| 29 |</span><br><span class="line">| 34 |</span><br><span class="line">| 37 |</span><br><span class="line">| 32 |</span><br><span class="line">| 45 |</span><br><span class="line">| 48 |</span><br><span class="line">| 52 |</span><br><span class="line">+------+</span><br><span class="line">floor(X):返回一个不大于X的最大整数值</span><br><span class="line">update mian set num&#x3D;( floor(num&#x2F;10)*10 ) where num between 20 and 39;</span><br><span class="line"></span><br><span class="line">练习题:</span><br><span class="line">把good表中商品名为&#39;诺基亚xxxx&#39;的商品,改为&#39;HTCxxxx&#39;,</span><br><span class="line">提示:大胆的把列看成变量,参与运算,甚至调用函数来处理 .</span><br><span class="line">substring(),--concat()</span><br><span class="line">select goods_id, concat( &#39;LMS&#39;, substring(goods_name,4) ,shop_price from goods where goods_name like &#39;诺基亚%&#39;;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h4 id="奇怪的NULL查询"><a href="#奇怪的NULL查询" class="headerlink" title="奇怪的NULL查询"></a>奇怪的NULL查询</h4><p><strong>对于NULL=NULL==&gt;返回假;==&gt;NULL是什么都没有,所以不能比较！使用is null 才能查询<br>select * from user where name is not null –查询出user表中name字段不为空的信息<br>【对于数据表中，null不利于数据表优化操作，所以数据表中一般都对字段设置not null】</strong></p>
+<hr>
+<h4 id="GOUP-BY分组与统计函数"><a href="#GOUP-BY分组与统计函数" class="headerlink" title="GOUP BY分组与统计函数"></a>GOUP BY分组与统计函数</h4><p><strong>group by – 当出现group by分组中不能配对的情况，该字段取查询时候第一次出现的值<br>统计函数：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">max()--最大值；</span><br><span class="line">min()--取最小值；</span><br><span class="line">avg()--求平均值;</span><br><span class="line">sum()--求和；</span><br><span class="line">count()--计算行数&#x2F;条数；</span><br><span class="line">distinct()--求有多少种不同解；</span><br></pre></td></tr></table></figure>
+
+<p><strong>【时间是以时间戳的形式存放的，是int型，max() –最新商品; min() – 最旧商品】</strong></p>
+<hr>
+<h4 id="having筛选结果集"><a href="#having筛选结果集" class="headerlink" title="having筛选结果集"></a>having筛选结果集</h4><p><strong>1.查询goods表中商品比市场价低出多少？</strong><br><strong>select goods_id, goods_name,(market_price-shop_price) from goods</strong><br><strong>2.查询goods表中商品比市场价低出至少200的商品？</strong><br><strong>select goods_id, goods_name,(market_price-shop_price) from goods where (market_price - shop_price) &gt; 200;</strong><br><strong>error：查询goods表中商品比市场价低出至少200的商品？</strong><br><strong>select goods_id, goods_name,(market_price-shop_price) as ‘min’ from goods where min &gt; 200;</strong><br><strong>报错:不识别min这个列！</strong><br><strong>【where子句针对的对象是磁盘上的数据表文件去select的，而select出来后的数据是存放在内存中的一个零时”结果集”】</strong></p>
+<p><strong>–因此：当使用where min &gt;200 ；去筛选结果集的时候是不能识别出min字段的</strong><br><strong>having–针对的对象是内存表结构中的”结果集”</strong><br><strong>3.查询goods表中商品比市场价低出至少200的商品？</strong><br><strong>select goods_id, goods_name,(market_price-shop_price) as ‘节省’ from goods where 1 having ‘节省’ &gt;200;</strong></p>
+<p><strong>【如果同时写了where和having子句，where子句肯定要写在having子句前面，因为having子句是针对where子句查询出来的结果集来操作的】</strong> </p>
+<hr>
+<h5 id="★★★where-having-group综合练习题"><a href="#★★★where-having-group综合练习题" class="headerlink" title="★★★where-having-group综合练习题"></a>★★★where-having-group综合练习题</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">有如下表及数据</span><br><span class="line">+<span class="comment">------+---------+-------+</span></span><br><span class="line">| name | subject | score |</span><br><span class="line">+<span class="comment">------+---------+-------+</span></span><br><span class="line">| 张三 | 数学 | 90 |</span><br><span class="line">| 张三 | 语文 | 50 |</span><br><span class="line">| 张三 | 地理 | 40 |</span><br><span class="line">| 李四 | 语文 | 55 |</span><br><span class="line">| 李四 | 政治 | 45 |</span><br><span class="line">| 王五 | 政治 | 30 |</span><br><span class="line">+<span class="comment">------+---------+-------+要求:查询出2门及2门以上不及格者的平均成绩</span></span><br><span class="line"><span class="comment">## 一种错误做法【错在:对count和比较运算两者结合的理解错误】</span></span><br><span class="line">mysql&gt; select name,count(score &lt; 60) as k,avg(score) from stu group by name having k&gt;=2;</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">| name | k | avg(score) |</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">| 张三 | 3 | 60.0000 |</span><br><span class="line">| 李四 | 2 | 50.0000 |</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"> </span><br><span class="line">mysql&gt; <span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">count</span>(score &lt; <span class="number">60</span>) <span class="keyword">as</span> k,<span class="keyword">avg</span>(score) <span class="keyword">from</span> stu <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>;</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">| name | k | avg(score) |</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">| 张三 | 3 | 60.0000 |</span><br><span class="line">| 李四 | 2 | 50.0000 |</span><br><span class="line">| 王五 | 1 | 30.0000 |</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">3 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"> </span><br><span class="line">mysql&gt; <span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">count</span>(score &lt; <span class="number">60</span>) <span class="keyword">as</span> k,<span class="keyword">avg</span>(score) <span class="keyword">from</span> stu <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span> <span class="keyword">having</span> k&gt;=<span class="number">2</span>;</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">| name | k | avg(score) |</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">| 张三 | 3 | 60.0000 |</span><br><span class="line">| 李四 | 2 | 50.0000 |</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#加上赵六后错误暴露</span></span><br><span class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> stu -&gt; <span class="keyword">values</span> -&gt; (<span class="string">'赵六'</span>,<span class="string">'A'</span>,<span class="number">100</span>), -&gt; (<span class="string">'赵六'</span>,<span class="string">'B'</span>,<span class="number">99</span>), -&gt; (<span class="string">'赵六'</span>,<span class="string">'C'</span>,<span class="number">98</span>);</span><br><span class="line">Query OK, 3 rows affected (0.05 sec)</span><br><span class="line">Records: 3 Duplicates: 0 Warnings: 0</span><br><span class="line"> </span><br><span class="line"><span class="comment">#错误显现</span></span><br><span class="line">mysql&gt; select name,count(score &lt; 60) as k,avg(score) from stu group by name having k&gt;=2;</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">| name | k | avg(score) |</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">| 张三 | 3 | 60.0000 |</span><br><span class="line">| 李四 | 2 | 50.0000 |</span><br><span class="line">| 赵六 | 3 | 99.0000 |</span><br><span class="line">+<span class="comment">------+---+------------+</span></span><br><span class="line">3 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"><span class="comment">#正确思路,先查看每个人的平均成绩</span></span><br><span class="line">mysql&gt; <span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">avg</span>(score) <span class="keyword">from</span> stu <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>;</span><br><span class="line">+<span class="comment">------+------------+</span></span><br><span class="line">| name | avg(score) |</span><br><span class="line">+<span class="comment">------+------------+</span></span><br><span class="line">| 张三 | 60.0000 |</span><br><span class="line">| 李四 | 50.0000 |</span><br><span class="line">| 王五 | 30.0000 |</span><br><span class="line">| 赵六 | 99.0000 |</span><br><span class="line">+<span class="comment">------+------------+</span></span><br><span class="line">4 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)mysql&gt; <span class="comment"># 1.看每个人挂科情况</span></span><br><span class="line">mysql&gt; <span class="keyword">select</span> <span class="keyword">name</span>,score &lt; <span class="number">60</span> <span class="keyword">from</span> stu;</span><br><span class="line">+<span class="comment">------+------------+</span></span><br><span class="line">| name | score &lt; 60 |</span><br><span class="line">+<span class="comment">------+------------+</span></span><br><span class="line">| 张三 | 0 |</span><br><span class="line">| 张三 | 1 |</span><br><span class="line">| 张三 | 1 |</span><br><span class="line">| 李四 | 1 |</span><br><span class="line">| 李四 | 1 |</span><br><span class="line">| 王五 | 1 |</span><br><span class="line">| 赵六 | 0 |</span><br><span class="line">| 赵六 | 0 |</span><br><span class="line">| 赵六 | 0 |</span><br><span class="line">+<span class="comment">------+------------+</span></span><br><span class="line">9 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line">mysql&gt; <span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">sum</span>(score &lt; <span class="number">60</span>) <span class="keyword">from</span> stu <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>; <span class="comment">#2.计算每个人的挂科科目</span></span><br><span class="line">+<span class="comment">------+-----------------+</span></span><br><span class="line">| name | sum(score &lt; 60) |</span><br><span class="line">+<span class="comment">------+-----------------+</span></span><br><span class="line">| 张三 | 2 |</span><br><span class="line">| 李四 | 2 |</span><br><span class="line">| 王五 | 1 |</span><br><span class="line">| 赵六 | 0 |</span><br><span class="line">+<span class="comment">------+-----------------+</span></span><br><span class="line">4 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line">mysql&gt; <span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">sum</span>(score &lt; <span class="number">60</span>),<span class="keyword">avg</span>(score) <span class="keyword">as</span> pj <span class="keyword">from</span> stu <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>;<span class="comment">#3.同时计算每人的平均分</span></span><br><span class="line">+<span class="comment">------+-----------------+---------+</span></span><br><span class="line">| name | sum(score &lt; 60) | pj |</span><br><span class="line">+<span class="comment">------+-----------------+---------+</span></span><br><span class="line">| 张三 | 2 | 60.0000 |</span><br><span class="line">| 李四 | 2 | 50.0000 |</span><br><span class="line">| 王五 | 1 | 30.0000 |</span><br><span class="line">| 赵六 | 0 | 99.0000 |</span><br><span class="line">+<span class="comment">------+-----------------+---------+</span></span><br><span class="line">4 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line">mysql&gt; <span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">sum</span>(score &lt; <span class="number">60</span>) <span class="keyword">as</span> gk ,<span class="keyword">avg</span>(score) <span class="keyword">as</span> pj <span class="keyword">from</span> stu <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span> <span class="keyword">having</span> gk &gt;=<span class="number">2</span>;<span class="comment">#利用having筛选挂科2门以上的.</span></span><br><span class="line">+<span class="comment">------+------+---------+</span></span><br><span class="line">| name | gk | pj |</span><br><span class="line">+<span class="comment">------+------+---------+</span></span><br><span class="line">| 张三 | 2 | 60.0000 |</span><br><span class="line">| 李四 | 2 | 50.0000 |</span><br><span class="line">+<span class="comment">------+------+---------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p><strong>错误原因【以下几点】:</strong></p>
+<p><strong>① score &lt; 60 ☛ 比较运算 ☛ 返回值:真(1)、假(0)<br>②count() ☛ 返回的结果是总行数 ☛ count(socre)和count( score &lt; 60 )得到结果是一样的<br>③对sum()和count()函数理解的不到位☛想要计算至少有2门课挂了的人，使用count()函数，结果是 ✘<br>④sum()和score&lt; 60 结合的理解:sum( score &lt; 60) &gt;=2 ==&gt;计算出至少挂了2门课的人</strong></p>
+<hr>
+<h4 id="order-by排序查询【在内存中排序】-与-limit范围查询【–经典应用-分页类】"><a href="#order-by排序查询【在内存中排序】-与-limit范围查询【–经典应用-分页类】" class="headerlink" title="order by排序查询【在内存中排序】 与 limit范围查询【–经典应用:分页类】"></a>order by排序查询【在内存中排序】 与 limit范围查询【–经典应用:分页类】</h4><p><strong>1:按价格由高到低排序<br>select goods_id,goods_name,shop_price from goods order by shop_price desc;<br>2:按发布时间由早到晚排序<br>select goods_id,goods_name,add_time from goods order by add_time;<br>3:接栏目由低到高排序,栏目内部按价格由高到低排序【有冲突时，顺序决定优先】<br>select goods_id,cat_id,goods_name,shop_price from goods order by cat_id ,shop_price desc;<br>4:取出价格最高的前三名商品<br>select goods_id,goods_name,shop_price from goods order by shop_price desc limit 3;<br>5:取出点击量前三名到前5名的商品<br>select goods_id,goods_name,click_count from goods order by click_count desc limit 2,3;</strong></p>
+<hr>
+<h4 id="子句的查询陷阱"><a href="#子句的查询陷阱" class="headerlink" title="子句的查询陷阱"></a>子句的查询陷阱</h4><p><strong>如何：查询goods表中，每个栏目(cat_id) 下最新(goods_id最大)的那件商品？</strong></p>
+<p><strong>错误示范:【正确答案见下】<br>思路：1)最新的商品 – max(good_id)<br>2)每个栏目–group by cat_id<br>mysql&gt; select max(goods_id), goods_name, cat_id, shop_price from goods group by cat_id;</strong></p>
+<p>+—————+———————–+——–+————+<br>| max(goods_id) | goods_name | cat_id | shop_price |<br>+—————+———————–+——–+————+<br>| 16 | 恒基伟业g101 | 2 | 823.33 |<br>| 32 | 飞利浦9@9v | 3 | 399.00 |</p>
+<p><strong>除了数据goods_id对了其他 ✘</strong></p>
+<p>| 18 | kd876 | 4 | 1388.00 |<br>| 23 | 诺基亚n96 | 5 | 3700.00 |<br>| 7 | 诺基亚n85原装充电器 | 8 | 58.00 |<br>| 6 | 索爱原装m2卡读卡器 | 11 | 20.00 |<br>| 26 | 小灵通/固话50元充值卡 | 13 | 48.00 |<br>| 30 | 移动100元充值卡 | 14 | 90.00 |<br>| 28 | 联通100元充值卡 | 15 | 95.00 |</p>
+<p>+—————+———————–+——–+————+</p>
+<p><strong>这里错在：“先查询在排序”==&gt;group by cat_id ,但goods_name, shop_price，我们应该取谁的呢？–解决思路:用到“子查询”/连接查询==&gt;先排序再查询</strong></p>
+<hr>
+<hr>
+<h5 id="子查询-之-where子查询-以内层查询结果作为外层的比较条件"><a href="#子查询-之-where子查询-以内层查询结果作为外层的比较条件" class="headerlink" title="子查询 之 where子查询[以内层查询结果作为外层的比较条件]"></a>子查询 之 where子查询[以内层查询结果作为外层的比较条件]</h5><p><strong>1:查找出goods表中最新的那件商品信息?<br>思考问题：1.如何保证每次更新商品后，取得都是最新的呢？☛ 涉及到了”变量”☛”列”就是变量<br>2.查询的条件可以是个表达式☛但是表示得到的要是一个“明确”的量才可以查询<br>3.数据库查询☛”投影式”查询[要那列查那列,查的那列和其他列没关系]<br>–第3点典型错误: select max(goods_id), goods_name, shop_price from goods;–除了goods_id对,其余都是错的！这是个有语义缺陷的语句<br>子语句查询:select goods_id,goods_name,shop_price from goods where goods_id =<br>( select max(goods_id) from goods );<br>以查询select max( goods_id ) from user;的返回结果【存放在内存中，且无论如何该结果都是一个”定值”】作为对前方查询语句的条件</strong></p>
+<p><strong>2.如何：查询goods表中，每个栏目(cat_id) 下最新(goods_id最大)的那件商品？</strong></p>
+<p><strong>思路整理:(从上面的错误范例已可以得到正确思路==&gt;先”排序” 再”查询”)<br>1.排序==&gt;有题目可知,排序的变量应该是cat_id字段,通过排序找到每一个cat_id下中goods_id最大的那个商品ID号<br>2.查询==&gt;用排序得到的那个最大ID号作为条件表达式的对比条件，查找出商品信息</strong></p>
+<p><strong>1.先”排序:”mysql&gt; select max(goods_id), cat_id, shop_price from goods group by cat_id;<br>+—————+——–+————+<br>| max(goods_id) | cat_id | shop_price |<br>+—————+——–+————+<br>| 16 | 2 | 823.33 |<br>| 32 | 3 | 399.00 |<br>| 18 | 4 | 1388.00 |<br>| 23 | 5 | 3700.00 |<br>| 7 | 8 | 58.00 |<br>| 6 | 11 | 20.00 |<br>| 26 | 13 | 48.00 |<br>| 30 | 14 | 90.00 |<br>| 28 | 15 | 95.00 |<br>+—————+——–+————+<br>9 rows in set (0.00 sec)<br>2.再”查询”:mysql&gt; select good_id, goods_name, shop_price from goods where goods_id in (select max(goods_id) from goods group by cat_id);</strong></p>
+<p><strong>+———-+——————————+————+<br>| goods_id | goods_name | shop_price |<br>+———-+——————————+————+<br>| 6 | 胜创kingmax内存卡 | 42.00 |<br>| 7 | 诺基亚n85原装立体声耳机hs-82 | 100.00 |<br>| 16 | 恒基伟业g101 | 823.33 |<br>| 18 | 夏新t5 | 2878.00 |<br>| 23 | 诺基亚n96 | 3700.00 |<br>| 26 | 小灵通/固话20元充值卡 | 19.00 |<br>| 28 | 联通50元充值卡 | 45.00 |<br>| 30 | 移动20元充值卡 | 18.00 |<br>| 32 | 诺基亚n85 | 3010.00 |<br>+———-+——————————+————+</strong></p>
+<p><strong>2.查询出编号为19的商品的栏目名称<a href="用左连接查询和子查询分别">栏目名称放在category表中</a></strong></p>
+<p><strong>WHERE型子查询：<br>1.先找出外层条件的内层结果–goods表中第19号商品的cat_id：select cat_id from goods where goods_id = 19;<br>**</strong>2.查询:select cat_name from category where cat_id = ( se<strong>**lect cat_id from goods where goods_id = 19 );</strong></p>
+<hr>
+<h5 id="子查询-之-from子查询【将查询出来的结果集当成一个新”表”来操作】"><a href="#子查询-之-from子查询【将查询出来的结果集当成一个新”表”来操作】" class="headerlink" title="子查询 之 from子查询【将查询出来的结果集当成一个新”表”来操作】"></a>子查询 之 from子查询【将查询出来的结果集当成一个新”表”来操作】</h5><p><strong>2.如何：查询goods表中，每个栏目(cat_id) 下最新(goods_id最大)的那件商品？–使用from子查询</strong><br><strong>同样的思路==&gt;先排序再查询<br>排序：mysql&gt; select goods_id, goods_name, shop_price from order by cat_id asc, goods_id DESC;<br>得到一张优先按照cat_id升序,再goods_id降序的”表”—–同一个cat_id的商品，它在”表”里出现的位置是第一个<br>排序：mysql&gt; select goods_id, goods_name, shop_price from order by cat_id asc, goods_id DESC;<br>查询：mysql&gt; select goods_id, goods_name,shop_price from<br>(select goods_id,cat_id, goods_name, shop_price from goods order by cat_id ) as tmp<br>group by cat_id;</strong></p>
+<hr>
+<h5 id="子查询-之-exists子查询【”存在”】"><a href="#子查询-之-exists子查询【”存在”】" class="headerlink" title="子查询 之 exists子查询【”存在”】"></a>子查询 之 exists子查询【”存在”】</h5><p><strong>1.用exists型子查询，查出所有商品的栏目下有商品的栏目</strong><br>mysql&gt; <strong>select * from category where exists (select * from goods where goods.cat_id = category.cat_id);</strong><br>查找category这个表，如果select * from goods where goods.cat_id = category.cat_id这个”表”中对应的数据存在则查询+——–+——————-+———–+<br>| cat_id | cat_name | parent_id |<br>+——–+——————-+———–+<br>| 2 | CDMA手机 | 1 |<br>| 3 | GSM手机 | 1 |<br>| 4 | 3G手机 | 1 |<br>| 5 | 双模手机 | 1 |<br>| 8 | 耳机 | 6 |<br>| 11 | 读卡器和内存卡 | 6 |<br>| 13 | 小灵通/固话充值卡 | 12 |<br>| 14 | 移动手机充值卡 | 12 |<br>| 15 | 联通手机充值卡 | 12 |<br>+——–+——————-+———–+<br>9 rows in set (0.00 sec)</p>
+<hr>
+<hr>
+<h4 id="内连接查询-inner-join-、左连接-left-join-、右连接-right-join"><a href="#内连接查询-inner-join-、左连接-left-join-、右连接-right-join" class="headerlink" title="内连接查询[inner join]、左连接[left join]、右连接[right join]"></a>内连接查询[inner join]、左连接[left join]、右连接[right join]</h4><p><strong>【MySQL中没有外连接】</strong></p>
+<p><strong>详解：<a href="http://www.dedecms.com/knowledge/data-base/sql-server/2012/0709/2872.html" target="_blank" rel="noopener">http://www.dedecms.com/knowledge/data-base/sql-server/2012/0709/2872.html</a><br>内连接：select xxxx from table1 inner join table2 on table1.xx=table2.xx ☛ 交集<br>左连接：select xxxx from table1 left join table2 on table1.xx=table2.xx ☛ 左表为基础的查询<br>右连接：select xxxx from table1 right join table2 on table1.xx=table2.xx ☛ 右表为基础的查询</strong></p>
+<p><strong>1.查询价格大于2000元的商品及其栏目名称<br>思路：<br>–涉及到两个表；–基础表为goods表,连接表为category表，条件为shop_price &gt; 2000<br>–goods表cat_id中的和category表中的cat_id对应<br>mysql &gt; select goods.goods_id, category.cat_name, goods.goods_name, goods.shop price from<br>- &gt; goods left join category<br>- &gt; on goods.cat_id = category.cat_id<br>- &gt; where goods.shop_price &gt; 2000;<br>2.取出第4个栏目下的商品的商品名,栏目名,与品牌名<br>select goods_name,cat_name,shop_price from goods left join category on goods.cat_id=category.cat_id where goods.cat_id = 4</strong></p>
+<hr>
+<h3 id="用友面试题"><a href="#用友面试题" class="headerlink" title="用友面试题"></a>用友面试题</h3><p><strong>根据给出的表结构按要求写出SQL语句。</strong></p>
+<p>Match 赛程表</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>字段类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>matchID</td>
+<td>int</td>
+<td>主键</td>
+</tr>
+<tr>
+<td>hostTeamID</td>
+<td>int</td>
+<td>主队的ID</td>
+</tr>
+<tr>
+<td>guestTeamID</td>
+<td>int</td>
+<td>客队的ID</td>
+</tr>
+<tr>
+<td>matchResult</td>
+<td>varchar(20)</td>
+<td>比赛结果，如（2:0）</td>
+</tr>
+<tr>
+<td>matchTime</td>
+<td>date</td>
+<td>比赛开始时间</td>
+</tr>
+</tbody></table>
+<p>Team 参赛队伍表</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>字段类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>teamID</td>
+<td>int</td>
+<td>主键</td>
+</tr>
+<tr>
+<td>teamName</td>
+<td>varchar(20)</td>
+<td>队伍名称</td>
+</tr>
+</tbody></table>
+<p><strong>Match的hostTeamID与guestTeamID都与Team中的teamID关联</strong><br>查出 2006-6-1 到2006-7-1之间举行的所有比赛，并且用以下形式列出：<br>拜仁 2：0 不来梅 2006-6-21</p>
+<p><strong>mysql&gt; select * from m;</strong><br>+—–+——+——+——+————+<br>| mid | hid | gid | mres | matime |<br>+—–+——+——+——+————+<br>| 1 | 1 | 2 | 2:0 | 2006-05-21 |<br>| 2 | 2 | 3 | 1:2 | 2006-06-21 |<br>| 3 | 3 | 1 | 2:5 | 2006-06-25 |<br>| 4 | 2 | 1 | 3:2 | 2006-07-21 |<br>+—–+——+——+——+————+<br>4 rows in set (0.00 sec)</p>
+<p><strong>mysql&gt; select * from t;</strong><br>+——+———-+<br>| tid | tname |<br>+——+———-+<br>| 1 | 国安 |<br>| 2 | 申花 |<br>| 3 | 传智联队 |<br>+——+———-+<br>3 rows in set (0.00 sec)</p>
+<p><strong>思路：–使用Team表中tname代替Match表中对应的hid和gid,然后对时间用between做出做出范围限制查询</strong><br><strong>1.先代替hid:</strong><br><strong>mysql&gt; select m.*, t.tname as htname<br>    -&gt; from m inner join t<br>    -&gt; on m.hid = t.tid;</strong></p>
+<p>+——+——+——+——+————+———-+</p>
+<p>| mid | hid | gid | mres | matime | htname |</p>
+<p>+——+——+——+——+————+———-+</p>
+<p>| 1 | 1 | 2 | 2:0 | 2006-05-21 | 国安 |</p>
+<p>| 2 | 2 | 3 | 1:2 | 2006-06-21 | 申花 |</p>
+<p>| 3 | 3 | 1 | 2:5 | 2006-06-25 | 布尔联队|</p>
+<p>| 4 | 2 | 1 | 3:2 | 2006-07-21 | 申花 |</p>
+<p>+——+——+——+——+————+———-+</p>
+<p><strong>2.再将查询出来的结果集当做是一张新的表对Team表再来一次内连接查询</strong><br><strong>mysql&gt; select m.*, t.tname as htname,t1.tname as gtname from m inner join t on m.hid = t.tid<br>    -&gt;inner join t as t1<br>**    **-&gt;on m.gid=t1.tid;</strong><br>+——+——+——+——+————+———-+———-+<br>| mid | hid | gid | mres | matime | htname | gtname |<br>+——+——+——+——+————+———-+———-+<br>| 1 | 1 | 2 | 2:0 | 2006-05-21 | 国安 | 申花 |<br>| 2 | 2 | 3 | 1:2 | 2006-06-21 | 申花 | 布尔联队|<br>| 3 | 3 | 1 | 2:5 | 2006-06-25 | 布尔联队 | 国安 |<br>| 4 | 2 | 1 | 3:2 | 2006-07-21 | 申花 | 国安 |<br>+——+——+——+——+————+———-+———-+<br>4 rows in set (0.00 sec)</p>
+<p>==&gt;<strong>3.替换后结果如下：</strong><br><strong>mysql&gt; select hid,t1.tname as hname ,mres,gid,t2.tname as gname,matime<br>    -&gt; from<br>    -&gt; m left join t as t1<br>    -&gt; on m.hid = t1.tid<br>    -&gt; left join t as t2<br>**    **-&gt; on m.gid = t2.tid;</strong><br>+——+———-+——+——+———-+————+<br>| hid | hname | mres | gid | gname | matime |<br>+——+———-+——+——+———-+————+<br>| 1 | 国安 | 2:0 | 2 | 申花 | 2006-05-21 |<br>| 2 | 申花 | 1:2 | 3 | 传智联队 | 2006-06-21 |<br>| 3 | 传智联队 | 2:5 | 1 | 国安 | 2006-06-25 |<br>| 2 | 申花 | 3:2 | 1 | 国安 | 2006-07-21 |<br>+——+———-+——+——+———-+————+<br>4 rows in set (0.00 sec)</p>
+<p><strong>==&gt;3.最终结果如下：</strong><br><strong>mysql&gt; select hid,t1.tname as hname ,mres,gid,t2.tname as gname,matime<br>    -&gt; from<br>    -&gt; m left join t as t1<br>    -&gt; on m.hid = t1.tid<br>    -&gt; left join t as t2<br>    -&gt; on m.gid = t2.tid<br>    -&gt; where matime between “2006-06-01” and “2006-07-01”;</strong></p>
+<p>+——+———-+——+——+———-+————+<br>| hid | hname | mres | gid | gname | matime |<br>+——+———-+——+——+———-+————+<br>| 2 | 申花 | 1:2 | 3 | 布尔联队 | 2006-06-21 |<br>| 3 | 布尔联队 | 2:5 | 1 | 国安 | 2006-06-25 |<br>+——+———-+——+——+———-+————+<br>2 rows in set (0.00 sec)</p>
+<hr>
+<h3 id="union查询-将2条或多条SQL的查询结果合并成1个结果集"><a href="#union查询-将2条或多条SQL的查询结果合并成1个结果集" class="headerlink" title="union查询:将2条或多条SQL的查询结果合并成1个结果集"></a>union查询:将2条或多条SQL的查询结果合并成1个结果集</h3><p><strong>注意：</strong><br>1)取的两个表投影查找的字段列数要相同，列名可不一致(默认使用第一个表的列名)否则<br>2)如果碰到完全相同的行，将会被合并【合并是非常耗时的☛使用 union all 就不需要比较字段合并了】<br>3)union查询的内部子句中不用写order by子句，意义不大！但是可以对查询合并后id结果集进行排列</p>
+<p><strong>1.同时查询goods表中cat_id为2和4的商品</strong></p>
+<p><strong>select goods_id,cat_id,goods_name from goods where cat_id =2<br>union<br>select goods_id, cat_id,goods_name from goods where cat_id = 4 (order by )</strong></p>
+<hr>
+<h4 id="union查询面试题"><a href="#union查询面试题" class="headerlink" title="union查询面试题"></a>union查询面试题</h4><p><strong>将A、B表中id值相同的两个num值相加</strong></p>
+<p><strong>A表:<br>+——+——+<br>| id | num |<br>+——+——+<br>| a | 5 |<br>| b | 10 |<br>| c | 15 |<br>| d | 10 |<br>+——+——+ B表:<br>+——+——+<br>| id | num |<br>+——+——+<br>| b | 5 |<br>| c | 15 |<br>| d | 20 |<br>| e | 99 |<br>+——+——+mysql&gt; # 合并 ,注意all的作用<br>mysql&gt; select * from ta<br>    -&gt; union all<br>    -&gt; select * from tb;<br>+——+——+<br>| id | num |<br>+——+——+<br>| a | 5 |<br>| b | 10 |<br>| c | 15 |<br>| d | 10 |<br>| b | 5 |<br>| c | 15 |<br>| d | 20 |<br>| e | 99 |<br>+——+——+</strong></p>
+<p><strong>将上面查询的”结果集”当做是一个新表</strong></p>
+<p><strong>参考答案:</strong></p>
+<p><strong>mysql&gt; # sum,group求和</strong></p>
+<p><strong>mysql&gt; select id,sum(num)</strong></p>
+<p>​    <strong>-&gt;from</strong></p>
+<p>​    <strong>-&gt;(select * from ta union all select * from tb) as tmp</strong></p>
+<p>​    <strong>-&gt;group by id;</strong></p>
+<p>+——+———-+</p>
+<p>| id | sum(num) |</p>
+<p>+——+———-+</p>
+<p>| a | 5 |</p>
+<p>| b | 15 |</p>
+<p>| c | 25 |</p>
+<p>| d | 30 |</p>
+<p>| e | 99 |</p>
+<p>+——+———-+</p>
+<p>5 rows in set (0.00 sec)</p>
+<hr>
+<hr>
+<h1 id="SQL语言之DDL部分-数据定义语言【建库、建表】–”总经理”"><a href="#SQL语言之DDL部分-数据定义语言【建库、建表】–”总经理”" class="headerlink" title="SQL语言之DDL部分@数据定义语言【建库、建表】–”总经理”"></a>SQL语言之DDL部分@数据定义语言【建库、建表】–”总经理”</h1><hr>
+<hr>
+<h2 id="1-创建表table"><a href="#1-创建表table" class="headerlink" title="1.创建表table"></a>1.创建表table</h2><p><strong>1)建”表”过程 ☛ 申明数据库中各个”列”的过程<br>☛ creat table_name ( 列名 列类型 [列属性 列默认值]) ENGINE = 存储引擎 default charset=字符集;<br>★★★<br>2)设计”表”结构☛对”列”的优化☛”列”选什么类型?列选什么属性最好?</strong></p>
+<hr>
+<h2 id="2-列类型知识"><a href="#2-列类型知识" class="headerlink" title="2.列类型知识:"></a>2.列类型知识:</h2><p><strong>数值型：整型、浮点型、定点型 字符串：char varchar text,… 日期时间：datetime, time,</strong></p>
+<p><strong>一种类型，占得字节越多，存储越大，也越浪费</strong></p>
+<h3 id="2-1-整型列"><a href="#2-1-整型列" class="headerlink" title="2_1:整型列"></a>2_1:整型列</h3><p><strong>bigint 8个字节<br>int 4个字节【1个字节=8位☛4个字节=32位–也就是”1”这个int型只占了32位中1个位】<br>mediumint 3个字节<br>smallint 2个字节<br>tinyint 1个字节 【8位==&gt; 0-255 或 -128 - 127】</strong></p>
+<p><strong>1)像tinyint中，默认数值型都是对半正负分配的==&gt;即:正常情况下tinyint是不能存储大于128的数字的!</strong></p>
+<p><strong>那么，如何让tinyint存储0-255之间的数呢？</strong><br>使用unsigned属性【无符号】修饰；<br>zerofill==&gt;用0填充至固定宽度【学号:1-&gt;0001;255 -&gt;0255】<br>M -&gt; 宽度 tinyint(5)–&gt;宽度为5;varchar(10)-&gt;宽度为10<br><strong>注意：</strong>①zerofill属性就已经代表了该类型为是unsigned属性了==&gt;负数不需要用0填充<br>②M属性只有和zerofill配合使用才有意义！宽度是指0填充的宽度，而不是指该列存储的宽度【如:tinyint(1) 可以存储111】</p>
+<hr>
+<h3 id="2-2-浮点列-float-doule-与定点列-decimal"><a href="#2-2-浮点列-float-doule-与定点列-decimal" class="headerlink" title="2_2.浮点列[float/doule]与定点列[decimal]"></a>2_2.浮点列[float/doule]与定点列[decimal]</h3><p><strong>浮点列:float/double (M,D) [UNSIGNED] [ZEROFILL] – M表示精度【总位数】,D表示小数点后面的位数</strong><br>如:float(3,2)–存10==&gt;错误:其实这里有4位了10.00;<br>float(3,2)==&gt;存9.99正确<br><strong>定点列decimal[整数部分和小数部分分开来存储的]<br>浮点数是有精度损失的！定点列更准确</strong></p>
+<hr>
+<h3 id="2-3字符型列-char-varchar"><a href="#2-3字符型列-char-varchar" class="headerlink" title="2_3字符型列[char/varchar]"></a>2_3字符型列[char/varchar]</h3><h4 id="①char-M-–定长；varchar-M-–-变长"><a href="#①char-M-–定长；varchar-M-–-变长" class="headerlink" title="①char(M)–定长；varchar(M) – 变长"></a>①char(M)–定长；varchar(M) – 变长</h4><p><strong>例如:<br>char(10) – 放10个字符长度,但是存放1个字符，在内存中依然是占10个字符长度<br>–char(M) 在磁盘上就占M个字节，磁盘空间利用率可能达到100%<br>varchar(10) – 放10个字符长度，但是存放1个字符，在内存中就占了1个字符长度的空格键<br>–varchar(M) 在内存表中存储时，在表头会增加1-2说明字节存储该字符串长度==&gt;那么内存寻址的时候就能准确找到每一行数据==&gt;实际varchar占M+[1/2]字节</strong></p>
+<p><strong>小技巧：一般对于M较小的，都用char!</strong></p>
+<p><strong>1).因为varchar的利用率是不可能达到100%！</strong></p>
+<p><strong>2).内存的定长寻址会快很多<br>**</strong>3).char型，如果不够M个宽度，内存存储时候会用空格在字符右边补齐，取出时候把右侧空格删除**<br><strong>如果用char存储’ hello ‘，取出之后’ hello’；用varchar存，取出时候’ hello ‘</strong></p>
+<h4 id="②text-–-大文本类型；blob-–-二进制类型"><a href="#②text-–-大文本类型；blob-–-二进制类型" class="headerlink" title="②text – 大文本类型；blob – 二进制类型"></a>②text – 大文本类型；blob – 二进制类型</h4><p><strong>例如：论文、博客…等大段文本text<br>图像、音频等二进制信息用blob类型来存储<br>意义：blob是使用二进制来存储信息的，因此不需要考虑字符集的问题！<br>例如0xFF这个字节，在ASCII字符集中被认为是非法的，在入库的时候就会被过滤掉！如果使用blob来存储则不会被过滤</strong></p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h4 id="③enum-‘value1’-’value2’-…-–-枚举类型；set-‘value1’-’value2’-…-–-集合类型"><a href="#③enum-‘value1’-’value2’-…-–-枚举类型；set-‘value1’-’value2’-…-–-集合类型" class="headerlink" title="③enum(‘value1’,’value2’,…) – 枚举类型；set(‘value1’,’value2’,…) – 集合类型"></a>③enum(‘value1’,’value2’,…) – 枚举类型；set(‘value1’,’value2’,…) – 集合类型</h4><p><strong>例如：<br>enum(‘男’,’女’) ☛ 该列所存储的值就只能是’男’或’女’ ☛ 是个单选值存储<br>set(‘value1’,’value2’,…) ☛ 是个复选值存储，但值也只能在列举的元素中选取<br>注意：set()最多只能列举64个值！</strong></p>
+<hr>
+<h3 id="2-4日期时间型列-char-varchar"><a href="#2-4日期时间型列-char-varchar" class="headerlink" title="2_4日期时间型列[char/varchar]"></a>2_4日期时间型列[char/varchar]</h3><p><strong>year 年 [1个字节] 范围:[1901-2155] ☛ 在insert是，可以简写年后面对两位，但是这样不推荐<br>【00-69】+2000；【70-99】+1900 ☛ 填写两位，表示1970-2069年✘不要只写后面2个数字<br>Date 日期 1994-10-29<br>☛ 以’YYYY-MM-DD HH:MM:SS’格式检索和显示DATETIME值。支持的范围为’1000-01-01 00:00:00’到’9999-12-31 23:59:59’<br>time 时间 13:02:29<br>☛ 用’YYYY-MM-DD’格式检索和显示DATE值。支持的范围是’1000-01-01’到 ‘9999-12-31’<br>datetime 日期<br>☛ 以’YYYY-MM-DD HH:MM:SS’格式检索和显示DATETIME值。支持的范围为’1000-01-01 00:00:00’到’9999-12-31 23:59:59’<br>int unsigned 时间戳 1970-01-01 00:00:00 到当前的秒数<br>☛ 一般存注册时间，商品发布时间等，并不是用datetime，而是用时间戳存储，因为datetime存储虽然直观，但不便计算</strong></p>
+<hr>
+<h3 id="2-5-列属性-☛-默认值-default-amp-amp-not-null"><a href="#2-5-列属性-☛-默认值-default-amp-amp-not-null" class="headerlink" title="2_5 列属性 ☛ 默认值[ default ]&amp;&amp; not null"></a>2_5 列属性 ☛ 默认值[ default ]&amp;&amp; not null</h3><p><strong>1.NULL不便于查询【注意：空字数串,0都不是NULL–NULL是什么都没有，是不存在】<br>not null default xxxx</strong></p>
+<h3 id="2-6-列属性-☛-主键-primary-key-amp-amp-自增-auto-increment"><a href="#2-6-列属性-☛-主键-primary-key-amp-amp-自增-auto-increment" class="headerlink" title="2_6 列属性 ☛ 主键[ primary key ] &amp;&amp; 自增[ auto_increment ]"></a>2_6 列属性 ☛ 主键[ primary key ] &amp;&amp; 自增[ auto_increment ]</h3><p><strong>1.此列不重复，能够区分每一行==&gt;列名 primary key auto_increment<br>一般主键和自增是一起使用的[int类型]，不一定一要一起使用！一张表中只能有一个自增的列！<br>小技巧：<br>1.很多时候都是用tinyint存储☛性别：0/1 –&gt; 男/女;体重：tinyint 【0-255】….<br>2.定长存储寻址快，效率高–常用的字段建议定长存储【对于一张表，只有一个变长大字段其他都是定长字段情况下，可考虑将变长单独分出来】<br>3.一般mysql的列名都用小写</strong></p>
+<hr>
+<h3 id="2-7-列的增add-删-改-☛-这是对表结构的修改"><a href="#2-7-列的增add-删-改-☛-这是对表结构的修改" class="headerlink" title="2_7 列的增add/删/改 ☛ 这是对表结构的修改"></a>2_7 列的增add/删/改 ☛ 这是对表结构的修改</h3><p><strong>增：alter table 表名 add 列名 列类型 [列属性] – 默认该列是存放在表最后的【使用 after 列名 –放在指定列】<br>删：alter table 表名 drop column 列名 列类型 [列属性]<br>改：alter table 表名 change 旧列名 新列名 [新列类型] [新列属性]<br>改：alter table 表名 modify 列名 [新列类型] [新列属性] –modify 不能修改列名</strong></p>
+<hr>
+<h2 id="3-视图"><a href="#3-视图" class="headerlink" title="3. 视图"></a>3. 视图</h2><h3 id="1-什么是视图？"><a href="#1-什么是视图？" class="headerlink" title="1).什么是视图？"></a>1).什么是视图？</h3><p><strong>view 又称虚拟表，view其实就一条查询SQL语句的结果集==&gt;将常用的SQL查询结果集虚拟为一张表存放在内存中<br>create view as 视图名 (查询SQL语句结果集);–当再次使用时:select * from 视图名</strong></p>
+<h3 id="2-视图有什么用？【视图实际上存储的就是SQL语句】"><a href="#2-视图有什么用？【视图实际上存储的就是SQL语句】" class="headerlink" title="2).视图有什么用？【视图实际上存储的就是SQL语句】"></a>2).视图有什么用？【视图实际上存储的就是SQL语句】</h3><p><strong>①权限的控制!比如：某几个列允许用户查询，而其他列不允许，可以通过视图开放其中的一部分列，达到权限的控制<br>②简化复杂的查询!比如：查询每个栏目下的商品的平均价格并按平均价格排序，然后查出平均价格前3高的栏目<br>①create view v as select cat_id, avg(shop_price) as pj from goods group by cat_id<br>②select * from v order by pj limit 0,3</strong></p>
+<h3 id="3-视图能不能更新删除修改"><a href="#3-视图能不能更新删除修改" class="headerlink" title="3).视图能不能更新删除修改"></a>3).视图能不能更新删除修改</h3><p><strong>①视图【虚拟表】☛ 是物理表的一个”投影”,两者是相互影响的☛更改物理表，虚拟表也会更改，同理，更改虚拟表，物理表也会更改！</strong></p>
+<p><strong>但是：如果虚拟表中含有函数(经过计算…)，则不能修改!【即物理表和虚拟表的列能一一对应，则虚拟表中该列能修改–改一行影响一行】</strong></p>
+<p><strong>①create view as v select cat_id, avg(shop_price) as pj from goods group by cat_id</strong></p>
+<p><strong>②update v set pj = 80 where cat_id=11;–报错！因为修改结果不能正确映射回到goods表中所有shop_price中</strong></p>
+<p><strong>同理：增加和删除操作也是和修改一样</strong></p>
+<h3 id="4-视图放在什么地方？"><a href="#4-视图放在什么地方？" class="headerlink" title="4).视图放在什么地方？"></a>4).视图放在什么地方？</h3><p><strong>①对于VIEW存储的SQL语句是简单的select语句，所以当对视图查询时候就是对SQL语句的拼接==&gt;对物理表的间接拼接查询(合并：merge)<br>②对于VIEW存储的SQL语句已经是逻辑复杂的select语句了，这时对视图的拼接查询会更麻烦！<br>==&gt;这时候mysql会先执行视图的创建语句，把结果集形成一张临时表，再对临时表(temptable)进行操作<br>MySQL数据库中可以通过algorithm(算法)定义对视图的处理情况 create algorithm = merge/temptalbe view v_name as …<br>[不写该属性，则由MySQL自行判断]</strong></p>
+<hr>
+<h2 id="4-存储引擎-ENGINE"><a href="#4-存储引擎-ENGINE" class="headerlink" title="4. 存储引擎[ENGINE]"></a>4. 存储引擎[ENGINE]</h2><h3 id="1-什么是存储引擎？"><a href="#1-什么是存储引擎？" class="headerlink" title="1).什么是存储引擎？"></a>1).什么是存储引擎？</h3><p><strong>即：保存”数据”的形式【格式】<br>MYISAM:【处理快-相对不安全-不支持事务】<br>good.frm–说明书[声明表结构的表具体语句]<br>good.MYD–数据内容<br>goods.MYI–目录[索引文件]<br>InnoDB【安全-处理慢-支持事务】–只有.frm文件，其余表的其余全部内容存放在了一个文件中<br>Memory【存放在内存中–一关机就没有了】</strong></p>
+<hr>
+<h2 id="5-字符集与乱码问题"><a href="#5-字符集与乱码问题" class="headerlink" title="5.字符集与乱码问题"></a>5.字符集与乱码问题</h2><h3 id="1-什么是乱码？"><a href="#1-什么是乱码？" class="headerlink" title="1.什么是乱码？"></a>1.什么是乱码？</h3><p>对计算机来说，没有”乱码”，只有0/1==&gt;乱码：人看不懂！</p>
+<h3 id="2-为什么会乱码？"><a href="#2-为什么会乱码？" class="headerlink" title="2.为什么会乱码？"></a>2.为什么会乱码？</h3><p>**①导致原因：文字本来的字符集与展示的字符集不一致<br>==&gt;一般统一utf8；<br>②服务器和客户端字符集不一致！<br>客户端[GBK提交数据]==&gt;连接器处理[转换为数据库字符集]==&gt;数据库[UTF8存放数据]【无论连接器转不转，最终存放到数据库中都是UTF8】<br>数据库[UTF8存放数据]==&gt;连接器处理[转换为客户端字符集]==&gt;客户端[GBK显示数据]</p>
+<p>☛由于客户端和数据库字符集不同导致的乱码==&gt;在提交和显示数据的时候，要”说清楚”字符集<br>==&gt;”我”要什么字符集？==&gt;客户端：set character_set_client =gbk;【谁连接服务器谁就是客户端，客户端字符集是多变的】<br>==&gt;”你”接受什么字符集？==&gt;数据库：set character_set_results=utf8;<br>==&gt;”转换”用什么字符集？==&gt;连接器：set character_set_connection = gbk/utf8[都可以]**<br><strong>只需要将3者的字符集设置一致不会乱码了！==&gt;set names gbk/utf8 ==&gt; 1句好比3句强<br>UTF8:包含中文，韩文，日文，英语，繁体字…国际化<br>GBK:只有简体中文<br>**</strong>gbk2123:简体中文+英文**</p>
+<h3 id="3-怎么能不乱码？"><a href="#3-怎么能不乱码？" class="headerlink" title="3.怎么能不乱码？"></a>3.怎么能不乱码？</h3><p><strong>①文件保存时是否保存为utf8格式<br>②HTML页面显示时候 ：<br>③创建数据表的时候： create table () charset utf8;<br>**</strong>④查询数据的时候：set names utf8;**</p>
+<h3 id="4-什么是字符校对集？"><a href="#4-什么是字符校对集？" class="headerlink" title="4.什么是字符校对集？"></a>4.什么是字符校对集？</h3><p><strong>[utf8-bin==&gt;bin : 二进制排序]==&gt;校对集就是查询排序的标准</strong></p>
+<h6 id="-1"><a href="#-1" class="headerlink" title=""></a></h6><hr>
+<h2 id="6-索引-index"><a href="#6-索引-index" class="headerlink" title="6. 索引[ index ]"></a>6. 索引[ index ]</h2><h3 id="1-查询方式？"><a href="#1-查询方式？" class="headerlink" title="1).查询方式？"></a>1).查询方式？</h3><p><strong>当表中有大量记录时，若要对表进行查询：<br>①全表搜索，是将所有记录一一取出，和查询条件进行一一对比，然后返回满足条件的记录<br>☛消耗大量数据库系统时间，并造成大量磁盘I/O操作<br>**</strong>②第二种就是在表中建立索引，然后在索引中找到符合查询条件的索引值，最后通过保存在索引中的ROWID（相当于页码）快速找到表中对应的记录**</p>
+<h3 id="2-什么是索引？"><a href="#2-什么是索引？" class="headerlink" title="2).什么是索引？"></a>2).什么是索引？</h3><p><strong>索引是对数据库表中一列或多列的值进行排序的一种结构，使用索引可快速访问数据库表中的特定信息！</strong></p>
+<p><strong>–相当于图书的”目录”,根据目录，迅速定位查找内容的位置</strong></p>
+<h3 id="3-索引优-缺点？"><a href="#3-索引优-缺点？" class="headerlink" title="3).索引优/缺点？"></a>3).索引优/缺点？</h3><p><strong>优点：</strong><br><strong>①加快了查询时对数据的检索速度<br>②创建唯一性索引，保证数据库表中每一行数据的唯一性<br>③加速表和表之间的连接<br>**</strong>④在使用分组和排序子句进行数据检索时，可以显著减少查询中分组和排序的时间**<br><strong>缺点：</strong><br>①索引是另外独立于数据外存放的一个二进制文件==&gt;需要占物理空间( .MYI )<br>②对表数据进行增、删和改的维护操作时，索引也要动态的变化==&gt;降低了数据增、删、改的维护速度<br>☛在创建索引之前，您必须确定要使用哪些列以及要创建的索引类型!<br>☛索引不是越多越好==&gt;一般在查询频率多、且重复度小的列上加!</p>
+<p><strong>例如：性别和身份号都需要频繁查询,且表数据量大<br>==&gt;性别：就只有男和女，定位的时候有太多重复的了，添加索引反而是占用了空间！<br>**</strong>==&gt;身份证号：添加索引，身份证号是唯一的,只要快速找到索引就能快速定位**</p>
+<h3 id="4-索引类型"><a href="#4-索引类型" class="headerlink" title="4).索引类型"></a>4).索引类型</h3><p><strong>①key 列名(索引名)==&gt; 普通索引==&gt;纯粹提高查询速度<br>②unique key 列名(索引名)==&gt; 唯一索引 ==&gt;提高速度，且约束数据唯一性<br>③primary key 列名 ==&gt; 主键索引==&gt;唯一主键<br>**</strong>④fulltext ==&gt; 全文索引 ==&gt; 在中文环境下，基本不起作用,要分词索引，一般用第三方解决方案(如：sphinx)** </p>
+<h3 id="5-索引长度："><a href="#5-索引长度：" class="headerlink" title="5).索引长度："></a>5).索引长度：</h3><p><strong>[在建立索引时，对列中一部分字符进行索引]<br>①unique key / key 列名(索引名 (索引长度) )<br>**</strong>例如：对于唯一的Email,形式都是<a href="mailto:.....@qq.com">.....@qq.com</a>**</p>
+<h3 id="6-多列索引："><a href="#6-多列索引：" class="headerlink" title="6).多列索引："></a>6).多列索引：</h3><p><strong>[在建立索引时，对2个或多个列进行索引]</strong></p>
+<h3 id="7-冗余索引："><a href="#7-冗余索引：" class="headerlink" title="7).冗余索引："></a>7).冗余索引：</h3><p><strong>[索引存在覆盖]==&gt;冗余索引有时候在开发中是必要的</strong></p>
+<h3 id="8-操作索引："><a href="#8-操作索引：" class="headerlink" title="8).操作索引："></a>8).操作索引：</h3><p><strong>①查看索引：show index table_name;<br>②添加索引：alter table table_name add index column( index_name )<br>③删除索引:alter table table_name<br>添加主键索引: alter table table_name add primary key column<br>删除主键索引: alter table table_name drop primary key;<br>1.explain select …. ==&gt;查看该语句执行信息==&gt;可以查看使用到的索引<br>2.索引有一个左前缀查找原则==&gt; “…….xxx”这样对xxx发挥不了作用</strong></p>
+<hr>
+<h2 id="7-常用九大类函数-gt-看一次就好！要用的时候至少知道"><a href="#7-常用九大类函数-gt-看一次就好！要用的时候至少知道" class="headerlink" title="7. 常用九大类函数==&gt;看一次就好！要用的时候至少知道"></a>7. 常用九大类函数==&gt;看一次就好！要用的时候至少知道</h2><p><strong>数据库是用来存储管理数据的，能够少用函数来处理尽量少用==&gt;效率慢</strong></p>
+<h3 id="1-、数学函数"><a href="#1-、数学函数" class="headerlink" title="1)、数学函数"></a>1)、数学函数</h3><p>abs(x) 返回x的绝对值<br>bin(x) 返回x的二进制（oct返回八进制，hex返回十六进制）<br>ceiling(x) 返回大于x的最小整数值==&gt;向上取整<br>exp(x) 返回值e（自然对数的底）的x次方<br>floor(x) 返回小于x的最大整数值==&gt;向下取整<br>greatest(x1,x2,…,xn)返回集合中最大的值<br>least(x1,x2,…,xn) 返回集合中最小的值<br>ln(x) 返回x的自然对数<br>log(x,y)返回x的以y为底的对数<br>mod(x,y) 返回x/y的模（余数）<br>pi()返回pi的值（圆周率）<br>rand()返回０或１的随机值,可以通过提供一个参数(种子)使rand()生成器生成1.<br>round(x,y)返回参数x的四舍五入的有y位小数的值<br>sign(x) 返回代表数字x的符号的值<br>sqrt(x) 返回一个数的平方根<br>truncate(x,y) 返回数字x截短为y位小数的结果</p>
+<hr>
+<h3 id="2-、聚合函数-常用于group-by从句的select查询中"><a href="#2-、聚合函数-常用于group-by从句的select查询中" class="headerlink" title="2)、聚合函数(常用于group by从句的select查询中)"></a>2)、聚合函数(常用于group by从句的select查询中)</h3><p>avg(col)返回指定列的平均值<br>count(col)返回指定列中非null值的个数<br>min(col)返回指定列的最小值<br>max(col)返回指定列的最大值<br>sum(col)返回指定列的所有值之和<br>group_concat(col) 返回由属于一组的列值连接组合而成的结果</p>
+<hr>
+<h3 id="3-、字符串函数"><a href="#3-、字符串函数" class="headerlink" title="3)、字符串函数"></a>3)、字符串函数</h3><p>ascii(char)返回字符的ascii码值<br>bit_length(str)返回字符串的比特长度<br>concat(s1,s2…,sn)将s1,s2…,sn连接成字符串<br>concat_ws(sep,s1,s2…,sn)将s1,s2…,sn连接成字符串，并用sep字符间隔<br>insert(str,x,y,instr) 将字符串str从第x位置开始，y个字符长的子串替换为字符串instr，返回结果<br>find_in_set(str,list)分析逗号分隔的list列表，如果发现str，返回str在list中的位置<br>lcase(str)或lower(str) 返回将字符串str中所有字符改变为小写后的结果<br>left(str,x)返回字符串str中最左边的x个字符<br>length(s)返回字符串str中的字符数<br>ltrim(str) 从字符串str中切掉开头的空格<br>position(substr,str) 返回子串substr在字符串str中第一次出现的位置<br>quote(str) 用反斜杠转义str中的单引号<br>repeat(str,srchstr,rplcstr)返回字符串str重复x次的结果<br>reverse(str) 返回颠倒字符串str的结果<br>right(str,x) 返回字符串str中最右边的x个字符<br>rtrim(str) 返回字符串str尾部的空格<br>strcmp(s1,s2)比较字符串s1和s2<br>trim(str)去除字符串首部和尾部的所有空格<br>ucase(str)或upper(str) 返回将字符串str中所有字符转变为大写后的结果</p>
+<hr>
+<h3 id="4-、日期和时间函数"><a href="#4-、日期和时间函数" class="headerlink" title="4)、日期和时间函数"></a>4)、日期和时间函数</h3><p>curdate()或current_date() 返回当前的日期<br>curtime()或current_time() 返回当前的时间<br>date_add(date,interval int keyword)返回日期date加上间隔时间int的结果(int必须按照关键字进行格式化),如：selectdate_add(current_date,interval 6 month);<br>date_format(date,fmt) 依照指定的fmt格式格式化日期date值<br>date_sub(date,interval int keyword)返回日期date加上间隔时间int的结果(int必须按照关键字进行格式化),如：selectdate_sub(current_date,interval 6 month);<br>dayofweek(date) 返回date所代表的一星期中的第几天(1<del>7)<br>dayofmonth(date) 返回date是一个月的第几天(1</del>31)<br>dayofyear(date) 返回date是一年的第几天(1<del>366)<br>dayname(date) 返回date的星期名，如：select dayname(current_date);<br>from_unixtime(ts,fmt) 根据指定的fmt格式，格式化unix时间戳ts<br>hour(time) 返回time的小时值(0</del>23)<br>minute(time) 返回time的分钟值(0<del>59)<br>month(date) 返回date的月份值(1</del>12)<br>monthname(date) 返回date的月份名，如：select monthname(current_date);<br>now() 返回当前的日期和时间<br>quarter(date) 返回date在一年中的季度(1<del>4)，如select quarter(current_date);<br>week(date) 返回日期date为一年中第几周(0</del>53)<br>year(date) 返回日期date的年份(1000~9999)<br>一些示例：<br>获取当前系统时间：select from_unixtime(unix_timestamp());<br>select extract(year_month from current_date);<br>select extract(day_second from current_date);<br>select extract(hour_minute from current_date);<br>返回两个日期值之间的差值(月数)：select period_diff(200302,199802);<br>在mysql中计算年龄：<br>select date_format(from_days(to_days(now())-to_days(birthday)),’%y’)+0 as age from employee;<br>这样，如果brithday是未来的年月日的话，计算结果为0。<br>下面的sql语句计算员工的绝对年龄，即当birthday是未来的日期时，将得到负值。<br>select date_format(now(), ‘%y’) - date_format(birthday, ‘%y’) -(date_format(now(), ‘00-%m-%d’) &lt; date_format(birthday, ‘00-%m-%d’)) as age from employee</p>
+<hr>
+<h3 id="5-、加密函数"><a href="#5-、加密函数" class="headerlink" title="5)、加密函数"></a>5)、加密函数</h3><p><strong>aes_encrypt(str,key) 返回用密钥key对字符串str利用高级加密标准算法加密后的结果，调用aes_encrypt的结果是一个二进制字符串，以blob类型存储<br>aes_decrypt(str,key) 返回用密钥key对字符串str利用高级加密标准算法解密后的结果<br>decode(str,key) 使用key作为密钥解密加密字符串str<br>encrypt(str,salt) 使用unixcrypt()函数，用关键词salt(一个可以惟一确定口令的字符串，就像钥匙一样)加密字符串str<br>encode(str,key) 使用key作为密钥加密字符串str，调用encode()的结果是一个二进制字符串，它以blob类型存储<br>md5() 计算字符串str的md5校验和<br>password(str) 返回字符串str的加密版本，这个加密过程是不可逆转的，和unix密码加密过程使用不同的算法。<br>sha() 计算字符串str的安全散列算法(sha)校验和<br>示例：<br>select encrypt(‘root’,’salt’);<br>select encode(‘xufeng’,’key’);<br>select decode(encode(‘xufeng’,’key’),’key’);#加解密放在一起<br>select aes_encrypt(‘root’,’key’);<br>select aes_decrypt(aes_encrypt(‘root’,’key’),’key’);<br>select md5(‘123456’);<br>select sha(‘123456’);</strong></p>
+<hr>
+<h3 id="6-、控制流函数"><a href="#6-、控制流函数" class="headerlink" title="6)、控制流函数"></a>6)、控制流函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">mysql有4个函数是用来进行条件操作的，这些函数可以实现sql的条件逻辑，允许开发者将一些应用程序业务逻辑转换到数据库后台。</span><br><span class="line">mysql控制流函数：</span><br><span class="line">case when[test1] then [result1]...else [default] end如果testn是真，则返回resultn，否则返回default</span><br><span class="line">case [test] when[val1] then [result]...else [default]end  如果test和valn相等，则返回resultn，否则返回default</span><br><span class="line">if(test,t,f)   如果test是真，返回t；否则返回f</span><br><span class="line">ifnull(arg1,arg2) 如果arg1不是空，返回arg1，否则返回arg2</span><br><span class="line">nullif(arg1,arg2) 如果arg1&#x3D;arg2返回null；否则返回arg1</span><br><span class="line">这些函数的第一个是ifnull()，它有两个参数，并且对第一个参数进行判断。</span><br><span class="line">    &#x3D;&#x3D;&gt;如果第一个参数不是null，函数就会向调用者返回第一个参数；如果是null,将返回第二个参数。</span><br><span class="line">如：select ifnull(1,2), ifnull(null,10),ifnull(4*null,&#39;false&#39;);</span><br><span class="line">nullif()函数将会检验提供的两个参数是否相等，如果相等，则返回null，如果不相等，就返回第一个参数。</span><br><span class="line">如：select nullif(1,1),nullif(&#39;a&#39;,&#39;b&#39;),nullif(2+3,4+1);</span><br><span class="line">和许多脚本语言提供的if()函数一样，mysql的if()函数也可以建立一个简单的条件测试，这个函数有三个参数:</span><br><span class="line">    &#x3D;&#x3D;&gt;第一个是要被判断的表达式，如果表达式为真，if()将会返回第二个参数，如果为假，if()将会返回第三个参数。</span><br><span class="line">如：selectif(1&lt;10,2,3),if(56&gt;100,&#39;true&#39;,&#39;false&#39;);</span><br><span class="line">if()函数在只有两种可能结果时才适合使用。然而，在现实世界中，我们可能发现在条件测试中会需要多个分支。</span><br><span class="line">   ---在这种情况下，mysql提供了case函数，它和php及perl语言的switch-case条件例程一样。</span><br><span class="line">case函数的格式有些复杂，通常如下所示：</span><br><span class="line">case [expression to be evaluated]</span><br><span class="line">when [val 1] then [result 1]</span><br><span class="line">when [val 2] then [result 2]</span><br><span class="line">when [val 3] then [result 3]</span><br><span class="line">......</span><br><span class="line">when [val n] then [result n]</span><br><span class="line">else [default result]</span><br><span class="line">end</span><br><span class="line">    这里，第一个参数是要被判断的值或表达式，接下来的是一系列的when-then块，每一块的第一个参数指定要比较的值，如果为真，就返回结果。</span><br><span class="line">    所有的when-then块将以else块结束，当end结束了所有外部的case块时</span><br><span class="line">    &#x3D;&#x3D;&gt;如果前面的每一个块都不匹配就会返回else块指定的默认结果。如果没有指定else块，而且所有的when-then比较都不是真，mysql将会返回null。</span><br><span class="line">case函数还有另外一种句法，有时使用起来非常方便，如下：</span><br><span class="line">case</span><br><span class="line">when [conditional test 1] then [result 1]</span><br><span class="line">when [conditional test 2] then [result 2]</span><br><span class="line">else [default result]</span><br><span class="line">end</span><br><span class="line">这种条件下，返回的结果取决于相应的条件测试是否为真。</span><br><span class="line">示例：</span><br><span class="line">mysql&gt;select case &#39;green&#39;</span><br><span class="line">     when &#39;red&#39; then &#39;stop&#39;</span><br><span class="line">     when &#39;green&#39; then &#39;go&#39; end;</span><br><span class="line">select case 9 when 1 then &#39;a&#39; when 2 then &#39;b&#39; else &#39;n&#x2F;a&#39; end;</span><br><span class="line">select case when (2+2)&#x3D;4 then &#39;ok&#39; when(2+2)&lt;&gt;4 then &#39;not ok&#39; end asstatus;</span><br><span class="line">select name,if((isactive &#x3D; 1),&#39;已激活&#39;,&#39;未激活&#39;) as result fromuserlogininfo;</span><br><span class="line">select fname,lname,(math+sci+lit) as total,</span><br><span class="line">case when (math+sci+lit) &lt; 50 then &#39;d&#39;</span><br><span class="line">when (math+sci+lit) between 50 and 150 then &#39;c&#39;</span><br><span class="line">when (math+sci+lit) between 151 and 250 then &#39;b&#39;</span><br><span class="line">else &#39;a&#39; end</span><br><span class="line">as grade from marks;</span><br><span class="line">select if(encrypt(&#39;sue&#39;,&#39;ts&#39;)&#x3D;upass,&#39;allow&#39;,&#39;deny&#39;) as loginresultfrom users where uname &#x3D; &#39;sue&#39;;#一个登陆验证</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="7-、格式化函数"><a href="#7-、格式化函数" class="headerlink" title="7)、格式化函数"></a>7)、格式化函数</h3><p>date_format(date,fmt) 依照字符串fmt格式化日期date值<br>format(x,y) 把x格式化为以逗号隔开的数字序列，y是结果的小数位数<br>inet_aton(ip) 返回ip地址的数字表示<br>inet_ntoa(num) 返回数字所代表的ip地址<br>time_format(time,fmt) 依照字符串fmt格式化时间time值<br>其中最简单的是format()函数，它可以把大的数值格式化为以逗号间隔的易读的序列。<br>示例：<br>select format(34234.34323432,3);<br>select date_format(now(),’%w,%d %m %y %r’);<br>select date_format(now(),’%y-%m-%d’);<br>select date_format(19990330,’%y-%m-%d’);<br>select date_format(now(),’%h:%i %p’);<br>select inet_aton(‘10.122.89.47’);<br>select inet_ntoa(175790383);</p>
+<hr>
+<h3 id="8-、类型转化函数"><a href="#8-、类型转化函数" class="headerlink" title="8)、类型转化函数"></a>8)、类型转化函数</h3><p>为了进行数据类型转化，mysql提供了cast()函数，它可以把一个值转化为指定的数据类型。类型有：binary,char,date,time,datetime,signed,unsigned 示例：<br>select cast(now() as signed integer),curdate()+0;<br>select ‘f’=binary ‘f’,’f’=cast(‘f’ as binary);</p>
+<hr>
+<h3 id="9-、系统信息函数"><a href="#9-、系统信息函数" class="headerlink" title="9)、系统信息函数"></a>9)、系统信息函数</h3><p>database() 返回当前数据库名<br>benchmark(count,expr) 将表达式expr重复运行count次<br>connection_id() 返回当前客户的连接id<br>found_rows() 返回最后一个select查询进行检索的总行数<br>user()或system_user() 返回当前登陆用户名<br>version() 返回mysql服务器的版本<br>示例：<br>select database(),version(),user();<br>selectbenchmark(9999999,log(rand()<em>pi()));#该例中,mysql计算log(rand()</em>pi())表达式9999999次。</p>
+<hr>
+<h2 id="8-事务的概念"><a href="#8-事务的概念" class="headerlink" title="8. 事务的概念"></a>8. 事务的概念</h2><h3 id="1-什么是事务？"><a href="#1-什么是事务？" class="headerlink" title="1.什么是事务？"></a>1.什么是事务？</h3><p>将一个业务下的SQL语句作为一个单元统一操作==&gt;”同生共死”!【MyISAM不支持事务】<br>例如：A”打账”500给B，打完之后A减少500，B增加500！如果这两个动作有一个没完成则整个打账过程取消失败–[<strong>原子性</strong>]</p>
+<h3 id="2-如何启用事务？"><a href="#2-如何启用事务？" class="headerlink" title="2.如何启用事务？"></a>2.如何启用事务？</h3><p><strong>start transaction;</strong></p>
+<h3 id="3-如何结束事务？"><a href="#3-如何结束事务？" class="headerlink" title="3.如何结束事务？"></a>3.如何结束事务？</h3><p><strong>commit;</strong></p>
+<h3 id="4-如何撤销事务？【回滚事务】"><a href="#4-如何撤销事务？【回滚事务】" class="headerlink" title="4.如何撤销事务？【回滚事务】"></a>4.如何撤销事务？【回滚事务】</h3><p><strong>rollback;</strong></p>
+<p>事务的中间状态是不可见的–隔离性</p>
+<p>事务发生结束了之后是不能恢复的–持久性</p>
+<p>事务之前和之后它们的业务逻辑上要保持一致！两人总账额度9000，相互转帐后依然是9000 – 一致性</p>
+<p><strong>对于MySQL索引优化，DCL…等部分，工作之后就会遇到！现在可以不必要学！**</strong>现在学了也不一定会，会了也不一定能用得上，用得上也不一定能记得！**</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/21/%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91%E7%9A%84%E7%90%86%E8%A7%A3/" rel="prev" title="重定向与转发的理解">
+      <i class="fa fa-chevron-left"></i> 重定向与转发的理解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/" rel="next" title="hexo博客高级操作">
+      hexo博客高级操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-课前准备！"><span class="nav-text">1.课前准备！</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-数据库–客户端"><span class="nav-text">1.1 数据库–客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-phpmyadmin允许空密码登录配置"><span class="nav-text">1.2 phpmyadmin允许空密码登录配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-什么是SQL-Structured-Query-Language-结构查询语句"><span class="nav-text">1.3 什么是SQL(Structured Query Language) 结构查询语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-SQL语言分类"><span class="nav-text">1.4 SQL语言分类:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-我常用的表操作语句"><span class="nav-text">1.5 我常用的表操作语句:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-SQL语言之DML部分-数据库操作语言【搬运数据】–”员工”"><span class="nav-text">2 SQL语言之DML部分@数据库操作语言【搬运数据】–”员工”</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-常用操作-增-insert-删-delete-改-update-查-select"><span class="nav-text">2.1 常用操作:增[insert] 删[delete] 改[update] 查[select]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-INSERT"><span class="nav-text">1.INSERT:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-DELETE"><span class="nav-text">2.DELETE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-UPDATE"><span class="nav-text">3.UPDATE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-★★★SELECT★★★"><span class="nav-text">4.★★★SELECT★★★</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-SELECT条件查询模型深入理解【重点】"><span class="nav-text">2.2 SELECT条件查询模型深入理解【重点】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-查询练习"><span class="nav-text">2.2.1 查询练习:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模糊查询-like-–-通配任意字符-通配单一字符"><span class="nav-text">模糊查询(like)–%通配任意字符; _ 通配单一字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#奇怪的NULL查询"><span class="nav-text">奇怪的NULL查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GOUP-BY分组与统计函数"><span class="nav-text">GOUP BY分组与统计函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#having筛选结果集"><span class="nav-text">having筛选结果集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#★★★where-having-group综合练习题"><span class="nav-text">★★★where-having-group综合练习题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#order-by排序查询【在内存中排序】-与-limit范围查询【–经典应用-分页类】"><span class="nav-text">order by排序查询【在内存中排序】 与 limit范围查询【–经典应用:分页类】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子句的查询陷阱"><span class="nav-text">子句的查询陷阱</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#子查询-之-where子查询-以内层查询结果作为外层的比较条件"><span class="nav-text">子查询 之 where子查询[以内层查询结果作为外层的比较条件]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#子查询-之-from子查询【将查询出来的结果集当成一个新”表”来操作】"><span class="nav-text">子查询 之 from子查询【将查询出来的结果集当成一个新”表”来操作】</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#子查询-之-exists子查询【”存在”】"><span class="nav-text">子查询 之 exists子查询【”存在”】</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内连接查询-inner-join-、左连接-left-join-、右连接-right-join"><span class="nav-text">内连接查询[inner join]、左连接[left join]、右连接[right join]</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用友面试题"><span class="nav-text">用友面试题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#union查询-将2条或多条SQL的查询结果合并成1个结果集"><span class="nav-text">union查询:将2条或多条SQL的查询结果合并成1个结果集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#union查询面试题"><span class="nav-text">union查询面试题</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL语言之DDL部分-数据定义语言【建库、建表】–”总经理”"><span class="nav-text">SQL语言之DDL部分@数据定义语言【建库、建表】–”总经理”</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-创建表table"><span class="nav-text">1.创建表table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-列类型知识"><span class="nav-text">2.列类型知识:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-整型列"><span class="nav-text">2_1:整型列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-浮点列-float-doule-与定点列-decimal"><span class="nav-text">2_2.浮点列[float&#x2F;doule]与定点列[decimal]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3字符型列-char-varchar"><span class="nav-text">2_3字符型列[char&#x2F;varchar]</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#①char-M-–定长；varchar-M-–-变长"><span class="nav-text">①char(M)–定长；varchar(M) – 变长</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#②text-–-大文本类型；blob-–-二进制类型"><span class="nav-text">②text – 大文本类型；blob – 二进制类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#③enum-‘value1’-’value2’-…-–-枚举类型；set-‘value1’-’value2’-…-–-集合类型"><span class="nav-text">③enum(‘value1’,’value2’,…) – 枚举类型；set(‘value1’,’value2’,…) – 集合类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4日期时间型列-char-varchar"><span class="nav-text">2_4日期时间型列[char&#x2F;varchar]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-列属性-☛-默认值-default-amp-amp-not-null"><span class="nav-text">2_5 列属性 ☛ 默认值[ default ]&amp;&amp; not null</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-列属性-☛-主键-primary-key-amp-amp-自增-auto-increment"><span class="nav-text">2_6 列属性 ☛ 主键[ primary key ] &amp;&amp; 自增[ auto_increment ]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-列的增add-删-改-☛-这是对表结构的修改"><span class="nav-text">2_7 列的增add&#x2F;删&#x2F;改 ☛ 这是对表结构的修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-视图"><span class="nav-text">3. 视图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是视图？"><span class="nav-text">1).什么是视图？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-视图有什么用？【视图实际上存储的就是SQL语句】"><span class="nav-text">2).视图有什么用？【视图实际上存储的就是SQL语句】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-视图能不能更新删除修改"><span class="nav-text">3).视图能不能更新删除修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-视图放在什么地方？"><span class="nav-text">4).视图放在什么地方？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-存储引擎-ENGINE"><span class="nav-text">4. 存储引擎[ENGINE]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是存储引擎？"><span class="nav-text">1).什么是存储引擎？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-字符集与乱码问题"><span class="nav-text">5.字符集与乱码问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是乱码？"><span class="nav-text">1.什么是乱码？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-为什么会乱码？"><span class="nav-text">2.为什么会乱码？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-怎么能不乱码？"><span class="nav-text">3.怎么能不乱码？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-什么是字符校对集？"><span class="nav-text">4.什么是字符校对集？</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#-1"><span class="nav-text"></span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-索引-index"><span class="nav-text">6. 索引[ index ]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-查询方式？"><span class="nav-text">1).查询方式？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-什么是索引？"><span class="nav-text">2).什么是索引？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-索引优-缺点？"><span class="nav-text">3).索引优&#x2F;缺点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-索引类型"><span class="nav-text">4).索引类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-索引长度："><span class="nav-text">5).索引长度：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-多列索引："><span class="nav-text">6).多列索引：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-冗余索引："><span class="nav-text">7).冗余索引：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-操作索引："><span class="nav-text">8).操作索引：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-常用九大类函数-gt-看一次就好！要用的时候至少知道"><span class="nav-text">7. 常用九大类函数&#x3D;&#x3D;&gt;看一次就好！要用的时候至少知道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-、数学函数"><span class="nav-text">1)、数学函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-、聚合函数-常用于group-by从句的select查询中"><span class="nav-text">2)、聚合函数(常用于group by从句的select查询中)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-、字符串函数"><span class="nav-text">3)、字符串函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-、日期和时间函数"><span class="nav-text">4)、日期和时间函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-、加密函数"><span class="nav-text">5)、加密函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-、控制流函数"><span class="nav-text">6)、控制流函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-、格式化函数"><span class="nav-text">7)、格式化函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-、类型转化函数"><span class="nav-text">8)、类型转化函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-、系统信息函数"><span class="nav-text">9)、系统信息函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-事务的概念"><span class="nav-text">8. 事务的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是事务？"><span class="nav-text">1.什么是事务？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-如何启用事务？"><span class="nav-text">2.如何启用事务？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-如何结束事务？"><span class="nav-text">3.如何结束事务？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-如何撤销事务？【回滚事务】"><span class="nav-text">4.如何撤销事务？【回滚事务】</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">84</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
