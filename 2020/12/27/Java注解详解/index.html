@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;javazejian&#x2F;article&#x2F;details&#x2F;71860633 https:&#x2F;&#x2F;www.runoob.com&#x2F;w3cnote&#x2F;java-annotation.html  Annotation 架构">
+  <meta name="description" content="[TOC]">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java注解详解">
 <meta property="og:url" content="http://yoursite.com/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="lb Blog">
-<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;javazejian&#x2F;article&#x2F;details&#x2F;71860633 https:&#x2F;&#x2F;www.runoob.com&#x2F;w3cnote&#x2F;java-annotation.html  Annotation 架构">
+<meta property="og:description" content="[TOC]">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2019/08/28123151-d471f82eb2bc4812b46cc5ff3e9e6b82.jpg">
+<meta property="og:image" content="http://yoursite.com/images/2020122704.png">
 <meta property="article:published_time" content="2020-12-27T10:32:49.000Z">
-<meta property="article:modified_time" content="2021-01-26T05:09:41.328Z">
+<meta property="article:modified_time" content="2021-01-30T12:51:13.304Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="注解">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.runoob.com/wp-content/uploads/2019/08/28123151-d471f82eb2bc4812b46cc5ff3e9e6b82.jpg">
+<meta name="twitter:image" content="http://yoursite.com/images/2020122704.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/27/Java%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/">
 
@@ -250,11 +250,63 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
+        <p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
 <p><a href="https://blog.csdn.net/javazejian/article/details/71860633" target="_blank" rel="noopener">https://blog.csdn.net/javazejian/article/details/71860633</a></p>
 <p><a href="https://www.runoob.com/w3cnote/java-annotation.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-annotation.html</a></p>
 </blockquote>
-<h1 id="Annotation-架构"><a href="#Annotation-架构" class="headerlink" title="Annotation 架构"></a>Annotation 架构</h1><p><img src="https://www.runoob.com/wp-content/uploads/2019/08/28123151-d471f82eb2bc4812b46cc5ff3e9e6b82.jpg" alt="img"></p>
+<h1 id="Annotation-架构"><a href="#Annotation-架构" class="headerlink" title="Annotation 架构"></a>Annotation 架构</h1><p><img src="/images/2020122704.png" alt="img"></p>
+<h1 id="基本Annotation"><a href="#基本Annotation" class="headerlink" title="基本Annotation"></a>基本Annotation</h1><p><code>@Override</code>：限定重写父类方法，强制一个子类必须覆盖父类的的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(value=METHOD)</span><br><span class="line"><span class="meta">@Retention</span>(value=SOURCE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Override</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>@Deprecated</code>：标记已过时，用于表示某个程序元素（类，方法等）已过时，当其他程序使用已过时的类，方法时，编译器将会给出警告。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(value=RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(value=&#123;CONSTRUCTOR,ElementType,LOCAL_VARIABLE,METHOD,PACKAGE,PARAMETER,TYPE&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Deprecated</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>@SuppressWarnings</code>：抑制编译器警告，指示被该Annotation修饰的程序元素（以及该程序元素中的所有子元素）取消显示指定的编译器警告。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(value=&#123;TYPE,ElementType,METHOD,PARAMETER,CONSTRUCTOR,LOCAL_VARIABLE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(value=SOURCE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SuppressWarnings</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>@SafeVarargs</code>：Java7的“堆污染”警告</p>
+<p>堆污染：当把一个不带泛型的对象赋给一个带泛型的的变量时，就会引发堆污染。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(value=RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(value=&#123;CONSTRUCTOR,METHOD&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SafeVarargs</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>@FunctionalInterface</code>：函数式接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(value=RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(value=TYPE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> FunctionalInterface</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="JDK的元Annotation"><a href="#JDK的元Annotation" class="headerlink" title="JDK的元Annotation"></a>JDK的元Annotation</h1><p><code>@Retention</code>：指示要注释具有注释类型的注释的保留时间</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(value=RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(value=ANNOTATION_TYPE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Retention</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>@Target</code>：指示注释类型适用的上下文。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(value=RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(value=ANNOTATION_TYPE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Target</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>@Documented</code>：用于指定被元注解修饰的Annotation类建被javadoc工具提取成文档，如果定义Annotation类时使用了@Documented修饰，则所有使用该Annotation修饰的程序元素的API文档中将会包含该Annotation说明。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(value=RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(value=ANNOTATION_TYPE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Documented</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>@Inherited</code>：表示注释类型自动继承。如果在注释类型声明中存在继承的元注释，并且用户在类声明上查询注释类型，并且类声明没有此类型的注释，则该类的超类将自动查询注释类型。将重复此过程，直到找到此类型的注释，或者达到类层次结构（Object）的顶部。 如果没有超类具有此类型的注释，则查询将指示所讨论的类没有这样的注释。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(value=RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(value=ANNOTATION_TYPE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Inherited</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h1><p>定义新的Annotation类型使用@interface关键字（在原有的interface关键字前增加@符号）定义一个新的Annotation类型与定义一个接口非常像。</p>
 
     </div>
 
@@ -338,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Annotation-架构"><span class="nav-text">Annotation 架构</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Annotation-架构"><span class="nav-text">Annotation 架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本Annotation"><span class="nav-text">基本Annotation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JDK的元Annotation"><span class="nav-text">JDK的元Annotation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义注解"><span class="nav-text">自定义注解</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -354,20 +406,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">67</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">84</span>
+        <span class="site-state-item-count">86</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
