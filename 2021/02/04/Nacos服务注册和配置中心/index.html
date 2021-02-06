@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="[TOC]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nacos服务注册和配置中心">
+<meta property="og:url" content="http://yoursite.com/2021/02/04/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="[TOC]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020401.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020402.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020403.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020404.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020405.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020406.png">
+<meta property="article:published_time" content="2021-02-04T03:33:25.000Z">
+<meta property="article:modified_time" content="2021-02-06T09:20:43.637Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="SpringCloud Alibaba">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020401.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/02/04/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Nacos服务注册和配置中心 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/04/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Nacos服务注册和配置中心
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-04 11:33:25" itemprop="dateCreated datePublished" datetime="2021-02-04T11:33:25+08:00">2021-02-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/%E5%88%86%E5%B8%83%E5%BC%8F-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">分布式/微服务</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[TOC]</p>
+<a id="more"></a>
+
+<p>Nacos（Dynamic Naming and Configuration Service ） 等价于  <code>注册中心</code>+<code>配置中心</code>的组合</p>
+<blockquote>
+<p>官方文档：<a href="https://github.com/alibaba/Nacos" target="_blank" rel="noopener">https://github.com/alibaba/Nacos</a></p>
+<p>下载地址：<a href="https://github.com/alibaba/nacos/releases/tag/1.1.4" target="_blank" rel="noopener">https://github.com/alibaba/nacos/releases/tag/1.1.4</a></p>
+</blockquote>
+<h1 id="1-Docker安装启动Nacos"><a href="#1-Docker安装启动Nacos" class="headerlink" title="1 Docker安装启动Nacos"></a>1 Docker安装启动Nacos</h1><h2 id="1-1-拉取镜像"><a href="#1-1-拉取镜像" class="headerlink" title="1.1 拉取镜像"></a>1.1 拉取镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nacos&#x2F;nacos-server</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-创建本地的映射文件-custom-properties"><a href="#1-2-创建本地的映射文件-custom-properties" class="headerlink" title="1.2 创建本地的映射文件 custom.properties"></a>1.2 创建本地的映射文件 custom.properties</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p &#x2F;root&#x2F;nacos&#x2F;init.d &#x2F;root&#x2F;nacos&#x2F;logs</span><br><span class="line">vim &#x2F;root&#x2F;nacos&#x2F;init.d&#x2F;custom.properties</span><br></pre></td></tr></table></figure>
+
+<p>在文件中写入以下配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">management.endpoints.web.exposure.include&#x3D;*</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-创建容器并启动提供a、b两种方案"><a href="#1-3-创建容器并启动提供a、b两种方案" class="headerlink" title="1.3 创建容器并启动提供a、b两种方案"></a>1.3 创建容器并启动提供a、b两种方案</h2><p>a.创建容器：使用<code>standalone</code>模式并开放<code>8848</code>端口，并映射配置文件和日志目录，数据库默认使用 <code>Derby</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8848:8848 -e MODE&#x3D;standalone -e PREFER_HOST_MODE&#x3D;hostname -v &#x2F;root&#x2F;nacos&#x2F;init.d&#x2F;custom.properties:&#x2F;home&#x2F;nacos&#x2F;init.d&#x2F;custom.properties -v &#x2F;root&#x2F;nacos&#x2F;logs:&#x2F;home&#x2F;nacos&#x2F;logs --restart always --name nacos nacos&#x2F;nacos-server</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：记得开放端口</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020401.png" alt="image-20210204153835750"></p>
+<p> b.使用docker-compose启动 <a href="https://www.cnblogs.com/ZCQ123456/p/11921817.html" target="_blank" rel="noopener">docker-compose安装教程</a></p>
+<p>首先配置docker-compose文件 <code>standalone-derby.yaml</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;2&quot;</span><br><span class="line">services:</span><br><span class="line">  nacos:</span><br><span class="line">    image: nacos&#x2F;nacos-server:latest</span><br><span class="line">    container_name: nacos</span><br><span class="line">    environment:</span><br><span class="line">    - MODE&#x3D;standalone</span><br><span class="line">    volumes:</span><br><span class="line">    - &#x2F;root&#x2F;nacos&#x2F;logs:&#x2F;home&#x2F;nacos&#x2F;logs</span><br><span class="line">    -  &#x2F;root&#x2F;nacos&#x2F;init.d&#x2F;custom.properties:&#x2F;home&#x2F;nacos&#x2F;init.d&#x2F;custom.properties</span><br><span class="line">    ports:</span><br><span class="line">    - &quot;8848:8848&quot;</span><br></pre></td></tr></table></figure>
+
+<p>启动、关闭、移除、关闭并移除命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#启动</span><br><span class="line">docker-compose -f standalone-derby.yaml up</span><br><span class="line">#关闭</span><br><span class="line">docker-compose -f standalone-derby.yaml stop</span><br><span class="line">#移除</span><br><span class="line">docker-compose -f standalone-derby.yaml rm</span><br><span class="line">#关闭并移除</span><br><span class="line">docker-compose -f standalone-derby.yaml down</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-4-访问"><a href="#1-4-访问" class="headerlink" title="1.4 访问"></a>1.4 访问</h2><blockquote>
+<p>输入网址：<a href="http://192.168.60.129:8848/nacos" target="_blank" rel="noopener">http://192.168.60.129:8848/nacos</a>  账号默认nacos、密码默认nacos</p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020402.png" alt="image-20210204142942591"></p>
+<p>进入控制台：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020403.png" alt="image-20210204143107879"></p>
+<h1 id="2-Nacos作为服务注册中心"><a href="#2-Nacos作为服务注册中心" class="headerlink" title="2 Nacos作为服务注册中心"></a>2 Nacos作为服务注册中心</h1><p>创建两个服务提供者和一个服务消费者</p>
+<p>创建module主要分为以下几步：</p>
+<ol>
+<li>建module</li>
+<li>pom</li>
+<li>yml</li>
+<li>主启动</li>
+<li>业务类</li>
+</ol>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020404.png" alt="image-20210204154139801"></p>
+<h2 id="服务注册中心对比"><a href="#服务注册中心对比" class="headerlink" title="服务注册中心对比"></a>服务注册中心对比</h2><p>Nacos全景图：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020405.png" alt="image-20210204154903838"></p>
+<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020406.png" alt="img"></p>
+<p><strong>Nacos支持AP和CP模式的切换</strong></p>
+<h1 id="3-Nacos作为服务配置中心"><a href="#3-Nacos作为服务配置中心" class="headerlink" title="3 Nacos作为服务配置中心"></a>3 Nacos作为服务配置中心</h1><h2 id="3-1-Nacos作为配置中心-基础配置"><a href="#3-1-Nacos作为配置中心-基础配置" class="headerlink" title="3.1 Nacos作为配置中心-基础配置"></a>3.1 Nacos作为配置中心-基础配置</h2><p>cloudalibaba-config-nacos-client3377</p>
+<p>自带动态刷新</p>
+<h2 id="3-2-Nacos作为配置中心-分类配置"><a href="#3-2-Nacos作为配置中心-分类配置" class="headerlink" title="3.2 Nacos作为配置中心-分类配置"></a>3.2 Nacos作为配置中心-分类配置</h2><ul>
+<li><p>DataID方案</p>
+</li>
+<li><p>Group方案</p>
+</li>
+<li><p>Namespace方案</p>
+</li>
+</ul>
+<h1 id="4-Nacos集群和持久化配置"><a href="#4-Nacos集群和持久化配置" class="headerlink" title="4 Nacos集群和持久化配置"></a>4 Nacos集群和持久化配置</h1><blockquote>
+<p>Nacos官方文档：<a href="https://nacos.io/zh-cn/docs/deployment.html" target="_blank" rel="noopener">https://nacos.io/zh-cn/docs/deployment.html</a></p>
+</blockquote>
+<h2 id="4-1-Nacos支持三种部署方式"><a href="#4-1-Nacos支持三种部署方式" class="headerlink" title="4.1 Nacos支持三种部署方式"></a>4.1 Nacos支持三种部署方式</h2><ul>
+<li>单机模式：用于测试或单机使用</li>
+<li>集群模式：用于生产环境，确保高可用</li>
+<li>多集群模式：用于多数据中心场景</li>
+</ul>
+<h2 id="4-2-Nacos持久化配置"><a href="#4-2-Nacos持久化配置" class="headerlink" title="4.2 Nacos持久化配置"></a>4.2 Nacos持久化配置</h2><p>Nacos默认自带的是嵌入式数据库<code>derby</code>，derby到mysql切换配置步骤</p>
+<p>启动nacos，可以看到是个全新的空记录界面，以前是记录进derby</p>
+<h2 id="4-3-Linux版Nacos-MySQL生产环境配置"><a href="#4-3-Linux版Nacos-MySQL生产环境配置" class="headerlink" title="4.3 Linux版Nacos+MySQL生产环境配置"></a>4.3 Linux版Nacos+MySQL生产环境配置</h2><blockquote>
+<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html" target="_blank" rel="noopener">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SpringCloud-Alibaba/" rel="tag"><i class="fa fa-tag"></i> SpringCloud Alibaba</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/02/Java%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B7%A5%E5%85%B7/" rel="prev" title="Java定时任务调度工具">
+      <i class="fa fa-chevron-left"></i> Java定时任务调度工具
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/05/Sentinel%E5%AE%9E%E7%8E%B0%E7%86%94%E6%96%AD%E4%B8%8E%E9%99%90%E6%B5%81/" rel="next" title="Sentinel实现熔断与限流">
+      Sentinel实现熔断与限流 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Docker安装启动Nacos"><span class="nav-text">1 Docker安装启动Nacos</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-拉取镜像"><span class="nav-text">1.1 拉取镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-创建本地的映射文件-custom-properties"><span class="nav-text">1.2 创建本地的映射文件 custom.properties</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-创建容器并启动提供a、b两种方案"><span class="nav-text">1.3 创建容器并启动提供a、b两种方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-访问"><span class="nav-text">1.4 访问</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Nacos作为服务注册中心"><span class="nav-text">2 Nacos作为服务注册中心</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务注册中心对比"><span class="nav-text">服务注册中心对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Nacos作为服务配置中心"><span class="nav-text">3 Nacos作为服务配置中心</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-Nacos作为配置中心-基础配置"><span class="nav-text">3.1 Nacos作为配置中心-基础配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-Nacos作为配置中心-分类配置"><span class="nav-text">3.2 Nacos作为配置中心-分类配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Nacos集群和持久化配置"><span class="nav-text">4 Nacos集群和持久化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Nacos支持三种部署方式"><span class="nav-text">4.1 Nacos支持三种部署方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-Nacos持久化配置"><span class="nav-text">4.2 Nacos持久化配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Linux版Nacos-MySQL生产环境配置"><span class="nav-text">4.3 Linux版Nacos+MySQL生产环境配置</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
