@@ -349,168 +349,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/Spring-Security-OAuth2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="liubin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lb Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/25/Spring-Security-OAuth2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Spring Security + OAuth2学习笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-25 12:15:05" itemprop="dateCreated datePublished" datetime="2020-12-25T12:15:05+08:00">2020-12-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%90%8E%E7%AB%AF/%E5%88%86%E5%B8%83%E5%BC%8F-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">分布式/微服务</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%90%8E%E7%AB%AF/%E5%88%86%E5%B8%83%E5%BC%8F-%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E8%AE%A4%E8%AF%81%E5%92%8C%E9%89%B4%E6%9D%83/" itemprop="url" rel="index"><span itemprop="name">认证和鉴权</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[TOC]</p>
-<blockquote>
-<p>学习文章：<a href="http://www.javaboy.org/2020/1102/es-bilibili.html" target="_blank" rel="noopener">http://www.javaboy.org/2020/1102/es-bilibili.html</a></p>
-</blockquote>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>认证：你是谁</p>
-<p>授权：你要干什么</p>
-<h2 id="1-学习路线"><a href="#1-学习路线" class="headerlink" title="1.学习路线"></a>1.学习路线</h2><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122501.png" alt="image-20210109154823729"></p>
-<h2 id="2-章节概述"><a href="#2-章节概述" class="headerlink" title="2.章节概述"></a>2.章节概述</h2><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122502.png" alt="image-20210109154856540"></p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122503.png" alt="image-20210109154916208"></p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122504.png" alt="image-20210109154927463"></p>
-<h2 id="3-学习目的："><a href="#3-学习目的：" class="headerlink" title="3.学习目的："></a>3.学习目的：</h2><p>独立设计一个安全的单体应用</p>
-<p>为微服务开发UAA或集成第三方</p>
-<p>前后端配合时常见的问题处理</p>
-<h2 id="4-环境配置"><a href="#4-环境配置" class="headerlink" title="4.环境配置"></a>4.环境配置</h2><h3 id="前端环境搭建"><a href="#前端环境搭建" class="headerlink" title="前端环境搭建"></a>前端环境搭建</h3><ul>
-<li>Node </li>
-<li>NPM/CNPM </li>
-<li>Vue CLI</li>
-</ul>
-<blockquote>
-<p>安装node.js的目的是使用npm管理项目依赖的软件包，由于网络环境的原因，cnpm作为替代的包管理工具，使用Vue CLI使我们无须理会复杂的配置，更专注Vue.js</p>
-</blockquote>
-<h3 id="后端环境搭建"><a href="#后端环境搭建" class="headerlink" title="后端环境搭建"></a>后端环境搭建</h3><ul>
-<li><p>Java SDK </p>
-</li>
-<li><p>Maven</p>
-</li>
-</ul>
-<h3 id="IDEA的配置"><a href="#IDEA的配置" class="headerlink" title="IDEA的配置"></a>IDEA的配置</h3><ul>
-<li>EnvFile：加载环境变量</li>
-<li>Http Client</li>
-<li>Lombok</li>
-<li>IDEA的热启动配置</li>
-</ul>
-<h3 id="VSCode的配置"><a href="#VSCode的配置" class="headerlink" title="VSCode的配置"></a>VSCode的配置</h3><ul>
-<li><p>Debugger for Chrome</p>
-</li>
-<li><p>Rest Client</p>
-</li>
-<li><p>Vue VS Code Extension Pack</p>
-</li>
-<li><p>Java Extension Pack</p>
-</li>
-</ul>
-<h3 id="Chrome开发者工具"><a href="#Chrome开发者工具" class="headerlink" title="Chrome开发者工具"></a>Chrome开发者工具</h3><ul>
-<li>样式调试</li>
-<li>日志输出</li>
-<li>Debug</li>
-<li>网络抓包监控</li>
-<li>性能和内存调试</li>
-<li>本地存储调试</li>
-<li>Chrome插件</li>
-</ul>
-<h3 id="Vue-DevTools插件"><a href="#Vue-DevTools插件" class="headerlink" title="Vue DevTools插件"></a>Vue DevTools插件</h3><h1 id="1-Spring-Security-入门"><a href="#1-Spring-Security-入门" class="headerlink" title="1 Spring Security 入门"></a>1 Spring Security 入门</h1><h2 id="1-1-认证和授权的概念"><a href="#1-1-认证和授权的概念" class="headerlink" title="1.1 认证和授权的概念"></a>1.1 认证和授权的概念</h2><h3 id="什么是认证"><a href="#什么是认证" class="headerlink" title="什么是认证"></a>什么是认证</h3><p>认证（Authentication）：认证解决“我是谁”的问题</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122505.png" alt="image-20210111150358296"></p>
-<h3 id="什么是授权"><a href="#什么是授权" class="headerlink" title="什么是授权"></a>什么是授权</h3><p>授权（Authorization）：授权解决“我能做什么”的问题</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122506.png" alt="image-20210111142546362"></p>
-<h2 id="1-2-过滤器和过滤器链"><a href="#1-2-过滤器和过滤器链" class="headerlink" title="1.2 过滤器和过滤器链"></a>1.2 过滤器和过滤器链</h2><p>Filter和FilterChain</p>
-<h3 id="Spring-Filters"><a href="#Spring-Filters" class="headerlink" title="Spring Filters"></a>Spring Filters</h3><blockquote>
-<p>任何Spring Web应用本质上只是一个servlet</p>
-<p>Security Filter在HTTP请求到达你的Controller之前过滤每一个传入的HTTP请求</p>
-</blockquote>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020122507.png" alt="image-20210122111146348"></p>
-<p>过滤器示例：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210116152805378.png" alt="image-20210116152805378"></p>
-<h3 id="Filter-Chain"><a href="#Filter-Chain" class="headerlink" title="Filter Chain"></a>Filter Chain</h3><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210116152752055.png" alt="image-20210116152752055"></p>
-<h3 id="常见的内建过滤器"><a href="#常见的内建过滤器" class="headerlink" title="常见的内建过滤器"></a>常见的内建过滤器</h3><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210122113200795.png" alt="image-20210122113200795"></p>
-<h2 id="1-3-Http"><a href="#1-3-Http" class="headerlink" title="1.3 Http"></a>1.3 Http</h2><p>http请求</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210122113621694.png" alt="image-20210122113621694"></p>
-<p>熟悉Http的请求/响应的结构</p>
-<p>Filter和客户端交互（获取数据看，返回数据）是通过请求/响应中的字段完成的</p>
-<blockquote>
-<p>响应码：<a href="https://developer.mozilla.org/zh-cn/docs/web/http/status" target="_blank" rel="noopener">https://developer.mozilla.org/zh-cn/docs/web/http/status</a></p>
-</blockquote>
-<p>HTTP Basic Auth认证流程</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210122141938223.png" alt="image-20210122141938223"></p>
-<h2 id="1-4-实战"><a href="#1-4-实战" class="headerlink" title="1.4 实战"></a>1.4 实战</h2><h3 id="安全配置"><a href="#安全配置" class="headerlink" title="安全配置"></a>安全配置</h3><h3 id="定制化登录页"><a href="#定制化登录页" class="headerlink" title="定制化登录页"></a>定制化登录页</h3><h3 id="CSRF攻击和保护"><a href="#CSRF攻击和保护" class="headerlink" title="CSRF攻击和保护"></a>CSRF攻击和保护</h3><p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210122144325841.png" alt="image-20210122144325841"></p>
-<p>防止受到CSRF攻击的方式</p>
-<ul>
-<li><p>CSRF Token</p>
-</li>
-<li><p>在响应中设置Cookie的SameSite属性</p>
-</li>
-</ul>
-<p>logout</p>
-<p>rememberMe</p>
-<p>为解决session过期后用户的直接访问问题</p>
-<h3 id="登录成功和失败后的处理"><a href="#登录成功和失败后的处理" class="headerlink" title="登录成功和失败后的处理"></a>登录成功和失败后的处理</h3><h1 id="2-密码的进化和验证"><a href="#2-密码的进化和验证" class="headerlink" title="2 密码的进化和验证"></a>2 密码的进化和验证</h1><h2 id="2-1-密码简史"><a href="#2-1-密码简史" class="headerlink" title="2.1 密码简史"></a>2.1 密码简史</h2><h3 id="密码的发展"><a href="#密码的发展" class="headerlink" title="密码的发展"></a>密码的发展</h3><p>简单密码/明文传输–》设定密码的长度–》密码组合–》二次验证（密码+手机验证码）–》无密码登录（指纹，Face ID）</p>
-<h3 id="密码存储安全进化"><a href="#密码存储安全进化" class="headerlink" title="密码存储安全进化"></a>密码存储安全进化</h3><p>明文–》哈希–》加盐（密码哈希+另外随机生成的哈希值）–》自适应哈希函数（可以配置迭代次数（md5（md5（”plaintext“）））)</p>
-<h3 id="密码编码器"><a href="#密码编码器" class="headerlink" title="密码编码器"></a>密码编码器</h3><h2 id="2-2-Spring-Security对密码哈希的算法支持"><a href="#2-2-Spring-Security对密码哈希的算法支持" class="headerlink" title="2.2 Spring Security对密码哈希的算法支持"></a>2.2 Spring Security对密码哈希的算法支持</h2><h2 id="2-3-密码的验证规则"><a href="#2-3-密码的验证规则" class="headerlink" title="2.3 密码的验证规则"></a>2.3 密码的验证规则</h2><h1 id="3-深入Spring-Security验证"><a href="#3-深入Spring-Security验证" class="headerlink" title="3 深入Spring Security验证"></a>3 深入Spring Security验证</h1><h1 id="4-构建基于JWT的认证"><a href="#4-构建基于JWT的认证" class="headerlink" title="4 构建基于JWT的认证"></a>4 构建基于JWT的认证</h1><h1 id="5-基于角色的用户权限"><a href="#5-基于角色的用户权限" class="headerlink" title="5 基于角色的用户权限"></a>5 基于角色的用户权限</h1><h1 id="6-基于数据库的-RBAC"><a href="#6-基于数据库的-RBAC" class="headerlink" title="6 基于数据库的 RBAC"></a>6 基于数据库的 RBAC</h1><h1 id="7-实现符合-OAuth-2-标准的授权服务器"><a href="#7-实现符合-OAuth-2-标准的授权服务器" class="headerlink" title="7 实现符合 OAuth 2 标准的授权服务器"></a>7 实现符合 OAuth 2 标准的授权服务器</h1><h1 id="8-关于Spring-Security你可以了解的更多"><a href="#8-关于Spring-Security你可以了解的更多" class="headerlink" title="8 关于Spring Security你可以了解的更多"></a>8 关于Spring Security你可以了解的更多</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BA%94%E5%A4%A7%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1065,6 +903,80 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/" class="post-title-link" itemprop="url">@NotBlank,@NotEmpty,@NotNull三种注解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-18 14:01:18" itemprop="dateCreated datePublished" datetime="2020-12-18T14:01:18+08:00">2020-12-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/Spring%E5%AE%B6%E6%97%8F/" itemprop="url" rel="index"><span itemprop="name">Spring家族</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/Spring%E5%AE%B6%E6%97%8F/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1136,14 +1048,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-count">66</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

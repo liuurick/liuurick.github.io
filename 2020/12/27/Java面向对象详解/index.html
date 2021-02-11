@@ -27,13 +27,13 @@
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="[TOC]">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201228124938500.png">
+<meta property="og:image" content="http://yoursite.com/images/2021020801.png">
 <meta property="article:published_time" content="2020-12-27T10:33:36.000Z">
-<meta property="article:modified_time" content="2021-01-26T12:13:22.375Z">
+<meta property="article:modified_time" content="2021-02-08T03:02:10.553Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="面向对象">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201228124938500.png">
+<meta name="twitter:image" content="http://yoursite.com/images/2021020801.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/27/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/">
 
@@ -253,16 +253,15 @@
         <p>[TOC]</p>
 <a id="more"></a>
 
-<blockquote>
-<p>面向对象的多态性：<a href="https://liuyangjun.blog.csdn.net/article/details/79788326" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/79788326</a></p>
-<p>理解java的三大特性之多态：<a href="https://www.cnblogs.com/chenssy/p/3372798.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3372798.html</a></p>
-</blockquote>
-<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><blockquote>
+<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>隐藏内部实现细节</p>
+<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><blockquote>
 <p><a href="https://www.cnblogs.com/dolphin0520/p/3803432.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3803432.html</a></p>
 </blockquote>
 <p>继承在一定程度上破坏了父类的封装性，此时要合理运用组合</p>
 <h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><blockquote>
 <p><a href="https://www.zhihu.com/question/30082151" target="_blank" rel="noopener">https://www.zhihu.com/question/30082151</a></p>
+<p>面向对象的多态性：<a href="https://liuyangjun.blog.csdn.net/article/details/79788326" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/79788326</a></p>
+<p>理解java的三大特性之多态：<a href="https://www.cnblogs.com/chenssy/p/3372798.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3372798.html</a></p>
 </blockquote>
 <h2 id="什么是多态"><a href="#什么是多态" class="headerlink" title="什么是多态"></a>什么是多态</h2><p>事物在运行过程中存在不同的状态。</p>
 <h2 id="多态的三个前提"><a href="#多态的三个前提" class="headerlink" title="多态的三个前提"></a>多态的三个前提</h2><ul>
@@ -283,7 +282,7 @@
 </ul>
 <h2 id="多态的优劣"><a href="#多态的优劣" class="headerlink" title="多态的优劣"></a>多态的优劣</h2><p>优点：十分灵活，减少多余对象的创建</p>
 <p>弊端：不能使用子类特有的属性和方法</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201228124938500.png" alt="image-20201228124938500"></p>
+<p>例子：</p>
 <p> 比如你是一个酒神，对酒情有独钟。某日回家发现桌上有几个杯子里面都装了白酒，从外面看我们是不可能知道这是些什么酒，只有喝了之后才能够猜出来是何种酒。你一喝，这是剑南春、再喝这是五粮液、再喝这是酒鬼酒….在这里我们可以描述成如下：</p>
 <p>   酒 a = 剑南春</p>
 <p>   酒 b = 五粮液</p>
@@ -295,7 +294,12 @@
 <p>   对于这个代码我们非常容易理解无非就是实例化了一个剑南春的对象嘛！但是这样呢？</p>
 <p>   Wine a = new JNC();</p>
 <p>   在这里我们这样理解，这里定义了一个Wine 类型的a，它指向JNC对象实例。由于JNC是继承与Wine，所以JNC可以自动向上转型为Wine，所以a是可以指向JNC实例对象的。这样做存在一个非常大的好处，在继承中我们知道子类是父类的扩展，它可以提供比父类更加强大的功能，如果我们定义了一个指向子类的父类引用类型，那么它除了能够引用父类的共性外，还可以使用子类强大的功能。</p>
-<p>   但是向上转型存在一些缺憾，那就是它必定会导致一些方法和属性的丢失，而导致我们不能够获取它们。所以父类类型的引用可以调用父类中定义的所有属性和方法，对于只存在与子类中的方法和属性它就望尘莫及了—1。</p>
+<p>   但是向上转型存在一些缺憾，那就是它必定会导致一些方法和属性的丢失，而导致我们不能够获取它们。所以父类类型的引用可以调用父类中定义的所有属性和方法，对于只存在与子类中的方法和属性它就望尘莫及了。</p>
+<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><blockquote>
+<p><a href="https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html</a></p>
+</blockquote>
+<p>枚举的遍历：<code>values()</code></p>
+<p><img src="/images/2021020801.png" alt="image-20210208105851798"></p>
 
     </div>
 
@@ -379,7 +383,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#封装"><span class="nav-text">封装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#继承"><span class="nav-text">继承</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多态"><span class="nav-text">多态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是多态"><span class="nav-text">什么是多态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态的三个前提"><span class="nav-text">多态的三个前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态成员访问的特点"><span class="nav-text">多态成员访问的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态的优劣"><span class="nav-text">多态的优劣</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#封装"><span class="nav-text">封装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#继承"><span class="nav-text">继承</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多态"><span class="nav-text">多态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是多态"><span class="nav-text">什么是多态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态的三个前提"><span class="nav-text">多态的三个前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态成员访问的特点"><span class="nav-text">多态成员访问的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态的优劣"><span class="nav-text">多态的优劣</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#枚举"><span class="nav-text">枚举</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -395,14 +399,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-count">66</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
