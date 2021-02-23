@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Spring  IOC AOP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring知识点梳理">
+<meta property="og:url" content="http://yoursite.com/2019/10/23/Spring%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="Spring  IOC AOP">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223114847682.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115342287.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115511956.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115823368.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223120158436.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223134022866.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223134400584.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223135243197.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223141608489.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223144403391.png">
+<meta property="article:published_time" content="2019-10-23T03:14:51.000Z">
+<meta property="article:modified_time" content="2021-02-23T11:54:39.543Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223114847682.png">
+
+<link rel="canonical" href="http://yoursite.com/2019/10/23/Spring%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spring知识点梳理 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/23/Spring%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring知识点梳理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-23 11:14:51" itemprop="dateCreated datePublished" datetime="2019-10-23T11:14:51+08:00">2019-10-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/Spring%E5%AE%B6%E6%97%8F/" itemprop="url" rel="index"><span itemprop="name">Spring家族</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/Spring%E5%AE%B6%E6%97%8F/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Spring</p>
+<ul>
+<li>IOC</li>
+<li>AOP</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h1><p>IOC是Spring Core最核心的部分。更确切的说是一种思想，将我们从繁琐的对象交互中解脱，进而专注于对象本身。</p>
+<h2 id="1-IOC原理"><a href="#1-IOC原理" class="headerlink" title="1 IOC原理"></a>1 IOC原理</h2><p>IOC（Inversion of Control）：控制反转</p>
+<p>通过一个例子了解IOC：<strong>设计行李箱</strong></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223114847682.png" alt="image"></p>
+<p>行李箱依赖于箱体，箱体依赖于底盘，底盘依赖于轮子，这样的设计非常不合理，耦合度较高，当需要修改轮子的尺寸的时候，那么间接导致底盘，箱体等信息都需要修改。</p>
+<p>转换为代码设计：</p>
+<p><strong>上层建筑依赖下层建筑</strong></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115342287.png" alt="image"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Luggage luggage = <span class="keyword">new</span> Luggage();</span><br><span class="line">luggage.move();</span><br></pre></td></tr></table></figure>
+
+<p>当需要修改轮子尺寸时，会暴露出很多问题。</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115511956.png" alt="image"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> size = <span class="number">30</span>;</span><br><span class="line">Luggage luggage = <span class="keyword">new</span> Luggage();</span><br><span class="line">luggage.move();</span><br></pre></td></tr></table></figure>
+
+<p>可见牵一发而动全身，这种代码设计是不可维护的。</p>
+<h3 id="1-1-依赖注入"><a href="#1-1-依赖注入" class="headerlink" title="1.1 依赖注入"></a>1.1 依赖注入</h3><blockquote>
+<p>含义：把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
+</blockquote>
+<p>行李箱设计引入依赖注入</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115823368.png" alt="image-20210223115823368"></p>
+<p>此时修改轮子信息</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223120158436.png" alt="image-20210223120158436"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> size = <span class="number">30</span>;</span><br><span class="line">Tire tire = <span class="keyword">new</span> Tire(size);</span><br><span class="line">Bottom bottom = Bottom(tire);</span><br><span class="line">Framework framework = <span class="keyword">new</span> Framework(bottom);</span><br><span class="line">Luggage luggage = <span class="keyword">new</span> Luggege(framework);</span><br><span class="line">luggage.move();</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="1-2-依赖注入的方式"><a href="#1-2-依赖注入的方式" class="headerlink" title="1.2 依赖注入的方式"></a>1.2 依赖注入的方式</h3><p>IOC，DI，DL的关系</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223134022866.png" alt="image-20210223134022866"></p>
+<p>依赖注入（Dependency Injection）方式，主流使用</p>
+<ol>
+<li>构造函数（Constructor），实现特定参数的构造函数，在创建对象时将底层类作为参数传递给上层类，让IOC容器注入所依赖的类型的对象</li>
+<li>Set注入（Setter），实现特定属性的public set()方法来让IOC容器调用注入所依赖的类型的对象</li>
+<li>接口注入（Interface），实现特定的接口以供IOC容器注入所依赖的类型的对象</li>
+<li>注解注入（Annotation），通过java的注解机制，让IOC容器注入所依赖的类型的对象。例如，Sprint框架里的AutoWired这一类的标签，能够实现注解功能。</li>
+<li>Dependency Lookup方式，被放弃使用</li>
+</ol>
+<h3 id="1-3-IOC底层原理"><a href="#1-3-IOC底层原理" class="headerlink" title="1.3 IOC底层原理"></a>1.3 IOC底层原理</h3><p>IOC思想离不开依赖注入（DI）方法，基于IOC思想提出了<strong>IOC容器</strong>。IOC容器<strong>管理bean的生命周期，控制bean的依赖注入。</strong></p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223134400584.png" alt="image-20210223134400584"></p>
+<h3 id="1-4-IOC容器的优势"><a href="#1-4-IOC容器的优势" class="headerlink" title="1.4 IOC容器的优势"></a>1.4 IOC容器的优势</h3><ul>
+<li>使用依赖注入会进行大量new操作，IOC容器可以自动对代码进行初始化，只需维护一个config文件，例如xml文件即可。避免在各处使用new来创建类，并且可以做到统一维护依赖关系</li>
+<li>创建实例时不需要了解其细节，我们只需请求一个对象（很多类作为该对象类的底层）的实例，IOC容器按照Config文件创建一个该对象的实例。</li>
+</ul>
+<h2 id="2-Spring-IOC的应用"><a href="#2-Spring-IOC的应用" class="headerlink" title="2 Spring IOC的应用"></a>2 Spring IOC的应用</h2><ol>
+<li>Spring启动时，读取应用程序提供的Bean配置信息，并在Spring容器中生成一份Bean的注册表</li>
+<li>根据注册表实例化Bean，Spring提供一个配置文件描述Bean和Bean之间的依赖关系，利用Java的反射功能实例化Bean。</li>
+<li>将Bean实例放到Spring容器的Bean缓存池中</li>
+<li>使用Bean，装配好Bean之间的依赖关系，为上层提供准备就绪的运行环境。</li>
+</ol>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223135243197.png" alt="image"></p>
+<h3 id="2-1-Spring-IOC支持的功能"><a href="#2-1-Spring-IOC支持的功能" class="headerlink" title="2.1 Spring IOC支持的功能"></a>2.1 Spring IOC支持的功能</h3><ul>
+<li><p>依赖注入</p>
+<p>外部注入bean的三种方式：</p>
+<ul>
+<li>set()方法</li>
+<li>构造器</li>
+<li>属性反射（AutoWired）</li>
+</ul>
+</li>
+<li><p>自动装配</p>
+</li>
+<li><p>依赖检查</p>
+</li>
+<li><p>支持集合</p>
+</li>
+<li><p>指定初始化方法和销毁方法</p>
+</li>
+<li><p>支持回调方法</p>
+</li>
+</ul>
+<h3 id="2-2-Spring-IOC容器的接口"><a href="#2-2-Spring-IOC容器的接口" class="headerlink" title="2.2 Spring IOC容器的接口"></a>2.2 Spring IOC容器的接口</h3><p><strong>核心接口（IOC容器的两种实现方式）</strong>：</p>
+<ul>
+<li><p><strong>BeanFactory</strong>：Spring框架最核心的接口</p>
+<ul>
+<li>提供IOC的配置机制—》加载配置文件时，不会创建对象，只有在使用对象时才会创建（懒加载机制）</li>
+<li>包含Bean的各种定义，便于实例化Bean</li>
+<li>建立Bean之间的依赖关系</li>
+<li>Bean生命周期的控制</li>
+<li>主要方法<ul>
+<li>getBean()，从Spring容器中获取Bean</li>
+<li>isSingleton()，Bean在容器中是否是单例，默认是单例</li>
+</ul>
+</li>
+</ul>
+<p>BeanFactory体系结构：</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223141608489.png" alt="image-20210223141608489"></p>
+</li>
+<li><p>ApplicationContext</p>
+<ul>
+<li>加载配置文件时，对象就会创建</li>
+<li>继承了BeanFactory：能够管理、装配Bean</li>
+<li>继承了ResourcePatternResolver：能够加载资源文件</li>
+<li>继承了MessageSource：能够实现国际化等功能</li>
+<li>继承了ApplicationEventPublisher：能够注册监听器，实现监听机制</li>
+</ul>
+</li>
+<li><p>BeanFactory与ApplicationContext的比较</p>
+<ul>
+<li>BeanFactory是Spring框架的基础设施，面向Spring</li>
+<li>ApplicationContext面向使用Spring框架的开发者</li>
+</ul>
+</li>
+</ul>
+<p><strong>主要接口</strong>：</p>
+<ul>
+<li><strong>BeanDefinition</strong>，主要描述Bean的定义</li>
+<li><strong>BeanDefinitionRegistry</strong>，提供向IOC容器注册BeanDefinition对象的方法</li>
+</ul>
+<p>Spring IOC的refresh源码解析</p>
+<p>SpringIOC的getBean方法的解析</p>
+<h3 id="2-3-IOC操作Bean管理"><a href="#2-3-IOC操作Bean管理" class="headerlink" title="2.3 IOC操作Bean管理"></a>2.3 IOC操作Bean管理</h3><p><strong>什么是Bean管理？</strong>Bean管理指的是两个操作</p>
+<ul>
+<li>Spring创建对象</li>
+<li>Spring注入属性</li>
+</ul>
+<p><strong>Bean管理操作两种实现方式</strong></p>
+<ul>
+<li><p>基于注解方式</p>
+</li>
+<li><p>基于xml配置文件方式，在Spring配置文件中，使用bean标签，标签里面添加对应的属性，就可以实现对象创建、属性注入。</p>
+<p>1.创建对象</p>
+<ul>
+<li>bean标签的常用属性：<ul>
+<li>id，对象起的唯一别名、标识</li>
+<li>class，类全路径</li>
+<li>property，属性</li>
+</ul>
+</li>
+<li>创建对象时，默认调用的是无参构造器</li>
+</ul>
+<p>2.注入属性</p>
+<ul>
+<li><p>使用set()方法进行注入，需要在类中实现set()方法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">class</span>=<span class="string">"com.mm.spring5.User"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"userName"</span> <span class="attr">value</span>=<span class="string">"mm"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用有参数构造器注入</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"order"</span> <span class="attr">class</span>=<span class="string">"com.mm.spring5.Order"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"oName"</span> <span class="attr">value</span>=<span class="string">"abc"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"address"</span> <span class="attr">value</span>=<span class="string">"china"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>3.xml注入其他类型属性</p>
+<ul>
+<li><p>null值</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">null</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>4.注入外部bean</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userService"</span> <span class="attr">class</span>=<span class="string">"com.mm.spring5.service.UserService"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"userDao"</span> <span class="attr">ref</span>=<span class="string">"userDaoImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userDaoImpl"</span> <span class="attr">class</span>=<span class="string">"com.mm.spring5.dao.UserDaoImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="2-4-getBean方法的代码逻辑"><a href="#2-4-getBean方法的代码逻辑" class="headerlink" title="2.4 getBean方法的代码逻辑"></a>2.4 getBean方法的代码逻辑</h3><ul>
+<li>转换beanName</li>
+<li>从缓存中加载实例</li>
+<li>实例化Bean</li>
+<li>检测parentBeanFactory</li>
+<li>初始化依赖的Bean</li>
+<li>创建Bean</li>
+</ul>
+<p>Spring Bean的作用域</p>
+<ul>
+<li>Spring Bean的作用域？</li>
+<li>singleton，Spring的默认作用域，容器里拥有唯一的Bean实例</li>
+<li>protitype，针对每个getBean请求，容器都会创建一个Bean实例</li>
+<li>request，会为每个Http请求创建一个Bean实例</li>
+<li>session，会为每个session创建一个Bean实例</li>
+<li>globalSession，会为每个全局Http Session创建一个Bean实例，该作用域仅对Portlet有效</li>
+</ul>
+<p>Spring Bean的生命周期？由SpringIOC容器进行管理</p>
+<ul>
+<li><p>Bean的创建</p>
+<ul>
+<li><p>实例化Bean对象，在BeanDefinition类中设置Bean属性</p>
+<p>（通过ware注入Bean对容器基础设施层面的依赖，对实例化完成的Bean添加自定义的处理逻辑）</p>
+</li>
+<li><p>使用BeanDefinitionRegistry注册BeanDefinition，建立映射</p>
+</li>
+<li><p>调用定制的Bean init方法，进行初始化相关的操作</p>
+</li>
+<li><p>Bean实例初始化之后的自定义工作</p>
+</li>
+<li><p>Bean初始化完毕</p>
+</li>
+</ul>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223144403391.png" alt="image-20210223144403391"></p>
+</li>
+<li><p>Bean的运行</p>
+<ul>
+<li>在应用程序中使用通过getBean()方法获取并使用Bean</li>
+</ul>
+</li>
+<li><p>Bean的销毁</p>
+<ul>
+<li>若实现了DisposableBean接口，则会调用destory方法</li>
+<li>若配置了destory-method属性，则会调用其配置的销毁方法</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-5-Spring实例"><a href="#2-5-Spring实例" class="headerlink" title="2.5 Spring实例"></a>2.5 Spring实例</h3><p>目的：</p>
+<ul>
+<li>Bean如何装载到IOC容器中</li>
+<li>如何从IOC容器获取Bean实例、使用Bean实例</li>
+<li>分析ICO容器的创建配置以及Bean如何获取的底层原理</li>
+</ul>
+<p>方法：</p>
+<ul>
+<li>使用@Bean装配Bean，效率不高<ul>
+<li>通过run()获取ApplicationContext的实例ctx</li>
+<li>调用ctx的getBean()方法获取Bean</li>
+</ul>
+</li>
+<li>使用SpringBoot方式，扫描并装配Bean到IOC容器，在装载类上加上@Componet，表明哪个类需要被扫描到SpringIOC容器中<ul>
+<li>类里面的成员变量若为类对象，需要使用@Autowired进行注释，根据属性类型找到对应的Bean进行注入。注入机制最重要的一条就是根据类型，通过BeanFactory接口，IOC容器通过getBean()方法，支持根据类型、名称来获取Bean。</li>
+</ul>
+</li>
+</ul>
+<h1 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h1><blockquote>
+<p>AOP（Aspect Oriented Programming），面向切面编程。</p>
+<p>思想：</p>
+<ul>
+<li>关注点分离，不同的问题交给不同的部分去解决</li>
+<li>通用化功能代码的实现，对应的就是所谓的切面（Aspect）</li>
+<li>业务功能代码和切面代码分开，架构将变得高内聚低耦合</li>
+<li>确保功能的完整性，切面最终需要被合并（织入）到业务中（Weave）</li>
+</ul>
+</blockquote>
+<h2 id="AOP的三种织入方式"><a href="#AOP的三种织入方式" class="headerlink" title="AOP的三种织入方式"></a>AOP的三种织入方式</h2><ul>
+<li>编译时织入：需要特殊的Java编译器，如AspectJ</li>
+<li>类加载时织入：需要特殊的Java编译器，如AspectJ和AspectWerkz</li>
+<li>运行时织入：Spring采用的方式，通过动态代理的方式，实现简单</li>
+</ul>
+<h2 id="AOP的主要名称概念"><a href="#AOP的主要名称概念" class="headerlink" title="AOP的主要名称概念"></a>AOP的主要名称概念</h2><ul>
+<li>Aspect，通用功能的代码实现（例如日志切面，就是一个普通的java类实现日志记录功能 ）</li>
+<li>Target，目标对象，即被织入Aspect的对象（）</li>
+<li>Join Point，可以作为切入点的机会，所有的方法都的执行处可以作为切入点（例如HelloWorld的请求方法）</li>
+<li>Pointcut，Aspect实际被应用在Join Point，支持正则。Pointcut定义Join Point应该切入到哪个地方。</li>
+<li>Weaving，AOP的实现过程<ul>
+<li>编译时织入</li>
+<li>类加载时织入</li>
+<li>运行时织入，Spring采用的方式，通过动态代理的方式，实现简单</li>
+</ul>
+</li>
+<li>Advice的种类，类里面的方法以及这个方法如何织入到目标方法的方式<ul>
+<li>前置通知（Before）</li>
+<li>后置通知（AfterReturning）</li>
+<li>异常通知（AfterThrowing）</li>
+<li>最终通知（After）</li>
+<li>环绕通知（Around）</li>
+</ul>
+</li>
+</ul>
+<h2 id="AOP的实现"><a href="#AOP的实现" class="headerlink" title="AOP的实现"></a>AOP的实现</h2><blockquote>
+<p>AOP的实现：JdkProxy和Cglib</p>
+<ul>
+<li>由AopProxyFactory根据AdvisedSupport对象的配置来决定</li>
+<li>默认策略如何目标类是接口，则用JdkProxy来实现，否则用后者</li>
+<li>JdkProxy的核心<ul>
+<li>InvocationHandler接口</li>
+<li>Proxy类</li>
+</ul>
+</li>
+<li>Cglib：以继承的方式动态生成目标类的代理</li>
+</ul>
+<p>JDKProxy: 通过Java的内部放射机制实现</p>
+<p>Cglib: 借助ASM实现</p>
+<p>反射机制在生成类的过程中比较高效</p>
+<p>ASM在生成类之后的执行过程中比较高效</p>
+</blockquote>
+<h2 id="实例之日志记录"><a href="#实例之日志记录" class="headerlink" title="实例之日志记录"></a>实例之日志记录</h2><ul>
+<li>目的：记录访问的ip、时间、返回值等</li>
+<li>流程：<ul>
+<li>What，将记录日志的功能代码分离出来，做成一个切面，在切面中解决What的内容，即实现日志功能（Aspect）</li>
+<li>Where，Target目标对象，需要使用该切面功能的类对象。Pointcut可使用正则确定切入点，什么类型的方法可以作为切入点。</li>
+<li>When，确定什么时候进行织入，即调用目标对象中的方法之前还是之后还是其他时候进行</li>
+</ul>
+</li>
+</ul>
+<h2 id="Spring-AOP的原理"><a href="#Spring-AOP的原理" class="headerlink" title="Spring AOP的原理"></a>Spring AOP的原理</h2><h2 id="Spring事务的相关考点"><a href="#Spring事务的相关考点" class="headerlink" title="Spring事务的相关考点"></a>Spring事务的相关考点</h2><ul>
+<li>ACID</li>
+<li>隔离级别</li>
+<li>事务传播</li>
+</ul>
+<h1 id="Spring面试题"><a href="#Spring面试题" class="headerlink" title="Spring面试题"></a>Spring面试题</h1><hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/" rel="prev" title="Docker常用命令整理">
+      <i class="fa fa-chevron-left"></i> Docker常用命令整理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/" rel="next" title="Centos7上安装docker">
+      Centos7上安装docker <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IOC"><span class="nav-text">IOC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-IOC原理"><span class="nav-text">1 IOC原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-依赖注入"><span class="nav-text">1.1 依赖注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-依赖注入的方式"><span class="nav-text">1.2 依赖注入的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-IOC底层原理"><span class="nav-text">1.3 IOC底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-IOC容器的优势"><span class="nav-text">1.4 IOC容器的优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Spring-IOC的应用"><span class="nav-text">2 Spring IOC的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Spring-IOC支持的功能"><span class="nav-text">2.1 Spring IOC支持的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Spring-IOC容器的接口"><span class="nav-text">2.2 Spring IOC容器的接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-IOC操作Bean管理"><span class="nav-text">2.3 IOC操作Bean管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-getBean方法的代码逻辑"><span class="nav-text">2.4 getBean方法的代码逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-Spring实例"><span class="nav-text">2.5 Spring实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AOP"><span class="nav-text">AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的三种织入方式"><span class="nav-text">AOP的三种织入方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的主要名称概念"><span class="nav-text">AOP的主要名称概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的实现"><span class="nav-text">AOP的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例之日志记录"><span class="nav-text">实例之日志记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-AOP的原理"><span class="nav-text">Spring AOP的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring事务的相关考点"><span class="nav-text">Spring事务的相关考点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring面试题"><span class="nav-text">Spring面试题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">93</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
