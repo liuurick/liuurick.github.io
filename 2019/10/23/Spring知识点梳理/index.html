@@ -27,22 +27,22 @@
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="Spring  IOC AOP">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223114847682.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115342287.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115511956.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115823368.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223120158436.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223134022866.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223134400584.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223135243197.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223141608489.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223144403391.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102301.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102302.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102303.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102304.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102305.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102306.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102307.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102308.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102309.png">
+<meta property="og:image" content="http://yoursite.com/images/2019102310.png">
 <meta property="article:published_time" content="2019-10-23T03:14:51.000Z">
-<meta property="article:modified_time" content="2021-02-23T11:54:39.543Z">
+<meta property="article:modified_time" content="2021-02-23T12:38:55.775Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223114847682.png">
+<meta name="twitter:image" content="http://yoursite.com/images/2019102301.png">
 
 <link rel="canonical" href="http://yoursite.com/2019/10/23/Spring%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/">
 
@@ -269,15 +269,15 @@
 <h1 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h1><p>IOC是Spring Core最核心的部分。更确切的说是一种思想，将我们从繁琐的对象交互中解脱，进而专注于对象本身。</p>
 <h2 id="1-IOC原理"><a href="#1-IOC原理" class="headerlink" title="1 IOC原理"></a>1 IOC原理</h2><p>IOC（Inversion of Control）：控制反转</p>
 <p>通过一个例子了解IOC：<strong>设计行李箱</strong></p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223114847682.png" alt="image"></p>
+<p><img src="/images/2019102301.png" alt="image"></p>
 <p>行李箱依赖于箱体，箱体依赖于底盘，底盘依赖于轮子，这样的设计非常不合理，耦合度较高，当需要修改轮子的尺寸的时候，那么间接导致底盘，箱体等信息都需要修改。</p>
 <p>转换为代码设计：</p>
 <p><strong>上层建筑依赖下层建筑</strong></p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115342287.png" alt="image"></p>
+<p><img src="/images/2019102302.png" alt="image"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Luggage luggage = <span class="keyword">new</span> Luggage();</span><br><span class="line">luggage.move();</span><br></pre></td></tr></table></figure>
 
 <p>当需要修改轮子尺寸时，会暴露出很多问题。</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115511956.png" alt="image"></p>
+<p><img src="/images/2019102303.png" alt="image"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> size = <span class="number">30</span>;</span><br><span class="line">Luggage luggage = <span class="keyword">new</span> Luggage();</span><br><span class="line">luggage.move();</span><br></pre></td></tr></table></figure>
 
 <p>可见牵一发而动全身，这种代码设计是不可维护的。</p>
@@ -285,15 +285,15 @@
 <p>含义：把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
 </blockquote>
 <p>行李箱设计引入依赖注入</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223115823368.png" alt="image-20210223115823368"></p>
+<p><img src="/images/2019102304.png" alt="image"></p>
 <p>此时修改轮子信息</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223120158436.png" alt="image-20210223120158436"></p>
+<p><img src="/images/2019102305.png" alt="image"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> size = <span class="number">30</span>;</span><br><span class="line">Tire tire = <span class="keyword">new</span> Tire(size);</span><br><span class="line">Bottom bottom = Bottom(tire);</span><br><span class="line">Framework framework = <span class="keyword">new</span> Framework(bottom);</span><br><span class="line">Luggage luggage = <span class="keyword">new</span> Luggege(framework);</span><br><span class="line">luggage.move();</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="1-2-依赖注入的方式"><a href="#1-2-依赖注入的方式" class="headerlink" title="1.2 依赖注入的方式"></a>1.2 依赖注入的方式</h3><p>IOC，DI，DL的关系</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223134022866.png" alt="image-20210223134022866"></p>
+<p><img src="/images/2019102306.png" alt="image"></p>
 <p>依赖注入（Dependency Injection）方式，主流使用</p>
 <ol>
 <li>构造函数（Constructor），实现特定参数的构造函数，在创建对象时将底层类作为参数传递给上层类，让IOC容器注入所依赖的类型的对象</li>
@@ -303,7 +303,7 @@
 <li>Dependency Lookup方式，被放弃使用</li>
 </ol>
 <h3 id="1-3-IOC底层原理"><a href="#1-3-IOC底层原理" class="headerlink" title="1.3 IOC底层原理"></a>1.3 IOC底层原理</h3><p>IOC思想离不开依赖注入（DI）方法，基于IOC思想提出了<strong>IOC容器</strong>。IOC容器<strong>管理bean的生命周期，控制bean的依赖注入。</strong></p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223134400584.png" alt="image-20210223134400584"></p>
+<p><img src="/images/2019102307.png" alt="image"></p>
 <h3 id="1-4-IOC容器的优势"><a href="#1-4-IOC容器的优势" class="headerlink" title="1.4 IOC容器的优势"></a>1.4 IOC容器的优势</h3><ul>
 <li>使用依赖注入会进行大量new操作，IOC容器可以自动对代码进行初始化，只需维护一个config文件，例如xml文件即可。避免在各处使用new来创建类，并且可以做到统一维护依赖关系</li>
 <li>创建实例时不需要了解其细节，我们只需请求一个对象（很多类作为该对象类的底层）的实例，IOC容器按照Config文件创建一个该对象的实例。</li>
@@ -314,9 +314,9 @@
 <li>将Bean实例放到Spring容器的Bean缓存池中</li>
 <li>使用Bean，装配好Bean之间的依赖关系，为上层提供准备就绪的运行环境。</li>
 </ol>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223135243197.png" alt="image"></p>
+<p><img src="/images/2019102308.png" alt="image"></p>
 <h3 id="2-1-Spring-IOC支持的功能"><a href="#2-1-Spring-IOC支持的功能" class="headerlink" title="2.1 Spring IOC支持的功能"></a>2.1 Spring IOC支持的功能</h3><ul>
-<li><p>依赖注入</p>
+<li><p><strong>依赖注入</strong></p>
 <p>外部注入bean的三种方式：</p>
 <ul>
 <li>set()方法</li>
@@ -324,7 +324,7 @@
 <li>属性反射（AutoWired）</li>
 </ul>
 </li>
-<li><p>自动装配</p>
+<li><p><strong>自动装配</strong></p>
 </li>
 <li><p>依赖检查</p>
 </li>
@@ -332,7 +332,7 @@
 </li>
 <li><p>指定初始化方法和销毁方法</p>
 </li>
-<li><p>支持回调方法</p>
+<li><p>支持回调某些方法，需要实现Spring接口，带有侵入性，应谨慎使用</p>
 </li>
 </ul>
 <h3 id="2-2-Spring-IOC容器的接口"><a href="#2-2-Spring-IOC容器的接口" class="headerlink" title="2.2 Spring IOC容器的接口"></a>2.2 Spring IOC容器的接口</h3><p><strong>核心接口（IOC容器的两种实现方式）</strong>：</p>
@@ -349,9 +349,11 @@
 </ul>
 </li>
 </ul>
-<p>BeanFactory体系结构：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223141608489.png" alt="image-20210223141608489"></p>
 </li>
+</ul>
+<p>  BeanFactory体系结构：</p>
+<p>  <img src="/images/2019102309.png" alt="image"></p>
+<ul>
 <li><p>ApplicationContext</p>
 <ul>
 <li>加载配置文件时，对象就会创建</li>
@@ -373,9 +375,7 @@
 <li><strong>BeanDefinition</strong>，主要描述Bean的定义</li>
 <li><strong>BeanDefinitionRegistry</strong>，提供向IOC容器注册BeanDefinition对象的方法</li>
 </ul>
-<p>Spring IOC的refresh源码解析</p>
-<p>SpringIOC的getBean方法的解析</p>
-<h3 id="2-3-IOC操作Bean管理"><a href="#2-3-IOC操作Bean管理" class="headerlink" title="2.3 IOC操作Bean管理"></a>2.3 IOC操作Bean管理</h3><p><strong>什么是Bean管理？</strong>Bean管理指的是两个操作</p>
+<h2 id="3-Spring-IOC的refresh源码解析"><a href="#3-Spring-IOC的refresh源码解析" class="headerlink" title="3 Spring IOC的refresh源码解析"></a>3 Spring IOC的refresh源码解析</h2><h2 id="4-SpringIOC的getBean方法的解析"><a href="#4-SpringIOC的getBean方法的解析" class="headerlink" title="4 SpringIOC的getBean方法的解析"></a>4 SpringIOC的getBean方法的解析</h2><h3 id="4-1-IOC操作Bean管理"><a href="#4-1-IOC操作Bean管理" class="headerlink" title="4.1 IOC操作Bean管理"></a>4.1 IOC操作Bean管理</h3><p><strong>什么是Bean管理？</strong>Bean管理指的是两个操作</p>
 <ul>
 <li>Spring创建对象</li>
 <li>Spring注入属性</li>
@@ -415,11 +415,9 @@
 <p>4.注入外部bean</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userService"</span> <span class="attr">class</span>=<span class="string">"com.mm.spring5.service.UserService"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"userDao"</span> <span class="attr">ref</span>=<span class="string">"userDaoImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userDaoImpl"</span> <span class="attr">class</span>=<span class="string">"com.mm.spring5.dao.UserDaoImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-
-
 </li>
 </ul>
-<h3 id="2-4-getBean方法的代码逻辑"><a href="#2-4-getBean方法的代码逻辑" class="headerlink" title="2.4 getBean方法的代码逻辑"></a>2.4 getBean方法的代码逻辑</h3><ul>
+<h3 id="4-2-getBean方法的代码逻辑"><a href="#4-2-getBean方法的代码逻辑" class="headerlink" title="4.2 getBean方法的代码逻辑"></a>4.2 getBean方法的代码逻辑</h3><ul>
 <li>转换beanName</li>
 <li>从缓存中加载实例</li>
 <li>实例化Bean</li>
@@ -427,16 +425,14 @@
 <li>初始化依赖的Bean</li>
 <li>创建Bean</li>
 </ul>
-<p>Spring Bean的作用域</p>
-<ul>
-<li>Spring Bean的作用域？</li>
+<h3 id="4-3-Spring-Bean的作用域"><a href="#4-3-Spring-Bean的作用域" class="headerlink" title="4.3 Spring Bean的作用域"></a>4.3 Spring Bean的作用域</h3><ul>
 <li>singleton，Spring的默认作用域，容器里拥有唯一的Bean实例</li>
 <li>protitype，针对每个getBean请求，容器都会创建一个Bean实例</li>
 <li>request，会为每个Http请求创建一个Bean实例</li>
 <li>session，会为每个session创建一个Bean实例</li>
 <li>globalSession，会为每个全局Http Session创建一个Bean实例，该作用域仅对Portlet有效</li>
 </ul>
-<p>Spring Bean的生命周期？由SpringIOC容器进行管理</p>
+<h3 id="4-4-Spring-Bean的生命周期"><a href="#4-4-Spring-Bean的生命周期" class="headerlink" title="4.4 Spring Bean的生命周期"></a>4.4 Spring Bean的生命周期</h3><p>由SpringIOC容器进行管理</p>
 <ul>
 <li><p>Bean的创建</p>
 <ul>
@@ -452,7 +448,7 @@
 <li><p>Bean初始化完毕</p>
 </li>
 </ul>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210223144403391.png" alt="image-20210223144403391"></p>
+<p><img src="/images/2019102310.png" alt="image"></p>
 </li>
 <li><p>Bean的运行</p>
 <ul>
@@ -466,7 +462,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="2-5-Spring实例"><a href="#2-5-Spring实例" class="headerlink" title="2.5 Spring实例"></a>2.5 Spring实例</h3><p>目的：</p>
+<h2 id="5-Spring实例"><a href="#5-Spring实例" class="headerlink" title="5 Spring实例"></a>5 Spring实例</h2><p>目的：</p>
 <ul>
 <li>Bean如何装载到IOC容器中</li>
 <li>如何从IOC容器获取Bean实例、使用Bean实例</li>
@@ -550,7 +546,6 @@
 <li>隔离级别</li>
 <li>事务传播</li>
 </ul>
-<h1 id="Spring面试题"><a href="#Spring面试题" class="headerlink" title="Spring面试题"></a>Spring面试题</h1><hr>
 
     </div>
 
@@ -634,7 +629,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IOC"><span class="nav-text">IOC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-IOC原理"><span class="nav-text">1 IOC原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-依赖注入"><span class="nav-text">1.1 依赖注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-依赖注入的方式"><span class="nav-text">1.2 依赖注入的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-IOC底层原理"><span class="nav-text">1.3 IOC底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-IOC容器的优势"><span class="nav-text">1.4 IOC容器的优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Spring-IOC的应用"><span class="nav-text">2 Spring IOC的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Spring-IOC支持的功能"><span class="nav-text">2.1 Spring IOC支持的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Spring-IOC容器的接口"><span class="nav-text">2.2 Spring IOC容器的接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-IOC操作Bean管理"><span class="nav-text">2.3 IOC操作Bean管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-getBean方法的代码逻辑"><span class="nav-text">2.4 getBean方法的代码逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-Spring实例"><span class="nav-text">2.5 Spring实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AOP"><span class="nav-text">AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的三种织入方式"><span class="nav-text">AOP的三种织入方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的主要名称概念"><span class="nav-text">AOP的主要名称概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的实现"><span class="nav-text">AOP的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例之日志记录"><span class="nav-text">实例之日志记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-AOP的原理"><span class="nav-text">Spring AOP的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring事务的相关考点"><span class="nav-text">Spring事务的相关考点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring面试题"><span class="nav-text">Spring面试题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IOC"><span class="nav-text">IOC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-IOC原理"><span class="nav-text">1 IOC原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-依赖注入"><span class="nav-text">1.1 依赖注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-依赖注入的方式"><span class="nav-text">1.2 依赖注入的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-IOC底层原理"><span class="nav-text">1.3 IOC底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-IOC容器的优势"><span class="nav-text">1.4 IOC容器的优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Spring-IOC的应用"><span class="nav-text">2 Spring IOC的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Spring-IOC支持的功能"><span class="nav-text">2.1 Spring IOC支持的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Spring-IOC容器的接口"><span class="nav-text">2.2 Spring IOC容器的接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Spring-IOC的refresh源码解析"><span class="nav-text">3 Spring IOC的refresh源码解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-SpringIOC的getBean方法的解析"><span class="nav-text">4 SpringIOC的getBean方法的解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-IOC操作Bean管理"><span class="nav-text">4.1 IOC操作Bean管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-getBean方法的代码逻辑"><span class="nav-text">4.2 getBean方法的代码逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-Spring-Bean的作用域"><span class="nav-text">4.3 Spring Bean的作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-Spring-Bean的生命周期"><span class="nav-text">4.4 Spring Bean的生命周期</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Spring实例"><span class="nav-text">5 Spring实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AOP"><span class="nav-text">AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的三种织入方式"><span class="nav-text">AOP的三种织入方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的主要名称概念"><span class="nav-text">AOP的主要名称概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP的实现"><span class="nav-text">AOP的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例之日志记录"><span class="nav-text">实例之日志记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-AOP的原理"><span class="nav-text">Spring AOP的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring事务的相关考点"><span class="nav-text">Spring事务的相关考点</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
