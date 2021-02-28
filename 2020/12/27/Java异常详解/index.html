@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/images/2020122703.png">
 <meta property="article:published_time" content="2020-12-27T10:31:53.000Z">
-<meta property="article:modified_time" content="2021-01-30T08:10:18.226Z">
+<meta property="article:modified_time" content="2021-02-25T03:21:10.465Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="异常">
 <meta name="twitter:card" content="summary">
@@ -257,9 +257,44 @@
 <p>java提高篇—–异常(一)：<a href="https://www.cnblogs.com/chenssy/p/3438130.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3438130.html</a></p>
 <p>java提高篇—–异常(二)：<a href="https://www.cnblogs.com/chenssy/p/3453039.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3453039.html</a></p>
 </blockquote>
-<h1 id="异常类体系"><a href="#异常类体系" class="headerlink" title="异常类体系"></a>异常类体系</h1><p>​        Throwable是所有异常的超类，两个直接子类分别为Exception和Error，其中Exception又可分为运行时异常和非运行时异常，这两种异常有很大的区别，也称之为不检查异常（Unchecked Exception）和检查异常（Checked Exception）。</p>
+<h1 id="异常类体系"><a href="#异常类体系" class="headerlink" title="异常类体系"></a>异常类体系</h1><p>​        Throwable是所有异常的超类，两个直接子类分别为Exception和Error，其中Exception又可分为RuntimeException和非RuntimeException，这两种异常有很大的区别，也称之为不检查异常（Unchecked Exception）和检查异常（Checked Exception）。</p>
 <p>​        其中CheckException发生在编译阶段，必须要使用try…catch（或者throws）否则编译不通过。而UncheckedException发生在运行期，具有不确定性，主要是由于程序的逻辑问题所引起的，难以排查，我们一般都需要纵观全局才能够发现这类的异常错误，所以在程序设计中我们需要认真考虑，好好写代码，尽量处理异常，即使产生了异常，也能尽量保证程序朝着有利方向发展。</p>
 <p><img src="/images/2020122703.png" alt="1354439580_6933"></p>
+<p>RuntimeException：不可预知的，程序应当自行避免</p>
+<p>非RuntimeException：可预知的，从编译器校验的异常</p>
+<h1 id="常见的Error以及Exception"><a href="#常见的Error以及Exception" class="headerlink" title="常见的Error以及Exception"></a>常见的Error以及Exception</h1><p><strong>RuntimeException</strong></p>
+<ol>
+<li>NullPointerException-空指针引用异常</li>
+<li>ClassCastException-类型强制转换异常</li>
+<li>IllegalArgumentException-传递非法参数异常</li>
+<li>IndexOutOfBoundsException-下标越界异常</li>
+<li>NumberFormatException-数字格式异常</li>
+</ol>
+<p><strong>非RuntimeException</strong></p>
+<ol>
+<li>ClassNotFoundException-找不到指定class的异常</li>
+<li>IOException-IO操作异常</li>
+</ol>
+<p><strong>Error</strong></p>
+<ol>
+<li><p>NotClassDefFoundError-找不到class定义的异常</p>
+<p>NotClassDefFoundError的成因：</p>
+<ol>
+<li>类依赖的class或者jar不存在</li>
+<li>类文件存在，但是存在不同的域中</li>
+<li>大小写问题，javac编译的时候是无视大小写的，很有可能编译出来的class文件就与想要的一样</li>
+</ol>
+</li>
+<li><p>StackOverflowError-深递归导致栈被耗尽而抛出的异常</p>
+</li>
+<li><p>OutOfMemoryError-内存异常异常</p>
+</li>
+</ol>
+<h1 id="Java异常的处理原则"><a href="#Java异常的处理原则" class="headerlink" title="Java异常的处理原则"></a>Java异常的处理原则</h1><ul>
+<li>具体明确：抛出的异常应能通过异常类名和message准确说明异常的类型和异常产生的原因；</li>
+<li>提早抛出：应尽可能早的发现并抛出异常，便于精确定位问题；</li>
+<li>延迟捕获：异常的捕获和处理应尽可能延迟，让掌握更多信息的作用域来处理异常。</li>
+</ul>
 <h1 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h1><p>   Java自定义异常的使用要经历如下四个步骤：</p>
 <ol>
 <li>定义一个类继承Throwable或其子类。</li>
@@ -352,7 +387,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#异常类体系"><span class="nav-text">异常类体系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义异常"><span class="nav-text">自定义异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常链"><span class="nav-text">异常链</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#异常类体系"><span class="nav-text">异常类体系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的Error以及Exception"><span class="nav-text">常见的Error以及Exception</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java异常的处理原则"><span class="nav-text">Java异常的处理原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义异常"><span class="nav-text">自定义异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常链"><span class="nav-text">异常链</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -368,20 +403,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">93</span>
+        <span class="site-state-item-count">94</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
