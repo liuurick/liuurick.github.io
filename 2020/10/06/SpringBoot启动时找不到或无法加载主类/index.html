@@ -20,13 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="[TOC]">
+<meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot启动时找不到或无法加载主类">
 <meta property="og:url" content="http://yoursite.com/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/index.html">
 <meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="[TOC]">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-06T14:48:11.000Z">
-<meta property="article:modified_time" content="2020-11-30T09:16:35.146Z">
+<meta property="article:modified_time" content="2021-03-02T08:17:04.589Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="SpringBoot错误">
 <meta name="twitter:card" content="summary">
@@ -223,7 +225,15 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SpringBoot/" itemprop="url" rel="index"><span itemprop="name">SpringBoot</span></a>
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/Spring%E5%AE%B6%E6%97%8F/" itemprop="url" rel="index"><span itemprop="name">Spring家族</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/Spring%E5%AE%B6%E6%97%8F/SpringBoot/" itemprop="url" rel="index"><span itemprop="name">SpringBoot</span></a>
                 </span>
             </span>
 
@@ -238,14 +248,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><a id="more"></a>
+        <p>[TOC]</p>
+<a id="more"></a>
 
 <p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
 <blockquote>
 <p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
 </blockquote>
-<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是SPRING_BOOT_MAIN_CLASS的value并没有设置正确</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;component name&#x3D;&quot;RunManager&quot; selected&#x3D;&quot;Spring Boot.DianpingApplication&quot;&gt;</span><br><span class="line">   &lt;configuration name&#x3D;&quot;DianpingApplication&quot; type&#x3D;&quot;SpringBootApplicationConfigurationType&quot; factoryName&#x3D;&quot;Spring Boot&quot;&gt;</span><br><span class="line">     &lt;module name&#x3D;&quot;dianping&quot; &#x2F;&gt;</span><br><span class="line">     &lt;option name&#x3D;&quot;SPRING_BOOT_MAIN_CLASS&quot; value&#x3D;&quot;com.liuurick.dianping.DianpingApplication&quot; &#x2F;&gt;</span><br><span class="line">     &lt;method v&#x3D;&quot;2&quot;&gt;</span><br><span class="line">       &lt;option name&#x3D;&quot;Make&quot; enabled&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;method&gt;</span><br><span class="line">   &lt;&#x2F;configuration&gt;</span><br><span class="line"> &lt;&#x2F;component&gt;</span><br></pre></td></tr></table></figure>
+<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是<code>SPRING_BOOT_MAIN_CLASS</code>的value并没有设置正确</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">component</span> <span class="attr">name</span>=<span class="string">"RunManager"</span> <span class="attr">selected</span>=<span class="string">"Spring Boot.DianpingApplication"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">configuration</span> <span class="attr">name</span>=<span class="string">"DianpingApplication"</span> <span class="attr">type</span>=<span class="string">"SpringBootApplicationConfigurationType"</span> <span class="attr">factoryName</span>=<span class="string">"Spring Boot"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">module</span> <span class="attr">name</span>=<span class="string">"dianping"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">option</span> <span class="attr">name</span>=<span class="string">"SPRING_BOOT_MAIN_CLASS"</span> <span class="attr">value</span>=<span class="string">"com.liuurick.dianping.DianpingApplication"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">method</span> <span class="attr">v</span>=<span class="string">"2"</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">option</span> <span class="attr">name</span>=<span class="string">"Make"</span> <span class="attr">enabled</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">method</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -328,7 +339,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-text"></span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -357,7 +367,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-count">95</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
