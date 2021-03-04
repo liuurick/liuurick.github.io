@@ -27,18 +27,18 @@
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="[TOC]">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020401.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020402.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020403.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020404.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020405.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020406.png">
+<meta property="og:image" content="http://yoursite.com/images/2021020401.png">
+<meta property="og:image" content="http://yoursite.com/images/2021020402.png">
+<meta property="og:image" content="http://yoursite.com/images/2021020403.png">
+<meta property="og:image" content="http://yoursite.com/images/2021020404.png">
+<meta property="og:image" content="http://yoursite.com/images/2021020405.png">
+<meta property="og:image" content="http://yoursite.com/images/2021020406.png">
 <meta property="article:published_time" content="2021-02-04T03:33:25.000Z">
-<meta property="article:modified_time" content="2021-02-06T09:20:43.637Z">
+<meta property="article:modified_time" content="2021-03-04T11:28:20.922Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="SpringCloud Alibaba">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5C2021020401.png">
+<meta name="twitter:image" content="http://yoursite.com/images/2021020401.png">
 
 <link rel="canonical" href="http://yoursite.com/2021/02/04/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/">
 
@@ -270,7 +270,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8848:8848 -e MODE&#x3D;standalone -e PREFER_HOST_MODE&#x3D;hostname -v &#x2F;root&#x2F;nacos&#x2F;init.d&#x2F;custom.properties:&#x2F;home&#x2F;nacos&#x2F;init.d&#x2F;custom.properties -v &#x2F;root&#x2F;nacos&#x2F;logs:&#x2F;home&#x2F;nacos&#x2F;logs --restart always --name nacos nacos&#x2F;nacos-server</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意</strong>：记得开放端口</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020401.png" alt="image-20210204153835750"></p>
+<p><img src="/images/2021020401.png" alt="image-20210204153835750"></p>
 <p> b.使用docker-compose启动 <a href="https://www.cnblogs.com/ZCQ123456/p/11921817.html" target="_blank" rel="noopener">docker-compose安装教程</a></p>
 <p>首先配置docker-compose文件 <code>standalone-derby.yaml</code> </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;2&quot;</span><br><span class="line">services:</span><br><span class="line">  nacos:</span><br><span class="line">    image: nacos&#x2F;nacos-server:latest</span><br><span class="line">    container_name: nacos</span><br><span class="line">    environment:</span><br><span class="line">    - MODE&#x3D;standalone</span><br><span class="line">    volumes:</span><br><span class="line">    - &#x2F;root&#x2F;nacos&#x2F;logs:&#x2F;home&#x2F;nacos&#x2F;logs</span><br><span class="line">    -  &#x2F;root&#x2F;nacos&#x2F;init.d&#x2F;custom.properties:&#x2F;home&#x2F;nacos&#x2F;init.d&#x2F;custom.properties</span><br><span class="line">    ports:</span><br><span class="line">    - &quot;8848:8848&quot;</span><br></pre></td></tr></table></figure>
@@ -281,9 +281,9 @@
 <h2 id="1-4-访问"><a href="#1-4-访问" class="headerlink" title="1.4 访问"></a>1.4 访问</h2><blockquote>
 <p>输入网址：<a href="http://192.168.60.129:8848/nacos" target="_blank" rel="noopener">http://192.168.60.129:8848/nacos</a>  账号默认nacos、密码默认nacos</p>
 </blockquote>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020402.png" alt="image-20210204142942591"></p>
+<p><img src="/images/2021020402.png" alt="image-20210204142942591"></p>
 <p>进入控制台：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020403.png" alt="image-20210204143107879"></p>
+<p><img src="/images/2021020403.png" alt="image-20210204143107879"></p>
 <h1 id="2-Nacos作为服务注册中心"><a href="#2-Nacos作为服务注册中心" class="headerlink" title="2 Nacos作为服务注册中心"></a>2 Nacos作为服务注册中心</h1><p>创建两个服务提供者和一个服务消费者</p>
 <p>创建module主要分为以下几步：</p>
 <ol>
@@ -293,10 +293,10 @@
 <li>主启动</li>
 <li>业务类</li>
 </ol>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020404.png" alt="image-20210204154139801"></p>
+<p><img src="/images/2021020404.png" alt="image-20210204154139801"></p>
 <h2 id="服务注册中心对比"><a href="#服务注册中心对比" class="headerlink" title="服务注册中心对比"></a>服务注册中心对比</h2><p>Nacos全景图：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020405.png" alt="image-20210204154903838"></p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5C2021020406.png" alt="img"></p>
+<p><img src="/images/2021020405.png" alt="image-20210204154903838"></p>
+<p><img src="/images/2021020406.png" alt="img"></p>
 <p><strong>Nacos支持AP和CP模式的切换</strong></p>
 <h1 id="3-Nacos作为服务配置中心"><a href="#3-Nacos作为服务配置中心" class="headerlink" title="3 Nacos作为服务配置中心"></a>3 Nacos作为服务配置中心</h1><h2 id="3-1-Nacos作为配置中心-基础配置"><a href="#3-1-Nacos作为配置中心-基础配置" class="headerlink" title="3.1 Nacos作为配置中心-基础配置"></a>3.1 Nacos作为配置中心-基础配置</h2><p>cloudalibaba-config-nacos-client3377</p>
 <p>自带动态刷新</p>
@@ -342,10 +342,7 @@
     <a href="/2021/02/02/Java%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B7%A5%E5%85%B7/" rel="prev" title="Java定时任务调度工具">
       <i class="fa fa-chevron-left"></i> Java定时任务调度工具
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/02/05/Sentinel%E5%AE%9E%E7%8E%B0%E7%86%94%E6%96%AD%E4%B8%8E%E9%99%90%E6%B5%81/" rel="next" title="Sentinel实现熔断与限流">
-      Sentinel实现熔断与限流 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -420,20 +417,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">60</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-count">92</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
