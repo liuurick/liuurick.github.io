@@ -1080,6 +1080,96 @@
       </tags>
   </entry>
   <entry>
+    <title>Hadoop集群搭建</title>
+    <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<blockquote>
+<p>Hadoop集群搭建之前记得完成hadoop运行环境的搭建</p>
+</blockquote>
+<a id="more"></a>
+<p>hadoop集群搭建：<br><img src="https://img-blog.csdnimg.cn/20200327140632968.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>也就是要修改以下文件<br><img src="https://img-blog.csdnimg.cn/20200327140653262.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>1.使用sublime文件<br>配置方法：<a href="https://blog.csdn.net/liu1340308350/article/details/105139669" target="_blank" rel="noopener">https://blog.csdn.net/liu1340308350/article/details/105139669</a><br>2.直接在secureCRT中配置<br>这里我是使用第一种方法配置的</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><h4 id="hadoop-env-sh"><a href="#hadoop-env-sh" class="headerlink" title="hadoop-env.sh"></a>hadoop-env.sh</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Licensed to the Apache Software Foundation (ASF) under one</span></span><br><span class="line"><span class="comment"># or more contributor license agreements.  See the NOTICE file</span></span><br><span class="line"><span class="comment"># distributed with this work for additional information</span></span><br><span class="line"><span class="comment"># regarding copyright ownership.  The ASF licenses this file</span></span><br><span class="line"><span class="comment"># to you under the Apache License, Version 2.0 (the</span></span><br><span class="line"><span class="comment"># "License"); you may not use this file except in compliance</span></span><br><span class="line"><span class="comment"># with the License.  You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set Hadoop-specific environment variables here.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The only required environment variable is JAVA_HOME.  All others are</span></span><br><span class="line"><span class="comment"># optional.  When running a distributed configuration it is best to</span></span><br><span class="line"><span class="comment"># set JAVA_HOME in this file, so that it is correctly defined on</span></span><br><span class="line"><span class="comment"># remote nodes.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The java implementation to use.</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/<span class="built_in">export</span>/servers/jdk</span><br><span class="line"></span><br><span class="line"><span class="comment"># The jsvc implementation to use. Jsvc is required to run secure datanodes</span></span><br><span class="line"><span class="comment"># that bind to privileged ports to provide authentication of data transfer</span></span><br><span class="line"><span class="comment"># protocol.  Jsvc is not required if SASL is configured for authentication of</span></span><br><span class="line"><span class="comment"># data transfer protocol using non-privileged ports.</span></span><br><span class="line"><span class="comment">#export JSVC_HOME=$&#123;JSVC_HOME&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$&#123;HADOOP_CONF_DIR:-"/etc/hadoop"&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extra Java CLASSPATH elements.  Automatically insert capacity-scheduler.</span></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> <span class="variable">$HADOOP_HOME</span>/contrib/capacity-scheduler/*.jar; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">"<span class="variable">$HADOOP_CLASSPATH</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$HADOOP_CLASSPATH</span>:<span class="variable">$f</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$f</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The maximum amount of heap to use, in MB. Default is 1000.</span></span><br><span class="line"><span class="comment">#export HADOOP_HEAPSIZE=</span></span><br><span class="line"><span class="comment">#export HADOOP_NAMENODE_INIT_HEAPSIZE=""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extra Java runtime options.  Empty by default.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_OPTS=<span class="string">"<span class="variable">$HADOOP_OPTS</span> -Djava.net.preferIPv4Stack=true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Command specific options appended to HADOOP_OPTS when specified</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_NAMENODE_OPTS=<span class="string">"-Dhadoop.security.logger=<span class="variable">$&#123;HADOOP_SECURITY_LOGGER:-INFO,RFAS&#125;</span> -Dhdfs.audit.logger=<span class="variable">$&#123;HDFS_AUDIT_LOGGER:-INFO,NullAppender&#125;</span> <span class="variable">$HADOOP_NAMENODE_OPTS</span>"</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_DATANODE_OPTS=<span class="string">"-Dhadoop.security.logger=ERROR,RFAS <span class="variable">$HADOOP_DATANODE_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECONDARYNAMENODE_OPTS=<span class="string">"-Dhadoop.security.logger=<span class="variable">$&#123;HADOOP_SECURITY_LOGGER:-INFO,RFAS&#125;</span> -Dhdfs.audit.logger=<span class="variable">$&#123;HDFS_AUDIT_LOGGER:-INFO,NullAppender&#125;</span> <span class="variable">$HADOOP_SECONDARYNAMENODE_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_NFS3_OPTS=<span class="string">"<span class="variable">$HADOOP_NFS3_OPTS</span>"</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_PORTMAP_OPTS=<span class="string">"-Xmx512m <span class="variable">$HADOOP_PORTMAP_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The following applies to multiple commands (fs, dfs, fsck, distcp etc)</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_CLIENT_OPTS=<span class="string">"-Xmx512m <span class="variable">$HADOOP_CLIENT_OPTS</span>"</span></span><br><span class="line"><span class="comment">#HADOOP_JAVA_PLATFORM_OPTS="-XX:-UsePerfData $HADOOP_JAVA_PLATFORM_OPTS"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># On secure datanodes, user to run the datanode as after dropping privileges.</span></span><br><span class="line"><span class="comment"># This **MUST** be uncommented to enable secure HDFS if using privileged ports</span></span><br><span class="line"><span class="comment"># to provide authentication of data transfer protocol.  This **MUST NOT** be</span></span><br><span class="line"><span class="comment"># defined if SASL is configured for authentication of data transfer protocol</span></span><br><span class="line"><span class="comment"># using non-privileged ports.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_USER=<span class="variable">$&#123;HADOOP_SECURE_DN_USER&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Where log files are stored.  $HADOOP_HOME/logs by default.</span></span><br><span class="line"><span class="comment">#export HADOOP_LOG_DIR=$&#123;HADOOP_LOG_DIR&#125;/$USER</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Where log files are stored in the secure data environment.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_LOG_DIR=<span class="variable">$&#123;HADOOP_LOG_DIR&#125;</span>/<span class="variable">$&#123;HADOOP_HDFS_USER&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># HDFS Mover specific parameters</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Specify the JVM options to be used when starting the HDFS Mover.</span></span><br><span class="line"><span class="comment"># These options will be appended to the options specified as HADOOP_OPTS</span></span><br><span class="line"><span class="comment"># and therefore may override any similar flags set in HADOOP_OPTS</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># export HADOOP_MOVER_OPTS=""</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Advanced Users Only!</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The directory where pid files are stored. /tmp by default.</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> this should be set to a directory that can only be written to by </span></span><br><span class="line"><span class="comment">#       the user that will run the hadoop daemons.  Otherwise there is the</span></span><br><span class="line"><span class="comment">#       potential for a symlink attack.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_PID_DIR=<span class="variable">$&#123;HADOOP_PID_DIR&#125;</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_PID_DIR=<span class="variable">$&#123;HADOOP_PID_DIR&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A string representing this instance of hadoop. $USER by default.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_IDENT_STRING=<span class="variable">$USER</span></span><br></pre></td></tr></table></figure>
+<p>也就是修改JDK路径<br><img src="https://img-blog.csdnimg.cn/20200327142029116.png" alt="在这里插入图片描述"><br><strong>注意：</strong> JAVA_HOME的路径按照你自己的路径来</p>
+<h4 id="core-site-xml"><a href="#core-site-xml" class="headerlink" title="core-site.xml"></a>core-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">		  &lt;value&gt;hdfs://hadoop01:9000&lt;/value&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">       &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/<span class="built_in">export</span>/servers/hadoop-2.7.7/tmp&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.proxyuser.root.hosts&lt;/name&gt;</span><br><span class="line">	    &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">     &lt;name&gt;hadoop.proxyuser.root.groups&lt;/name&gt;</span><br><span class="line">		 &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml"></a>hdfs-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop02:50090&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>fs.defaultFS表示我们对HDFS的访问路径<br>dfs.replication指定副本数量，也就是一个文件存几遍<br>dfs.namenode.secondary.http-address表示2nn的访问路径</p>
+<h4 id="mapred-site-xml"><a href="#mapred-site-xml" class="headerlink" title="mapred-site.xml"></a>mapred-site.xml</h4><p>系统里面没有mapred-site.xml文件，则需要复制一个<br><code>cp mapred-site.xml.template mapred-site.xml</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;!-- 指定MR运行在Yarn上 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt; </span><br><span class="line">  &lt;!-- 历史服务器端地址 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop01:10020&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;!-- 历史服务器web端地址 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop01:19888&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;!-- Site specific YARN configuration properties --&gt;</span><br><span class="line">	&lt;!-- 指定YARN的ResourceManager的地址 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;hadoop01&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- Reducer获取数据的方式 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- 日志聚集功能使能 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- 日志保留时间设置7天 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;604800&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;	</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="slaves"><a href="#slaves" class="headerlink" title="slaves"></a>slaves</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop01</span><br><span class="line">hadoop02</span><br><span class="line">hadoop03</span><br></pre></td></tr></table></figure>
+<h4 id="上传配置"><a href="#上传配置" class="headerlink" title="上传配置"></a>上传配置</h4><p>将以上修改的文件上传到服务器中：<br><strong>右键–&gt;SFTP/FTP–&gt;Upload File</strong><br>对应下图文件：<br>注意：只要是修改过的文件都需要Upload<br><img src="https://img-blog.csdnimg.cn/20200327142853963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="配置文件分发"><a href="#配置文件分发" class="headerlink" title="配置文件分发"></a>配置文件分发</h3><p>让hadoop02、03和01保持一致</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp /etc/profile hadoop02:/etc/profile</span><br><span class="line">scp /etc/profile hadoop03:/etc/profile</span><br><span class="line">scp -r /<span class="built_in">export</span>/ hadoop02:/</span><br><span class="line">scp -r /<span class="built_in">export</span>/ hadoop03:/</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200327143347362.png?x-oss-process=image" alt="在这里插入图片描述"><br>scp /etc/profile hadoop02:/etc/profile这句是发环境变量<br>scp -r /export/ hadoop02:/这句是发hadoop整个文件夹</p>
+<p><strong>注意：</strong> 命令执行完之后在hadoop02和hadoop03上执行<code>source /etc/profile</code></p>
+<p>配置完以上的文件，那么集群基本配置就已经完成</p>
+<h3 id="执行格式化"><a href="#执行格式化" class="headerlink" title="执行格式化"></a>执行格式化</h3><p>在hadoop01中执行下列命令<br><code>hdfs namenode -format</code><br><img src="https://img-blog.csdnimg.cn/20200327143553474.png?x-oss-process=image" alt="在这里插入图片描述"><br>在上图看到下图内容则说明文件配置成功<br><img src="https://img-blog.csdnimg.cn/20200327143544630.png" alt="在这里插入图片描述"></p>
+<h3 id="查看hadoop信息"><a href="#查看hadoop信息" class="headerlink" title="查看hadoop信息"></a>查看hadoop信息</h3><p><img src="https://img-blog.csdnimg.cn/20200327143748685.png" alt="在这里插入图片描述"><br><strong>注意：</strong> 第一次进入没有data文件，需要启动namenode<br><img src="https://img-blog.csdnimg.cn/20200327143802429.png" alt="在这里插入图片描述"><br>下图是hadoop文件的树形结构：<br><img src="https://img-blog.csdnimg.cn/202003271451261.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327145141354.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327145153230.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意：</strong><br>如果想让文件显示树形结构，需要安装tree文件：<code>yum -y install tree</code><br><img src="https://img-blog.csdnimg.cn/20200327143812869.png" alt="在这里插入图片描述"><br>查看版本信息：clusterID必须保持一致<br><img src="https://img-blog.csdnimg.cn/2020032714382229.png" alt="在这里插入图片描述"><br><strong>注意：</strong><br>1.如果后面出现集群找不到数据的情况，那就是因为NameNode和DataNode的集群id不一致<br>2.格式化NameNode，会产生新的集群id</p>
+<h3 id="启动HDFS和YARN"><a href="#启动HDFS和YARN" class="headerlink" title="启动HDFS和YARN"></a>启动HDFS和YARN</h3><p><img src="https://img-blog.csdnimg.cn/20200327145625866.png" alt="在这里插入图片描述"></p>
+<p>hadoop01:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start namenode</span><br><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start resourcemanager</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
+
+<p>hadoop02:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br><span class="line">在节点hadoop02执行指令启动SecondaryNameNode进程</span><br><span class="line">hadoop-daemon.sh start secondarynamenode</span><br></pre></td></tr></table></figure>
+
+<p>hadoop03:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
+
+<h4 id="脚本一键启动"><a href="#脚本一键启动" class="headerlink" title="脚本一键启动"></a>脚本一键启动</h4><p>在主节点hadoop01上执行指令<code>start-dfs.sh</code>或<code>stop-dfs.sh</code>启动/关闭所有HDFS服务进程<br>在主节点hadoop01上执行指令<code>start-yarn.sh</code>或<code>stop-yarn.sh</code>启动/关闭所有YARN服务进程；<br>在主节点hadoop01上执行<code>start-all.sh</code>或<code>stop-all.sh</code>指令，直接启动/关闭整个Hadoop集群服务。</p>
+<h4 id="查看是否启动"><a href="#查看是否启动" class="headerlink" title="查看是否启动"></a>查看是否启动</h4><p>hadoop01，02，03的情况如下图所示：<br>hadoop01:<br><img src="https://img-blog.csdnimg.cn/20200327150056763.png" alt="在这里插入图片描述"><br>hadoop02:<br><img src="https://img-blog.csdnimg.cn/20200327150104128.png" alt="在这里插入图片描述"><br>hadoop03:<br><img src="https://img-blog.csdnimg.cn/20200327150110367.png" alt="在这里插入图片描述"></p>
+<h4 id="配置jps快捷键"><a href="#配置jps快捷键" class="headerlink" title="配置jps快捷键"></a>配置jps快捷键</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">创建文件夹 /root/bin</span><br><span class="line">touch jpsall</span><br><span class="line">vim jpsall</span><br><span class="line">chmod 777 jpsall</span><br></pre></td></tr></table></figure>
+<p>jpsall文件内容如下：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> hadoop01 hadoop02 hadoop03</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">echo ===================== <span class="variable">$i</span> ======================</span><br><span class="line">ssh <span class="variable">$i</span> <span class="string">"source /etc/profile &amp;&amp; jps | grep -v Jps"</span></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>配置完成就不再需要单独运行jps了<br><strong>测试：</strong><br><img src="https://img-blog.csdnimg.cn/20200327151641623.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="游览器访问"><a href="#游览器访问" class="headerlink" title="游览器访问"></a>游览器访问</h4><p>Hadoop集群正常启动后，它默认开放了两个端口50070和8088 ，需要关闭防火墙才能访问</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">service iptables stop</span><br><span class="line">chkconfig iptables off</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong> hadoop02和hadoop03的防火墙也需要关闭<br>关闭防火墙之后，在游览器中输入下列网址即可访问：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http://hadoop01:50070/</span><br><span class="line">http://hadoop01:8088</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200327150457137.png?x-oss-process=image" alt="在这里插入图片描述"><br>检查3个datanode是否显示：<br><img src="https://img-blog.csdnimg.cn/20200327150537481.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327150555548.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p>执行命令报错：<br><code>export HADOOP_ROOT_LOGGER=DEBUG,console
+hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327151915561.png" alt="在这里插入图片描述"><br>查阅debug报错信息，可以看到问题是glib版本不够</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><h5 id="1-下载对应文件"><a href="#1-下载对应文件" class="headerlink" title="1.下载对应文件"></a>1.下载对应文件</h5><p>下载glibc-2.14.tar.bz2<br>地址为：<a href="http://ftp.ntu.edu.tw/gnu/glibc/" target="_blank" rel="noopener">http://ftp.ntu.edu.tw/gnu/glibc/</a><br>下载glibc-linuxthreads-2.5.tar.bz2<br>地址为：<a href="http://ftp.ntu.edu.tw/gnu/glibc/" target="_blank" rel="noopener">http://ftp.ntu.edu.tw/gnu/glibc/</a></p>
+<h5 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install gcc</span><br><span class="line">tar -xjvf glibc-2.14.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> glibc-2.14</span><br><span class="line">tar -xjvf ../glibc-linuxthreads-2.5.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="built_in">export</span> CFLAGS=<span class="string">"-g -O2"</span></span><br><span class="line">glibc-2.14/configure --prefix=/usr --<span class="built_in">disable</span>-profile --<span class="built_in">enable</span>-add-ons -</span><br><span class="line">-with-headers=/usr/include --with-binutils=/usr/bin --<span class="built_in">disable</span>-sanitychecks</span><br><span class="line">make//编译，执行很久(5-10分钟)，可能出错，出错再重新执行</span><br><span class="line">make install</span><br><span class="line">ll /lib64/libc.so.6</span><br></pre></td></tr></table></figure>
+<h4 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h4><p><img src="https://img-blog.csdnimg.cn/2020032715242188.png" alt="在这里插入图片描述"></p>
+<h3 id="测试集群"><a href="#测试集群" class="headerlink" title="测试集群"></a>测试集群</h3><p><img src="https://img-blog.csdnimg.cn/20200327152654363.png" alt="在这里插入图片描述"><br>可知集群已经上hdfs了：<br><img src="https://img-blog.csdnimg.cn/20200327152702853.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327152719538.png" alt="在这里插入图片描述"></p>
+<p>由下图可知集群测试成功：<br>看到3个备份，集群数据统一<br><img src="https://img-blog.csdnimg.cn/20200327152854544.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop jar hadoop-mapreduce-examples-2.7.7.jar wordcount /wordcount/input /wordcount/output</span><br></pre></td></tr></table></figure>
+<p><strong>注意:</strong> output文件不能存在<br><img src="https://img-blog.csdnimg.cn/20200327153113296.png?x-oss-process=image" alt="在这里插入图片描述"><br>到这一步为止，表示集群运行正常</p>
+<h3 id="配置历史服务器"><a href="#配置历史服务器" class="headerlink" title="配置历史服务器"></a>配置历史服务器</h3><p><img src="https://img-blog.csdnimg.cn/20200327154728635.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327154806819.png" alt="在这里插入图片描述"><br>可以看到无法访问页面：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200327154856858.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里就需要继续编辑vim mapred-site.xml文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;!-- 历史服务器端地址 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt; </span><br><span class="line">&lt;value&gt;hadoop01:10020&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;!-- 历史服务器web端地址 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt; </span><br><span class="line">    &lt;value&gt;hadoop01:19888&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p>启动历史服务器<br><code>mr-jobhistory-daemon.sh start historyserver</code></p>
+<p>可以看到下图显示：<br><img src="https://img-blog.csdnimg.cn/2020032715502952.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="日志聚集"><a href="#日志聚集" class="headerlink" title="日志聚集"></a>日志聚集</h3><p><strong>目的：</strong> 应用运行完成以后，将程序运行日志信息上传到HDFS系统上。</p>
+<p>这里需要配置yarn-site.xml</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;!-- 日志聚集功能使能 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt; </span><br><span class="line">&lt;value&gt;<span class="literal">true</span>&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;!-- 日志保留时间设置7天 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt; </span><br><span class="line">&lt;value&gt;604800&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p>1.重启NodeManager 、ResourceManager和HistoryServer<br>2..删除HDFS上已经存在的输出文件<br><code>hdfs dfs -rm -R /wordcount/output</code><br>3.执行WordCount程序<br>4.查看日志聚集<br>点击log文件<br><img src="https://img-blog.csdnimg.cn/20200327155302493.png" alt="在这里插入图片描述"><br>可以看到：<br><img src="https://img-blog.csdnimg.cn/20200327155318637.png?x-oss-process=image" alt="在这里插入图片描述"><br>那么现在开始，每个任务都开起了实时日志收集功能，日志保存7天，全部可以在cluster中查看了</p>
+<h3 id="集群时间同步"><a href="#集群时间同步" class="headerlink" title="集群时间同步"></a>集群时间同步</h3><p>这里以hadoop01作为基准时间，02、03跟他一致</p>
+<h4 id="1-查看是否有ntp文件，系统默认安装"><a href="#1-查看是否有ntp文件，系统默认安装" class="headerlink" title="1.查看是否有ntp文件，系统默认安装"></a>1.查看是否有ntp文件，系统默认安装</h4><p><code>rpm -qa|grep ntp</code><br><img src="https://img-blog.csdnimg.cn/20200327160254904.png" alt="在这里插入图片描述"></p>
+<h4 id="2-vim-etc-ntp-conf"><a href="#2-vim-etc-ntp-conf" class="headerlink" title="2.vim /etc/ntp.conf"></a>2.vim /etc/ntp.conf</h4><p><img src="https://img-blog.csdnimg.cn/2020032716040257.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327160414790.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改点：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、授权192.168.1.0-192.168.1.255网段上的所有机器可以从这台机器上查询和同步时间</span><br><span class="line">将  <span class="comment">#restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap为</span></span><br><span class="line">restrict 192.168.200.0 mask 255.255.255.0 nomodify notrap</span><br><span class="line"></span><br><span class="line">2、集群在局域网中，不使用其他互联网上的时间</span><br><span class="line">server 0.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 1.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 2.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 3.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">为</span><br><span class="line"></span><br><span class="line"><span class="comment">#server 0.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#server 1.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#server 2.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line">\<span class="comment">#server 3.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line">3、当该节点丢失网络连接，依然可以采用本地时间作为时间服务器为集群中的其他节点提供时间同步</span><br><span class="line">server 127.127.1.0</span><br><span class="line"></span><br><span class="line">fudge 127.127.1.0 stratum 10</span><br></pre></td></tr></table></figure>
+<h4 id="3-vim-etc-sysconfig-ntpd"><a href="#3-vim-etc-sysconfig-ntpd" class="headerlink" title="3.vim /etc/sysconfig/ntpd"></a>3.vim /etc/sysconfig/ntpd</h4><p>让硬件时间与系统时间一起同步<code>SYNC_HWCLOCK=yes</code><br><img src="https://img-blog.csdnimg.cn/20200327160618712.png" alt="在这里插入图片描述"><br>配置文件保存之后</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">重新启动ntpd服务</span><br><span class="line">service ntpd status</span><br><span class="line"></span><br><span class="line">设置ntpd服务开机启动</span><br><span class="line">chkconfig ntpd on</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-在hadoop2和hadoop3上配置"><a href="#4-在hadoop2和hadoop3上配置" class="headerlink" title="4.在hadoop2和hadoop3上配置"></a>4.在hadoop2和hadoop3上配置</h4><p><code>crontab -e</code> </p>
+<p>输入:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">*/10 * * * * /usr/sbin/ntpdate hadoop01</span><br></pre></td></tr></table></figure>
+<p>这样会让hadoop02和hadoop03每10分钟与时间服务器同步一次</p>
+<h4 id="5-测试"><a href="#5-测试" class="headerlink" title="5.测试"></a>5.测试</h4><p>修改hadoop02的当前时间：<br><img src="https://img-blog.csdnimg.cn/20200327160931558.png" alt="在这里插入图片描述"><br>然后输入<code>mail</code>,系统会提示时间已经修改<br><img src="https://img-blog.csdnimg.cn/20200327161036874.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327161056816.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>大数据</category>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>Hadoop集群</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>IDEA配置与常用快捷键</title>
     <url>/2021/01/20/IDEA%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -1192,96 +1282,6 @@
       </categories>
       <tags>
         <tag>juc并发工具类</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hadoop集群搭建</title>
-    <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<blockquote>
-<p>Hadoop集群搭建之前记得完成hadoop运行环境的搭建</p>
-</blockquote>
-<a id="more"></a>
-<p>hadoop集群搭建：<br><img src="https://img-blog.csdnimg.cn/20200327140632968.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>也就是要修改以下文件<br><img src="https://img-blog.csdnimg.cn/20200327140653262.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>1.使用sublime文件<br>配置方法：<a href="https://blog.csdn.net/liu1340308350/article/details/105139669" target="_blank" rel="noopener">https://blog.csdn.net/liu1340308350/article/details/105139669</a><br>2.直接在secureCRT中配置<br>这里我是使用第一种方法配置的</p>
-<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><h4 id="hadoop-env-sh"><a href="#hadoop-env-sh" class="headerlink" title="hadoop-env.sh"></a>hadoop-env.sh</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Licensed to the Apache Software Foundation (ASF) under one</span></span><br><span class="line"><span class="comment"># or more contributor license agreements.  See the NOTICE file</span></span><br><span class="line"><span class="comment"># distributed with this work for additional information</span></span><br><span class="line"><span class="comment"># regarding copyright ownership.  The ASF licenses this file</span></span><br><span class="line"><span class="comment"># to you under the Apache License, Version 2.0 (the</span></span><br><span class="line"><span class="comment"># "License"); you may not use this file except in compliance</span></span><br><span class="line"><span class="comment"># with the License.  You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set Hadoop-specific environment variables here.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The only required environment variable is JAVA_HOME.  All others are</span></span><br><span class="line"><span class="comment"># optional.  When running a distributed configuration it is best to</span></span><br><span class="line"><span class="comment"># set JAVA_HOME in this file, so that it is correctly defined on</span></span><br><span class="line"><span class="comment"># remote nodes.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The java implementation to use.</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/<span class="built_in">export</span>/servers/jdk</span><br><span class="line"></span><br><span class="line"><span class="comment"># The jsvc implementation to use. Jsvc is required to run secure datanodes</span></span><br><span class="line"><span class="comment"># that bind to privileged ports to provide authentication of data transfer</span></span><br><span class="line"><span class="comment"># protocol.  Jsvc is not required if SASL is configured for authentication of</span></span><br><span class="line"><span class="comment"># data transfer protocol using non-privileged ports.</span></span><br><span class="line"><span class="comment">#export JSVC_HOME=$&#123;JSVC_HOME&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$&#123;HADOOP_CONF_DIR:-"/etc/hadoop"&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extra Java CLASSPATH elements.  Automatically insert capacity-scheduler.</span></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> <span class="variable">$HADOOP_HOME</span>/contrib/capacity-scheduler/*.jar; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">"<span class="variable">$HADOOP_CLASSPATH</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$HADOOP_CLASSPATH</span>:<span class="variable">$f</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$f</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The maximum amount of heap to use, in MB. Default is 1000.</span></span><br><span class="line"><span class="comment">#export HADOOP_HEAPSIZE=</span></span><br><span class="line"><span class="comment">#export HADOOP_NAMENODE_INIT_HEAPSIZE=""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extra Java runtime options.  Empty by default.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_OPTS=<span class="string">"<span class="variable">$HADOOP_OPTS</span> -Djava.net.preferIPv4Stack=true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Command specific options appended to HADOOP_OPTS when specified</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_NAMENODE_OPTS=<span class="string">"-Dhadoop.security.logger=<span class="variable">$&#123;HADOOP_SECURITY_LOGGER:-INFO,RFAS&#125;</span> -Dhdfs.audit.logger=<span class="variable">$&#123;HDFS_AUDIT_LOGGER:-INFO,NullAppender&#125;</span> <span class="variable">$HADOOP_NAMENODE_OPTS</span>"</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_DATANODE_OPTS=<span class="string">"-Dhadoop.security.logger=ERROR,RFAS <span class="variable">$HADOOP_DATANODE_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECONDARYNAMENODE_OPTS=<span class="string">"-Dhadoop.security.logger=<span class="variable">$&#123;HADOOP_SECURITY_LOGGER:-INFO,RFAS&#125;</span> -Dhdfs.audit.logger=<span class="variable">$&#123;HDFS_AUDIT_LOGGER:-INFO,NullAppender&#125;</span> <span class="variable">$HADOOP_SECONDARYNAMENODE_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_NFS3_OPTS=<span class="string">"<span class="variable">$HADOOP_NFS3_OPTS</span>"</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_PORTMAP_OPTS=<span class="string">"-Xmx512m <span class="variable">$HADOOP_PORTMAP_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The following applies to multiple commands (fs, dfs, fsck, distcp etc)</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_CLIENT_OPTS=<span class="string">"-Xmx512m <span class="variable">$HADOOP_CLIENT_OPTS</span>"</span></span><br><span class="line"><span class="comment">#HADOOP_JAVA_PLATFORM_OPTS="-XX:-UsePerfData $HADOOP_JAVA_PLATFORM_OPTS"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># On secure datanodes, user to run the datanode as after dropping privileges.</span></span><br><span class="line"><span class="comment"># This **MUST** be uncommented to enable secure HDFS if using privileged ports</span></span><br><span class="line"><span class="comment"># to provide authentication of data transfer protocol.  This **MUST NOT** be</span></span><br><span class="line"><span class="comment"># defined if SASL is configured for authentication of data transfer protocol</span></span><br><span class="line"><span class="comment"># using non-privileged ports.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_USER=<span class="variable">$&#123;HADOOP_SECURE_DN_USER&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Where log files are stored.  $HADOOP_HOME/logs by default.</span></span><br><span class="line"><span class="comment">#export HADOOP_LOG_DIR=$&#123;HADOOP_LOG_DIR&#125;/$USER</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Where log files are stored in the secure data environment.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_LOG_DIR=<span class="variable">$&#123;HADOOP_LOG_DIR&#125;</span>/<span class="variable">$&#123;HADOOP_HDFS_USER&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># HDFS Mover specific parameters</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Specify the JVM options to be used when starting the HDFS Mover.</span></span><br><span class="line"><span class="comment"># These options will be appended to the options specified as HADOOP_OPTS</span></span><br><span class="line"><span class="comment"># and therefore may override any similar flags set in HADOOP_OPTS</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># export HADOOP_MOVER_OPTS=""</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Advanced Users Only!</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The directory where pid files are stored. /tmp by default.</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> this should be set to a directory that can only be written to by </span></span><br><span class="line"><span class="comment">#       the user that will run the hadoop daemons.  Otherwise there is the</span></span><br><span class="line"><span class="comment">#       potential for a symlink attack.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_PID_DIR=<span class="variable">$&#123;HADOOP_PID_DIR&#125;</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_PID_DIR=<span class="variable">$&#123;HADOOP_PID_DIR&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A string representing this instance of hadoop. $USER by default.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_IDENT_STRING=<span class="variable">$USER</span></span><br></pre></td></tr></table></figure>
-<p>也就是修改JDK路径<br><img src="https://img-blog.csdnimg.cn/20200327142029116.png" alt="在这里插入图片描述"><br><strong>注意：</strong> JAVA_HOME的路径按照你自己的路径来</p>
-<h4 id="core-site-xml"><a href="#core-site-xml" class="headerlink" title="core-site.xml"></a>core-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">		  &lt;value&gt;hdfs://hadoop01:9000&lt;/value&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">       &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/<span class="built_in">export</span>/servers/hadoop-2.7.7/tmp&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.proxyuser.root.hosts&lt;/name&gt;</span><br><span class="line">	    &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">     &lt;name&gt;hadoop.proxyuser.root.groups&lt;/name&gt;</span><br><span class="line">		 &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml"></a>hdfs-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop02:50090&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>fs.defaultFS表示我们对HDFS的访问路径<br>dfs.replication指定副本数量，也就是一个文件存几遍<br>dfs.namenode.secondary.http-address表示2nn的访问路径</p>
-<h4 id="mapred-site-xml"><a href="#mapred-site-xml" class="headerlink" title="mapred-site.xml"></a>mapred-site.xml</h4><p>系统里面没有mapred-site.xml文件，则需要复制一个<br><code>cp mapred-site.xml.template mapred-site.xml</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;!-- 指定MR运行在Yarn上 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt; </span><br><span class="line">  &lt;!-- 历史服务器端地址 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop01:10020&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;!-- 历史服务器web端地址 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop01:19888&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;!-- Site specific YARN configuration properties --&gt;</span><br><span class="line">	&lt;!-- 指定YARN的ResourceManager的地址 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;hadoop01&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- Reducer获取数据的方式 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- 日志聚集功能使能 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- 日志保留时间设置7天 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;604800&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;	</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="slaves"><a href="#slaves" class="headerlink" title="slaves"></a>slaves</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop01</span><br><span class="line">hadoop02</span><br><span class="line">hadoop03</span><br></pre></td></tr></table></figure>
-<h4 id="上传配置"><a href="#上传配置" class="headerlink" title="上传配置"></a>上传配置</h4><p>将以上修改的文件上传到服务器中：<br><strong>右键–&gt;SFTP/FTP–&gt;Upload File</strong><br>对应下图文件：<br>注意：只要是修改过的文件都需要Upload<br><img src="https://img-blog.csdnimg.cn/20200327142853963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="配置文件分发"><a href="#配置文件分发" class="headerlink" title="配置文件分发"></a>配置文件分发</h3><p>让hadoop02、03和01保持一致</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp /etc/profile hadoop02:/etc/profile</span><br><span class="line">scp /etc/profile hadoop03:/etc/profile</span><br><span class="line">scp -r /<span class="built_in">export</span>/ hadoop02:/</span><br><span class="line">scp -r /<span class="built_in">export</span>/ hadoop03:/</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200327143347362.png?x-oss-process=image" alt="在这里插入图片描述"><br>scp /etc/profile hadoop02:/etc/profile这句是发环境变量<br>scp -r /export/ hadoop02:/这句是发hadoop整个文件夹</p>
-<p><strong>注意：</strong> 命令执行完之后在hadoop02和hadoop03上执行<code>source /etc/profile</code></p>
-<p>配置完以上的文件，那么集群基本配置就已经完成</p>
-<h3 id="执行格式化"><a href="#执行格式化" class="headerlink" title="执行格式化"></a>执行格式化</h3><p>在hadoop01中执行下列命令<br><code>hdfs namenode -format</code><br><img src="https://img-blog.csdnimg.cn/20200327143553474.png?x-oss-process=image" alt="在这里插入图片描述"><br>在上图看到下图内容则说明文件配置成功<br><img src="https://img-blog.csdnimg.cn/20200327143544630.png" alt="在这里插入图片描述"></p>
-<h3 id="查看hadoop信息"><a href="#查看hadoop信息" class="headerlink" title="查看hadoop信息"></a>查看hadoop信息</h3><p><img src="https://img-blog.csdnimg.cn/20200327143748685.png" alt="在这里插入图片描述"><br><strong>注意：</strong> 第一次进入没有data文件，需要启动namenode<br><img src="https://img-blog.csdnimg.cn/20200327143802429.png" alt="在这里插入图片描述"><br>下图是hadoop文件的树形结构：<br><img src="https://img-blog.csdnimg.cn/202003271451261.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327145141354.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327145153230.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意：</strong><br>如果想让文件显示树形结构，需要安装tree文件：<code>yum -y install tree</code><br><img src="https://img-blog.csdnimg.cn/20200327143812869.png" alt="在这里插入图片描述"><br>查看版本信息：clusterID必须保持一致<br><img src="https://img-blog.csdnimg.cn/2020032714382229.png" alt="在这里插入图片描述"><br><strong>注意：</strong><br>1.如果后面出现集群找不到数据的情况，那就是因为NameNode和DataNode的集群id不一致<br>2.格式化NameNode，会产生新的集群id</p>
-<h3 id="启动HDFS和YARN"><a href="#启动HDFS和YARN" class="headerlink" title="启动HDFS和YARN"></a>启动HDFS和YARN</h3><p><img src="https://img-blog.csdnimg.cn/20200327145625866.png" alt="在这里插入图片描述"></p>
-<p>hadoop01:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start namenode</span><br><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start resourcemanager</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
-
-<p>hadoop02:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br><span class="line">在节点hadoop02执行指令启动SecondaryNameNode进程</span><br><span class="line">hadoop-daemon.sh start secondarynamenode</span><br></pre></td></tr></table></figure>
-
-<p>hadoop03:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
-
-<h4 id="脚本一键启动"><a href="#脚本一键启动" class="headerlink" title="脚本一键启动"></a>脚本一键启动</h4><p>在主节点hadoop01上执行指令<code>start-dfs.sh</code>或<code>stop-dfs.sh</code>启动/关闭所有HDFS服务进程<br>在主节点hadoop01上执行指令<code>start-yarn.sh</code>或<code>stop-yarn.sh</code>启动/关闭所有YARN服务进程；<br>在主节点hadoop01上执行<code>start-all.sh</code>或<code>stop-all.sh</code>指令，直接启动/关闭整个Hadoop集群服务。</p>
-<h4 id="查看是否启动"><a href="#查看是否启动" class="headerlink" title="查看是否启动"></a>查看是否启动</h4><p>hadoop01，02，03的情况如下图所示：<br>hadoop01:<br><img src="https://img-blog.csdnimg.cn/20200327150056763.png" alt="在这里插入图片描述"><br>hadoop02:<br><img src="https://img-blog.csdnimg.cn/20200327150104128.png" alt="在这里插入图片描述"><br>hadoop03:<br><img src="https://img-blog.csdnimg.cn/20200327150110367.png" alt="在这里插入图片描述"></p>
-<h4 id="配置jps快捷键"><a href="#配置jps快捷键" class="headerlink" title="配置jps快捷键"></a>配置jps快捷键</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">创建文件夹 /root/bin</span><br><span class="line">touch jpsall</span><br><span class="line">vim jpsall</span><br><span class="line">chmod 777 jpsall</span><br></pre></td></tr></table></figure>
-<p>jpsall文件内容如下：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> hadoop01 hadoop02 hadoop03</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">echo ===================== <span class="variable">$i</span> ======================</span><br><span class="line">ssh <span class="variable">$i</span> <span class="string">"source /etc/profile &amp;&amp; jps | grep -v Jps"</span></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<p>配置完成就不再需要单独运行jps了<br><strong>测试：</strong><br><img src="https://img-blog.csdnimg.cn/20200327151641623.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="游览器访问"><a href="#游览器访问" class="headerlink" title="游览器访问"></a>游览器访问</h4><p>Hadoop集群正常启动后，它默认开放了两个端口50070和8088 ，需要关闭防火墙才能访问</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">service iptables stop</span><br><span class="line">chkconfig iptables off</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong> hadoop02和hadoop03的防火墙也需要关闭<br>关闭防火墙之后，在游览器中输入下列网址即可访问：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http://hadoop01:50070/</span><br><span class="line">http://hadoop01:8088</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200327150457137.png?x-oss-process=image" alt="在这里插入图片描述"><br>检查3个datanode是否显示：<br><img src="https://img-blog.csdnimg.cn/20200327150537481.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327150555548.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p>执行命令报错：<br><code>export HADOOP_ROOT_LOGGER=DEBUG,console
-hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327151915561.png" alt="在这里插入图片描述"><br>查阅debug报错信息，可以看到问题是glib版本不够</p>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><h5 id="1-下载对应文件"><a href="#1-下载对应文件" class="headerlink" title="1.下载对应文件"></a>1.下载对应文件</h5><p>下载glibc-2.14.tar.bz2<br>地址为：<a href="http://ftp.ntu.edu.tw/gnu/glibc/" target="_blank" rel="noopener">http://ftp.ntu.edu.tw/gnu/glibc/</a><br>下载glibc-linuxthreads-2.5.tar.bz2<br>地址为：<a href="http://ftp.ntu.edu.tw/gnu/glibc/" target="_blank" rel="noopener">http://ftp.ntu.edu.tw/gnu/glibc/</a></p>
-<h5 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install gcc</span><br><span class="line">tar -xjvf glibc-2.14.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> glibc-2.14</span><br><span class="line">tar -xjvf ../glibc-linuxthreads-2.5.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="built_in">export</span> CFLAGS=<span class="string">"-g -O2"</span></span><br><span class="line">glibc-2.14/configure --prefix=/usr --<span class="built_in">disable</span>-profile --<span class="built_in">enable</span>-add-ons -</span><br><span class="line">-with-headers=/usr/include --with-binutils=/usr/bin --<span class="built_in">disable</span>-sanitychecks</span><br><span class="line">make//编译，执行很久(5-10分钟)，可能出错，出错再重新执行</span><br><span class="line">make install</span><br><span class="line">ll /lib64/libc.so.6</span><br></pre></td></tr></table></figure>
-<h4 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h4><p><img src="https://img-blog.csdnimg.cn/2020032715242188.png" alt="在这里插入图片描述"></p>
-<h3 id="测试集群"><a href="#测试集群" class="headerlink" title="测试集群"></a>测试集群</h3><p><img src="https://img-blog.csdnimg.cn/20200327152654363.png" alt="在这里插入图片描述"><br>可知集群已经上hdfs了：<br><img src="https://img-blog.csdnimg.cn/20200327152702853.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327152719538.png" alt="在这里插入图片描述"></p>
-<p>由下图可知集群测试成功：<br>看到3个备份，集群数据统一<br><img src="https://img-blog.csdnimg.cn/20200327152854544.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop jar hadoop-mapreduce-examples-2.7.7.jar wordcount /wordcount/input /wordcount/output</span><br></pre></td></tr></table></figure>
-<p><strong>注意:</strong> output文件不能存在<br><img src="https://img-blog.csdnimg.cn/20200327153113296.png?x-oss-process=image" alt="在这里插入图片描述"><br>到这一步为止，表示集群运行正常</p>
-<h3 id="配置历史服务器"><a href="#配置历史服务器" class="headerlink" title="配置历史服务器"></a>配置历史服务器</h3><p><img src="https://img-blog.csdnimg.cn/20200327154728635.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327154806819.png" alt="在这里插入图片描述"><br>可以看到无法访问页面：</p>
-<p><img src="https://img-blog.csdnimg.cn/20200327154856858.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里就需要继续编辑vim mapred-site.xml文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;!-- 历史服务器端地址 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt; </span><br><span class="line">&lt;value&gt;hadoop01:10020&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;!-- 历史服务器web端地址 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt; </span><br><span class="line">    &lt;value&gt;hadoop01:19888&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-<p>启动历史服务器<br><code>mr-jobhistory-daemon.sh start historyserver</code></p>
-<p>可以看到下图显示：<br><img src="https://img-blog.csdnimg.cn/2020032715502952.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="日志聚集"><a href="#日志聚集" class="headerlink" title="日志聚集"></a>日志聚集</h3><p><strong>目的：</strong> 应用运行完成以后，将程序运行日志信息上传到HDFS系统上。</p>
-<p>这里需要配置yarn-site.xml</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;!-- 日志聚集功能使能 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt; </span><br><span class="line">&lt;value&gt;<span class="literal">true</span>&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;!-- 日志保留时间设置7天 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt; </span><br><span class="line">&lt;value&gt;604800&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-<p>1.重启NodeManager 、ResourceManager和HistoryServer<br>2..删除HDFS上已经存在的输出文件<br><code>hdfs dfs -rm -R /wordcount/output</code><br>3.执行WordCount程序<br>4.查看日志聚集<br>点击log文件<br><img src="https://img-blog.csdnimg.cn/20200327155302493.png" alt="在这里插入图片描述"><br>可以看到：<br><img src="https://img-blog.csdnimg.cn/20200327155318637.png?x-oss-process=image" alt="在这里插入图片描述"><br>那么现在开始，每个任务都开起了实时日志收集功能，日志保存7天，全部可以在cluster中查看了</p>
-<h3 id="集群时间同步"><a href="#集群时间同步" class="headerlink" title="集群时间同步"></a>集群时间同步</h3><p>这里以hadoop01作为基准时间，02、03跟他一致</p>
-<h4 id="1-查看是否有ntp文件，系统默认安装"><a href="#1-查看是否有ntp文件，系统默认安装" class="headerlink" title="1.查看是否有ntp文件，系统默认安装"></a>1.查看是否有ntp文件，系统默认安装</h4><p><code>rpm -qa|grep ntp</code><br><img src="https://img-blog.csdnimg.cn/20200327160254904.png" alt="在这里插入图片描述"></p>
-<h4 id="2-vim-etc-ntp-conf"><a href="#2-vim-etc-ntp-conf" class="headerlink" title="2.vim /etc/ntp.conf"></a>2.vim /etc/ntp.conf</h4><p><img src="https://img-blog.csdnimg.cn/2020032716040257.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327160414790.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改点：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、授权192.168.1.0-192.168.1.255网段上的所有机器可以从这台机器上查询和同步时间</span><br><span class="line">将  <span class="comment">#restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap为</span></span><br><span class="line">restrict 192.168.200.0 mask 255.255.255.0 nomodify notrap</span><br><span class="line"></span><br><span class="line">2、集群在局域网中，不使用其他互联网上的时间</span><br><span class="line">server 0.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 1.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 2.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 3.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">为</span><br><span class="line"></span><br><span class="line"><span class="comment">#server 0.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#server 1.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#server 2.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line">\<span class="comment">#server 3.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line">3、当该节点丢失网络连接，依然可以采用本地时间作为时间服务器为集群中的其他节点提供时间同步</span><br><span class="line">server 127.127.1.0</span><br><span class="line"></span><br><span class="line">fudge 127.127.1.0 stratum 10</span><br></pre></td></tr></table></figure>
-<h4 id="3-vim-etc-sysconfig-ntpd"><a href="#3-vim-etc-sysconfig-ntpd" class="headerlink" title="3.vim /etc/sysconfig/ntpd"></a>3.vim /etc/sysconfig/ntpd</h4><p>让硬件时间与系统时间一起同步<code>SYNC_HWCLOCK=yes</code><br><img src="https://img-blog.csdnimg.cn/20200327160618712.png" alt="在这里插入图片描述"><br>配置文件保存之后</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">重新启动ntpd服务</span><br><span class="line">service ntpd status</span><br><span class="line"></span><br><span class="line">设置ntpd服务开机启动</span><br><span class="line">chkconfig ntpd on</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-在hadoop2和hadoop3上配置"><a href="#4-在hadoop2和hadoop3上配置" class="headerlink" title="4.在hadoop2和hadoop3上配置"></a>4.在hadoop2和hadoop3上配置</h4><p><code>crontab -e</code> </p>
-<p>输入:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">*/10 * * * * /usr/sbin/ntpdate hadoop01</span><br></pre></td></tr></table></figure>
-<p>这样会让hadoop02和hadoop03每10分钟与时间服务器同步一次</p>
-<h4 id="5-测试"><a href="#5-测试" class="headerlink" title="5.测试"></a>5.测试</h4><p>修改hadoop02的当前时间：<br><img src="https://img-blog.csdnimg.cn/20200327160931558.png" alt="在这里插入图片描述"><br>然后输入<code>mail</code>,系统会提示时间已经修改<br><img src="https://img-blog.csdnimg.cn/20200327161036874.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327161056816.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>大数据</category>
-        <category>Hadoop</category>
-      </categories>
-      <tags>
-        <tag>Hadoop集群</tag>
       </tags>
   </entry>
   <entry>
@@ -1500,22 +1500,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java反射详解</title>
-    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java8新特性</title>
     <url>/2020/12/24/Java%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<p>Java8提供了很多新特性，总结一下</p>
@@ -1634,19 +1618,19 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java并发学习笔记</title>
-    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>并发学习</p>
-<a id="more"></a>
-
-<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
+    <title>Java反射详解</title>
+    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
+</blockquote>
+]]></content>
       <categories>
         <category>编程基础</category>
         <category>Java语言</category>
-        <category>并发/多线程</category>
+        <category>JavaSE基础</category>
       </categories>
       <tags>
-        <tag>Java并发</tag>
+        <tag>反射</tag>
       </tags>
   </entry>
   <entry>
@@ -1934,6 +1918,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java并发学习笔记</title>
+    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>并发学习</p>
+<a id="more"></a>
+
+<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>并发/多线程</category>
+      </categories>
+      <tags>
+        <tag>Java并发</tag>
       </tags>
   </entry>
   <entry>
@@ -2569,22 +2569,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>MyBatis-Plus笔记</title>
-    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>ORM框架</category>
-      </categories>
-      <tags>
-        <tag>MyBatis-Plus</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Logback配置与使用</title>
     <url>/2018/10/31/Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -2625,6 +2609,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
       <tags>
         <tag>Logback</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis-Plus笔记</title>
+    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>ORM框架</category>
+      </categories>
+      <tags>
+        <tag>MyBatis-Plus</tag>
       </tags>
   </entry>
   <entry>
@@ -3105,6 +3105,63 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Mycat学习笔记</title>
+    <url>/2021/01/12/Mycat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><strong>中间件</strong>：是介于应用系统和系统软件之间的一类软件</p>
+<p><strong>数据库中间件</strong>：连接Java应用程序和数据库</p>
+<a id="more"></a>
+
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><blockquote>
+<p>Mycat官方文档：<a href="https://github.com/MyCATApache/Mycat-Server/wiki" target="_blank" rel="noopener">https://github.com/MyCATApache/Mycat-Server/wiki</a></p>
+<p>Mycat语雀官方文档：<a href="https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944" target="_blank" rel="noopener">https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944</a></p>
+</blockquote>
+<p>Mycat是一款流行的数据库中间件，由cobar演进而来</p>
+<p>为什么使用Mycat</p>
+<ul>
+<li>java与数据库紧耦合</li>
+<li>高访问量高并发对数据库压力较大</li>
+<li>读写请求数据不一致</li>
+</ul>
+<p>Mycat作用</p>
+<ul>
+<li>读写分离</li>
+</ul>
+<p><img src="/images/2021011201.png" alt="image-20210125155408275"></p>
+<ul>
+<li>数据分片</li>
+</ul>
+<p>垂直拆分（分库）、水平拆分（分表）、垂直+水平拆分（分库分表）</p>
+<p><img src="/images/2021011202.png" alt="image-20210125155436300"></p>
+<ul>
+<li>多数据源整合</li>
+</ul>
+<p><img src="/images/2021011203.png" alt="image-20210125155512988"></p>
+<p>Mycat原理：</p>
+<p>Mycat原理就两个字<strong>拦截</strong></p>
+<p><img src="/images/2021011204.png" alt="image-20210125203845447"></p>
+<h1 id="2-Mycat安装启动"><a href="#2-Mycat安装启动" class="headerlink" title="2 Mycat安装启动"></a>2 Mycat安装启动</h1><p>常见安装方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.rpm安装</span><br><span class="line">  .rpm安装包，安装顺序安装</span><br><span class="line">2.yum安装</span><br><span class="line">  需要联网安装</span><br><span class="line">3.Docker安装</span><br><span class="line">4.解压后即可使用</span><br><span class="line">5.解压后编译安装</span><br></pre></td></tr></table></figure>
+
+
+
+<p>配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">schema.xml：定义逻辑库，表、分片节点等内容</span><br><span class="line">rule.xml：定义分片规则</span><br><span class="line">server.xml：定义用户以及系统相关变量，如端口等</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>分库分表</category>
+      </categories>
+      <tags>
+        <tag>Mycat</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Nacos服务注册和配置中心</title>
     <url>/2021/02/04/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -3184,76 +3241,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SpringCloud Alibaba</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Mycat学习笔记</title>
-    <url>/2021/01/12/Mycat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><strong>中间件</strong>：是介于应用系统和系统软件之间的一类软件</p>
-<p><strong>数据库中间件</strong>：连接Java应用程序和数据库</p>
-<a id="more"></a>
-
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><blockquote>
-<p>Mycat官方文档：<a href="https://github.com/MyCATApache/Mycat-Server/wiki" target="_blank" rel="noopener">https://github.com/MyCATApache/Mycat-Server/wiki</a></p>
-<p>Mycat语雀官方文档：<a href="https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944" target="_blank" rel="noopener">https://www.yuque.com/books/share/0576de75-ffc4-4c34-8586-952ae4636944</a></p>
-</blockquote>
-<p>Mycat是一款流行的数据库中间件，由cobar演进而来</p>
-<p>为什么使用Mycat</p>
-<ul>
-<li>java与数据库紧耦合</li>
-<li>高访问量高并发对数据库压力较大</li>
-<li>读写请求数据不一致</li>
-</ul>
-<p>Mycat作用</p>
-<ul>
-<li>读写分离</li>
-</ul>
-<p><img src="/images/2021011201.png" alt="image-20210125155408275"></p>
-<ul>
-<li>数据分片</li>
-</ul>
-<p>垂直拆分（分库）、水平拆分（分表）、垂直+水平拆分（分库分表）</p>
-<p><img src="/images/2021011202.png" alt="image-20210125155436300"></p>
-<ul>
-<li>多数据源整合</li>
-</ul>
-<p><img src="/images/2021011203.png" alt="image-20210125155512988"></p>
-<p>Mycat原理：</p>
-<p>Mycat原理就两个字<strong>拦截</strong></p>
-<p><img src="/images/2021011204.png" alt="image-20210125203845447"></p>
-<h1 id="2-Mycat安装启动"><a href="#2-Mycat安装启动" class="headerlink" title="2 Mycat安装启动"></a>2 Mycat安装启动</h1><p>常见安装方式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.rpm安装</span><br><span class="line">  .rpm安装包，安装顺序安装</span><br><span class="line">2.yum安装</span><br><span class="line">  需要联网安装</span><br><span class="line">3.Docker安装</span><br><span class="line">4.解压后即可使用</span><br><span class="line">5.解压后编译安装</span><br></pre></td></tr></table></figure>
-
-
-
-<p>配置文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">schema.xml：定义逻辑库，表、分片节点等内容</span><br><span class="line">rule.xml：定义分片规则</span><br><span class="line">server.xml：定义用户以及系统相关变量，如端口等</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>分库分表</category>
-      </categories>
-      <tags>
-        <tag>Mycat</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
-    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Spring家族</category>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -3572,6 +3559,19 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
+    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Spring家族</category>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -4111,21 +4111,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Spring家族</category>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4166,6 +4151,21 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Spring家族</category>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -4262,22 +4262,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot项目测试模板</title>
-    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Spring家族</category>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4312,6 +4296,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>分页功能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot项目测试模板</title>
+    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Spring家族</category>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -4744,6 +4744,82 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>UML类图及时序图入门</title>
+    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="UML学习"><a href="#UML学习" class="headerlink" title="UML学习"></a>UML学习</h1><h2 id="UML定义"><a href="#UML定义" class="headerlink" title="UML定义"></a>UML定义</h2><ul>
+<li>统一建模语言（Unified Modeling Language）</li>
+<li>非专利的第三代建模和规约语言</li>
+</ul>
+<h2 id="UML特点"><a href="#UML特点" class="headerlink" title="UML特点"></a>UML特点</h2><ul>
+<li><p>UML是一种开发的方法</p>
+</li>
+<li><p>用于说明，可视化，构建和编写一个正在开发的面向对象的，软件密集系统的制品的开发方法</p>
+</li>
+<li><p>UML展现了一系列最佳工程实践，这些最佳实践在对大规模，复杂系统进行建模方面，特别是在软件架构层次已经被验证有效</p>
+</li>
+</ul>
+<h2 id="UML2-2分类"><a href="#UML2-2分类" class="headerlink" title="UML2.2分类"></a>UML2.2分类</h2><p>UML2.2中一共定义了14种图示，分类如下：</p>
+<ul>
+<li>结构式图形：强调的是系统式的建模</li>
+<li>行为式图形：强调系统模型中触发的事件</li>
+<li>交互式图形：属于行为式图形子集合，强调系统模型中资料流程</li>
+</ul>
+<h3 id="结构式图形"><a href="#结构式图形" class="headerlink" title="结构式图形"></a>结构式图形</h3><ul>
+<li>静态图（类图，对象图，包图）</li>
+<li>实现图（组件图，部署图）</li>
+<li>剖面图</li>
+<li>复合结构图</li>
+</ul>
+<h3 id="行为式图形"><a href="#行为式图形" class="headerlink" title="行为式图形"></a>行为式图形</h3><ul>
+<li>活动图</li>
+<li>状态图</li>
+<li>用例图</li>
+</ul>
+<h3 id="交互式图形"><a href="#交互式图形" class="headerlink" title="交互式图形"></a>交互式图形</h3><ul>
+<li>通信图</li>
+<li>交互概述图（UML2.0）</li>
+<li>时序图（UML2.0）</li>
+<li>时间图（UML2.0）</li>
+</ul>
+<p>UML类图</p>
+<ul>
+<li><p>Class Diagram:用于表示类，接口，实例等之间相互的静态关系</p>
+</li>
+<li><p>虽然名字叫类图，但类图中并不只有类</p>
+</li>
+</ul>
+<p>记忆技巧</p>
+<ul>
+<li>UML箭头方向：从子类指向父类</li>
+<li>提示：可能会认为子类是以父类为基础的，箭头应从父类指向子类</li>
+</ul>
+<p>箭头方向：</p>
+<ul>
+<li>定义子类时需要通过extends关键字指向父类</li>
+<li>子类一定是知道父类定义的，但父类并不知道子类的定义</li>
+<li>只有知道对方信息时才能指向对方</li>
+<li>所以箭头方向是从子类指向父类</li>
+</ul>
+<p>实线-继承|虚线-实现</p>
+<ul>
+<li>空心三角箭头：继承或实现</li>
+<li>实线-继承，is a 关系，扩展目的，不虚，很结实</li>
+<li>虚线-实现，虚线代表“虚”无实体</li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+        <category>UML</category>
+      </categories>
+      <tags>
+        <tag>UML</tag>
+        <tag>时序图</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Zookeeper笔记</title>
     <url>/2020/03/24/Zookeeper%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>Zookeeper知识点总结</p>
@@ -4973,82 +5049,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Zookeeper</tag>
         <tag>Zookeeper集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UML类图及时序图入门</title>
-    <url>/2020/12/07/UML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="UML学习"><a href="#UML学习" class="headerlink" title="UML学习"></a>UML学习</h1><h2 id="UML定义"><a href="#UML定义" class="headerlink" title="UML定义"></a>UML定义</h2><ul>
-<li>统一建模语言（Unified Modeling Language）</li>
-<li>非专利的第三代建模和规约语言</li>
-</ul>
-<h2 id="UML特点"><a href="#UML特点" class="headerlink" title="UML特点"></a>UML特点</h2><ul>
-<li><p>UML是一种开发的方法</p>
-</li>
-<li><p>用于说明，可视化，构建和编写一个正在开发的面向对象的，软件密集系统的制品的开发方法</p>
-</li>
-<li><p>UML展现了一系列最佳工程实践，这些最佳实践在对大规模，复杂系统进行建模方面，特别是在软件架构层次已经被验证有效</p>
-</li>
-</ul>
-<h2 id="UML2-2分类"><a href="#UML2-2分类" class="headerlink" title="UML2.2分类"></a>UML2.2分类</h2><p>UML2.2中一共定义了14种图示，分类如下：</p>
-<ul>
-<li>结构式图形：强调的是系统式的建模</li>
-<li>行为式图形：强调系统模型中触发的事件</li>
-<li>交互式图形：属于行为式图形子集合，强调系统模型中资料流程</li>
-</ul>
-<h3 id="结构式图形"><a href="#结构式图形" class="headerlink" title="结构式图形"></a>结构式图形</h3><ul>
-<li>静态图（类图，对象图，包图）</li>
-<li>实现图（组件图，部署图）</li>
-<li>剖面图</li>
-<li>复合结构图</li>
-</ul>
-<h3 id="行为式图形"><a href="#行为式图形" class="headerlink" title="行为式图形"></a>行为式图形</h3><ul>
-<li>活动图</li>
-<li>状态图</li>
-<li>用例图</li>
-</ul>
-<h3 id="交互式图形"><a href="#交互式图形" class="headerlink" title="交互式图形"></a>交互式图形</h3><ul>
-<li>通信图</li>
-<li>交互概述图（UML2.0）</li>
-<li>时序图（UML2.0）</li>
-<li>时间图（UML2.0）</li>
-</ul>
-<p>UML类图</p>
-<ul>
-<li><p>Class Diagram:用于表示类，接口，实例等之间相互的静态关系</p>
-</li>
-<li><p>虽然名字叫类图，但类图中并不只有类</p>
-</li>
-</ul>
-<p>记忆技巧</p>
-<ul>
-<li>UML箭头方向：从子类指向父类</li>
-<li>提示：可能会认为子类是以父类为基础的，箭头应从父类指向子类</li>
-</ul>
-<p>箭头方向：</p>
-<ul>
-<li>定义子类时需要通过extends关键字指向父类</li>
-<li>子类一定是知道父类定义的，但父类并不知道子类的定义</li>
-<li>只有知道对方信息时才能指向对方</li>
-<li>所以箭头方向是从子类指向父类</li>
-</ul>
-<p>实线-继承|虚线-实现</p>
-<ul>
-<li>空心三角箭头：继承或实现</li>
-<li>实线-继承，is a 关系，扩展目的，不虚，很结实</li>
-<li>虚线-实现，虚线代表“虚”无实体</li>
-</ul>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-        <category>UML</category>
-      </categories>
-      <tags>
-        <tag>UML</tag>
-        <tag>时序图</tag>
       </tags>
   </entry>
   <entry>
@@ -5952,29 +5952,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>打新股和打新债</title>
-    <url>/2021/01/24/%E6%89%93%E6%96%B0%E8%82%A1%E5%92%8C%E6%89%93%E6%96%B0%E5%80%BA/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="打新股"><a href="#打新股" class="headerlink" title="打新股"></a>打新股</h1><blockquote>
-<p>打新股是什么：<a href="https://zhuanlan.zhihu.com/p/113203500" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/113203500</a></p>
-<p>如何打新股：<a href="https://www.zhihu.com/question/28207862" target="_blank" rel="noopener">https://www.zhihu.com/question/28207862</a></p>
-</blockquote>
-<h1 id="打新债"><a href="#打新债" class="headerlink" title="打新债"></a>打新债</h1><blockquote>
-<p>如何打新债：<a href="https://zhuanlan.zhihu.com/p/67077214" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67077214</a></p>
-</blockquote>
-<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>打新股和打新债一样具备风险，投资一定要用自己的闲钱</p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>打新股</tag>
-        <tag>打新债</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>快速构建SSM开发环境</title>
     <url>/2020/12/01/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BASSM%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>记录一下SSM的搭建过程。</p>
@@ -6050,6 +6027,29 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>SSM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>打新股和打新债</title>
+    <url>/2021/01/24/%E6%89%93%E6%96%B0%E8%82%A1%E5%92%8C%E6%89%93%E6%96%B0%E5%80%BA/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="打新股"><a href="#打新股" class="headerlink" title="打新股"></a>打新股</h1><blockquote>
+<p>打新股是什么：<a href="https://zhuanlan.zhihu.com/p/113203500" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/113203500</a></p>
+<p>如何打新股：<a href="https://www.zhihu.com/question/28207862" target="_blank" rel="noopener">https://www.zhihu.com/question/28207862</a></p>
+</blockquote>
+<h1 id="打新债"><a href="#打新债" class="headerlink" title="打新债"></a>打新债</h1><blockquote>
+<p>如何打新债：<a href="https://zhuanlan.zhihu.com/p/67077214" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67077214</a></p>
+</blockquote>
+<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>打新股和打新债一样具备风险，投资一定要用自己的闲钱</p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>打新股</tag>
+        <tag>打新债</tag>
       </tags>
   </entry>
   <entry>
@@ -6545,26 +6545,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>自学感悟</title>
-    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
-    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
-<a id="more"></a>
-
-<p><img src="/images/2020122702.png" alt="img"></p>
-<p><strong>附上Java后端学习路线：</strong></p>
-<blockquote>
-<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
-</blockquote>
-<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
-]]></content>
-      <categories>
-        <category>杂谈</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>算法与数据结构体系</title>
     <url>/2020/12/30/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BD%93%E7%B3%BB/</url>
     <content><![CDATA[<p>算法与数据结构体系学习大纲：</p>
@@ -6625,6 +6605,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>算法与数据结构体系</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学感悟</title>
+    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
+    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
+<a id="more"></a>
+
+<p><img src="/images/2020122702.png" alt="img"></p>
+<p><strong>附上Java后端学习路线：</strong></p>
+<blockquote>
+<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
+</blockquote>
+<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
+]]></content>
+      <categories>
+        <category>杂谈</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
       </tags>
   </entry>
   <entry>
