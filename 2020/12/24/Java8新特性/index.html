@@ -23,20 +23,20 @@
   <meta name="description" content="Java8提供了很多新特性，总结一下 1.lambda表达式 2.函数式（Functional）接口 3.方法引用&#x2F;构造器引用 4.Stream API  并行流： 串行流  5.Optional类—最大化减少空指针异常 6.新的时间和日期API">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java8新特性">
-<meta property="og:url" content="http://yoursite.com/2020/12/24/Java%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/12/24/Java8%E6%96%B0%E7%89%B9%E6%80%A7/index.html">
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="Java8提供了很多新特性，总结一下 1.lambda表达式 2.函数式（Functional）接口 3.方法引用&#x2F;构造器引用 4.Stream API  并行流： 串行流  5.Optional类—最大化减少空指针异常 6.新的时间和日期API">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020120411.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020120410.png">
+<meta property="og:image" content="http://yoursite.com/images/2020120411.png">
+<meta property="og:image" content="http://yoursite.com/images/2020120410.png">
 <meta property="article:published_time" content="2020-12-24T03:07:44.000Z">
-<meta property="article:modified_time" content="2021-01-18T13:25:49.125Z">
+<meta property="article:modified_time" content="2021-03-10T06:30:28.081Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="函数式编程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020120411.png">
+<meta name="twitter:image" content="http://yoursite.com/images/2020120411.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/12/24/Java%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">
+<link rel="canonical" href="http://yoursite.com/2020/12/24/Java8%E6%96%B0%E7%89%B9%E6%80%A7/">
 
 
 <script id="page-configurations">
@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/Java%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/Java8%E6%96%B0%E7%89%B9%E6%80%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -306,7 +306,7 @@
 
 <h1 id="2-函数式（Functional）接口"><a href="#2-函数式（Functional）接口" class="headerlink" title="2  函数式（Functional）接口"></a>2  函数式（Functional）接口</h1><p>函数式（Functional）接口：只包含一个抽象方法</p>
 <p>Java内置的四大核心函数式接口：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020120411.png" alt="img"></p>
+<p><img src="/images/2020120411.png" alt="image"></p>
 <h1 id="3-方法引用-构造器引用"><a href="#3-方法引用-构造器引用" class="headerlink" title="3 方法引用/构造器引用"></a>3 方法引用/构造器引用</h1><p>当要传递给Lamdba体的操作，已经有实现的方法了，可以使用方法引用。</p>
 <p>方法引用可以看做是lambda表达式深层次的表达。换句话说，方法引用就是lambda表达式，也就是函数式接口的一个实例，通过方法的名字来指向一个方法，可以认为是lambda表达式的一个语法糖。</p>
 <p><strong>要求：</strong>实现接口的抽象方法的参数列表和返回值类型，必须与方法引用的方法的参数列表和返回值类型保持一致。</p>
@@ -340,7 +340,7 @@
 <h2 id="4-4-Stream-的操作三个步骤："><a href="#4-4-Stream-的操作三个步骤：" class="headerlink" title="4.4 Stream 的操作三个步骤："></a>4.4 Stream 的操作三个步骤：</h2><ol>
 <li><strong>创建 Stream</strong>：通过一个数据源（如：集合、数组），获取一个流</li>
 <li><strong>中间操作</strong>：中间操作是个操作链，对数据源的数据进行n次处理，但是在终结操作前，并不会真正执行。</li>
-<li><strong>终止操作</strong>：一旦执行终止操作，就执行中间操作链，最终产生结果并结束Stream。<br><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020120410.png" alt="在这里插入图片描述"></li>
+<li><strong>终止操作</strong>：一旦执行终止操作，就执行中间操作链，最终产生结果并结束Stream。<br><img src="/images/2020120410.png" alt="在这里插入图片描述"></li>
 </ol>
 <h3 id="4-4-1-创建Stream流"><a href="#4-4-1-创建Stream流" class="headerlink" title="4.4.1 创建Stream流"></a>4.4.1 创建Stream流</h3><h4 id="1-创建Stream方式一-通过集合"><a href="#1-创建Stream方式一-通过集合" class="headerlink" title="1.创建Stream方式一:通过集合"></a>1.创建Stream方式一:通过集合</h4><p>Java8中的Collection接口被扩展，提供了两个获取流的方法:</p>
 <p>​        ●default Stream stream() : 返回一个顺序流</p>
@@ -356,7 +356,17 @@
 <h4 id="4-创建Stream方式四-创建无限流"><a href="#4-创建Stream方式四-创建无限流" class="headerlink" title="4.创建Stream方式四:创建无限流"></a>4.创建Stream方式四:创建无限流</h4><p>可以使用静态方法 Stream.iterate() 和Stream.generate(), 创建无限流。</p>
 <p>​        ●public static Stream iterate(final T seed, final UnaryOperator f):返回一个无限流</p>
 <p>​        ● public static Stream generate(Supplier s) ：返回一个无限流</p>
-<h3 id="4-4-2-中间处理数据操作"><a href="#4-4-2-中间处理数据操作" class="headerlink" title="4.4.2 中间处理数据操作"></a>4.4.2 中间处理数据操作</h3><h3 id="4-4-3-终结操作"><a href="#4-4-3-终结操作" class="headerlink" title="4.4.3 终结操作"></a>4.4.3 终结操作</h3><h1 id="5-Optional类—最大化减少空指针异常"><a href="#5-Optional类—最大化减少空指针异常" class="headerlink" title="5 Optional类—最大化减少空指针异常"></a>5 Optional类—最大化减少空指针异常</h1><h1 id="6-新的时间和日期API"><a href="#6-新的时间和日期API" class="headerlink" title="6 新的时间和日期API"></a>6 新的时间和日期API</h1>
+<h3 id="4-4-2-中间处理数据操作"><a href="#4-4-2-中间处理数据操作" class="headerlink" title="4.4.2 中间处理数据操作"></a>4.4.2 中间处理数据操作</h3><ol>
+<li>filter(Predicate) 筛选流中某些元素</li>
+<li>map(Function f) 接收流中元素，并且将其映射成为新元素，例如从student对象中取name属性</li>
+<li>flatMap(Function f) 将所有流中的元素并到一起连接成一个流</li>
+<li>peek(Consumer c) 获取流中元素，操作流中元素，与foreach不同的是不会截断流，可继续操作流</li>
+<li>distinct() 通过流所生成元素的equals和hashCode去重</li>
+<li>limit(long val) 截断流，取流中前val个元素</li>
+<li>sorted(Comparator) 产生一个新流，按照比较器规则排序</li>
+<li>sorted() 产生一个新流，按照自然顺序排序</li>
+</ol>
+<h3 id="4-4-3-终结操作"><a href="#4-4-3-终结操作" class="headerlink" title="4.4.3 终结操作"></a>4.4.3 终结操作</h3>
     </div>
 
     
@@ -439,7 +449,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-lambda表达式"><span class="nav-text">1 lambda表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-为什么使用lambda表达式"><span class="nav-text">1.1 为什么使用lambda表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-语法"><span class="nav-text">1.2 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-lambda的使用"><span class="nav-text">1.3 lambda的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-lambda表达式的本质"><span class="nav-text">1.4 lambda表达式的本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-Lambda-表达式常用示例"><span class="nav-text">1.5 Lambda 表达式常用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lambda-表达式引用方法"><span class="nav-text">lambda 表达式引用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法的引用"><span class="nav-text">构造方法的引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lambda-表达式创建线程"><span class="nav-text">lambda 表达式创建线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历集合"><span class="nav-text">遍历集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除集合中的某个元素"><span class="nav-text">删除集合中的某个元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合内元素的排序"><span class="nav-text">集合内元素的排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-Lambda-表达式中的闭包问题"><span class="nav-text">1.6 Lambda 表达式中的闭包问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-函数式（Functional）接口"><span class="nav-text">2  函数式（Functional）接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-方法引用-构造器引用"><span class="nav-text">3 方法引用&#x2F;构造器引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Stream-API"><span class="nav-text">4 Stream API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-概述"><span class="nav-text">4.1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-为什么使用Stream-API"><span class="nav-text">4.2 为什么使用Stream API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-什么是Stream"><span class="nav-text">4.3 什么是Stream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-Stream-的操作三个步骤："><span class="nav-text">4.4 Stream 的操作三个步骤：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-1-创建Stream流"><span class="nav-text">4.4.1 创建Stream流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建Stream方式一-通过集合"><span class="nav-text">1.创建Stream方式一:通过集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-创建Stream方式二-通过数组"><span class="nav-text">2.创建Stream方式二:通过数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-创建Stream方式三-通过Stream的of"><span class="nav-text">3.创建Stream方式三:通过Stream的of()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-创建Stream方式四-创建无限流"><span class="nav-text">4.创建Stream方式四:创建无限流</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-2-中间处理数据操作"><span class="nav-text">4.4.2 中间处理数据操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-3-终结操作"><span class="nav-text">4.4.3 终结操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Optional类—最大化减少空指针异常"><span class="nav-text">5 Optional类—最大化减少空指针异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-新的时间和日期API"><span class="nav-text">6 新的时间和日期API</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-lambda表达式"><span class="nav-text">1 lambda表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-为什么使用lambda表达式"><span class="nav-text">1.1 为什么使用lambda表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-语法"><span class="nav-text">1.2 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-lambda的使用"><span class="nav-text">1.3 lambda的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-lambda表达式的本质"><span class="nav-text">1.4 lambda表达式的本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-Lambda-表达式常用示例"><span class="nav-text">1.5 Lambda 表达式常用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lambda-表达式引用方法"><span class="nav-text">lambda 表达式引用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法的引用"><span class="nav-text">构造方法的引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lambda-表达式创建线程"><span class="nav-text">lambda 表达式创建线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历集合"><span class="nav-text">遍历集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除集合中的某个元素"><span class="nav-text">删除集合中的某个元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合内元素的排序"><span class="nav-text">集合内元素的排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-Lambda-表达式中的闭包问题"><span class="nav-text">1.6 Lambda 表达式中的闭包问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-函数式（Functional）接口"><span class="nav-text">2  函数式（Functional）接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-方法引用-构造器引用"><span class="nav-text">3 方法引用&#x2F;构造器引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Stream-API"><span class="nav-text">4 Stream API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-概述"><span class="nav-text">4.1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-为什么使用Stream-API"><span class="nav-text">4.2 为什么使用Stream API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-什么是Stream"><span class="nav-text">4.3 什么是Stream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-Stream-的操作三个步骤："><span class="nav-text">4.4 Stream 的操作三个步骤：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-1-创建Stream流"><span class="nav-text">4.4.1 创建Stream流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建Stream方式一-通过集合"><span class="nav-text">1.创建Stream方式一:通过集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-创建Stream方式二-通过数组"><span class="nav-text">2.创建Stream方式二:通过数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-创建Stream方式三-通过Stream的of"><span class="nav-text">3.创建Stream方式三:通过Stream的of()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-创建Stream方式四-创建无限流"><span class="nav-text">4.创建Stream方式四:创建无限流</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-2-中间处理数据操作"><span class="nav-text">4.4.2 中间处理数据操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-3-终结操作"><span class="nav-text">4.4.3 终结操作</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
