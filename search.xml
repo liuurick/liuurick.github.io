@@ -28,6 +28,84 @@
 <h1 id="ClassVisitor开发"><a href="#ClassVisitor开发" class="headerlink" title="ClassVisitor开发"></a>ClassVisitor开发</h1><h1 id="MethodVisitor开发"><a href="#MethodVisitor开发" class="headerlink" title="MethodVisitor开发"></a>MethodVisitor开发</h1><h1 id="实现模拟AOP功能"><a href="#实现模拟AOP功能" class="headerlink" title="实现模拟AOP功能"></a>实现模拟AOP功能</h1>]]></content>
   </entry>
   <entry>
+    <title>Centos7上安装docker</title>
+    <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
+    <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
+<a id="more"></a>
+
+<h2 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1 安装docker"></a>1 安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
+<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019121701.png" alt="image-20201217213427007"></p>
+<p>2.使用 <code>root</code> 权限登录 Centos。确保 yum 包更新到最新。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum update</span><br></pre></td></tr></table></figure>
+
+<p>3.卸载旧版本(如果安装过旧版本的话)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum remove docker  docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
+
+<p>4.安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+
+<p>5.设置yum源</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019121702.png" alt="image-20201217213649924"></p>
+<p>6.可以查看所有仓库中所有docker版本，并选择特定版本安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
+
+<p>7.安装docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce  #由于repo中默认只开启stable仓库，故这里安装的是最新稳定版</span><br><span class="line"># sudo yum install &lt;FQPN&gt;  # 例如：sudo yum install docker-ce-17.12.0.ce</span><br></pre></td></tr></table></figure>
+
+<p>8.启动docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<p>9.设置开机自启动</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
+
+<p>10.验证安装是否成功(有client和service两部分表示docker安装启动都成功了)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># docker version</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-配置镜像加速"><a href="#2-配置镜像加速" class="headerlink" title="2 配置镜像加速"></a>2 配置镜像加速</h2><blockquote>
+<p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
+</blockquote>
+<p>Docker客户端版本需要大于 1.10.0 </p>
+<p>可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;26udi78a.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>2.卸载旧版本的包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum erase docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>3.再次安装docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.yum安装的时候遇到公钥尚未安装的问题解决</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 yum install xxxx 命令之后添加 --nogpgcheck 进行跳过公钥检查安装</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<p>导入密钥重新安装Docker</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>虚拟化/容器化</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Arthas使用与进阶</title>
     <url>/2021/01/17/Arthas%E4%BD%BF%E7%94%A8%E4%B8%8E%E8%BF%9B%E9%98%B6/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -281,84 +359,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Centos7上安装docker</title>
-    <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
-    <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
-<a id="more"></a>
-
-<h2 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1 安装docker"></a>1 安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
-<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2019121701.png" alt="image-20201217213427007"></p>
-<p>2.使用 <code>root</code> 权限登录 Centos。确保 yum 包更新到最新。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum update</span><br></pre></td></tr></table></figure>
-
-<p>3.卸载旧版本(如果安装过旧版本的话)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum remove docker  docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
-
-<p>4.安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
-
-<p>5.设置yum源</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2019121702.png" alt="image-20201217213649924"></p>
-<p>6.可以查看所有仓库中所有docker版本，并选择特定版本安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
-
-<p>7.安装docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce  #由于repo中默认只开启stable仓库，故这里安装的是最新稳定版</span><br><span class="line"># sudo yum install &lt;FQPN&gt;  # 例如：sudo yum install docker-ce-17.12.0.ce</span><br></pre></td></tr></table></figure>
-
-<p>8.启动docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-
-<p>9.设置开机自启动</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
-
-<p>10.验证安装是否成功(有client和service两部分表示docker安装启动都成功了)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># docker version</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-配置镜像加速"><a href="#2-配置镜像加速" class="headerlink" title="2 配置镜像加速"></a>2 配置镜像加速</h2><blockquote>
-<p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
-</blockquote>
-<p>Docker客户端版本需要大于 1.10.0 </p>
-<p>可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;26udi78a.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
-
-<p>2.卸载旧版本的包</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum erase docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
-
-<p>3.再次安装docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.yum安装的时候遇到公钥尚未安装的问题解决</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 yum install xxxx 命令之后添加 --nogpgcheck 进行跳过公钥检查安装</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<p>导入密钥重新安装Docker</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>分布式/微服务</category>
-        <category>虚拟化/容器化</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker安装RabbitMQ</title>
     <url>/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</url>
     <content><![CDATA[<p> RabbitMQ是基于AMQP的一款消息管理系统。AMQP(Advanced Message Queuing Protocol)，是一个提供消息服务的应用层标准高级消息队列协议，其中RabbitMQ就是基于这种协议的一种实现。</p>
@@ -512,6 +512,27 @@
       </tags>
   </entry>
   <entry>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker设置镜像自启动</title>
     <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
     <content><![CDATA[<p>Docker便捷小技巧</p>
@@ -532,27 +553,6 @@
       </categories>
       <tags>
         <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -665,6 +665,80 @@
       </categories>
       <tags>
         <tag>ElasticSearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch搜索优化</title>
+    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
+<ol>
+<li>定制化分词器</li>
+<li>同义词扩展</li>
+<li>相关性重塑</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
+<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
+<p>然后将文件复制到其余的两个节点</p>
+<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将文件复制到其余的两个节点</p>
+<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Http请求需要返回两个头部，last-modified和etag</p>
+<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
+</blockquote>
+<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
+<blockquote>
+<p>语义相近或相同</p>
+<p>品牌类目关联</p>
+<p>搜索它等于搜索它</p>
+</blockquote>
+<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
+<p><img src="/images/2020120901.png" alt="image-20201209164003792"></p>
+<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>索引测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
+<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
+</blockquote>
+<p>相关性搜索</p>
+<p>让搜索引擎理解语义</p>
+<p>影响召回及排序</p>
+<h2 id="重新构建es索引"><a href="#重新构建es索引" class="headerlink" title="重新构建es索引"></a>重新构建es索引</h2><p>采取词性影响召回策略模型 通过category_id</p>
+<h2 id="引入Java代码："><a href="#引入Java代码：" class="headerlink" title="引入Java代码："></a>引入Java代码：</h2><p>构造分类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Integer <span class="title">getCategoryIdByToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer key : categoryWorkMap.keySet()) &#123;</span><br><span class="line">        List&lt;String&gt; tokenList = categoryWorkMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (tokenList.contains(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> key;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; categoryWorkMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    categoryWorkMap.put(<span class="number">1</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    categoryWorkMap.put(<span class="number">2</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"吃饭"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"下午茶"</span>);</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"休息"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"睡觉"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"住宿"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch7</tag>
       </tags>
   </entry>
   <entry>
@@ -901,170 +975,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch搜索优化</title>
-    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
-<ol>
-<li>定制化分词器</li>
-<li>同义词扩展</li>
-<li>相关性重塑</li>
-</ol>
-<a id="more"></a>
-
-<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
-<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
-<p>然后将文件复制到其余的两个节点</p>
-<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
-
-<p>将文件复制到其余的两个节点</p>
-<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Http请求需要返回两个头部，last-modified和etag</p>
-<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
-</blockquote>
-<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
-<blockquote>
-<p>语义相近或相同</p>
-<p>品牌类目关联</p>
-<p>搜索它等于搜索它</p>
-</blockquote>
-<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
-<p><img src="/images/2020120901.png" alt="image-20201209164003792"></p>
-<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>索引测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
-<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
-</blockquote>
-<p>相关性搜索</p>
-<p>让搜索引擎理解语义</p>
-<p>影响召回及排序</p>
-<h2 id="重新构建es索引"><a href="#重新构建es索引" class="headerlink" title="重新构建es索引"></a>重新构建es索引</h2><p>采取词性影响召回策略模型 通过category_id</p>
-<h2 id="引入Java代码："><a href="#引入Java代码：" class="headerlink" title="引入Java代码："></a>引入Java代码：</h2><p>构造分类：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Integer <span class="title">getCategoryIdByToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer key : categoryWorkMap.keySet()) &#123;</span><br><span class="line">        List&lt;String&gt; tokenList = categoryWorkMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (tokenList.contains(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> key;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; categoryWorkMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    categoryWorkMap.put(<span class="number">1</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    categoryWorkMap.put(<span class="number">2</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"吃饭"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"下午茶"</span>);</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"休息"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"睡觉"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"住宿"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>搜索引擎</category>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch7</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hadoop集群搭建</title>
-    <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<blockquote>
-<p>Hadoop集群搭建之前记得完成hadoop运行环境的搭建</p>
-</blockquote>
-<a id="more"></a>
-<p>hadoop集群搭建：<br><img src="https://img-blog.csdnimg.cn/20200327140632968.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<p>也就是要修改以下文件<br><img src="https://img-blog.csdnimg.cn/20200327140653262.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>1.使用sublime文件<br>配置方法：<a href="https://blog.csdn.net/liu1340308350/article/details/105139669" target="_blank" rel="noopener">https://blog.csdn.net/liu1340308350/article/details/105139669</a><br>2.直接在secureCRT中配置<br>这里我是使用第一种方法配置的</p>
-<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><h4 id="hadoop-env-sh"><a href="#hadoop-env-sh" class="headerlink" title="hadoop-env.sh"></a>hadoop-env.sh</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Licensed to the Apache Software Foundation (ASF) under one</span></span><br><span class="line"><span class="comment"># or more contributor license agreements.  See the NOTICE file</span></span><br><span class="line"><span class="comment"># distributed with this work for additional information</span></span><br><span class="line"><span class="comment"># regarding copyright ownership.  The ASF licenses this file</span></span><br><span class="line"><span class="comment"># to you under the Apache License, Version 2.0 (the</span></span><br><span class="line"><span class="comment"># "License"); you may not use this file except in compliance</span></span><br><span class="line"><span class="comment"># with the License.  You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set Hadoop-specific environment variables here.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The only required environment variable is JAVA_HOME.  All others are</span></span><br><span class="line"><span class="comment"># optional.  When running a distributed configuration it is best to</span></span><br><span class="line"><span class="comment"># set JAVA_HOME in this file, so that it is correctly defined on</span></span><br><span class="line"><span class="comment"># remote nodes.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The java implementation to use.</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/<span class="built_in">export</span>/servers/jdk</span><br><span class="line"></span><br><span class="line"><span class="comment"># The jsvc implementation to use. Jsvc is required to run secure datanodes</span></span><br><span class="line"><span class="comment"># that bind to privileged ports to provide authentication of data transfer</span></span><br><span class="line"><span class="comment"># protocol.  Jsvc is not required if SASL is configured for authentication of</span></span><br><span class="line"><span class="comment"># data transfer protocol using non-privileged ports.</span></span><br><span class="line"><span class="comment">#export JSVC_HOME=$&#123;JSVC_HOME&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$&#123;HADOOP_CONF_DIR:-"/etc/hadoop"&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extra Java CLASSPATH elements.  Automatically insert capacity-scheduler.</span></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> <span class="variable">$HADOOP_HOME</span>/contrib/capacity-scheduler/*.jar; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">"<span class="variable">$HADOOP_CLASSPATH</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$HADOOP_CLASSPATH</span>:<span class="variable">$f</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$f</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The maximum amount of heap to use, in MB. Default is 1000.</span></span><br><span class="line"><span class="comment">#export HADOOP_HEAPSIZE=</span></span><br><span class="line"><span class="comment">#export HADOOP_NAMENODE_INIT_HEAPSIZE=""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extra Java runtime options.  Empty by default.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_OPTS=<span class="string">"<span class="variable">$HADOOP_OPTS</span> -Djava.net.preferIPv4Stack=true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Command specific options appended to HADOOP_OPTS when specified</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_NAMENODE_OPTS=<span class="string">"-Dhadoop.security.logger=<span class="variable">$&#123;HADOOP_SECURITY_LOGGER:-INFO,RFAS&#125;</span> -Dhdfs.audit.logger=<span class="variable">$&#123;HDFS_AUDIT_LOGGER:-INFO,NullAppender&#125;</span> <span class="variable">$HADOOP_NAMENODE_OPTS</span>"</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_DATANODE_OPTS=<span class="string">"-Dhadoop.security.logger=ERROR,RFAS <span class="variable">$HADOOP_DATANODE_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECONDARYNAMENODE_OPTS=<span class="string">"-Dhadoop.security.logger=<span class="variable">$&#123;HADOOP_SECURITY_LOGGER:-INFO,RFAS&#125;</span> -Dhdfs.audit.logger=<span class="variable">$&#123;HDFS_AUDIT_LOGGER:-INFO,NullAppender&#125;</span> <span class="variable">$HADOOP_SECONDARYNAMENODE_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_NFS3_OPTS=<span class="string">"<span class="variable">$HADOOP_NFS3_OPTS</span>"</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_PORTMAP_OPTS=<span class="string">"-Xmx512m <span class="variable">$HADOOP_PORTMAP_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The following applies to multiple commands (fs, dfs, fsck, distcp etc)</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_CLIENT_OPTS=<span class="string">"-Xmx512m <span class="variable">$HADOOP_CLIENT_OPTS</span>"</span></span><br><span class="line"><span class="comment">#HADOOP_JAVA_PLATFORM_OPTS="-XX:-UsePerfData $HADOOP_JAVA_PLATFORM_OPTS"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># On secure datanodes, user to run the datanode as after dropping privileges.</span></span><br><span class="line"><span class="comment"># This **MUST** be uncommented to enable secure HDFS if using privileged ports</span></span><br><span class="line"><span class="comment"># to provide authentication of data transfer protocol.  This **MUST NOT** be</span></span><br><span class="line"><span class="comment"># defined if SASL is configured for authentication of data transfer protocol</span></span><br><span class="line"><span class="comment"># using non-privileged ports.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_USER=<span class="variable">$&#123;HADOOP_SECURE_DN_USER&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Where log files are stored.  $HADOOP_HOME/logs by default.</span></span><br><span class="line"><span class="comment">#export HADOOP_LOG_DIR=$&#123;HADOOP_LOG_DIR&#125;/$USER</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Where log files are stored in the secure data environment.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_LOG_DIR=<span class="variable">$&#123;HADOOP_LOG_DIR&#125;</span>/<span class="variable">$&#123;HADOOP_HDFS_USER&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># HDFS Mover specific parameters</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Specify the JVM options to be used when starting the HDFS Mover.</span></span><br><span class="line"><span class="comment"># These options will be appended to the options specified as HADOOP_OPTS</span></span><br><span class="line"><span class="comment"># and therefore may override any similar flags set in HADOOP_OPTS</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># export HADOOP_MOVER_OPTS=""</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Advanced Users Only!</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The directory where pid files are stored. /tmp by default.</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> this should be set to a directory that can only be written to by </span></span><br><span class="line"><span class="comment">#       the user that will run the hadoop daemons.  Otherwise there is the</span></span><br><span class="line"><span class="comment">#       potential for a symlink attack.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_PID_DIR=<span class="variable">$&#123;HADOOP_PID_DIR&#125;</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_PID_DIR=<span class="variable">$&#123;HADOOP_PID_DIR&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A string representing this instance of hadoop. $USER by default.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_IDENT_STRING=<span class="variable">$USER</span></span><br></pre></td></tr></table></figure>
-<p>也就是修改JDK路径<br><img src="https://img-blog.csdnimg.cn/20200327142029116.png" alt="在这里插入图片描述"><br><strong>注意：</strong> JAVA_HOME的路径按照你自己的路径来</p>
-<h4 id="core-site-xml"><a href="#core-site-xml" class="headerlink" title="core-site.xml"></a>core-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">		  &lt;value&gt;hdfs://hadoop01:9000&lt;/value&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">       &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/<span class="built_in">export</span>/servers/hadoop-2.7.7/tmp&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.proxyuser.root.hosts&lt;/name&gt;</span><br><span class="line">	    &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">     &lt;name&gt;hadoop.proxyuser.root.groups&lt;/name&gt;</span><br><span class="line">		 &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml"></a>hdfs-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop02:50090&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>fs.defaultFS表示我们对HDFS的访问路径<br>dfs.replication指定副本数量，也就是一个文件存几遍<br>dfs.namenode.secondary.http-address表示2nn的访问路径</p>
-<h4 id="mapred-site-xml"><a href="#mapred-site-xml" class="headerlink" title="mapred-site.xml"></a>mapred-site.xml</h4><p>系统里面没有mapred-site.xml文件，则需要复制一个<br><code>cp mapred-site.xml.template mapred-site.xml</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;!-- 指定MR运行在Yarn上 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt; </span><br><span class="line">  &lt;!-- 历史服务器端地址 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop01:10020&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;!-- 历史服务器web端地址 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop01:19888&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;!-- Site specific YARN configuration properties --&gt;</span><br><span class="line">	&lt;!-- 指定YARN的ResourceManager的地址 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;hadoop01&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- Reducer获取数据的方式 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- 日志聚集功能使能 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- 日志保留时间设置7天 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;604800&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;	</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="slaves"><a href="#slaves" class="headerlink" title="slaves"></a>slaves</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop01</span><br><span class="line">hadoop02</span><br><span class="line">hadoop03</span><br></pre></td></tr></table></figure>
-<h4 id="上传配置"><a href="#上传配置" class="headerlink" title="上传配置"></a>上传配置</h4><p>将以上修改的文件上传到服务器中：<br><strong>右键–&gt;SFTP/FTP–&gt;Upload File</strong><br>对应下图文件：<br>注意：只要是修改过的文件都需要Upload<br><img src="https://img-blog.csdnimg.cn/20200327142853963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="配置文件分发"><a href="#配置文件分发" class="headerlink" title="配置文件分发"></a>配置文件分发</h3><p>让hadoop02、03和01保持一致</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp /etc/profile hadoop02:/etc/profile</span><br><span class="line">scp /etc/profile hadoop03:/etc/profile</span><br><span class="line">scp -r /<span class="built_in">export</span>/ hadoop02:/</span><br><span class="line">scp -r /<span class="built_in">export</span>/ hadoop03:/</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200327143347362.png?x-oss-process=image" alt="在这里插入图片描述"><br>scp /etc/profile hadoop02:/etc/profile这句是发环境变量<br>scp -r /export/ hadoop02:/这句是发hadoop整个文件夹</p>
-<p><strong>注意：</strong> 命令执行完之后在hadoop02和hadoop03上执行<code>source /etc/profile</code></p>
-<p>配置完以上的文件，那么集群基本配置就已经完成</p>
-<h3 id="执行格式化"><a href="#执行格式化" class="headerlink" title="执行格式化"></a>执行格式化</h3><p>在hadoop01中执行下列命令<br><code>hdfs namenode -format</code><br><img src="https://img-blog.csdnimg.cn/20200327143553474.png?x-oss-process=image" alt="在这里插入图片描述"><br>在上图看到下图内容则说明文件配置成功<br><img src="https://img-blog.csdnimg.cn/20200327143544630.png" alt="在这里插入图片描述"></p>
-<h3 id="查看hadoop信息"><a href="#查看hadoop信息" class="headerlink" title="查看hadoop信息"></a>查看hadoop信息</h3><p><img src="https://img-blog.csdnimg.cn/20200327143748685.png" alt="在这里插入图片描述"><br><strong>注意：</strong> 第一次进入没有data文件，需要启动namenode<br><img src="https://img-blog.csdnimg.cn/20200327143802429.png" alt="在这里插入图片描述"><br>下图是hadoop文件的树形结构：<br><img src="https://img-blog.csdnimg.cn/202003271451261.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327145141354.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327145153230.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意：</strong><br>如果想让文件显示树形结构，需要安装tree文件：<code>yum -y install tree</code><br><img src="https://img-blog.csdnimg.cn/20200327143812869.png" alt="在这里插入图片描述"><br>查看版本信息：clusterID必须保持一致<br><img src="https://img-blog.csdnimg.cn/2020032714382229.png" alt="在这里插入图片描述"><br><strong>注意：</strong><br>1.如果后面出现集群找不到数据的情况，那就是因为NameNode和DataNode的集群id不一致<br>2.格式化NameNode，会产生新的集群id</p>
-<h3 id="启动HDFS和YARN"><a href="#启动HDFS和YARN" class="headerlink" title="启动HDFS和YARN"></a>启动HDFS和YARN</h3><p><img src="https://img-blog.csdnimg.cn/20200327145625866.png" alt="在这里插入图片描述"></p>
-<p>hadoop01:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start namenode</span><br><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start resourcemanager</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
-
-<p>hadoop02:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br><span class="line">在节点hadoop02执行指令启动SecondaryNameNode进程</span><br><span class="line">hadoop-daemon.sh start secondarynamenode</span><br></pre></td></tr></table></figure>
-
-<p>hadoop03:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
-
-<h4 id="脚本一键启动"><a href="#脚本一键启动" class="headerlink" title="脚本一键启动"></a>脚本一键启动</h4><p>在主节点hadoop01上执行指令<code>start-dfs.sh</code>或<code>stop-dfs.sh</code>启动/关闭所有HDFS服务进程<br>在主节点hadoop01上执行指令<code>start-yarn.sh</code>或<code>stop-yarn.sh</code>启动/关闭所有YARN服务进程；<br>在主节点hadoop01上执行<code>start-all.sh</code>或<code>stop-all.sh</code>指令，直接启动/关闭整个Hadoop集群服务。</p>
-<h4 id="查看是否启动"><a href="#查看是否启动" class="headerlink" title="查看是否启动"></a>查看是否启动</h4><p>hadoop01，02，03的情况如下图所示：<br>hadoop01:<br><img src="https://img-blog.csdnimg.cn/20200327150056763.png" alt="在这里插入图片描述"><br>hadoop02:<br><img src="https://img-blog.csdnimg.cn/20200327150104128.png" alt="在这里插入图片描述"><br>hadoop03:<br><img src="https://img-blog.csdnimg.cn/20200327150110367.png" alt="在这里插入图片描述"></p>
-<h4 id="配置jps快捷键"><a href="#配置jps快捷键" class="headerlink" title="配置jps快捷键"></a>配置jps快捷键</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">创建文件夹 /root/bin</span><br><span class="line">touch jpsall</span><br><span class="line">vim jpsall</span><br><span class="line">chmod 777 jpsall</span><br></pre></td></tr></table></figure>
-<p>jpsall文件内容如下：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> hadoop01 hadoop02 hadoop03</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">echo ===================== <span class="variable">$i</span> ======================</span><br><span class="line">ssh <span class="variable">$i</span> <span class="string">"source /etc/profile &amp;&amp; jps | grep -v Jps"</span></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<p>配置完成就不再需要单独运行jps了<br><strong>测试：</strong><br><img src="https://img-blog.csdnimg.cn/20200327151641623.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h4 id="游览器访问"><a href="#游览器访问" class="headerlink" title="游览器访问"></a>游览器访问</h4><p>Hadoop集群正常启动后，它默认开放了两个端口50070和8088 ，需要关闭防火墙才能访问</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">service iptables stop</span><br><span class="line">chkconfig iptables off</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong> hadoop02和hadoop03的防火墙也需要关闭<br>关闭防火墙之后，在游览器中输入下列网址即可访问：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http://hadoop01:50070/</span><br><span class="line">http://hadoop01:8088</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200327150457137.png?x-oss-process=image" alt="在这里插入图片描述"><br>检查3个datanode是否显示：<br><img src="https://img-blog.csdnimg.cn/20200327150537481.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327150555548.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p>执行命令报错：<br><code>export HADOOP_ROOT_LOGGER=DEBUG,console
-hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327151915561.png" alt="在这里插入图片描述"><br>查阅debug报错信息，可以看到问题是glib版本不够</p>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><h5 id="1-下载对应文件"><a href="#1-下载对应文件" class="headerlink" title="1.下载对应文件"></a>1.下载对应文件</h5><p>下载glibc-2.14.tar.bz2<br>地址为：<a href="http://ftp.ntu.edu.tw/gnu/glibc/" target="_blank" rel="noopener">http://ftp.ntu.edu.tw/gnu/glibc/</a><br>下载glibc-linuxthreads-2.5.tar.bz2<br>地址为：<a href="http://ftp.ntu.edu.tw/gnu/glibc/" target="_blank" rel="noopener">http://ftp.ntu.edu.tw/gnu/glibc/</a></p>
-<h5 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install gcc</span><br><span class="line">tar -xjvf glibc-2.14.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> glibc-2.14</span><br><span class="line">tar -xjvf ../glibc-linuxthreads-2.5.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="built_in">export</span> CFLAGS=<span class="string">"-g -O2"</span></span><br><span class="line">glibc-2.14/configure --prefix=/usr --<span class="built_in">disable</span>-profile --<span class="built_in">enable</span>-add-ons -</span><br><span class="line">-with-headers=/usr/include --with-binutils=/usr/bin --<span class="built_in">disable</span>-sanitychecks</span><br><span class="line">make//编译，执行很久(5-10分钟)，可能出错，出错再重新执行</span><br><span class="line">make install</span><br><span class="line">ll /lib64/libc.so.6</span><br></pre></td></tr></table></figure>
-<h4 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h4><p><img src="https://img-blog.csdnimg.cn/2020032715242188.png" alt="在这里插入图片描述"></p>
-<h3 id="测试集群"><a href="#测试集群" class="headerlink" title="测试集群"></a>测试集群</h3><p><img src="https://img-blog.csdnimg.cn/20200327152654363.png" alt="在这里插入图片描述"><br>可知集群已经上hdfs了：<br><img src="https://img-blog.csdnimg.cn/20200327152702853.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327152719538.png" alt="在这里插入图片描述"></p>
-<p>由下图可知集群测试成功：<br>看到3个备份，集群数据统一<br><img src="https://img-blog.csdnimg.cn/20200327152854544.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop jar hadoop-mapreduce-examples-2.7.7.jar wordcount /wordcount/input /wordcount/output</span><br></pre></td></tr></table></figure>
-<p><strong>注意:</strong> output文件不能存在<br><img src="https://img-blog.csdnimg.cn/20200327153113296.png?x-oss-process=image" alt="在这里插入图片描述"><br>到这一步为止，表示集群运行正常</p>
-<h3 id="配置历史服务器"><a href="#配置历史服务器" class="headerlink" title="配置历史服务器"></a>配置历史服务器</h3><p><img src="https://img-blog.csdnimg.cn/20200327154728635.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327154806819.png" alt="在这里插入图片描述"><br>可以看到无法访问页面：</p>
-<p><img src="https://img-blog.csdnimg.cn/20200327154856858.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里就需要继续编辑vim mapred-site.xml文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;!-- 历史服务器端地址 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt; </span><br><span class="line">&lt;value&gt;hadoop01:10020&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;!-- 历史服务器web端地址 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt; </span><br><span class="line">    &lt;value&gt;hadoop01:19888&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-<p>启动历史服务器<br><code>mr-jobhistory-daemon.sh start historyserver</code></p>
-<p>可以看到下图显示：<br><img src="https://img-blog.csdnimg.cn/2020032715502952.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-<h3 id="日志聚集"><a href="#日志聚集" class="headerlink" title="日志聚集"></a>日志聚集</h3><p><strong>目的：</strong> 应用运行完成以后，将程序运行日志信息上传到HDFS系统上。</p>
-<p>这里需要配置yarn-site.xml</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;!-- 日志聚集功能使能 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt; </span><br><span class="line">&lt;value&gt;<span class="literal">true</span>&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;!-- 日志保留时间设置7天 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt; </span><br><span class="line">&lt;value&gt;604800&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-<p>1.重启NodeManager 、ResourceManager和HistoryServer<br>2..删除HDFS上已经存在的输出文件<br><code>hdfs dfs -rm -R /wordcount/output</code><br>3.执行WordCount程序<br>4.查看日志聚集<br>点击log文件<br><img src="https://img-blog.csdnimg.cn/20200327155302493.png" alt="在这里插入图片描述"><br>可以看到：<br><img src="https://img-blog.csdnimg.cn/20200327155318637.png?x-oss-process=image" alt="在这里插入图片描述"><br>那么现在开始，每个任务都开起了实时日志收集功能，日志保存7天，全部可以在cluster中查看了</p>
-<h3 id="集群时间同步"><a href="#集群时间同步" class="headerlink" title="集群时间同步"></a>集群时间同步</h3><p>这里以hadoop01作为基准时间，02、03跟他一致</p>
-<h4 id="1-查看是否有ntp文件，系统默认安装"><a href="#1-查看是否有ntp文件，系统默认安装" class="headerlink" title="1.查看是否有ntp文件，系统默认安装"></a>1.查看是否有ntp文件，系统默认安装</h4><p><code>rpm -qa|grep ntp</code><br><img src="https://img-blog.csdnimg.cn/20200327160254904.png" alt="在这里插入图片描述"></p>
-<h4 id="2-vim-etc-ntp-conf"><a href="#2-vim-etc-ntp-conf" class="headerlink" title="2.vim /etc/ntp.conf"></a>2.vim /etc/ntp.conf</h4><p><img src="https://img-blog.csdnimg.cn/2020032716040257.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327160414790.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改点：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、授权192.168.1.0-192.168.1.255网段上的所有机器可以从这台机器上查询和同步时间</span><br><span class="line">将  <span class="comment">#restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap为</span></span><br><span class="line">restrict 192.168.200.0 mask 255.255.255.0 nomodify notrap</span><br><span class="line"></span><br><span class="line">2、集群在局域网中，不使用其他互联网上的时间</span><br><span class="line">server 0.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 1.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 2.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 3.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">为</span><br><span class="line"></span><br><span class="line"><span class="comment">#server 0.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#server 1.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#server 2.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line">\<span class="comment">#server 3.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line">3、当该节点丢失网络连接，依然可以采用本地时间作为时间服务器为集群中的其他节点提供时间同步</span><br><span class="line">server 127.127.1.0</span><br><span class="line"></span><br><span class="line">fudge 127.127.1.0 stratum 10</span><br></pre></td></tr></table></figure>
-<h4 id="3-vim-etc-sysconfig-ntpd"><a href="#3-vim-etc-sysconfig-ntpd" class="headerlink" title="3.vim /etc/sysconfig/ntpd"></a>3.vim /etc/sysconfig/ntpd</h4><p>让硬件时间与系统时间一起同步<code>SYNC_HWCLOCK=yes</code><br><img src="https://img-blog.csdnimg.cn/20200327160618712.png" alt="在这里插入图片描述"><br>配置文件保存之后</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">重新启动ntpd服务</span><br><span class="line">service ntpd status</span><br><span class="line"></span><br><span class="line">设置ntpd服务开机启动</span><br><span class="line">chkconfig ntpd on</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-在hadoop2和hadoop3上配置"><a href="#4-在hadoop2和hadoop3上配置" class="headerlink" title="4.在hadoop2和hadoop3上配置"></a>4.在hadoop2和hadoop3上配置</h4><p><code>crontab -e</code> </p>
-<p>输入:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">*/10 * * * * /usr/sbin/ntpdate hadoop01</span><br></pre></td></tr></table></figure>
-<p>这样会让hadoop02和hadoop03每10分钟与时间服务器同步一次</p>
-<h4 id="5-测试"><a href="#5-测试" class="headerlink" title="5.测试"></a>5.测试</h4><p>修改hadoop02的当前时间：<br><img src="https://img-blog.csdnimg.cn/20200327160931558.png" alt="在这里插入图片描述"><br>然后输入<code>mail</code>,系统会提示时间已经修改<br><img src="https://img-blog.csdnimg.cn/20200327161036874.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327161056816.png?x-oss-process=image" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>大数据</category>
-        <category>Hadoop</category>
-      </categories>
-      <tags>
-        <tag>Hadoop集群</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ElasticSearch集群搭建</title>
     <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
@@ -1166,6 +1076,96 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <h3 id="hadoop入门案例："><a href="#hadoop入门案例：" class="headerlink" title="hadoop入门案例："></a>hadoop入门案例：</h3><p><img src="https://img-blog.csdnimg.cn/20200327130134643.png" alt="在这里插入图片描述"><br>1.进入hadoop-2.7.7下面<br>2.创建一个input文件夹<br>3.将Hadoop的xml配置文件复制到input<br>xml配置文件是etc/hadoop/*.xml’</p>
 <p>4.执行share目录下的MapReduce程序<br><code>hadoop jar hadoop-mapreduce-examples-2.7.2.jar grep input output &#39;dfs[a-z.]+&#39;</code><br><img src="https://img-blog.csdnimg.cn/20200327130119673.png?x-oss-process=image" alt="在这里插入图片描述"><br>5.在<strong>hadoop-2.7.7路径下</strong>查看输出结果<br><code>cat output/*</code></p>
 <p><strong>注意:</strong> hadoop jar 是命令，hadoop-mapreduce-examples-2.7.7.jar是自己写的mr代码，input 输入文件夹，output 输出文件夹</p>
+]]></content>
+      <categories>
+        <category>大数据</category>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>Hadoop集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hadoop集群搭建</title>
+    <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<blockquote>
+<p>Hadoop集群搭建之前记得完成hadoop运行环境的搭建</p>
+</blockquote>
+<a id="more"></a>
+<p>hadoop集群搭建：<br><img src="https://img-blog.csdnimg.cn/20200327140632968.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<p>也就是要修改以下文件<br><img src="https://img-blog.csdnimg.cn/20200327140653262.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>1.使用sublime文件<br>配置方法：<a href="https://blog.csdn.net/liu1340308350/article/details/105139669" target="_blank" rel="noopener">https://blog.csdn.net/liu1340308350/article/details/105139669</a><br>2.直接在secureCRT中配置<br>这里我是使用第一种方法配置的</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><h4 id="hadoop-env-sh"><a href="#hadoop-env-sh" class="headerlink" title="hadoop-env.sh"></a>hadoop-env.sh</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Licensed to the Apache Software Foundation (ASF) under one</span></span><br><span class="line"><span class="comment"># or more contributor license agreements.  See the NOTICE file</span></span><br><span class="line"><span class="comment"># distributed with this work for additional information</span></span><br><span class="line"><span class="comment"># regarding copyright ownership.  The ASF licenses this file</span></span><br><span class="line"><span class="comment"># to you under the Apache License, Version 2.0 (the</span></span><br><span class="line"><span class="comment"># "License"); you may not use this file except in compliance</span></span><br><span class="line"><span class="comment"># with the License.  You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set Hadoop-specific environment variables here.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The only required environment variable is JAVA_HOME.  All others are</span></span><br><span class="line"><span class="comment"># optional.  When running a distributed configuration it is best to</span></span><br><span class="line"><span class="comment"># set JAVA_HOME in this file, so that it is correctly defined on</span></span><br><span class="line"><span class="comment"># remote nodes.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The java implementation to use.</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/<span class="built_in">export</span>/servers/jdk</span><br><span class="line"></span><br><span class="line"><span class="comment"># The jsvc implementation to use. Jsvc is required to run secure datanodes</span></span><br><span class="line"><span class="comment"># that bind to privileged ports to provide authentication of data transfer</span></span><br><span class="line"><span class="comment"># protocol.  Jsvc is not required if SASL is configured for authentication of</span></span><br><span class="line"><span class="comment"># data transfer protocol using non-privileged ports.</span></span><br><span class="line"><span class="comment">#export JSVC_HOME=$&#123;JSVC_HOME&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$&#123;HADOOP_CONF_DIR:-"/etc/hadoop"&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extra Java CLASSPATH elements.  Automatically insert capacity-scheduler.</span></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> <span class="variable">$HADOOP_HOME</span>/contrib/capacity-scheduler/*.jar; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">"<span class="variable">$HADOOP_CLASSPATH</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$HADOOP_CLASSPATH</span>:<span class="variable">$f</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$f</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The maximum amount of heap to use, in MB. Default is 1000.</span></span><br><span class="line"><span class="comment">#export HADOOP_HEAPSIZE=</span></span><br><span class="line"><span class="comment">#export HADOOP_NAMENODE_INIT_HEAPSIZE=""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extra Java runtime options.  Empty by default.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_OPTS=<span class="string">"<span class="variable">$HADOOP_OPTS</span> -Djava.net.preferIPv4Stack=true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Command specific options appended to HADOOP_OPTS when specified</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_NAMENODE_OPTS=<span class="string">"-Dhadoop.security.logger=<span class="variable">$&#123;HADOOP_SECURITY_LOGGER:-INFO,RFAS&#125;</span> -Dhdfs.audit.logger=<span class="variable">$&#123;HDFS_AUDIT_LOGGER:-INFO,NullAppender&#125;</span> <span class="variable">$HADOOP_NAMENODE_OPTS</span>"</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_DATANODE_OPTS=<span class="string">"-Dhadoop.security.logger=ERROR,RFAS <span class="variable">$HADOOP_DATANODE_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECONDARYNAMENODE_OPTS=<span class="string">"-Dhadoop.security.logger=<span class="variable">$&#123;HADOOP_SECURITY_LOGGER:-INFO,RFAS&#125;</span> -Dhdfs.audit.logger=<span class="variable">$&#123;HDFS_AUDIT_LOGGER:-INFO,NullAppender&#125;</span> <span class="variable">$HADOOP_SECONDARYNAMENODE_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_NFS3_OPTS=<span class="string">"<span class="variable">$HADOOP_NFS3_OPTS</span>"</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_PORTMAP_OPTS=<span class="string">"-Xmx512m <span class="variable">$HADOOP_PORTMAP_OPTS</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The following applies to multiple commands (fs, dfs, fsck, distcp etc)</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_CLIENT_OPTS=<span class="string">"-Xmx512m <span class="variable">$HADOOP_CLIENT_OPTS</span>"</span></span><br><span class="line"><span class="comment">#HADOOP_JAVA_PLATFORM_OPTS="-XX:-UsePerfData $HADOOP_JAVA_PLATFORM_OPTS"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># On secure datanodes, user to run the datanode as after dropping privileges.</span></span><br><span class="line"><span class="comment"># This **MUST** be uncommented to enable secure HDFS if using privileged ports</span></span><br><span class="line"><span class="comment"># to provide authentication of data transfer protocol.  This **MUST NOT** be</span></span><br><span class="line"><span class="comment"># defined if SASL is configured for authentication of data transfer protocol</span></span><br><span class="line"><span class="comment"># using non-privileged ports.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_USER=<span class="variable">$&#123;HADOOP_SECURE_DN_USER&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Where log files are stored.  $HADOOP_HOME/logs by default.</span></span><br><span class="line"><span class="comment">#export HADOOP_LOG_DIR=$&#123;HADOOP_LOG_DIR&#125;/$USER</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Where log files are stored in the secure data environment.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_LOG_DIR=<span class="variable">$&#123;HADOOP_LOG_DIR&#125;</span>/<span class="variable">$&#123;HADOOP_HDFS_USER&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># HDFS Mover specific parameters</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Specify the JVM options to be used when starting the HDFS Mover.</span></span><br><span class="line"><span class="comment"># These options will be appended to the options specified as HADOOP_OPTS</span></span><br><span class="line"><span class="comment"># and therefore may override any similar flags set in HADOOP_OPTS</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># export HADOOP_MOVER_OPTS=""</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Advanced Users Only!</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The directory where pid files are stored. /tmp by default.</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> this should be set to a directory that can only be written to by </span></span><br><span class="line"><span class="comment">#       the user that will run the hadoop daemons.  Otherwise there is the</span></span><br><span class="line"><span class="comment">#       potential for a symlink attack.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_PID_DIR=<span class="variable">$&#123;HADOOP_PID_DIR&#125;</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_SECURE_DN_PID_DIR=<span class="variable">$&#123;HADOOP_PID_DIR&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A string representing this instance of hadoop. $USER by default.</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_IDENT_STRING=<span class="variable">$USER</span></span><br></pre></td></tr></table></figure>
+<p>也就是修改JDK路径<br><img src="https://img-blog.csdnimg.cn/20200327142029116.png" alt="在这里插入图片描述"><br><strong>注意：</strong> JAVA_HOME的路径按照你自己的路径来</p>
+<h4 id="core-site-xml"><a href="#core-site-xml" class="headerlink" title="core-site.xml"></a>core-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">		  &lt;value&gt;hdfs://hadoop01:9000&lt;/value&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">       &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/<span class="built_in">export</span>/servers/hadoop-2.7.7/tmp&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.proxyuser.root.hosts&lt;/name&gt;</span><br><span class="line">	    &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">     &lt;name&gt;hadoop.proxyuser.root.groups&lt;/name&gt;</span><br><span class="line">		 &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml"></a>hdfs-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop02:50090&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>fs.defaultFS表示我们对HDFS的访问路径<br>dfs.replication指定副本数量，也就是一个文件存几遍<br>dfs.namenode.secondary.http-address表示2nn的访问路径</p>
+<h4 id="mapred-site-xml"><a href="#mapred-site-xml" class="headerlink" title="mapred-site.xml"></a>mapred-site.xml</h4><p>系统里面没有mapred-site.xml文件，则需要复制一个<br><code>cp mapred-site.xml.template mapred-site.xml</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span>?&gt;</span><br><span class="line">&lt;?xml-stylesheet <span class="built_in">type</span>=<span class="string">"text/xsl"</span> href=<span class="string">"configuration.xsl"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Put site-specific property overrides <span class="keyword">in</span> this file. --&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;!-- 指定MR运行在Yarn上 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt; </span><br><span class="line">  &lt;!-- 历史服务器端地址 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop01:10020&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;!-- 历史服务器web端地址 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hadoop01:19888&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span>?&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  Licensed under the Apache License, Version 2.0 (the <span class="string">"License"</span>);</span><br><span class="line">  you may not use this file except <span class="keyword">in</span> compliance with the License.</span><br><span class="line">  You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">  Unless required by applicable law or agreed to <span class="keyword">in</span> writing, software</span><br><span class="line">  distributed under the License is distributed on an <span class="string">"AS IS"</span> BASIS,</span><br><span class="line">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">  See the License <span class="keyword">for</span> the specific language governing permissions and</span><br><span class="line">  limitations under the License. See accompanying LICENSE file.</span><br><span class="line">--&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">	&lt;!-- Site specific YARN configuration properties --&gt;</span><br><span class="line">	&lt;!-- 指定YARN的ResourceManager的地址 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;hadoop01&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- Reducer获取数据的方式 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- 日志聚集功能使能 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!-- 日志保留时间设置7天 --&gt;</span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;604800&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;	</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="slaves"><a href="#slaves" class="headerlink" title="slaves"></a>slaves</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop01</span><br><span class="line">hadoop02</span><br><span class="line">hadoop03</span><br></pre></td></tr></table></figure>
+<h4 id="上传配置"><a href="#上传配置" class="headerlink" title="上传配置"></a>上传配置</h4><p>将以上修改的文件上传到服务器中：<br><strong>右键–&gt;SFTP/FTP–&gt;Upload File</strong><br>对应下图文件：<br>注意：只要是修改过的文件都需要Upload<br><img src="https://img-blog.csdnimg.cn/20200327142853963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdTEzNDAzMDgzNTA=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="配置文件分发"><a href="#配置文件分发" class="headerlink" title="配置文件分发"></a>配置文件分发</h3><p>让hadoop02、03和01保持一致</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp /etc/profile hadoop02:/etc/profile</span><br><span class="line">scp /etc/profile hadoop03:/etc/profile</span><br><span class="line">scp -r /<span class="built_in">export</span>/ hadoop02:/</span><br><span class="line">scp -r /<span class="built_in">export</span>/ hadoop03:/</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200327143347362.png?x-oss-process=image" alt="在这里插入图片描述"><br>scp /etc/profile hadoop02:/etc/profile这句是发环境变量<br>scp -r /export/ hadoop02:/这句是发hadoop整个文件夹</p>
+<p><strong>注意：</strong> 命令执行完之后在hadoop02和hadoop03上执行<code>source /etc/profile</code></p>
+<p>配置完以上的文件，那么集群基本配置就已经完成</p>
+<h3 id="执行格式化"><a href="#执行格式化" class="headerlink" title="执行格式化"></a>执行格式化</h3><p>在hadoop01中执行下列命令<br><code>hdfs namenode -format</code><br><img src="https://img-blog.csdnimg.cn/20200327143553474.png?x-oss-process=image" alt="在这里插入图片描述"><br>在上图看到下图内容则说明文件配置成功<br><img src="https://img-blog.csdnimg.cn/20200327143544630.png" alt="在这里插入图片描述"></p>
+<h3 id="查看hadoop信息"><a href="#查看hadoop信息" class="headerlink" title="查看hadoop信息"></a>查看hadoop信息</h3><p><img src="https://img-blog.csdnimg.cn/20200327143748685.png" alt="在这里插入图片描述"><br><strong>注意：</strong> 第一次进入没有data文件，需要启动namenode<br><img src="https://img-blog.csdnimg.cn/20200327143802429.png" alt="在这里插入图片描述"><br>下图是hadoop文件的树形结构：<br><img src="https://img-blog.csdnimg.cn/202003271451261.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327145141354.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327145153230.png?x-oss-process=image" alt="在这里插入图片描述"><br><strong>注意：</strong><br>如果想让文件显示树形结构，需要安装tree文件：<code>yum -y install tree</code><br><img src="https://img-blog.csdnimg.cn/20200327143812869.png" alt="在这里插入图片描述"><br>查看版本信息：clusterID必须保持一致<br><img src="https://img-blog.csdnimg.cn/2020032714382229.png" alt="在这里插入图片描述"><br><strong>注意：</strong><br>1.如果后面出现集群找不到数据的情况，那就是因为NameNode和DataNode的集群id不一致<br>2.格式化NameNode，会产生新的集群id</p>
+<h3 id="启动HDFS和YARN"><a href="#启动HDFS和YARN" class="headerlink" title="启动HDFS和YARN"></a>启动HDFS和YARN</h3><p><img src="https://img-blog.csdnimg.cn/20200327145625866.png" alt="在这里插入图片描述"></p>
+<p>hadoop01:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start namenode</span><br><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start resourcemanager</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
+
+<p>hadoop02:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br><span class="line">在节点hadoop02执行指令启动SecondaryNameNode进程</span><br><span class="line">hadoop-daemon.sh start secondarynamenode</span><br></pre></td></tr></table></figure>
+
+<p>hadoop03:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
+
+<h4 id="脚本一键启动"><a href="#脚本一键启动" class="headerlink" title="脚本一键启动"></a>脚本一键启动</h4><p>在主节点hadoop01上执行指令<code>start-dfs.sh</code>或<code>stop-dfs.sh</code>启动/关闭所有HDFS服务进程<br>在主节点hadoop01上执行指令<code>start-yarn.sh</code>或<code>stop-yarn.sh</code>启动/关闭所有YARN服务进程；<br>在主节点hadoop01上执行<code>start-all.sh</code>或<code>stop-all.sh</code>指令，直接启动/关闭整个Hadoop集群服务。</p>
+<h4 id="查看是否启动"><a href="#查看是否启动" class="headerlink" title="查看是否启动"></a>查看是否启动</h4><p>hadoop01，02，03的情况如下图所示：<br>hadoop01:<br><img src="https://img-blog.csdnimg.cn/20200327150056763.png" alt="在这里插入图片描述"><br>hadoop02:<br><img src="https://img-blog.csdnimg.cn/20200327150104128.png" alt="在这里插入图片描述"><br>hadoop03:<br><img src="https://img-blog.csdnimg.cn/20200327150110367.png" alt="在这里插入图片描述"></p>
+<h4 id="配置jps快捷键"><a href="#配置jps快捷键" class="headerlink" title="配置jps快捷键"></a>配置jps快捷键</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">创建文件夹 /root/bin</span><br><span class="line">touch jpsall</span><br><span class="line">vim jpsall</span><br><span class="line">chmod 777 jpsall</span><br></pre></td></tr></table></figure>
+<p>jpsall文件内容如下：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> hadoop01 hadoop02 hadoop03</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">echo ===================== <span class="variable">$i</span> ======================</span><br><span class="line">ssh <span class="variable">$i</span> <span class="string">"source /etc/profile &amp;&amp; jps | grep -v Jps"</span></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>配置完成就不再需要单独运行jps了<br><strong>测试：</strong><br><img src="https://img-blog.csdnimg.cn/20200327151641623.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h4 id="游览器访问"><a href="#游览器访问" class="headerlink" title="游览器访问"></a>游览器访问</h4><p>Hadoop集群正常启动后，它默认开放了两个端口50070和8088 ，需要关闭防火墙才能访问</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">service iptables stop</span><br><span class="line">chkconfig iptables off</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong> hadoop02和hadoop03的防火墙也需要关闭<br>关闭防火墙之后，在游览器中输入下列网址即可访问：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http://hadoop01:50070/</span><br><span class="line">http://hadoop01:8088</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200327150457137.png?x-oss-process=image" alt="在这里插入图片描述"><br>检查3个datanode是否显示：<br><img src="https://img-blog.csdnimg.cn/20200327150537481.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327150555548.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p>执行命令报错：<br><code>export HADOOP_ROOT_LOGGER=DEBUG,console
+hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327151915561.png" alt="在这里插入图片描述"><br>查阅debug报错信息，可以看到问题是glib版本不够</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><h5 id="1-下载对应文件"><a href="#1-下载对应文件" class="headerlink" title="1.下载对应文件"></a>1.下载对应文件</h5><p>下载glibc-2.14.tar.bz2<br>地址为：<a href="http://ftp.ntu.edu.tw/gnu/glibc/" target="_blank" rel="noopener">http://ftp.ntu.edu.tw/gnu/glibc/</a><br>下载glibc-linuxthreads-2.5.tar.bz2<br>地址为：<a href="http://ftp.ntu.edu.tw/gnu/glibc/" target="_blank" rel="noopener">http://ftp.ntu.edu.tw/gnu/glibc/</a></p>
+<h5 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install gcc</span><br><span class="line">tar -xjvf glibc-2.14.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> glibc-2.14</span><br><span class="line">tar -xjvf ../glibc-linuxthreads-2.5.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="built_in">export</span> CFLAGS=<span class="string">"-g -O2"</span></span><br><span class="line">glibc-2.14/configure --prefix=/usr --<span class="built_in">disable</span>-profile --<span class="built_in">enable</span>-add-ons -</span><br><span class="line">-with-headers=/usr/include --with-binutils=/usr/bin --<span class="built_in">disable</span>-sanitychecks</span><br><span class="line">make//编译，执行很久(5-10分钟)，可能出错，出错再重新执行</span><br><span class="line">make install</span><br><span class="line">ll /lib64/libc.so.6</span><br></pre></td></tr></table></figure>
+<h4 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h4><p><img src="https://img-blog.csdnimg.cn/2020032715242188.png" alt="在这里插入图片描述"></p>
+<h3 id="测试集群"><a href="#测试集群" class="headerlink" title="测试集群"></a>测试集群</h3><p><img src="https://img-blog.csdnimg.cn/20200327152654363.png" alt="在这里插入图片描述"><br>可知集群已经上hdfs了：<br><img src="https://img-blog.csdnimg.cn/20200327152702853.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327152719538.png" alt="在这里插入图片描述"></p>
+<p>由下图可知集群测试成功：<br>看到3个备份，集群数据统一<br><img src="https://img-blog.csdnimg.cn/20200327152854544.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop jar hadoop-mapreduce-examples-2.7.7.jar wordcount /wordcount/input /wordcount/output</span><br></pre></td></tr></table></figure>
+<p><strong>注意:</strong> output文件不能存在<br><img src="https://img-blog.csdnimg.cn/20200327153113296.png?x-oss-process=image" alt="在这里插入图片描述"><br>到这一步为止，表示集群运行正常</p>
+<h3 id="配置历史服务器"><a href="#配置历史服务器" class="headerlink" title="配置历史服务器"></a>配置历史服务器</h3><p><img src="https://img-blog.csdnimg.cn/20200327154728635.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327154806819.png" alt="在这里插入图片描述"><br>可以看到无法访问页面：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200327154856858.png?x-oss-process=image" alt="在这里插入图片描述"><br>这里就需要继续编辑vim mapred-site.xml文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;!-- 历史服务器端地址 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt; </span><br><span class="line">&lt;value&gt;hadoop01:10020&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;!-- 历史服务器web端地址 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt; </span><br><span class="line">    &lt;value&gt;hadoop01:19888&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p>启动历史服务器<br><code>mr-jobhistory-daemon.sh start historyserver</code></p>
+<p>可以看到下图显示：<br><img src="https://img-blog.csdnimg.cn/2020032715502952.png?x-oss-process=image" alt="在这里插入图片描述"></p>
+<h3 id="日志聚集"><a href="#日志聚集" class="headerlink" title="日志聚集"></a>日志聚集</h3><p><strong>目的：</strong> 应用运行完成以后，将程序运行日志信息上传到HDFS系统上。</p>
+<p>这里需要配置yarn-site.xml</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;!-- 日志聚集功能使能 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt; </span><br><span class="line">&lt;value&gt;<span class="literal">true</span>&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;!-- 日志保留时间设置7天 --&gt; </span><br><span class="line">&lt;property&gt; </span><br><span class="line">&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt; </span><br><span class="line">&lt;value&gt;604800&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p>1.重启NodeManager 、ResourceManager和HistoryServer<br>2..删除HDFS上已经存在的输出文件<br><code>hdfs dfs -rm -R /wordcount/output</code><br>3.执行WordCount程序<br>4.查看日志聚集<br>点击log文件<br><img src="https://img-blog.csdnimg.cn/20200327155302493.png" alt="在这里插入图片描述"><br>可以看到：<br><img src="https://img-blog.csdnimg.cn/20200327155318637.png?x-oss-process=image" alt="在这里插入图片描述"><br>那么现在开始，每个任务都开起了实时日志收集功能，日志保存7天，全部可以在cluster中查看了</p>
+<h3 id="集群时间同步"><a href="#集群时间同步" class="headerlink" title="集群时间同步"></a>集群时间同步</h3><p>这里以hadoop01作为基准时间，02、03跟他一致</p>
+<h4 id="1-查看是否有ntp文件，系统默认安装"><a href="#1-查看是否有ntp文件，系统默认安装" class="headerlink" title="1.查看是否有ntp文件，系统默认安装"></a>1.查看是否有ntp文件，系统默认安装</h4><p><code>rpm -qa|grep ntp</code><br><img src="https://img-blog.csdnimg.cn/20200327160254904.png" alt="在这里插入图片描述"></p>
+<h4 id="2-vim-etc-ntp-conf"><a href="#2-vim-etc-ntp-conf" class="headerlink" title="2.vim /etc/ntp.conf"></a>2.vim /etc/ntp.conf</h4><p><img src="https://img-blog.csdnimg.cn/2020032716040257.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327160414790.png?x-oss-process=image" alt="在这里插入图片描述"><br>修改点：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、授权192.168.1.0-192.168.1.255网段上的所有机器可以从这台机器上查询和同步时间</span><br><span class="line">将  <span class="comment">#restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap为</span></span><br><span class="line">restrict 192.168.200.0 mask 255.255.255.0 nomodify notrap</span><br><span class="line"></span><br><span class="line">2、集群在局域网中，不使用其他互联网上的时间</span><br><span class="line">server 0.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 1.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 2.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">server 3.centos.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">为</span><br><span class="line"></span><br><span class="line"><span class="comment">#server 0.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#server 1.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#server 2.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line">\<span class="comment">#server 3.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line">3、当该节点丢失网络连接，依然可以采用本地时间作为时间服务器为集群中的其他节点提供时间同步</span><br><span class="line">server 127.127.1.0</span><br><span class="line"></span><br><span class="line">fudge 127.127.1.0 stratum 10</span><br></pre></td></tr></table></figure>
+<h4 id="3-vim-etc-sysconfig-ntpd"><a href="#3-vim-etc-sysconfig-ntpd" class="headerlink" title="3.vim /etc/sysconfig/ntpd"></a>3.vim /etc/sysconfig/ntpd</h4><p>让硬件时间与系统时间一起同步<code>SYNC_HWCLOCK=yes</code><br><img src="https://img-blog.csdnimg.cn/20200327160618712.png" alt="在这里插入图片描述"><br>配置文件保存之后</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">重新启动ntpd服务</span><br><span class="line">service ntpd status</span><br><span class="line"></span><br><span class="line">设置ntpd服务开机启动</span><br><span class="line">chkconfig ntpd on</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-在hadoop2和hadoop3上配置"><a href="#4-在hadoop2和hadoop3上配置" class="headerlink" title="4.在hadoop2和hadoop3上配置"></a>4.在hadoop2和hadoop3上配置</h4><p><code>crontab -e</code> </p>
+<p>输入:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">*/10 * * * * /usr/sbin/ntpdate hadoop01</span><br></pre></td></tr></table></figure>
+<p>这样会让hadoop02和hadoop03每10分钟与时间服务器同步一次</p>
+<h4 id="5-测试"><a href="#5-测试" class="headerlink" title="5.测试"></a>5.测试</h4><p>修改hadoop02的当前时间：<br><img src="https://img-blog.csdnimg.cn/20200327160931558.png" alt="在这里插入图片描述"><br>然后输入<code>mail</code>,系统会提示时间已经修改<br><img src="https://img-blog.csdnimg.cn/20200327161036874.png?x-oss-process=image" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200327161056816.png?x-oss-process=image" alt="在这里插入图片描述"></p>
 ]]></content>
       <categories>
         <category>大数据</category>
@@ -1439,6 +1439,73 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java内部类详解</title>
+    <url>/2020/12/27/Java%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<blockquote>
+<p><a href="https://www.runoob.com/w3cnote/java-inner-class-intro.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-inner-class-intro.html</a></p>
+<p><a href="https://www.iteye.com/topic/494230#" target="_blank" rel="noopener">https://www.iteye.com/topic/494230#</a></p>
+</blockquote>
+<h1 id="内部类概述"><a href="#内部类概述" class="headerlink" title="内部类概述"></a>内部类概述</h1><blockquote>
+<p>内部类：就是在一个类中定义一个类。举例：在一个类A的内部定义一个类B，类B就被称为内部类</p>
+</blockquote>
+<p><strong>定义格式：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	修饰符 <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="内部类分类"><a href="#内部类分类" class="headerlink" title="内部类分类"></a>内部类分类</h1><ul>
+<li><p>静态内部类：类似于静态变量</p>
+</li>
+<li><p>实例内部类：类似于实例变量</p>
+</li>
+<li><p>局部内部类：类似于局部变量</p>
+</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li><p>使用内部类编写的代码，可读性很差。能不用尽量不用。</p>
+</li>
+<li><p>匿名内部类是局部内部类的一种</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 由于前面有static，称为静态内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner1</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 没有static称为实例内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner2</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSome</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//局部变量</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">         * 局部内部类</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Inner3</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><p>类似于静态变量</p>
+<h2 id="实例内部类"><a href="#实例内部类" class="headerlink" title="实例内部类"></a>实例内部类</h2><p>成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。</p>
+<p>不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。如果要访问外部类的同名成员，需要以下面的形式进行访问：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">外部类.this.成员变量</span><br><span class="line">外部类.this.成员方法</span><br></pre></td></tr></table></figure>
+
+
+
+<p>虽然成员内部类可以无条件地访问外部类的成员，而外部类想访问成员内部类的成员却不是这么随心所欲了。在外部类中如果要访问成员内部类的成员，必须先创建一个成员内部类的对象，再通过指向这个对象的引用来访问：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Circle &#123;</span><br><span class="line">    private double radius &#x3D; 0;</span><br><span class="line"> </span><br><span class="line">    public Circle(double radius) &#123;</span><br><span class="line">        this.radius &#x3D; radius;</span><br><span class="line">        getDrawInstance().drawSahpe();   &#x2F;&#x2F;必须先创建成员内部类的对象，再进行访问</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    private Draw getDrawInstance() &#123;</span><br><span class="line">        return new Draw();</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    class Draw &#123;     &#x2F;&#x2F;内部类</span><br><span class="line">        public void drawSahpe() &#123;</span><br><span class="line">            System.out.println(radius);  &#x2F;&#x2F;外部类的private成员</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>成员内部类是依附外部类而存在的，也就是说，如果要创建成员内部类的对象，前提是必须存在一个外部类的对象。创建成员内部类对象的一般方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">        &#x2F;&#x2F;第一种方式：</span><br><span class="line">        Outter outter &#x3D; new Outter();</span><br><span class="line">        Outter.Inner inner &#x3D; outter.new Inner();  &#x2F;&#x2F;必须通过Outter对象来创建</span><br><span class="line">         </span><br><span class="line">        &#x2F;&#x2F;第二种方式：</span><br><span class="line">        Outter.Inner inner1 &#x3D; outter.getInnerInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class Outter &#123;</span><br><span class="line">    private Inner inner &#x3D; null;</span><br><span class="line">    public Outter() &#123;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    public Inner getInnerInstance() &#123;</span><br><span class="line">        if(inner &#x3D;&#x3D; null)</span><br><span class="line">            inner &#x3D; new Inner();</span><br><span class="line">        return inner;</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    class Inner &#123;</span><br><span class="line">        public Inner() &#123;</span><br><span class="line">             </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内部类可以拥有 private 访问权限、protected 访问权限、public 访问权限及包访问权限。比如上面的例子，如果成员内部类 Inner 用 private 修饰，则只能在外部类的内部访问，如果用 public 修饰，则任何地方都能访问；如果用 protected 修饰，则只能在同一个包下或者继承外部类的情况下访问；如果是默认访问权限，则只能在同一个包下访问。这一点和外部类有一点不一样，外部类只能被 public 和包访问两种权限修饰。我个人是这么理解的，由于成员内部类看起来像是外部类的一个成员，所以可以像类的成员一样拥有多种权限修饰。</p>
+<p>类似于实例变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Outer &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Outer o &#x3D; new Outer();</span><br><span class="line">        Outer.MyMath myMath &#x3D; o.new MyMath();</span><br><span class="line">        myMath.mysum(new Compute() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public int sum(int x, int y) &#123;</span><br><span class="line">                return x+y;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, 10, 20);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class MyMath&#123;</span><br><span class="line">        public void mysum(Compute c,int x ,int y)&#123;</span><br><span class="line">            int value &#x3D; c.sum(x,y);</span><br><span class="line">            System.out.println(x + &quot;+&quot;+ y + &quot;&#x3D;&quot;+value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    interface comput&#123;</span><br><span class="line">        public int sum(int x,int y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class computImpl implements comput&#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int sum(int x, int y) &#123;</span><br><span class="line">            return x+y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h2><p>类似于局部变量</p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>内部类</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java8新特性</title>
     <url>/2020/12/24/Java8%E6%96%B0%E7%89%B9%E6%80%A7/</url>
     <content><![CDATA[<p>Java8提供了很多新特性，总结一下</p>
@@ -1564,73 +1631,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>函数式编程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java内部类详解</title>
-    <url>/2020/12/27/Java%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<blockquote>
-<p><a href="https://www.runoob.com/w3cnote/java-inner-class-intro.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/java-inner-class-intro.html</a></p>
-<p><a href="https://www.iteye.com/topic/494230#" target="_blank" rel="noopener">https://www.iteye.com/topic/494230#</a></p>
-</blockquote>
-<h1 id="内部类概述"><a href="#内部类概述" class="headerlink" title="内部类概述"></a>内部类概述</h1><blockquote>
-<p>内部类：就是在一个类中定义一个类。举例：在一个类A的内部定义一个类B，类B就被称为内部类</p>
-</blockquote>
-<p><strong>定义格式：</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	修饰符 <span class="class"><span class="keyword">class</span> 类名</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="内部类分类"><a href="#内部类分类" class="headerlink" title="内部类分类"></a>内部类分类</h1><ul>
-<li><p>静态内部类：类似于静态变量</p>
-</li>
-<li><p>实例内部类：类似于实例变量</p>
-</li>
-<li><p>局部内部类：类似于局部变量</p>
-</li>
-</ul>
-<p><strong>注意：</strong></p>
-<ul>
-<li><p>使用内部类编写的代码，可读性很差。能不用尽量不用。</p>
-</li>
-<li><p>匿名内部类是局部内部类的一种</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 由于前面有static，称为静态内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner1</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">     * 没有static称为实例内部类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner2</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSome</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//局部变量</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 该类在类的内部，所以称为内部类</span></span><br><span class="line"><span class="comment">         * 局部内部类</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Inner3</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><p>类似于静态变量</p>
-<h2 id="实例内部类"><a href="#实例内部类" class="headerlink" title="实例内部类"></a>实例内部类</h2><p>成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。</p>
-<p>不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。如果要访问外部类的同名成员，需要以下面的形式进行访问：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">外部类.this.成员变量</span><br><span class="line">外部类.this.成员方法</span><br></pre></td></tr></table></figure>
-
-
-
-<p>虽然成员内部类可以无条件地访问外部类的成员，而外部类想访问成员内部类的成员却不是这么随心所欲了。在外部类中如果要访问成员内部类的成员，必须先创建一个成员内部类的对象，再通过指向这个对象的引用来访问：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Circle &#123;</span><br><span class="line">    private double radius &#x3D; 0;</span><br><span class="line"> </span><br><span class="line">    public Circle(double radius) &#123;</span><br><span class="line">        this.radius &#x3D; radius;</span><br><span class="line">        getDrawInstance().drawSahpe();   &#x2F;&#x2F;必须先创建成员内部类的对象，再进行访问</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    private Draw getDrawInstance() &#123;</span><br><span class="line">        return new Draw();</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    class Draw &#123;     &#x2F;&#x2F;内部类</span><br><span class="line">        public void drawSahpe() &#123;</span><br><span class="line">            System.out.println(radius);  &#x2F;&#x2F;外部类的private成员</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>成员内部类是依附外部类而存在的，也就是说，如果要创建成员内部类的对象，前提是必须存在一个外部类的对象。创建成员内部类对象的一般方式如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">        &#x2F;&#x2F;第一种方式：</span><br><span class="line">        Outter outter &#x3D; new Outter();</span><br><span class="line">        Outter.Inner inner &#x3D; outter.new Inner();  &#x2F;&#x2F;必须通过Outter对象来创建</span><br><span class="line">         </span><br><span class="line">        &#x2F;&#x2F;第二种方式：</span><br><span class="line">        Outter.Inner inner1 &#x3D; outter.getInnerInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class Outter &#123;</span><br><span class="line">    private Inner inner &#x3D; null;</span><br><span class="line">    public Outter() &#123;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    public Inner getInnerInstance() &#123;</span><br><span class="line">        if(inner &#x3D;&#x3D; null)</span><br><span class="line">            inner &#x3D; new Inner();</span><br><span class="line">        return inner;</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    class Inner &#123;</span><br><span class="line">        public Inner() &#123;</span><br><span class="line">             </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>内部类可以拥有 private 访问权限、protected 访问权限、public 访问权限及包访问权限。比如上面的例子，如果成员内部类 Inner 用 private 修饰，则只能在外部类的内部访问，如果用 public 修饰，则任何地方都能访问；如果用 protected 修饰，则只能在同一个包下或者继承外部类的情况下访问；如果是默认访问权限，则只能在同一个包下访问。这一点和外部类有一点不一样，外部类只能被 public 和包访问两种权限修饰。我个人是这么理解的，由于成员内部类看起来像是外部类的一个成员，所以可以像类的成员一样拥有多种权限修饰。</p>
-<p>类似于实例变量</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Outer &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Outer o &#x3D; new Outer();</span><br><span class="line">        Outer.MyMath myMath &#x3D; o.new MyMath();</span><br><span class="line">        myMath.mysum(new Compute() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public int sum(int x, int y) &#123;</span><br><span class="line">                return x+y;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, 10, 20);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class MyMath&#123;</span><br><span class="line">        public void mysum(Compute c,int x ,int y)&#123;</span><br><span class="line">            int value &#x3D; c.sum(x,y);</span><br><span class="line">            System.out.println(x + &quot;+&quot;+ y + &quot;&#x3D;&quot;+value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    interface comput&#123;</span><br><span class="line">        public int sum(int x,int y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class computImpl implements comput&#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int sum(int x, int y) &#123;</span><br><span class="line">            return x+y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h2><p>类似于局部变量</p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>内部类</tag>
       </tags>
   </entry>
   <entry>
@@ -3678,37 +3678,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Redis应用场景</title>
-    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
-    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
-</blockquote>
-<blockquote>
-<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
-</blockquote>
-<p>Redis常见场景主要有以下几种:</p>
-<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
-<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
-<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
-<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
-<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
-<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
-<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
-<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>中间件</category>
-        <category>缓存</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PXC脚本命令</title>
     <url>/2020/12/13/PXC%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p>通过Centos搭建PXC集群脚本命令</p>
@@ -4127,6 +4096,37 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Redis应用场景</title>
+    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+</blockquote>
+<blockquote>
+<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+</blockquote>
+<p>Redis常见场景主要有以下几种:</p>
+<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
+<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
+<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
+<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
+<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
+<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
+<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
+<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>中间件</category>
+        <category>缓存</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4249,35 +4249,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot整合Undertow</title>
-    <url>/2020/12/30/SpringBoot%E6%95%B4%E5%90%88Undertow/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="1-maven依赖"><a href="#1-maven依赖" class="headerlink" title="1.maven依赖"></a>1.maven依赖</h1><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-undertow<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="2-配置Undertow"><a href="#2-配置Undertow" class="headerlink" title="2.配置Undertow"></a>2.配置Undertow</h1><blockquote>
-<p>Undertow基本配置:<a href="https://www.pianshen.com/article/7390262599/" target="_blank" rel="noopener">https://www.pianshen.com/article/7390262599/</a></p>
-</blockquote>
-<p>这里以application.properties示例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 是否打开 undertow 日志，默认为 false</span><br><span class="line">server.undertow.accesslog.enabled&#x3D;false</span><br><span class="line"># 设置访问日志所在目录</span><br><span class="line">server.undertow.accesslog.dir&#x3D;logs</span><br><span class="line"># 指定工作者线程的 I&#x2F;0 线程数，默认为 2 或者 CPU 的个数</span><br><span class="line">server.undertow.io-threads&#x3D;</span><br><span class="line"># 指定工作者线程个数，默认为 I&#x2F;O 线程个数的 8 倍</span><br><span class="line">server.undertow.worker-threads&#x3D;</span><br><span class="line"># 设置 HTTP POST 内容的最大长度，默认不做限制</span><br><span class="line">server.undertow.max-http-post-size&#x3D;0</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="3-使用-Undertow-监听多个端口示例"><a href="#3-使用-Undertow-监听多个端口示例" class="headerlink" title="3.使用 Undertow 监听多个端口示例"></a>3.使用 Undertow 监听多个端口示例</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UndertowEmbeddedServletContainerFactory <span class="title">embeddedServletContainerFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    UndertowEmbeddedServletContainerFactory factory = <span class="keyword">new</span> UndertowEmbeddedServletContainerFactory();</span><br><span class="line">    factory.addBuilderCustomizers(<span class="keyword">new</span> UndertowBuilderCustomizer() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">customize</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">            builder.addHttpListener(<span class="number">8080</span>, <span class="string">"0.0.0.0"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>运维知识</category>
-        <category>应用服务器</category>
-      </categories>
-      <tags>
-        <tag>Undertow</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4312,6 +4283,35 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>分页功能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot整合Undertow</title>
+    <url>/2020/12/30/SpringBoot%E6%95%B4%E5%90%88Undertow/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-maven依赖"><a href="#1-maven依赖" class="headerlink" title="1.maven依赖"></a>1.maven依赖</h1><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-undertow<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-配置Undertow"><a href="#2-配置Undertow" class="headerlink" title="2.配置Undertow"></a>2.配置Undertow</h1><blockquote>
+<p>Undertow基本配置:<a href="https://www.pianshen.com/article/7390262599/" target="_blank" rel="noopener">https://www.pianshen.com/article/7390262599/</a></p>
+</blockquote>
+<p>这里以application.properties示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 是否打开 undertow 日志，默认为 false</span><br><span class="line">server.undertow.accesslog.enabled&#x3D;false</span><br><span class="line"># 设置访问日志所在目录</span><br><span class="line">server.undertow.accesslog.dir&#x3D;logs</span><br><span class="line"># 指定工作者线程的 I&#x2F;0 线程数，默认为 2 或者 CPU 的个数</span><br><span class="line">server.undertow.io-threads&#x3D;</span><br><span class="line"># 指定工作者线程个数，默认为 I&#x2F;O 线程个数的 8 倍</span><br><span class="line">server.undertow.worker-threads&#x3D;</span><br><span class="line"># 设置 HTTP POST 内容的最大长度，默认不做限制</span><br><span class="line">server.undertow.max-http-post-size&#x3D;0</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="3-使用-Undertow-监听多个端口示例"><a href="#3-使用-Undertow-监听多个端口示例" class="headerlink" title="3.使用 Undertow 监听多个端口示例"></a>3.使用 Undertow 监听多个端口示例</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UndertowEmbeddedServletContainerFactory <span class="title">embeddedServletContainerFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    UndertowEmbeddedServletContainerFactory factory = <span class="keyword">new</span> UndertowEmbeddedServletContainerFactory();</span><br><span class="line">    factory.addBuilderCustomizers(<span class="keyword">new</span> UndertowBuilderCustomizer() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">customize</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">            builder.addHttpListener(<span class="number">8080</span>, <span class="string">"0.0.0.0"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>运维知识</category>
+        <category>应用服务器</category>
+      </categories>
+      <tags>
+        <tag>Undertow</tag>
       </tags>
   </entry>
   <entry>
@@ -5528,37 +5528,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>git常见错误</title>
-    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>记录git常见错误</p>
-<a id="more"></a>
-
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
-<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-<p>1.git Could not read from remote repository</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.error: failed to push some refs to xxx</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>代码管理工具</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>git常见错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>git命令操作笔记</title>
     <url>/2019/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -5604,10 +5573,42 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>git常见错误</title>
+    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>记录git常见错误</p>
+<a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
+<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+<p>1.git Could not read from remote repository</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.error: failed to push some refs to xxx</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>代码管理工具</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>git常见错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo博客高级操作</title>
     <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<blockquote>
-<p>hexo next高级操作<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
+<p>官网文档：<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">http://theme-next.iissnan.com</a></p>
+<p>hexo next高级操作：<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
 </blockquote>
 <a id="more"></a>
 
@@ -5625,6 +5626,36 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>server.xml中docBase和path的关系梳理</title>
+    <url>/2019/02/13/server-xml%E4%B8%ADdocBase%E5%92%8Cpath%E7%9A%84%E5%85%B3%E7%B3%BB%E6%A2%B3%E7%90%86/</url>
+    <content><![CDATA[<p>今天项目遇到这么个问题，想通过第三方存储的方式获取图片，服务器中显示路径为本地路径+数据库中存储的路径。</p>
+<a id="more"></a>
+
+<p>主要有两种方案：</p>
+<ul>
+<li>通过tomcat的server.xml文件配置</li>
+<li>通过IDEA设置虚拟路径</li>
+</ul>
+<p><strong>方案一：</strong></p>
+<p>在tomcat的server.xml文件中加入配置语句</p>
+<p><img src="/images/2019031501.png" alt="image">这样当我们读取到这个/upload时就会转为 D:/upload，之后加上后面的路径凑成完成绝对路径，进行访问</p>
+<p>然后设置idea的tomcat，勾选<code>Deploy applications configured in Tomcat instance</code></p>
+<p><img src="/images/2019031502.png" alt="image"></p>
+<p><strong>方案二：</strong></p>
+<p>直接用idea设置虚拟路径。</p>
+<p>取消勾选<code>Deploy applications configured in Tomcat instance</code></p>
+<p>在<code>Deployment</code>设置虚拟路径—&gt;<code>External Source</code>–&gt;选择替换的路径—&gt;在Application context输入被替换的路径即可</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>服务器软件</category>
+        <category>应用服务器</category>
+      </categories>
+      <tags>
+        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -5671,36 +5702,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>server.xml中docBase和path的关系梳理</title>
-    <url>/2019/02/13/server-xml%E4%B8%ADdocBase%E5%92%8Cpath%E7%9A%84%E5%85%B3%E7%B3%BB%E6%A2%B3%E7%90%86/</url>
-    <content><![CDATA[<p>今天项目遇到这么个问题，想通过第三方存储的方式获取图片，服务器中显示路径为本地路径+数据库中存储的路径。</p>
-<a id="more"></a>
-
-<p>主要有两种方案：</p>
-<ul>
-<li>通过tomcat的server.xml文件配置</li>
-<li>通过IDEA设置虚拟路径</li>
-</ul>
-<p><strong>方案一：</strong></p>
-<p>在tomcat的server.xml文件中加入配置语句</p>
-<p><img src="/images/2019031501.png" alt="image">这样当我们读取到这个/upload时就会转为 D:/upload，之后加上后面的路径凑成完成绝对路径，进行访问</p>
-<p>然后设置idea的tomcat，勾选<code>Deploy applications configured in Tomcat instance</code></p>
-<p><img src="/images/2019031502.png" alt="image"></p>
-<p><strong>方案二：</strong></p>
-<p>直接用idea设置虚拟路径。</p>
-<p>取消勾选<code>Deploy applications configured in Tomcat instance</code></p>
-<p>在<code>Deployment</code>设置虚拟路径—&gt;<code>External Source</code>–&gt;选择替换的路径—&gt;在Application context输入被替换的路径即可</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>服务器软件</category>
-        <category>应用服务器</category>
-      </categories>
-      <tags>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -6067,6 +6068,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>实体类的4种类型</title>
+    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>实体类的4种类型总结</p>
+<a id="more"></a>
+
+<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
+<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
+<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
+<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
+<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
+<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>Domain Object</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>微服务的理解</title>
     <url>/2021/01/08/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<p>微服务架构是当下流行的软件架构风格。</p>
@@ -6128,26 +6149,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>微服务</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实体类的4种类型</title>
-    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>实体类的4种类型总结</p>
-<a id="more"></a>
-
-<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
-<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
-<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
-<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
-<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
-<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-      </categories>
-      <tags>
-        <tag>Domain Object</tag>
       </tags>
   </entry>
   <entry>
@@ -6763,6 +6764,31 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>看懂四个指标（PE/PB/ROE/股息率）</title>
+    <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<p><strong>市盈率PE</strong> (Price-to-Earning Ratio)：指当前总市值除以一年的总净利润。<strong>市盈率越低，说明越是低估</strong></p>
+<p><strong>市净率 PB</strong> (Price-to-Book Ratio)：指每股股价除以每股净资产，或总市值除以净资产。<strong>1倍以下就是低市净率。</strong></p>
+<p><strong>净资产收益率ROE</strong>（Rate of Return on Common Stockholders’ Equity）：是指净利润除以净资产。代表着股东股权投资的报酬率，代表着公司赚钱的能力。按照格雷厄姆的标准，<strong>盈利收益率大于10%才是值得投资的企业</strong>。</p>
+<p><strong>股息率（Dividend Yield Ratio）</strong>：是一年的总派息额与当时市价的比例。</p>
+<p><strong>PE/PB百分位</strong>：这个指标是跟历史数据比较，看看现在的数据是在一个什么区域。<strong>百分位5%，代表现在的估值比过去95%的时间低。</strong></p>
+<blockquote>
+<p>一文教你看四个指标（PE/PB/ROE/股息率）：<a href="https://zhuanlan.zhihu.com/p/61254326" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61254326</a></p>
+<p>指数基金估值之PE, PB, ROE：<a href="https://zhuanlan.zhihu.com/p/111568187" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/111568187</a></p>
+</blockquote>
+<p><strong>指数基金分类</strong>：</p>
+<p><img src="/images/2021030201.png" alt="2020120701"></p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>理财</tag>
       </tags>
   </entry>
   <entry>
@@ -7483,31 +7509,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>面向对象</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>看懂四个指标（PE/PB/ROE/股息率）</title>
-    <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<p><strong>市盈率PE</strong> (Price-to-Earning Ratio)：指当前总市值除以一年的总净利润。<strong>市盈率越低，说明越是低估</strong></p>
-<p><strong>市净率 PB</strong> (Price-to-Book Ratio)：指每股股价除以每股净资产，或总市值除以净资产。<strong>1倍以下就是低市净率。</strong></p>
-<p><strong>净资产收益率ROE</strong>（Rate of Return on Common Stockholders’ Equity）：是指净利润除以净资产。代表着股东股权投资的报酬率，代表着公司赚钱的能力。按照格雷厄姆的标准，<strong>盈利收益率大于10%才是值得投资的企业</strong>。</p>
-<p><strong>股息率（Dividend Yield Ratio）</strong>：是一年的总派息额与当时市价的比例。</p>
-<p><strong>PE/PB百分位</strong>：这个指标是跟历史数据比较，看看现在的数据是在一个什么区域。<strong>百分位5%，代表现在的估值比过去95%的时间低。</strong></p>
-<blockquote>
-<p>一文教你看四个指标（PE/PB/ROE/股息率）：<a href="https://zhuanlan.zhihu.com/p/61254326" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61254326</a></p>
-<p>指数基金估值之PE, PB, ROE：<a href="https://zhuanlan.zhihu.com/p/111568187" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/111568187</a></p>
-</blockquote>
-<p><strong>指数基金分类</strong>：</p>
-<p><img src="/images/2021030201.png" alt="2020120701"></p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>理财</tag>
       </tags>
   </entry>
   <entry>
