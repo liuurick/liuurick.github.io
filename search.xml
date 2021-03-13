@@ -60,84 +60,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Centos7上安装docker</title>
-    <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
-    <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
-<a id="more"></a>
-
-<h2 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1 安装docker"></a>1 安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
-<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2019121701.png" alt="image-20201217213427007"></p>
-<p>2.使用 <code>root</code> 权限登录 Centos。确保 yum 包更新到最新。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum update</span><br></pre></td></tr></table></figure>
-
-<p>3.卸载旧版本(如果安装过旧版本的话)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum remove docker  docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
-
-<p>4.安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
-
-<p>5.设置yum源</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2019121702.png" alt="image-20201217213649924"></p>
-<p>6.可以查看所有仓库中所有docker版本，并选择特定版本安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
-
-<p>7.安装docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce  #由于repo中默认只开启stable仓库，故这里安装的是最新稳定版</span><br><span class="line"># sudo yum install &lt;FQPN&gt;  # 例如：sudo yum install docker-ce-17.12.0.ce</span><br></pre></td></tr></table></figure>
-
-<p>8.启动docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-
-<p>9.设置开机自启动</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
-
-<p>10.验证安装是否成功(有client和service两部分表示docker安装启动都成功了)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># docker version</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-配置镜像加速"><a href="#2-配置镜像加速" class="headerlink" title="2 配置镜像加速"></a>2 配置镜像加速</h2><blockquote>
-<p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
-</blockquote>
-<p>Docker客户端版本需要大于 1.10.0 </p>
-<p>可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;26udi78a.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
-
-<p>2.卸载旧版本的包</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum erase docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
-
-<p>3.再次安装docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.yum安装的时候遇到公钥尚未安装的问题解决</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 yum install xxxx 命令之后添加 --nogpgcheck 进行跳过公钥检查安装</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<p>导入密钥重新安装Docker</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>分布式/微服务</category>
-        <category>虚拟化/容器化</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Debug调试学习</title>
     <url>/2021/01/28/Debug%E8%B0%83%E8%AF%95%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -356,6 +278,84 @@
       </categories>
       <tags>
         <tag>Debug</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos7上安装docker</title>
+    <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
+    <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
+<a id="more"></a>
+
+<h2 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1 安装docker"></a>1 安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
+<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019121701.png" alt="image-20201217213427007"></p>
+<p>2.使用 <code>root</code> 权限登录 Centos。确保 yum 包更新到最新。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum update</span><br></pre></td></tr></table></figure>
+
+<p>3.卸载旧版本(如果安装过旧版本的话)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum remove docker  docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
+
+<p>4.安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+
+<p>5.设置yum源</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019121702.png" alt="image-20201217213649924"></p>
+<p>6.可以查看所有仓库中所有docker版本，并选择特定版本安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
+
+<p>7.安装docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce  #由于repo中默认只开启stable仓库，故这里安装的是最新稳定版</span><br><span class="line"># sudo yum install &lt;FQPN&gt;  # 例如：sudo yum install docker-ce-17.12.0.ce</span><br></pre></td></tr></table></figure>
+
+<p>8.启动docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<p>9.设置开机自启动</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
+
+<p>10.验证安装是否成功(有client和service两部分表示docker安装启动都成功了)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># docker version</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-配置镜像加速"><a href="#2-配置镜像加速" class="headerlink" title="2 配置镜像加速"></a>2 配置镜像加速</h2><blockquote>
+<p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
+</blockquote>
+<p>Docker客户端版本需要大于 1.10.0 </p>
+<p>可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;26udi78a.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>2.卸载旧版本的包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum erase docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>3.再次安装docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.yum安装的时候遇到公钥尚未安装的问题解决</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 yum install xxxx 命令之后添加 --nogpgcheck 进行跳过公钥检查安装</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<p>导入密钥重新安装Docker</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>虚拟化/容器化</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -975,46 +975,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
-<a id="more"></a>
-
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
-
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
-<p><img src="/images/2020101102.png" alt="node1"></p>
-<p>node2:</p>
-<p><img src="/images/2020101103.png" alt="node2"></p>
-<p>node3:</p>
-<p><img src="/images/2020101104.png" alt="node3"></p>
-<p>总览：</p>
-<p><img src="/images/2020101105.png" alt="nodes"></p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>搜索引擎</category>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch集群</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hadoop集群搭建</title>
     <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<blockquote>
@@ -1102,6 +1062,46 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Hadoop集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
+<a id="more"></a>
+
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
+</ul>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
+
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
+
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
+<p><img src="/images/2020101102.png" alt="node1"></p>
+<p>node2:</p>
+<p><img src="/images/2020101103.png" alt="node2"></p>
+<p>node3:</p>
+<p><img src="/images/2020101104.png" alt="node3"></p>
+<p>总览：</p>
+<p><img src="/images/2020101105.png" alt="nodes"></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch集群</tag>
       </tags>
   </entry>
   <entry>
@@ -2531,49 +2531,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Logback配置与使用</title>
-    <url>/2018/10/31/Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h1 id="Logback介绍"><a href="#Logback介绍" class="headerlink" title="Logback介绍"></a>Logback介绍</h1><p>Logback 分为三个模块：</p>
-<ul>
-<li>Core模块是其他两个模块的基础。</li>
-<li>Classic模块扩展了core模块。Classic模块相当于log4j的显著改进版，Logback-classic 直接实现了 SLF4J API。</li>
-<li>Access访问模块与Servlet容器集成提供通过Http来访问日志的功能。</li>
-</ul>
-<p>要引入logback，由于Logback-classic依赖slf4j-api.jar和logback-core.jar，所以要把slf4j-api.jar、logback-core.jar、logback-classic.jar，添加到要引入Logbac日志管理的项目的classpath中。</p>
-<h1 id="配置模板"><a href="#配置模板" class="headerlink" title="配置模板"></a>配置模板</h1><blockquote>
-<p><a href="https://www.cnblogs.com/warking/p/5710303.html" target="_blank" rel="noopener">https://www.cnblogs.com/warking/p/5710303.html</a></p>
-</blockquote>
-<p>在项目中使用的模板</p>
-<p>pom依赖：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>配置介绍</p>
-<ul>
-<li>Logger、appender及layout</li>
-</ul>
-<p>　　Logger作为日志的记录器，把它关联到应用的对应的context上后，主要用于存放日志对象，也可以定义日志类型、级别。<br>　　Appender主要用于指定日志输出的目的地，目的地可以是控制台、文件、远程套接字服务器、 MySQL、PostreSQL、 Oracle和其他数据库、 JMS和远程UNIX Syslog守护进程等。<br>　　Layout 负责把事件转换成字符串，格式化的日志信息的输出。</p>
-<ul>
-<li>logger context</li>
-</ul>
-<p>　　各个logger 都被关联到一个 LoggerContext，LoggerContext负责制造logger，也负责以树结构排列各logger。其他所有logger也通过org.slf4j.LoggerFactory 类的静态方法getLogger取得。 getLogger方法以 logger名称为参数。用同一名字调用LoggerFactory.getLogger 方法所得到的永远都是同一个logger对象的引用。</p>
-<ul>
-<li>有效级别及级别的继承</li>
-</ul>
-<p>　　Logger 可以被分配级别。级别包括：TRACE、DEBUG、INFO、WARN 和 ERROR，定义于ch.qos.logback.classic.Level类。如果 logger没有被分配级别，那么它将从有被分配级别的最近的祖先那里继承级别。root logger 默认级别是 DEBUG。</p>
-<ul>
-<li>打印方法与基本的选择规则</li>
-</ul>
-<p>　　打印方法决定记录请求的级别。例如，如果 L 是一个 logger 实例，那么，语句 L.info(“..”)是一条级别为 INFO的记录语句。记录请求的级别在高于或等于其 logger 的有效级别时被称为被启用，否则，称为被禁用。记录请求级别为 p，其 logger的有效级别为 q，只有则当 p&gt;=q时，该请求才会被执行。<br>该规则是 logback 的核心。</p>
-<p>级别排序为： <code>TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">"true"</span> <span class="attr">scanPeriod</span>=<span class="string">"60 seconds"</span> <span class="attr">debug</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 定义参数常量 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- TRACE&lt;DEBUG&lt;INFO&lt;WARN&lt;ERROR --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- logger.trace("msg") logger.debug... --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.level"</span> <span class="attr">value</span>=<span class="string">"debug"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.maxHistory"</span> <span class="attr">value</span>=<span class="string">"30"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.filePath"</span> <span class="attr">value</span>=<span class="string">"$&#123;catalina.base&#125;/logs/webapps"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.pattern"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">value</span>=<span class="string">"%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n"</span> /&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 控制台设置 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"consoleAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- DEBUG --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"debugAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/debug.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/debug/debug.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>DEBUG<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- INFO --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"infoAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/info.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/info/info.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>INFO<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ERROR --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"errorAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/erorr.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/error/error.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"com.liuurick.o2o"</span> <span class="attr">level</span>=<span class="string">"$&#123;log.level&#125;"</span> <span class="attr">additivity</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"debugAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"infoAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"errorAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"info"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"consoleAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>Logback</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux安装配置大全</title>
     <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
     <content><![CDATA[<p>Linux各种版本安装配置</p>
@@ -2628,6 +2585,65 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Logback配置与使用</title>
+    <url>/2018/10/31/Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h1 id="Logback介绍"><a href="#Logback介绍" class="headerlink" title="Logback介绍"></a>Logback介绍</h1><p>Logback 分为三个模块：</p>
+<ul>
+<li>Core模块是其他两个模块的基础。</li>
+<li>Classic模块扩展了core模块。Classic模块相当于log4j的显著改进版，Logback-classic 直接实现了 SLF4J API。</li>
+<li>Access访问模块与Servlet容器集成提供通过Http来访问日志的功能。</li>
+</ul>
+<p>要引入logback，由于Logback-classic依赖slf4j-api.jar和logback-core.jar，所以要把slf4j-api.jar、logback-core.jar、logback-classic.jar，添加到要引入Logbac日志管理的项目的classpath中。</p>
+<h1 id="配置模板"><a href="#配置模板" class="headerlink" title="配置模板"></a>配置模板</h1><blockquote>
+<p><a href="https://www.cnblogs.com/warking/p/5710303.html" target="_blank" rel="noopener">https://www.cnblogs.com/warking/p/5710303.html</a></p>
+</blockquote>
+<p>在项目中使用的模板</p>
+<p>pom依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置介绍</p>
+<ul>
+<li>Logger、appender及layout</li>
+</ul>
+<p>　　Logger作为日志的记录器，把它关联到应用的对应的context上后，主要用于存放日志对象，也可以定义日志类型、级别。<br>　　Appender主要用于指定日志输出的目的地，目的地可以是控制台、文件、远程套接字服务器、 MySQL、PostreSQL、 Oracle和其他数据库、 JMS和远程UNIX Syslog守护进程等。<br>　　Layout 负责把事件转换成字符串，格式化的日志信息的输出。</p>
+<ul>
+<li>logger context</li>
+</ul>
+<p>　　各个logger 都被关联到一个 LoggerContext，LoggerContext负责制造logger，也负责以树结构排列各logger。其他所有logger也通过org.slf4j.LoggerFactory 类的静态方法getLogger取得。 getLogger方法以 logger名称为参数。用同一名字调用LoggerFactory.getLogger 方法所得到的永远都是同一个logger对象的引用。</p>
+<ul>
+<li>有效级别及级别的继承</li>
+</ul>
+<p>　　Logger 可以被分配级别。级别包括：TRACE、DEBUG、INFO、WARN 和 ERROR，定义于ch.qos.logback.classic.Level类。如果 logger没有被分配级别，那么它将从有被分配级别的最近的祖先那里继承级别。root logger 默认级别是 DEBUG。</p>
+<ul>
+<li>打印方法与基本的选择规则</li>
+</ul>
+<p>　　打印方法决定记录请求的级别。例如，如果 L 是一个 logger 实例，那么，语句 L.info(“..”)是一条级别为 INFO的记录语句。记录请求的级别在高于或等于其 logger 的有效级别时被称为被启用，否则，称为被禁用。记录请求级别为 p，其 logger的有效级别为 q，只有则当 p&gt;=q时，该请求才会被执行。<br>该规则是 logback 的核心。</p>
+<p>级别排序为： <code>TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR</code></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">"true"</span> <span class="attr">scanPeriod</span>=<span class="string">"60 seconds"</span> <span class="attr">debug</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 定义参数常量 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- TRACE&lt;DEBUG&lt;INFO&lt;WARN&lt;ERROR --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- logger.trace("msg") logger.debug... --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.level"</span> <span class="attr">value</span>=<span class="string">"debug"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.maxHistory"</span> <span class="attr">value</span>=<span class="string">"30"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.filePath"</span> <span class="attr">value</span>=<span class="string">"$&#123;catalina.base&#125;/logs/webapps"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.pattern"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">value</span>=<span class="string">"%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n"</span> /&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 控制台设置 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"consoleAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- DEBUG --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"debugAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/debug.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/debug/debug.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>DEBUG<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- INFO --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"infoAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/info.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/info/info.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>INFO<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ERROR --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"errorAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/erorr.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/error/error.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"com.liuurick.o2o"</span> <span class="attr">level</span>=<span class="string">"$&#123;log.level&#125;"</span> <span class="attr">additivity</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"debugAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"infoAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"errorAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"info"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"consoleAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>Logback</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis-Plus笔记</title>
+    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>ORM框架</category>
+      </categories>
+      <tags>
+        <tag>MyBatis-Plus</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MyBatis三剑客</title>
     <url>/2020/11/19/MyBatis%E4%B8%89%E5%89%91%E5%AE%A2/</url>
     <content><![CDATA[<p>MyBatis-generator</p>
@@ -2668,22 +2684,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <tag>Mybatis-generator</tag>
         <tag>Mybatis-plugin</tag>
         <tag>Mybatis-PageHelper</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MyBatis-Plus笔记</title>
-    <url>/2020/08/15/MyBatis-Plus%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>MyBatis-Plus 用起来真的很舒服:<a href="https://www.cnblogs.com/l-y-h/p/12859477.html" target="_blank" rel="noopener">https://www.cnblogs.com/l-y-h/p/12859477.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>ORM框架</category>
-      </categories>
-      <tags>
-        <tag>MyBatis-Plus</tag>
       </tags>
   </entry>
   <entry>
@@ -3678,6 +3678,37 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Redis应用场景</title>
+    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+</blockquote>
+<blockquote>
+<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+</blockquote>
+<p>Redis常见场景主要有以下几种:</p>
+<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
+<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
+<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
+<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
+<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
+<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
+<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
+<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>中间件</category>
+        <category>缓存</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>PXC脚本命令</title>
     <url>/2020/12/13/PXC%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p>通过Centos搭建PXC集群脚本命令</p>
@@ -4096,37 +4127,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Redis应用场景</title>
-    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
-    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
-</blockquote>
-<blockquote>
-<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
-</blockquote>
-<p>Redis常见场景主要有以下几种:</p>
-<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
-<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
-<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
-<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
-<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
-<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
-<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
-<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>中间件</category>
-        <category>缓存</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Redis集群搭建</title>
     <url>/2020/07/30/Redis%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4468,7 +4468,31 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 
 
 <h1 id="3-构建-Spring-Security-模块化工程"><a href="#3-构建-Spring-Security-模块化工程" class="headerlink" title="3 构建 Spring Security 模块化工程"></a>3 构建 Spring Security 模块化工程</h1><p>Maven 多模块化构建，课程共 4 个工程</p>
-<h2 id="3-1-项目目录"><a href="#3-1-项目目录" class="headerlink" title="3.1 项目目录"></a>3.1 项目目录</h2><p>Spring Security Maven 模块化工程</p>
+<h2 id="3-1-项目目录"><a href="#3-1-项目目录" class="headerlink" title="3.1 项目目录"></a>3.1 项目目录</h2><table>
+<thead>
+<tr>
+<th>模块名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>security-parent</td>
+<td>父模块，pom类型，进行统一的版本管理，聚合管理子模块</td>
+</tr>
+<tr>
+<td>security-base</td>
+<td>基础通用功能管理，如工具类</td>
+</tr>
+<tr>
+<td>security-core</td>
+<td>进行安全管理，实现身份认证、验证码认证、手机登录、用户授权等。</td>
+</tr>
+<tr>
+<td>security-web</td>
+<td>web业务应用  <code>thymeleaf dao service controller</code></td>
+</tr>
+</tbody></table>
+<p>Spring Security Maven 模块化工程</p>
 <p>创建与配置聚合管理 Parent 父工程</p>
 <p>创建与配置 Base 基础通用工程</p>
 <p>创建与配置 core 安全管理工程</p>
@@ -5504,6 +5528,37 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>git常见错误</title>
+    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>记录git常见错误</p>
+<a id="more"></a>
+
+<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
+<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
+<p>1.git Could not read from remote repository</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.error: failed to push some refs to xxx</p>
+<blockquote>
+<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+</blockquote>
+<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
+<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
+<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
+<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>代码管理工具</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>git常见错误</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git命令操作笔记</title>
     <url>/2019/12/25/git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -5546,37 +5601,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>git常见命令</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git常见错误</title>
-    <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>记录git常见错误</p>
-<a id="more"></a>
-
-<p>一般是没有初始化git本地版本管理仓库，所以无法执行git命令 。</p>
-<p>操作之前执行以下命令行: <code>git init</code><br>然后执行一下<code>git status</code>查看状态信息</p>
-<p>1.git Could not read from remote repository</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:liuurick&#x2F;BlogBackup.git</span><br><span class="line">git remote -v</span><br><span class="line">git bash输出</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.error: failed to push some refs to xxx</p>
-<blockquote>
-<p>! [rejected]        master -&gt; master (fetch first)<br>error: failed to push some refs to ‘git@github.com:liuurick/BlogBackup.git’<br>hint: Updates were rejected because the remote contains work that you do<br>hint: not have locally. This is usually caused by another repository pushing<br>hint: to the same ref. You may want to first integrate the remote changes<br>hint: (e.g., ‘git pull …’) before pushing again.<br>hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
-</blockquote>
-<p>查了几种解决方式都不太管用，最后发现是由于github中的README.md文件不在本地代码目录中</p>
-<p>检查了一下果然如此！<br>这时候可以通过 <code>git pull --rebase origin master</code> 把README.md文件克隆到本地库。</p>
-<p>git pull –rebase origin master<br>最后提交：<code>git push origin master</code></p>
-<p><strong>下次遇到这样的问题，记得检查.gitignore和README.md文件</strong></p>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>代码管理工具</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>git常见错误</tag>
       </tags>
   </entry>
   <entry>
@@ -5701,50 +5725,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>人民日报给90后的理财计划</title>
-    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
-    <content><![CDATA[<p>人民日报给90后的理财计划</p>
-<a id="more"></a>
-
-<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="image"></p>
-<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="image"></p>
-<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="image"></p>
-<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="image"></p>
-<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="image"></p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><img src="/images/2020102506.png" alt="image-20201227160018479"></p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>理财</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>人身保险购买指南</title>
-    <url>/2021/01/29/%E4%BA%BA%E8%BA%AB%E4%BF%9D%E9%99%A9%E8%B4%AD%E4%B9%B0%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<p>人身险：</p>
-<ul>
-<li>医疗险</li>
-<li>重疾险</li>
-<li>防癌险</li>
-<li>意外险</li>
-<li>寿险</li>
-</ul>
-<a id="more"></a>
-
-<blockquote>
-<p><a href="https://post.smzdm.com/p/752772/" target="_blank" rel="noopener">https://post.smzdm.com/p/752772/</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>保险</category>
-      </categories>
-      <tags>
-        <tag>保险</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>主从库同步与读写分离</title>
     <url>/2018/10/31/%E4%B8%BB%E4%BB%8E%E5%BA%93%E5%90%8C%E6%AD%A5%E4%B8%8E%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -5854,6 +5834,50 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>主从复制</tag>
         <tag>读写分离</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人民日报给90后的理财计划</title>
+    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>人民日报给90后的理财计划</p>
+<a id="more"></a>
+
+<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="image"></p>
+<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="image"></p>
+<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="image"></p>
+<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="image"></p>
+<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="image"></p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><img src="/images/2020102506.png" alt="image-20201227160018479"></p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>理财</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人身保险购买指南</title>
+    <url>/2021/01/29/%E4%BA%BA%E8%BA%AB%E4%BF%9D%E9%99%A9%E8%B4%AD%E4%B9%B0%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<p>人身险：</p>
+<ul>
+<li>医疗险</li>
+<li>重疾险</li>
+<li>防癌险</li>
+<li>意外险</li>
+<li>寿险</li>
+</ul>
+<a id="more"></a>
+
+<blockquote>
+<p><a href="https://post.smzdm.com/p/752772/" target="_blank" rel="noopener">https://post.smzdm.com/p/752772/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>保险</category>
+      </categories>
+      <tags>
+        <tag>保险</tag>
       </tags>
   </entry>
   <entry>
@@ -6043,26 +6067,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>实体类的4种类型</title>
-    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>实体类的4种类型总结</p>
-<a id="more"></a>
-
-<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
-<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
-<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
-<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
-<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
-<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-      </categories>
-      <tags>
-        <tag>Domain Object</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>微服务的理解</title>
     <url>/2021/01/08/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<p>微服务架构是当下流行的软件架构风格。</p>
@@ -6124,6 +6128,92 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>微服务</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实体类的4种类型</title>
+    <url>/2020/10/31/%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%844%E7%A7%8D%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>实体类的4种类型总结</p>
+<a id="more"></a>
+
+<p>领域模型中的实体类可细分为4种类型：<code>VO、DTO、DO、PO</code></p>
+<p>PO（Persistment Object）：持久化对象，表示持久层的数据结构；</p>
+<p>DO（Domain Object）：领域对象，即业务实体对象；</p>
+<p>DTO（Data Transfer Object）：数据传输对象，原来的目的是为EJB的分布式应用提供粗粒度的数据实体，以降低分布式调用的次数，提高分布式调用的性能，后来一般泛指用于展示层与服务层之间的数据传输对象，因此可以将DTO看成一个组合版的DO；</p>
+<p>VO（View Object）：视图对象，用于展示层视图状态对应的对象。</p>
+<p>从分层角度来说，PO、DO/DTO、VO分别属于持久层、服务层和展示层。对于简单模块来说，有时PO、DO和VO并没有什么区别，这时就没有必要定义DO和VO了，直接服用PO即可。</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>Domain Object</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>快速构建Java Web项目的开发环境</title>
+    <url>/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<p>Idea通过maven快速构建项目</p>
+<a id="more"></a>
+
+<h1 id="1-搭建项目的开发环境"><a href="#1-搭建项目的开发环境" class="headerlink" title="1.搭建项目的开发环境"></a>1.搭建项目的开发环境</h1><ul>
+<li>设置字体</li>
+<li>设置工作区的字符集为utf-8</li>
+<li>设置basePath变量及base标签</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库<img src="/images/2020112001.png" alt="image-20201120175318348"></p>
+<p>打开settings.xml设置本地仓库位置</p>
+<p><img src="/images/2020112002.png" alt=""></p>
+<p>创建Maven web项目</p>
+<p><img src="/images/2020112003.png" alt="image-20201120175508091"></p>
+<p><img src="/images/2020112004.png" alt="image-20201120175542687"></p>
+<p>新创建的Maven项目，目录结构如下：</p>
+<p><img src="/images/2020112005.png" alt="image-20201120175616811"></p>
+<p>将pom.xml中没有用的信息去除掉</p>
+<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
+<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
+<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
+<p><img src="/images/2020112006.png" alt="image-20201120175810912"></p>
+<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
+<p>将我们自己的web.xml模板导入</p>
+<p>通过pom.xml导入我们需要的jar包</p>
+<p>在pom.xml中加入构建资源</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>点击左侧Maven Projects，点击刷新</p>
+<p><img src="/images/2020112007.png" alt="image-20201120180057366"></p>
+<p>在resource路径下引入开发用的配置文件和属性文件</p>
+<ul>
+<li>jdbc.properties（修改数据库名）</li>
+</ul>
+<ul>
+<li><p>log4j.properties</p>
+</li>
+<li><p>mybatis-config.xml</p>
+</li>
+<li><p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
+</li>
+</ul>
+<p>项目文件结构如下：</p>
+<p><img src="/images/2020112008.png" alt="image-20201120180226721"></p>
+<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="/images/2020112009.png" alt="image-20201120180410393"></p>
+<ul>
+<li><p>将项目原型拷贝到webapp目录下</p>
+</li>
+<li><p>启动Tomcat服务器，测试</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Java Web</category>
+      </categories>
+      <tags>
+        <tag>Java Web</tag>
       </tags>
   </entry>
   <entry>
@@ -6205,69 +6295,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>快速构建Java Web项目的开发环境</title>
-    <url>/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<p>Idea通过maven快速构建项目</p>
+    <title>打新股和打新债</title>
+    <url>/2021/01/24/%E6%89%93%E6%96%B0%E8%82%A1%E5%92%8C%E6%89%93%E6%96%B0%E5%80%BA/</url>
+    <content><![CDATA[<p>[TOC]</p>
 <a id="more"></a>
 
-<h1 id="1-搭建项目的开发环境"><a href="#1-搭建项目的开发环境" class="headerlink" title="1.搭建项目的开发环境"></a>1.搭建项目的开发环境</h1><ul>
-<li>设置字体</li>
-<li>设置工作区的字符集为utf-8</li>
-<li>设置basePath变量及base标签</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库<img src="/images/2020112001.png" alt="image-20201120175318348"></p>
-<p>打开settings.xml设置本地仓库位置</p>
-<p><img src="/images/2020112002.png" alt=""></p>
-<p>创建Maven web项目</p>
-<p><img src="/images/2020112003.png" alt="image-20201120175508091"></p>
-<p><img src="/images/2020112004.png" alt="image-20201120175542687"></p>
-<p>新创建的Maven项目，目录结构如下：</p>
-<p><img src="/images/2020112005.png" alt="image-20201120175616811"></p>
-<p>将pom.xml中没有用的信息去除掉</p>
-<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
-<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
-<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
-<p><img src="/images/2020112006.png" alt="image-20201120175810912"></p>
-<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
-<p>将我们自己的web.xml模板导入</p>
-<p>通过pom.xml导入我们需要的jar包</p>
-<p>在pom.xml中加入构建资源</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>点击左侧Maven Projects，点击刷新</p>
-<p><img src="/images/2020112007.png" alt="image-20201120180057366"></p>
-<p>在resource路径下引入开发用的配置文件和属性文件</p>
-<ul>
-<li>jdbc.properties（修改数据库名）</li>
-</ul>
-<ul>
-<li><p>log4j.properties</p>
-</li>
-<li><p>mybatis-config.xml</p>
-</li>
-<li><p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
-</li>
-</ul>
-<p>项目文件结构如下：</p>
-<p><img src="/images/2020112008.png" alt="image-20201120180226721"></p>
-<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="/images/2020112009.png" alt="image-20201120180410393"></p>
-<ul>
-<li><p>将项目原型拷贝到webapp目录下</p>
-</li>
-<li><p>启动Tomcat服务器，测试</p>
-</li>
-</ul>
+<h1 id="打新股"><a href="#打新股" class="headerlink" title="打新股"></a>打新股</h1><blockquote>
+<p>打新股是什么：<a href="https://zhuanlan.zhihu.com/p/113203500" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/113203500</a></p>
+<p>如何打新股：<a href="https://www.zhihu.com/question/28207862" target="_blank" rel="noopener">https://www.zhihu.com/question/28207862</a></p>
+</blockquote>
+<h1 id="打新债"><a href="#打新债" class="headerlink" title="打新债"></a>打新债</h1><blockquote>
+<p>如何打新债：<a href="https://zhuanlan.zhihu.com/p/67077214" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67077214</a></p>
+</blockquote>
+<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>打新股和打新债一样具备风险，投资一定要用自己的闲钱</p>
 ]]></content>
       <categories>
-        <category>后端</category>
-        <category>Java Web</category>
+        <category>理财</category>
       </categories>
       <tags>
-        <tag>Java Web</tag>
+        <tag>打新股</tag>
+        <tag>打新债</tag>
       </tags>
   </entry>
   <entry>
@@ -6478,29 +6525,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <tag>Docker</tag>
         <tag>Jenkins</tag>
         <tag>Gitlab</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>打新股和打新债</title>
-    <url>/2021/01/24/%E6%89%93%E6%96%B0%E8%82%A1%E5%92%8C%E6%89%93%E6%96%B0%E5%80%BA/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="打新股"><a href="#打新股" class="headerlink" title="打新股"></a>打新股</h1><blockquote>
-<p>打新股是什么：<a href="https://zhuanlan.zhihu.com/p/113203500" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/113203500</a></p>
-<p>如何打新股：<a href="https://www.zhihu.com/question/28207862" target="_blank" rel="noopener">https://www.zhihu.com/question/28207862</a></p>
-</blockquote>
-<h1 id="打新债"><a href="#打新债" class="headerlink" title="打新债"></a>打新债</h1><blockquote>
-<p>如何打新债：<a href="https://zhuanlan.zhihu.com/p/67077214" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67077214</a></p>
-</blockquote>
-<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>打新股和打新债一样具备风险，投资一定要用自己的闲钱</p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>打新股</tag>
-        <tag>打新债</tag>
       </tags>
   </entry>
   <entry>
@@ -6742,31 +6766,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>看懂四个指标（PE/PB/ROE/股息率）</title>
-    <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<p><strong>市盈率PE</strong> (Price-to-Earning Ratio)：指当前总市值除以一年的总净利润。<strong>市盈率越低，说明越是低估</strong></p>
-<p><strong>市净率 PB</strong> (Price-to-Book Ratio)：指每股股价除以每股净资产，或总市值除以净资产。<strong>1倍以下就是低市净率。</strong></p>
-<p><strong>净资产收益率ROE</strong>（Rate of Return on Common Stockholders’ Equity）：是指净利润除以净资产。代表着股东股权投资的报酬率，代表着公司赚钱的能力。按照格雷厄姆的标准，<strong>盈利收益率大于10%才是值得投资的企业</strong>。</p>
-<p><strong>股息率（Dividend Yield Ratio）</strong>：是一年的总派息额与当时市价的比例。</p>
-<p><strong>PE/PB百分位</strong>：这个指标是跟历史数据比较，看看现在的数据是在一个什么区域。<strong>百分位5%，代表现在的估值比过去95%的时间低。</strong></p>
-<blockquote>
-<p>一文教你看四个指标（PE/PB/ROE/股息率）：<a href="https://zhuanlan.zhihu.com/p/61254326" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61254326</a></p>
-<p>指数基金估值之PE, PB, ROE：<a href="https://zhuanlan.zhihu.com/p/111568187" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/111568187</a></p>
-</blockquote>
-<p><strong>指数基金分类</strong>：</p>
-<p><img src="/images/2021030201.png" alt="2020120701"></p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>理财</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>笔记本换电池防坑记</title>
     <url>/2020/10/20/%E7%AC%94%E8%AE%B0%E6%9C%AC%E6%8D%A2%E7%94%B5%E6%B1%A0%E9%98%B2%E5%9D%91%E8%AE%B0/</url>
     <content><![CDATA[<p>​        电脑近几天在启动的时候总是弹出电量不足的警告，想必是电池的使用周期已经到了。。。随即淘宝购置一块，说实话，心里还是有点警觉的，因为电脑型号已经停产，能买到原装的几率很小，只能硬着头皮上了，哈哈</p>
@@ -6991,128 +6990,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>解读基金</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>通用型支付系统接入电商平台</title>
-    <url>/2020/12/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</url>
-    <content><![CDATA[<p>一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统</p>
-<p>主要分为以下5个模块</p>
-<ol>
-<li>用户模块</li>
-<li>分类模块</li>
-<li>购物车模块</li>
-<li>收货地址模块</li>
-<li>订单模块</li>
-</ol>
-<a id="more"></a>
-
-<blockquote>
-<p>项目地址：<a href="https://github.com/liuurick/mall-pay/tree/master/mall" target="_blank" rel="noopener">https://github.com/liuurick/mall-pay/tree/master/mall</a></p>
-</blockquote>
-<h1 id="用户模块"><a href="#用户模块" class="headerlink" title="用户模块"></a>用户模块</h1><p>用户模块开发中的几点总结：</p>
-<h2 id="1-MD5加密的方法"><a href="#1-MD5加密的方法" class="headerlink" title="1.MD5加密的方法"></a>1.MD5加密的方法</h2><p>MD5摘要算法(Spring自带)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">user.setPassword(DigestUtils.md5DigestAsHex(</span><br><span class="line">        user.getPassword().getBytes(StandardCharsets.UTF_8)</span><br><span class="line">));</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-单元测试：service层"><a href="#2-单元测试：service层" class="headerlink" title="2.单元测试：service层"></a>2.单元测试：service层</h2><p>单元测试的时候一般只需要测试service层，可以在idea中直接右键goto Test—&gt;create new Test</p>
-<p>对于系统项目的开发，开发步骤一般为dao–&gt;service–&gt;controller，所以没有必要测试其他两层。</p>
-<h2 id="3-Mybatis打印SQL语句"><a href="#3-Mybatis打印SQL语句" class="headerlink" title="3.Mybatis打印SQL语句"></a>3.Mybatis打印SQL语句</h2><p>控制台配置 Mybatis打印SQL语句</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mybatis:</span><br><span class="line">  configuration:</span><br><span class="line">    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-错误状态码使用枚举"><a href="#4-错误状态码使用枚举" class="headerlink" title="4.错误状态码使用枚举"></a>4.错误状态码使用枚举</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ResponseEnum &#123;</span><br><span class="line"></span><br><span class="line">	ERROR(-<span class="number">1</span>, <span class="string">"服务端错误"</span>),</span><br><span class="line"></span><br><span class="line">	SUCCESS(<span class="number">0</span>, <span class="string">"成功"</span>),</span><br><span class="line"></span><br><span class="line">	PASSWORD_ERROR(<span class="number">1</span>,<span class="string">"密码错误"</span>),</span><br><span class="line"></span><br><span class="line">	USERNAME_EXIST(<span class="number">2</span>, <span class="string">"用户名已存在"</span>),</span><br><span class="line"></span><br><span class="line">	PARAM_ERROR(<span class="number">3</span>, <span class="string">"参数错误"</span>),</span><br><span class="line"></span><br><span class="line">	EMAIL_EXIST(<span class="number">4</span>, <span class="string">"邮箱已存在"</span>),</span><br><span class="line"></span><br><span class="line">	NEED_LOGIN(<span class="number">10</span>, <span class="string">"用户未登录, 请先登录"</span>),</span><br><span class="line"></span><br><span class="line">	USERNAME_OR_PASSWORD_ERROR(<span class="number">11</span>, <span class="string">"用户名或密码错误"</span>),</span><br><span class="line"></span><br><span class="line">	PRODUCT_OFF_SALE_OR_DELETE(<span class="number">12</span>, <span class="string">"商品下架或删除"</span>),</span><br><span class="line"></span><br><span class="line">	PRODUCT_NOT_EXIST(<span class="number">13</span>, <span class="string">"商品不存在"</span>),</span><br><span class="line"></span><br><span class="line">	PROODUCT_STOCK_ERROR(<span class="number">14</span>, <span class="string">"库存不正确"</span>),</span><br><span class="line"></span><br><span class="line">	CART_PRODUCT_NOT_EXIST(<span class="number">15</span>, <span class="string">"购物车里无此商品"</span>),</span><br><span class="line"></span><br><span class="line">	DELETE_SHIPPING_FAIL(<span class="number">16</span>, <span class="string">"删除收货地址失败"</span>),</span><br><span class="line"></span><br><span class="line">	SHIPPING_NOT_EXIST(<span class="number">17</span>, <span class="string">"收货地址不存在"</span>),</span><br><span class="line"></span><br><span class="line">	CART_SELECTED_IS_EMPTY(<span class="number">18</span>, <span class="string">"请选择商品后下单"</span>),</span><br><span class="line"></span><br><span class="line">	ORDER_NOT_EXIST(<span class="number">19</span>, <span class="string">"订单不存在"</span>),</span><br><span class="line"></span><br><span class="line">	ORDER_STATUS_ERROR(<span class="number">20</span>, <span class="string">"订单状态有误"</span>),</span><br><span class="line"></span><br><span class="line">	;</span><br><span class="line"></span><br><span class="line">	Integer code;</span><br><span class="line"></span><br><span class="line">	String desc;</span><br><span class="line"></span><br><span class="line">	ResponseEnum(Integer code, String desc) &#123;</span><br><span class="line">		<span class="keyword">this</span>.code = code;</span><br><span class="line">		<span class="keyword">this</span>.desc = desc;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="5-session和cookie"><a href="#5-session和cookie" class="headerlink" title="5.session和cookie"></a>5.session和cookie</h2><blockquote>
-<p><a href="https://segmentfault.com/a/1190000017831088" target="_blank" rel="noopener">https://segmentfault.com/a/1190000017831088</a></p>
-</blockquote>
-<p>对于cookie与session，第一印象就是session是服务器端技术，cookie是客户端技术。一般情况下，由于cookie具备安全性问题和很多游览器禁用cookie，我们平时使用session更广泛一些。但是其实session与cookie不分家，sessionId存储在cookie中。</p>
-<p>另外还有一个重点，就是cookie跨域问题，localhost与127.0.0.1就是跨域</p>
-<h2 id="6-统一判断登录状态-拦截器"><a href="#6-统一判断登录状态-拦截器" class="headerlink" title="6.统一判断登录状态-拦截器"></a>6.统一判断登录状态-拦截器</h2><blockquote>
-<p>过滤器+监听器+拦截器+AOP 比较:<a href="https://segmentfault.com/a/1190000021823564" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021823564</a></p>
-</blockquote>
-<p>对于拦截器，主要有两种技术：</p>
-<blockquote>
-<p>Interceptor 基于http的url 比较简单</p>
-<p>AOP 基于包名 ，功能比较强大</p>
-</blockquote>
-<p>这里使用Interceptor实现:</p>
-<p><strong>InterceptorConfig:</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InterceptorConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">		registry.addInterceptor(<span class="keyword">new</span> UserLoginInterceptor())</span><br><span class="line">				.addPathPatterns(<span class="string">"/**"</span>)</span><br><span class="line">				.excludePathPatterns(<span class="string">"/error"</span>, <span class="string">"/user/login"</span>, <span class="string">"/user/register"</span>, <span class="string">"/categories"</span>, <span class="string">"/products"</span>, <span class="string">"/products/*"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>UserLoginInterceptor:</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserLoginInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * true表示继续流程，false表示中断</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> handler</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">    * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">      log.info(<span class="string">"preHandle..."</span>);</span><br><span class="line">      User user = (User) request.getSession().getAttribute(MallConst.CURRENT_USER);</span><br><span class="line">      <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">         log.info(<span class="string">"user=null"</span>);</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> UserLoginException();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="分类模块"><a href="#分类模块" class="headerlink" title="分类模块"></a>分类模块</h1><blockquote>
-<p>对于商品分类的遍历有两种方法：</p>
-<p>1.先查出1级目录–》查其子目录，一直查到的是null</p>
-<p>2.查出目录–》查父目录，一直查到parent_id=0</p>
-</blockquote>
-<p>这里使用的是第1种</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ResponseVo&lt;List&lt;CategoryVo&gt;&gt; selectAll() &#123;</span><br><span class="line">    List&lt;Category&gt; categories = categoryMapper.selectAll();</span><br><span class="line"></span><br><span class="line">    List&lt;CategoryVo&gt; categoryVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">//查出parent_id=0</span></span><br><span class="line">    <span class="keyword">for</span> (Category category: categories) &#123;</span><br><span class="line">        <span class="keyword">if</span> (categories.equals(ROOT_PARENT_ID))&#123;</span><br><span class="line">            CategoryVo categoryVo = <span class="keyword">new</span> CategoryVo();</span><br><span class="line">            BeanUtils.copyProperties(category,categoryVo);</span><br><span class="line">            categoryVoList.add(categoryVo);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">return</span> ResponseVo.success(categoryVoList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>遍历子分类，用到了递归思想</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">findSubCategory</span><span class="params">(List&lt;CategoryVo&gt; categoryVoList, List&lt;Category&gt; categories)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (CategoryVo categoryVo : categoryVoList) &#123;</span><br><span class="line">        List&lt;CategoryVo&gt; subCategoryVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Category category : categories) &#123;</span><br><span class="line">            <span class="comment">//如果查到内容，设置subCategory, 继续往下查</span></span><br><span class="line">            <span class="keyword">if</span> (categoryVo.getId().equals(category.getParentId())) &#123;</span><br><span class="line">                CategoryVo subCategoryVo = category2CategoryVo(category);</span><br><span class="line">                subCategoryVoList.add(subCategoryVo);</span><br><span class="line">            &#125;</span><br><span class="line">			<span class="comment">//排序</span></span><br><span class="line">            subCategoryVoList.sort(Comparator.comparing(CategoryVo::getSortOrder).reversed());</span><br><span class="line">            categoryVo.setSubCategories(subCategoryVoList);</span><br><span class="line"></span><br><span class="line">            findSubCategory(subCategoryVoList, categories);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>使用lambda + stream对代码进行优化</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ResponseVo&lt;List&lt;CategoryVo&gt;&gt; selectAll() &#123;</span><br><span class="line">        List&lt;Category&gt; categories = categoryMapper.selectAll();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//lambda + stream</span></span><br><span class="line">        List&lt;CategoryVo&gt; categoryVoList = categories.stream()</span><br><span class="line">                .filter(e -&gt; e.getParentId().equals(ROOT_PARENT_ID))</span><br><span class="line">                .map(<span class="keyword">this</span>::category2CategoryVo)</span><br><span class="line">                .sorted(Comparator.comparing(CategoryVo::getSortOrder).reversed())</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//查询子目录</span></span><br><span class="line">        findSubCategory(categoryVoList, categories);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success(categoryVoList);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="商品模块"><a href="#商品模块" class="headerlink" title="商品模块"></a>商品模块</h1><p>分页功能：</p>
-<p>基于SpringBoot集成的mybatis-pagehelper进行分页实践。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;PageInfo&gt; <span class="title">list</span><span class="params">(Integer categoryId, Integer pageNum, Integer pageSize)</span> </span>&#123;</span><br><span class="line">    Set&lt;Integer&gt; categoryIdSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">        categoryService.findSubCategoryId(categoryId, categoryIdSet);</span><br><span class="line">        categoryIdSet.add(categoryId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//分页功能</span></span><br><span class="line">    PageHelper.startPage(pageNum, pageSize);</span><br><span class="line">    List&lt;Product&gt; productList = productMapper.selectByCategoryIdSet(categoryIdSet);</span><br><span class="line">    List&lt;ProductVo&gt; productVoList = productList.stream()</span><br><span class="line">        .map(e -&gt; &#123;</span><br><span class="line">            ProductVo productVo = <span class="keyword">new</span> ProductVo();</span><br><span class="line">            BeanUtils.copyProperties(e, productVo);</span><br><span class="line">            <span class="keyword">return</span> productVo;</span><br><span class="line">        &#125;)</span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">    PageInfo pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(productList);</span><br><span class="line">    pageInfo.setList(productVoList);</span><br><span class="line">    <span class="keyword">return</span> ResponseVo.success(pageInfo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>POJO、BO、VO的关系与解决思路</p>
-<h1 id="购物车模块"><a href="#购物车模块" class="headerlink" title="购物车模块"></a>购物车模块</h1><p>基于Redis完成购物车开发，首先基于传统的String结构完成购物车开发，然后，进行优化重构，基于Hashset数据结构替换，最终实现高性能购物车</p>
-<h2 id="商品添加"><a href="#商品添加" class="headerlink" title="商品添加"></a>商品添加</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">add</span><span class="params">(Integer uid, CartAddForm form)</span> </span>&#123;</span><br><span class="line">    Integer quantity = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    Product product = productMapper.selectByPrimaryKey(form.getProductId());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品是否存在</span></span><br><span class="line">    <span class="keyword">if</span> (product == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品是否正常在售</span></span><br><span class="line">    <span class="keyword">if</span> (!product.getStatus().equals(ProductStatusEnum.ON_SALE.getCode())) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PRODUCT_OFF_SALE_OR_DELETE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品库存是否充足</span></span><br><span class="line">    <span class="keyword">if</span> (product.getStock() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PROODUCT_STOCK_ERROR);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//写入到redis</span></span><br><span class="line">    <span class="comment">//key: cart_1</span></span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    Cart cart;</span><br><span class="line">    String value = opsForHash.get(redisKey, String.valueOf(product.getId()));</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        <span class="comment">//没有该商品, 新增</span></span><br><span class="line">        cart = <span class="keyword">new</span> Cart(product.getId(), quantity, form.getSelected());</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//已经有了，数量+1</span></span><br><span class="line">        cart = gson.fromJson(value, Cart<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        cart.setQuantity(cart.getQuantity() + quantity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.put(redisKey,</span><br><span class="line">            String.valueOf(product.getId()),</span><br><span class="line">            gson.toJson(cart));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="商品遍历"><a href="#商品遍历" class="headerlink" title="商品遍历"></a>商品遍历</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">list</span><span class="params">(Integer uid)</span> </span>&#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line">    Map&lt;String, String&gt; entries = opsForHash.entries(redisKey);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> selectAll = <span class="keyword">true</span>;</span><br><span class="line">    Integer cartTotalQuantity = <span class="number">0</span>;</span><br><span class="line">    BigDecimal cartTotalPrice = BigDecimal.ZERO;</span><br><span class="line">    CartVo cartVo = <span class="keyword">new</span> CartVo();</span><br><span class="line">    List&lt;CartProductVo&gt; cartProductVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Map.Entry&lt;String, String&gt; entry : entries.entrySet()) &#123;</span><br><span class="line">        Integer productId = Integer.valueOf(entry.getKey());</span><br><span class="line">        Cart cart = gson.fromJson(entry.getValue(), Cart<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//TODO 需要优化，使用mysql里的in</span></span><br><span class="line">        Product product = productMapper.selectByPrimaryKey(productId);</span><br><span class="line">        <span class="keyword">if</span> (product != <span class="keyword">null</span>) &#123;</span><br><span class="line">            CartProductVo cartProductVo = <span class="keyword">new</span> CartProductVo(productId,</span><br><span class="line">                    cart.getQuantity(),</span><br><span class="line">                    product.getName(),</span><br><span class="line">                    product.getSubtitle(),</span><br><span class="line">                    product.getMainImage(),</span><br><span class="line">                    product.getPrice(),</span><br><span class="line">                    product.getStatus(),</span><br><span class="line">                    product.getPrice().multiply(BigDecimal.valueOf(cart.getQuantity())),</span><br><span class="line">                    product.getStock(),</span><br><span class="line">                    cart.getProductSelected()</span><br><span class="line">            );</span><br><span class="line">            cartProductVoList.add(cartProductVo);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!cart.getProductSelected()) &#123;</span><br><span class="line">                selectAll = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//计算总价(只计算选中的)</span></span><br><span class="line">            <span class="keyword">if</span> (cart.getProductSelected()) &#123;</span><br><span class="line">                cartTotalPrice = cartTotalPrice.add(cartProductVo.getProductTotalPrice());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cartTotalQuantity += cart.getQuantity();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//有一个没有选中，就不叫全选</span></span><br><span class="line">    cartVo.setSelectedAll(selectAll);</span><br><span class="line">    cartVo.setCartTotalQuantity(cartTotalQuantity);</span><br><span class="line">    cartVo.setCartTotalPrice(cartTotalPrice);</span><br><span class="line">    cartVo.setCartProductVoList(cartProductVoList);</span><br><span class="line">    <span class="keyword">return</span> ResponseVo.success(cartVo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="商品更新"><a href="#商品更新" class="headerlink" title="商品更新"></a>商品更新</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">public ResponseVo&lt;CartVo&gt; update(Integer uid, Integer productId, CartUpdateForm form) &#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash &#x3D; redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  &#x3D; String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    String value &#x3D; opsForHash.get(redisKey, String.valueOf(productId));</span><br><span class="line">    if (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        &#x2F;&#x2F;没有该商品, 报错</span><br><span class="line">        return ResponseVo.error(ResponseEnum.CART_PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;已经有了，修改内容</span><br><span class="line">    Cart cart &#x3D; gson.fromJson(value, Cart.class);</span><br><span class="line">    if (form.getQuantity() !&#x3D; null</span><br><span class="line">            &amp;&amp; form.getQuantity() &gt;&#x3D; 0) &#123;</span><br><span class="line">        cart.setQuantity(form.getQuantity());</span><br><span class="line">    &#125;</span><br><span class="line">    if (form.getSelected() !&#x3D; null) &#123;</span><br><span class="line">        cart.setProductSelected(form.getSelected());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.put(redisKey, String.valueOf(productId), gson.toJson(cart));</span><br><span class="line">    return list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="商品删除"><a href="#商品删除" class="headerlink" title="商品删除"></a>商品删除</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">public ResponseVo&lt;CartVo&gt; delete(Integer uid, Integer productId) &#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash &#x3D; redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  &#x3D; String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    String value &#x3D; opsForHash.get(redisKey, String.valueOf(productId));</span><br><span class="line">    if (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        &#x2F;&#x2F;没有该商品, 报错</span><br><span class="line">        return ResponseVo.error(ResponseEnum.CART_PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.delete(redisKey, String.valueOf(productId));</span><br><span class="line">    return list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="商品的选择"><a href="#商品的选择" class="headerlink" title="商品的选择"></a>商品的选择</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">public ResponseVo&lt;CartVo&gt; selectAll(Integer uid) &#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash &#x3D; redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  &#x3D; String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    for (Cart cart : listForCart(uid)) &#123;</span><br><span class="line">        cart.setProductSelected(true);</span><br><span class="line">        opsForHash.put(redisKey,</span><br><span class="line">                String.valueOf(cart.getProductId()),</span><br><span class="line">                gson.toJson(cart));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return list(uid);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public ResponseVo&lt;CartVo&gt; unSelectAll(Integer uid) &#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash &#x3D; redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  &#x3D; String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    for (Cart cart : listForCart(uid)) &#123;</span><br><span class="line">        cart.setProductSelected(false);</span><br><span class="line">        opsForHash.put(redisKey,</span><br><span class="line">                String.valueOf(cart.getProductId()),</span><br><span class="line">                gson.toJson(cart));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="收货地址模块"><a href="#收货地址模块" class="headerlink" title="收货地址模块"></a>收货地址模块</h1><p>Spring数据绑定中的对象绑定。</p>
-<h1 id="订单模块"><a href="#订单模块" class="headerlink" title="订单模块"></a>订单模块</h1><p>订单模块接收支付发送的MQ消息，MQ在业务解耦</p>
-<p><strong>如何为支付预留扩展性</strong></p>
-<blockquote>
-<p>docker安装rabbitmq：<a href="https://liuurick.github.io/2020/07/27/Docker安装RabbitMQ/" target="_blank" rel="noopener">https://liuurick.github.io/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</a></p>
-</blockquote>
-<p>1.引入依赖：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-amqp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>2.编写配置文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">    rabbitmq:</span><br><span class="line">        addresses: 192.168.60.129</span><br><span class="line">        port: 5672</span><br><span class="line">        username: guest</span><br><span class="line">        password: guest</span><br></pre></td></tr></table></figure>
-
-
-
-<p>在支付系统中添加</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AmqpTemplate amqpTemplate;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String QUEUE_PAY_NOTIFY = <span class="string">"payNotify"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//TODO pay发送MQ消息，mall接受MQ消息</span></span><br><span class="line">amqpTemplate.convertAndSend(QUEUE_PAY_NOTIFY, <span class="keyword">new</span> Gson().toJson(payInfo));</span><br></pre></td></tr></table></figure>
-
-<p>在商城系统中添加listener</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@RabbitListener</span>(queues = <span class="string">"payNotify"</span>)</span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PayMsgListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IOrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RabbitHandler</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"【接收到消息】=&gt; &#123;&#125;"</span>, msg);</span><br><span class="line"></span><br><span class="line">        PayInfo payInfo = <span class="keyword">new</span> Gson().fromJson(msg, PayInfo<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        <span class="keyword">if</span> (payInfo.getPlatformStatus().equals(<span class="string">"SUCCESS"</span>)) &#123;</span><br><span class="line">            <span class="comment">//修改订单里的状态</span></span><br><span class="line">            orderService.paid(payInfo.getOrderNo());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>电商平台</category>
-      </categories>
-      <tags>
-        <tag>电商平台</tag>
       </tags>
   </entry>
   <entry>
@@ -7348,6 +7225,128 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>通用型支付系统接入电商平台</title>
+    <url>/2020/12/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</url>
+    <content><![CDATA[<p>一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统</p>
+<p>主要分为以下5个模块</p>
+<ol>
+<li>用户模块</li>
+<li>分类模块</li>
+<li>购物车模块</li>
+<li>收货地址模块</li>
+<li>订单模块</li>
+</ol>
+<a id="more"></a>
+
+<blockquote>
+<p>项目地址：<a href="https://github.com/liuurick/mall-pay/tree/master/mall" target="_blank" rel="noopener">https://github.com/liuurick/mall-pay/tree/master/mall</a></p>
+</blockquote>
+<h1 id="用户模块"><a href="#用户模块" class="headerlink" title="用户模块"></a>用户模块</h1><p>用户模块开发中的几点总结：</p>
+<h2 id="1-MD5加密的方法"><a href="#1-MD5加密的方法" class="headerlink" title="1.MD5加密的方法"></a>1.MD5加密的方法</h2><p>MD5摘要算法(Spring自带)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">user.setPassword(DigestUtils.md5DigestAsHex(</span><br><span class="line">        user.getPassword().getBytes(StandardCharsets.UTF_8)</span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-单元测试：service层"><a href="#2-单元测试：service层" class="headerlink" title="2.单元测试：service层"></a>2.单元测试：service层</h2><p>单元测试的时候一般只需要测试service层，可以在idea中直接右键goto Test—&gt;create new Test</p>
+<p>对于系统项目的开发，开发步骤一般为dao–&gt;service–&gt;controller，所以没有必要测试其他两层。</p>
+<h2 id="3-Mybatis打印SQL语句"><a href="#3-Mybatis打印SQL语句" class="headerlink" title="3.Mybatis打印SQL语句"></a>3.Mybatis打印SQL语句</h2><p>控制台配置 Mybatis打印SQL语句</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mybatis:</span><br><span class="line">  configuration:</span><br><span class="line">    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-错误状态码使用枚举"><a href="#4-错误状态码使用枚举" class="headerlink" title="4.错误状态码使用枚举"></a>4.错误状态码使用枚举</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ResponseEnum &#123;</span><br><span class="line"></span><br><span class="line">	ERROR(-<span class="number">1</span>, <span class="string">"服务端错误"</span>),</span><br><span class="line"></span><br><span class="line">	SUCCESS(<span class="number">0</span>, <span class="string">"成功"</span>),</span><br><span class="line"></span><br><span class="line">	PASSWORD_ERROR(<span class="number">1</span>,<span class="string">"密码错误"</span>),</span><br><span class="line"></span><br><span class="line">	USERNAME_EXIST(<span class="number">2</span>, <span class="string">"用户名已存在"</span>),</span><br><span class="line"></span><br><span class="line">	PARAM_ERROR(<span class="number">3</span>, <span class="string">"参数错误"</span>),</span><br><span class="line"></span><br><span class="line">	EMAIL_EXIST(<span class="number">4</span>, <span class="string">"邮箱已存在"</span>),</span><br><span class="line"></span><br><span class="line">	NEED_LOGIN(<span class="number">10</span>, <span class="string">"用户未登录, 请先登录"</span>),</span><br><span class="line"></span><br><span class="line">	USERNAME_OR_PASSWORD_ERROR(<span class="number">11</span>, <span class="string">"用户名或密码错误"</span>),</span><br><span class="line"></span><br><span class="line">	PRODUCT_OFF_SALE_OR_DELETE(<span class="number">12</span>, <span class="string">"商品下架或删除"</span>),</span><br><span class="line"></span><br><span class="line">	PRODUCT_NOT_EXIST(<span class="number">13</span>, <span class="string">"商品不存在"</span>),</span><br><span class="line"></span><br><span class="line">	PROODUCT_STOCK_ERROR(<span class="number">14</span>, <span class="string">"库存不正确"</span>),</span><br><span class="line"></span><br><span class="line">	CART_PRODUCT_NOT_EXIST(<span class="number">15</span>, <span class="string">"购物车里无此商品"</span>),</span><br><span class="line"></span><br><span class="line">	DELETE_SHIPPING_FAIL(<span class="number">16</span>, <span class="string">"删除收货地址失败"</span>),</span><br><span class="line"></span><br><span class="line">	SHIPPING_NOT_EXIST(<span class="number">17</span>, <span class="string">"收货地址不存在"</span>),</span><br><span class="line"></span><br><span class="line">	CART_SELECTED_IS_EMPTY(<span class="number">18</span>, <span class="string">"请选择商品后下单"</span>),</span><br><span class="line"></span><br><span class="line">	ORDER_NOT_EXIST(<span class="number">19</span>, <span class="string">"订单不存在"</span>),</span><br><span class="line"></span><br><span class="line">	ORDER_STATUS_ERROR(<span class="number">20</span>, <span class="string">"订单状态有误"</span>),</span><br><span class="line"></span><br><span class="line">	;</span><br><span class="line"></span><br><span class="line">	Integer code;</span><br><span class="line"></span><br><span class="line">	String desc;</span><br><span class="line"></span><br><span class="line">	ResponseEnum(Integer code, String desc) &#123;</span><br><span class="line">		<span class="keyword">this</span>.code = code;</span><br><span class="line">		<span class="keyword">this</span>.desc = desc;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-session和cookie"><a href="#5-session和cookie" class="headerlink" title="5.session和cookie"></a>5.session和cookie</h2><blockquote>
+<p><a href="https://segmentfault.com/a/1190000017831088" target="_blank" rel="noopener">https://segmentfault.com/a/1190000017831088</a></p>
+</blockquote>
+<p>对于cookie与session，第一印象就是session是服务器端技术，cookie是客户端技术。一般情况下，由于cookie具备安全性问题和很多游览器禁用cookie，我们平时使用session更广泛一些。但是其实session与cookie不分家，sessionId存储在cookie中。</p>
+<p>另外还有一个重点，就是cookie跨域问题，localhost与127.0.0.1就是跨域</p>
+<h2 id="6-统一判断登录状态-拦截器"><a href="#6-统一判断登录状态-拦截器" class="headerlink" title="6.统一判断登录状态-拦截器"></a>6.统一判断登录状态-拦截器</h2><blockquote>
+<p>过滤器+监听器+拦截器+AOP 比较:<a href="https://segmentfault.com/a/1190000021823564" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021823564</a></p>
+</blockquote>
+<p>对于拦截器，主要有两种技术：</p>
+<blockquote>
+<p>Interceptor 基于http的url 比较简单</p>
+<p>AOP 基于包名 ，功能比较强大</p>
+</blockquote>
+<p>这里使用Interceptor实现:</p>
+<p><strong>InterceptorConfig:</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InterceptorConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">		registry.addInterceptor(<span class="keyword">new</span> UserLoginInterceptor())</span><br><span class="line">				.addPathPatterns(<span class="string">"/**"</span>)</span><br><span class="line">				.excludePathPatterns(<span class="string">"/error"</span>, <span class="string">"/user/login"</span>, <span class="string">"/user/register"</span>, <span class="string">"/categories"</span>, <span class="string">"/products"</span>, <span class="string">"/products/*"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>UserLoginInterceptor:</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserLoginInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * true表示继续流程，false表示中断</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> handler</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">    * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">      log.info(<span class="string">"preHandle..."</span>);</span><br><span class="line">      User user = (User) request.getSession().getAttribute(MallConst.CURRENT_USER);</span><br><span class="line">      <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">         log.info(<span class="string">"user=null"</span>);</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> UserLoginException();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="分类模块"><a href="#分类模块" class="headerlink" title="分类模块"></a>分类模块</h1><blockquote>
+<p>对于商品分类的遍历有两种方法：</p>
+<p>1.先查出1级目录–》查其子目录，一直查到的是null</p>
+<p>2.查出目录–》查父目录，一直查到parent_id=0</p>
+</blockquote>
+<p>这里使用的是第1种</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ResponseVo&lt;List&lt;CategoryVo&gt;&gt; selectAll() &#123;</span><br><span class="line">    List&lt;Category&gt; categories = categoryMapper.selectAll();</span><br><span class="line"></span><br><span class="line">    List&lt;CategoryVo&gt; categoryVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">//查出parent_id=0</span></span><br><span class="line">    <span class="keyword">for</span> (Category category: categories) &#123;</span><br><span class="line">        <span class="keyword">if</span> (categories.equals(ROOT_PARENT_ID))&#123;</span><br><span class="line">            CategoryVo categoryVo = <span class="keyword">new</span> CategoryVo();</span><br><span class="line">            BeanUtils.copyProperties(category,categoryVo);</span><br><span class="line">            categoryVoList.add(categoryVo);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">return</span> ResponseVo.success(categoryVoList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>遍历子分类，用到了递归思想</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">findSubCategory</span><span class="params">(List&lt;CategoryVo&gt; categoryVoList, List&lt;Category&gt; categories)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (CategoryVo categoryVo : categoryVoList) &#123;</span><br><span class="line">        List&lt;CategoryVo&gt; subCategoryVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Category category : categories) &#123;</span><br><span class="line">            <span class="comment">//如果查到内容，设置subCategory, 继续往下查</span></span><br><span class="line">            <span class="keyword">if</span> (categoryVo.getId().equals(category.getParentId())) &#123;</span><br><span class="line">                CategoryVo subCategoryVo = category2CategoryVo(category);</span><br><span class="line">                subCategoryVoList.add(subCategoryVo);</span><br><span class="line">            &#125;</span><br><span class="line">			<span class="comment">//排序</span></span><br><span class="line">            subCategoryVoList.sort(Comparator.comparing(CategoryVo::getSortOrder).reversed());</span><br><span class="line">            categoryVo.setSubCategories(subCategoryVoList);</span><br><span class="line"></span><br><span class="line">            findSubCategory(subCategoryVoList, categories);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>使用lambda + stream对代码进行优化</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ResponseVo&lt;List&lt;CategoryVo&gt;&gt; selectAll() &#123;</span><br><span class="line">        List&lt;Category&gt; categories = categoryMapper.selectAll();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//lambda + stream</span></span><br><span class="line">        List&lt;CategoryVo&gt; categoryVoList = categories.stream()</span><br><span class="line">                .filter(e -&gt; e.getParentId().equals(ROOT_PARENT_ID))</span><br><span class="line">                .map(<span class="keyword">this</span>::category2CategoryVo)</span><br><span class="line">                .sorted(Comparator.comparing(CategoryVo::getSortOrder).reversed())</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//查询子目录</span></span><br><span class="line">        findSubCategory(categoryVoList, categories);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success(categoryVoList);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="商品模块"><a href="#商品模块" class="headerlink" title="商品模块"></a>商品模块</h1><p>分页功能：</p>
+<p>基于SpringBoot集成的mybatis-pagehelper进行分页实践。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;PageInfo&gt; <span class="title">list</span><span class="params">(Integer categoryId, Integer pageNum, Integer pageSize)</span> </span>&#123;</span><br><span class="line">    Set&lt;Integer&gt; categoryIdSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">        categoryService.findSubCategoryId(categoryId, categoryIdSet);</span><br><span class="line">        categoryIdSet.add(categoryId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//分页功能</span></span><br><span class="line">    PageHelper.startPage(pageNum, pageSize);</span><br><span class="line">    List&lt;Product&gt; productList = productMapper.selectByCategoryIdSet(categoryIdSet);</span><br><span class="line">    List&lt;ProductVo&gt; productVoList = productList.stream()</span><br><span class="line">        .map(e -&gt; &#123;</span><br><span class="line">            ProductVo productVo = <span class="keyword">new</span> ProductVo();</span><br><span class="line">            BeanUtils.copyProperties(e, productVo);</span><br><span class="line">            <span class="keyword">return</span> productVo;</span><br><span class="line">        &#125;)</span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">    PageInfo pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(productList);</span><br><span class="line">    pageInfo.setList(productVoList);</span><br><span class="line">    <span class="keyword">return</span> ResponseVo.success(pageInfo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>POJO、BO、VO的关系与解决思路</p>
+<h1 id="购物车模块"><a href="#购物车模块" class="headerlink" title="购物车模块"></a>购物车模块</h1><p>基于Redis完成购物车开发，首先基于传统的String结构完成购物车开发，然后，进行优化重构，基于Hashset数据结构替换，最终实现高性能购物车</p>
+<h2 id="商品添加"><a href="#商品添加" class="headerlink" title="商品添加"></a>商品添加</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">add</span><span class="params">(Integer uid, CartAddForm form)</span> </span>&#123;</span><br><span class="line">    Integer quantity = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    Product product = productMapper.selectByPrimaryKey(form.getProductId());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品是否存在</span></span><br><span class="line">    <span class="keyword">if</span> (product == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品是否正常在售</span></span><br><span class="line">    <span class="keyword">if</span> (!product.getStatus().equals(ProductStatusEnum.ON_SALE.getCode())) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PRODUCT_OFF_SALE_OR_DELETE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品库存是否充足</span></span><br><span class="line">    <span class="keyword">if</span> (product.getStock() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PROODUCT_STOCK_ERROR);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//写入到redis</span></span><br><span class="line">    <span class="comment">//key: cart_1</span></span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    Cart cart;</span><br><span class="line">    String value = opsForHash.get(redisKey, String.valueOf(product.getId()));</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        <span class="comment">//没有该商品, 新增</span></span><br><span class="line">        cart = <span class="keyword">new</span> Cart(product.getId(), quantity, form.getSelected());</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//已经有了，数量+1</span></span><br><span class="line">        cart = gson.fromJson(value, Cart<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        cart.setQuantity(cart.getQuantity() + quantity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.put(redisKey,</span><br><span class="line">            String.valueOf(product.getId()),</span><br><span class="line">            gson.toJson(cart));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品遍历"><a href="#商品遍历" class="headerlink" title="商品遍历"></a>商品遍历</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">list</span><span class="params">(Integer uid)</span> </span>&#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line">    Map&lt;String, String&gt; entries = opsForHash.entries(redisKey);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> selectAll = <span class="keyword">true</span>;</span><br><span class="line">    Integer cartTotalQuantity = <span class="number">0</span>;</span><br><span class="line">    BigDecimal cartTotalPrice = BigDecimal.ZERO;</span><br><span class="line">    CartVo cartVo = <span class="keyword">new</span> CartVo();</span><br><span class="line">    List&lt;CartProductVo&gt; cartProductVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Map.Entry&lt;String, String&gt; entry : entries.entrySet()) &#123;</span><br><span class="line">        Integer productId = Integer.valueOf(entry.getKey());</span><br><span class="line">        Cart cart = gson.fromJson(entry.getValue(), Cart<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//TODO 需要优化，使用mysql里的in</span></span><br><span class="line">        Product product = productMapper.selectByPrimaryKey(productId);</span><br><span class="line">        <span class="keyword">if</span> (product != <span class="keyword">null</span>) &#123;</span><br><span class="line">            CartProductVo cartProductVo = <span class="keyword">new</span> CartProductVo(productId,</span><br><span class="line">                    cart.getQuantity(),</span><br><span class="line">                    product.getName(),</span><br><span class="line">                    product.getSubtitle(),</span><br><span class="line">                    product.getMainImage(),</span><br><span class="line">                    product.getPrice(),</span><br><span class="line">                    product.getStatus(),</span><br><span class="line">                    product.getPrice().multiply(BigDecimal.valueOf(cart.getQuantity())),</span><br><span class="line">                    product.getStock(),</span><br><span class="line">                    cart.getProductSelected()</span><br><span class="line">            );</span><br><span class="line">            cartProductVoList.add(cartProductVo);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!cart.getProductSelected()) &#123;</span><br><span class="line">                selectAll = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//计算总价(只计算选中的)</span></span><br><span class="line">            <span class="keyword">if</span> (cart.getProductSelected()) &#123;</span><br><span class="line">                cartTotalPrice = cartTotalPrice.add(cartProductVo.getProductTotalPrice());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cartTotalQuantity += cart.getQuantity();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//有一个没有选中，就不叫全选</span></span><br><span class="line">    cartVo.setSelectedAll(selectAll);</span><br><span class="line">    cartVo.setCartTotalQuantity(cartTotalQuantity);</span><br><span class="line">    cartVo.setCartTotalPrice(cartTotalPrice);</span><br><span class="line">    cartVo.setCartProductVoList(cartProductVoList);</span><br><span class="line">    <span class="keyword">return</span> ResponseVo.success(cartVo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品更新"><a href="#商品更新" class="headerlink" title="商品更新"></a>商品更新</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">public ResponseVo&lt;CartVo&gt; update(Integer uid, Integer productId, CartUpdateForm form) &#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash &#x3D; redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  &#x3D; String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    String value &#x3D; opsForHash.get(redisKey, String.valueOf(productId));</span><br><span class="line">    if (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        &#x2F;&#x2F;没有该商品, 报错</span><br><span class="line">        return ResponseVo.error(ResponseEnum.CART_PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;已经有了，修改内容</span><br><span class="line">    Cart cart &#x3D; gson.fromJson(value, Cart.class);</span><br><span class="line">    if (form.getQuantity() !&#x3D; null</span><br><span class="line">            &amp;&amp; form.getQuantity() &gt;&#x3D; 0) &#123;</span><br><span class="line">        cart.setQuantity(form.getQuantity());</span><br><span class="line">    &#125;</span><br><span class="line">    if (form.getSelected() !&#x3D; null) &#123;</span><br><span class="line">        cart.setProductSelected(form.getSelected());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.put(redisKey, String.valueOf(productId), gson.toJson(cart));</span><br><span class="line">    return list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品删除"><a href="#商品删除" class="headerlink" title="商品删除"></a>商品删除</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">public ResponseVo&lt;CartVo&gt; delete(Integer uid, Integer productId) &#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash &#x3D; redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  &#x3D; String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    String value &#x3D; opsForHash.get(redisKey, String.valueOf(productId));</span><br><span class="line">    if (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        &#x2F;&#x2F;没有该商品, 报错</span><br><span class="line">        return ResponseVo.error(ResponseEnum.CART_PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.delete(redisKey, String.valueOf(productId));</span><br><span class="line">    return list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品的选择"><a href="#商品的选择" class="headerlink" title="商品的选择"></a>商品的选择</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">public ResponseVo&lt;CartVo&gt; selectAll(Integer uid) &#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash &#x3D; redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  &#x3D; String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    for (Cart cart : listForCart(uid)) &#123;</span><br><span class="line">        cart.setProductSelected(true);</span><br><span class="line">        opsForHash.put(redisKey,</span><br><span class="line">                String.valueOf(cart.getProductId()),</span><br><span class="line">                gson.toJson(cart));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return list(uid);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public ResponseVo&lt;CartVo&gt; unSelectAll(Integer uid) &#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash &#x3D; redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  &#x3D; String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    for (Cart cart : listForCart(uid)) &#123;</span><br><span class="line">        cart.setProductSelected(false);</span><br><span class="line">        opsForHash.put(redisKey,</span><br><span class="line">                String.valueOf(cart.getProductId()),</span><br><span class="line">                gson.toJson(cart));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="收货地址模块"><a href="#收货地址模块" class="headerlink" title="收货地址模块"></a>收货地址模块</h1><p>Spring数据绑定中的对象绑定。</p>
+<h1 id="订单模块"><a href="#订单模块" class="headerlink" title="订单模块"></a>订单模块</h1><p>订单模块接收支付发送的MQ消息，MQ在业务解耦</p>
+<p><strong>如何为支付预留扩展性</strong></p>
+<blockquote>
+<p>docker安装rabbitmq：<a href="https://liuurick.github.io/2020/07/27/Docker安装RabbitMQ/" target="_blank" rel="noopener">https://liuurick.github.io/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</a></p>
+</blockquote>
+<p>1.引入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-amqp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.编写配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">    rabbitmq:</span><br><span class="line">        addresses: 192.168.60.129</span><br><span class="line">        port: 5672</span><br><span class="line">        username: guest</span><br><span class="line">        password: guest</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在支付系统中添加</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AmqpTemplate amqpTemplate;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String QUEUE_PAY_NOTIFY = <span class="string">"payNotify"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//TODO pay发送MQ消息，mall接受MQ消息</span></span><br><span class="line">amqpTemplate.convertAndSend(QUEUE_PAY_NOTIFY, <span class="keyword">new</span> Gson().toJson(payInfo));</span><br></pre></td></tr></table></figure>
+
+<p>在商城系统中添加listener</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@RabbitListener</span>(queues = <span class="string">"payNotify"</span>)</span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PayMsgListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IOrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RabbitHandler</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"【接收到消息】=&gt; &#123;&#125;"</span>, msg);</span><br><span class="line"></span><br><span class="line">        PayInfo payInfo = <span class="keyword">new</span> Gson().fromJson(msg, PayInfo<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        <span class="keyword">if</span> (payInfo.getPlatformStatus().equals(<span class="string">"SUCCESS"</span>)) &#123;</span><br><span class="line">            <span class="comment">//修改订单里的状态</span></span><br><span class="line">            orderService.paid(payInfo.getOrderNo());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>电商平台</category>
+      </categories>
+      <tags>
+        <tag>电商平台</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>重定向与转发的理解</title>
     <url>/2018/04/21/%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%BD%AC%E5%8F%91%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<p>重定向（redirect）与转发（forward）</p>
@@ -7484,6 +7483,31 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>面向对象</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>看懂四个指标（PE/PB/ROE/股息率）</title>
+    <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<p><strong>市盈率PE</strong> (Price-to-Earning Ratio)：指当前总市值除以一年的总净利润。<strong>市盈率越低，说明越是低估</strong></p>
+<p><strong>市净率 PB</strong> (Price-to-Book Ratio)：指每股股价除以每股净资产，或总市值除以净资产。<strong>1倍以下就是低市净率。</strong></p>
+<p><strong>净资产收益率ROE</strong>（Rate of Return on Common Stockholders’ Equity）：是指净利润除以净资产。代表着股东股权投资的报酬率，代表着公司赚钱的能力。按照格雷厄姆的标准，<strong>盈利收益率大于10%才是值得投资的企业</strong>。</p>
+<p><strong>股息率（Dividend Yield Ratio）</strong>：是一年的总派息额与当时市价的比例。</p>
+<p><strong>PE/PB百分位</strong>：这个指标是跟历史数据比较，看看现在的数据是在一个什么区域。<strong>百分位5%，代表现在的估值比过去95%的时间低。</strong></p>
+<blockquote>
+<p>一文教你看四个指标（PE/PB/ROE/股息率）：<a href="https://zhuanlan.zhihu.com/p/61254326" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61254326</a></p>
+<p>指数基金估值之PE, PB, ROE：<a href="https://zhuanlan.zhihu.com/p/111568187" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/111568187</a></p>
+</blockquote>
+<p><strong>指数基金分类</strong>：</p>
+<p><img src="/images/2021030201.png" alt="2020120701"></p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>理财</tag>
       </tags>
   </entry>
   <entry>
