@@ -359,6 +359,35 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start docker			#启动    </span><br><span class="line">sudo systemctl daemon-reload	#守护进程重启  </span><br><span class="line">systemctl restart docker		#重启docker服务  </span><br><span class="line">sudo service docker restart		#重启docker服务  </span><br><span class="line">docker service docker stop		#关闭</span><br><span class="line">docker systemctl stop docker	#关闭</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>虚拟化/容器化</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker安装RabbitMQ</title>
     <url>/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</url>
     <content><![CDATA[<p> RabbitMQ是基于AMQP的一款消息管理系统。AMQP(Advanced Message Queuing Protocol)，是一个提供消息服务的应用层标准高级消息队列协议，其中RabbitMQ就是基于这种协议的一种实现。</p>
@@ -396,24 +425,18 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<p>[TOC]</p>
+    <title>Docker设置镜像自启动</title>
+    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
+    <content><![CDATA[<p>Docker便捷小技巧</p>
 <a id="more"></a>
 
-<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start docker			#启动    </span><br><span class="line">sudo systemctl daemon-reload	#守护进程重启  </span><br><span class="line">systemctl restart docker		#重启docker服务  </span><br><span class="line">sudo service docker restart		#重启docker服务  </span><br><span class="line">docker service docker stop		#关闭</span><br><span class="line">docker systemctl stop docker	#关闭</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+<p>1.发现没启动</p>
+<p><code>docker ps</code></p>
+<p>2.查看所有安装的镜像</p>
+<p><code>docker ps -a</code></p>
+<p>3.设置总是自动启动</p>
+<p><code>docker update 镜像id --restart=always</code></p>
+<p>4.重启测试一下</p>
 ]]></content>
       <categories>
         <category>后端</category>
@@ -421,7 +444,28 @@
         <category>虚拟化/容器化</category>
       </categories>
       <tags>
-        <tag>Docker命令</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
+    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
+    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
+<p><img src="/images/2020081801.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -509,50 +553,6 @@
       <tags>
         <tag>Docker</tag>
         <tag>MySQL集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker设置镜像自启动</title>
-    <url>/2020/11/09/Docker%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E8%87%AA%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>Docker便捷小技巧</p>
-<a id="more"></a>
-
-<p>1.发现没启动</p>
-<p><code>docker ps</code></p>
-<p>2.查看所有安装的镜像</p>
-<p><code>docker ps -a</code></p>
-<p>3.设置总是自动启动</p>
-<p><code>docker update 镜像id --restart=always</code></p>
-<p>4.重启测试一下</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>分布式/微服务</category>
-        <category>虚拟化/容器化</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Duplicate entry for key &#39;PRIMARY&#39;</title>
-    <url>/2020/08/14/Duplicate-entry-for-key-PRIMARY/</url>
-    <content><![CDATA[<p>在执行数据库插入语句时，遇到一个比较罕见的错误，记录一下</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Duplicate entry &#39;322&#39; for key &#39;PRIMARY&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过相关查阅，在Stack Overflow上找到了解决方法：</p>
-<p><img src="/images/2020081801.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL错误</tag>
       </tags>
   </entry>
   <entry>
@@ -665,6 +665,80 @@
       </categories>
       <tags>
         <tag>ElasticSearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch搜索优化</title>
+    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
+<ol>
+<li>定制化分词器</li>
+<li>同义词扩展</li>
+<li>相关性重塑</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
+<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
+<p>然后将文件复制到其余的两个节点</p>
+<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将文件复制到其余的两个节点</p>
+<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Http请求需要返回两个头部，last-modified和etag</p>
+<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
+</blockquote>
+<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
+<blockquote>
+<p>语义相近或相同</p>
+<p>品牌类目关联</p>
+<p>搜索它等于搜索它</p>
+</blockquote>
+<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
+<p><img src="/images/2020120901.png" alt="image-20201209164003792"></p>
+<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>索引测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
+<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
+</blockquote>
+<p>相关性搜索</p>
+<p>让搜索引擎理解语义</p>
+<p>影响召回及排序</p>
+<h2 id="重新构建es索引"><a href="#重新构建es索引" class="headerlink" title="重新构建es索引"></a>重新构建es索引</h2><p>采取词性影响召回策略模型 通过category_id</p>
+<h2 id="引入Java代码："><a href="#引入Java代码：" class="headerlink" title="引入Java代码："></a>引入Java代码：</h2><p>构造分类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Integer <span class="title">getCategoryIdByToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer key : categoryWorkMap.keySet()) &#123;</span><br><span class="line">        List&lt;String&gt; tokenList = categoryWorkMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (tokenList.contains(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> key;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; categoryWorkMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    categoryWorkMap.put(<span class="number">1</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    categoryWorkMap.put(<span class="number">2</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"吃饭"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"下午茶"</span>);</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"休息"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"睡觉"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"住宿"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch7</tag>
       </tags>
   </entry>
   <entry>
@@ -901,80 +975,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch搜索优化</title>
-    <url>/2020/12/09/ElasticSearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>ElasticSearch搜索优化主要通过三个方面：</p>
-<ol>
-<li>定制化分词器</li>
-<li>同义词扩展</li>
-<li>相关性重塑</li>
-</ol>
-<a id="more"></a>
-
-<h1 id="定制化分词器"><a href="#定制化分词器" class="headerlink" title="定制化分词器"></a>定制化分词器</h1><p>对于中文分词器，我们一般使用的是<code>elasticsearch-analysis-ik</code>，当然也可以在现成的分词器上加一些定制化的改造，让分词器更加“智能”。</p>
-<h2 id="1-创建dic文件"><a href="#1-创建dic文件" class="headerlink" title="1.创建dic文件"></a>1.创建dic文件</h2><p>在es的node1节点创建<code>myword.dic</code>文件</p>
-<p>然后将文件复制到其余的两个节点</p>
-<h2 id="2-修改es配置文件"><a href="#2-修改es配置文件" class="headerlink" title="2.修改es配置文件"></a>2.修改es配置文件</h2><p><code>IKAnalyzer.cfg.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE properties SYSTEM &quot;http:&#x2F;&#x2F;java.sun.com&#x2F;dtd&#x2F;properties.dtd&quot;&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;comment&gt;IK Analyzer 扩展配置&lt;&#x2F;comment&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_dict&quot;&gt;myword.dic&lt;&#x2F;entry&gt;</span><br><span class="line">	 &lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span><br><span class="line">	&lt;entry key&#x3D;&quot;ext_stopwords&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_dict&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">	&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span><br><span class="line">	&lt;!-- &lt;entry key&#x3D;&quot;remote_ext_stopwords&quot;&gt;words_location&lt;&#x2F;entry&gt; --&gt;</span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
-
-<p>将文件复制到其余的两个节点</p>
-<h2 id="3-热更新词库"><a href="#3-热更新词库" class="headerlink" title="3.热更新词库"></a>3.热更新词库</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"ext_dict"</span>&gt;</span>http://yoursite.com/getCustomDic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Http请求需要返回两个头部，last-modified和etag</p>
-<p>两者任何一个发生变化会重新更新，ik一分钟检测一次</p>
-</blockquote>
-<h1 id="同义词扩展"><a href="#同义词扩展" class="headerlink" title="同义词扩展"></a>同义词扩展</h1><p>同义词：</p>
-<blockquote>
-<p>语义相近或相同</p>
-<p>品牌类目关联</p>
-<p>搜索它等于搜索它</p>
-</blockquote>
-<h2 id="1-创建同义词文件"><a href="#1-创建同义词文件" class="headerlink" title="1.创建同义词文件"></a>1.创建同义词文件</h2><p>在集群的各节点上的该路径<code>elasticsearch\elasticsearch-node3\config\analysis-ik</code>加上同义词文件</p>
-<p><img src="/images/2020120901.png" alt="image-20201209164003792"></p>
-<h2 id="2-建立es索引"><a href="#2-建立es索引" class="headerlink" title="2.建立es索引"></a>2.建立es索引</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#加入同义词</span><br><span class="line">PUT &#x2F;myshop</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1,</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;my_synonym_filter&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;synonym&quot;,</span><br><span class="line">          &quot;synonyms_path&quot;:&quot;analysis-ik&#x2F;my_synonyms.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;analyzer&quot;:&#123;</span><br><span class="line">        &quot;ik_syno&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_smart&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ik_syno_max&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;:&quot;ik_max_word&quot;,</span><br><span class="line">          &quot;filter&quot;:[&quot;my_synonym_filter&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    </span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;ik_syno_max&quot;,</span><br><span class="line">        &quot;search_analyzer&quot;: &quot;ik_syno&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tags&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;whitespace&quot;,&quot;fielddata&quot;: true</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;location&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;geo_point&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;price_per_man&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;category_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_id&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_name&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;text&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_remark_score&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;double&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;seller_disabled_flag&quot;:&#123;</span><br><span class="line">        &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-同步数据"><a href="#3-同步数据" class="headerlink" title="3.同步数据"></a>3.同步数据</h2><p>通过logstash将数据同步到es中</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logstash -f mysql&#x2F;jdbc.conf</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>分词测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;name&quot;</span><br><span class="line">  , &quot;text&quot;: &quot;xxx&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>索引测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET &#x2F;shop&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xxx&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="相关性重塑"><a href="#相关性重塑" class="headerlink" title="相关性重塑"></a>相关性重塑</h1><blockquote>
-<p>什么是相关性：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/relevance-intro.html</a></p>
-</blockquote>
-<p>相关性搜索</p>
-<p>让搜索引擎理解语义</p>
-<p>影响召回及排序</p>
-<h2 id="重新构建es索引"><a href="#重新构建es索引" class="headerlink" title="重新构建es索引"></a>重新构建es索引</h2><p>采取词性影响召回策略模型 通过category_id</p>
-<h2 id="引入Java代码："><a href="#引入Java代码：" class="headerlink" title="引入Java代码："></a>引入Java代码：</h2><p>构造分类：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Integer <span class="title">getCategoryIdByToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer key : categoryWorkMap.keySet()) &#123;</span><br><span class="line">        List&lt;String&gt; tokenList = categoryWorkMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (tokenList.contains(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> key;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; categoryWorkMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    categoryWorkMap.put(<span class="number">1</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    categoryWorkMap.put(<span class="number">2</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"吃饭"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">1</span>).add(<span class="string">"下午茶"</span>);</span><br><span class="line"></span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"休息"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"睡觉"</span>);</span><br><span class="line">    categoryWorkMap.get(<span class="number">2</span>).add(<span class="string">"住宿"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在构造分词函数识别器时调用<code>getCategoryIdByToken</code>方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造分词函数识别器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keyword</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">analyzeCategoryKeyword</span><span class="params">(String keyword)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request(<span class="string">"GET"</span>, <span class="string">"/shop/_analyze"</span>);</span><br><span class="line">    request.setJsonEntity(<span class="string">"&#123;"</span> + <span class="string">"  \"field\": \"name\","</span> + <span class="string">"  \"text\":\""</span> + keyword + <span class="string">"\"\n"</span> + <span class="string">"&#125;"</span>);</span><br><span class="line">    Response response = highLevelClient.getLowLevelClient().performRequest(request);</span><br><span class="line">    String responseStr = EntityUtils.toString(response.getEntity());</span><br><span class="line">    JSONObject jsonObject = JSONObject.parseObject(responseStr);</span><br><span class="line">    JSONArray jsonArray = jsonObject.getJSONArray(<span class="string">"tokens"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; jsonArray.size(); i++) &#123;</span><br><span class="line">        String token = jsonArray.getJSONObject(i).getString(<span class="string">"token"</span>);</span><br><span class="line">        Integer categoryId = getCategoryIdByToken(token);</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            res.put(token, categoryId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>搜索引擎</category>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch7</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ElasticSearch集群搭建</title>
     <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
@@ -1086,64 +1086,6 @@
       </tags>
   </entry>
   <entry>
-    <title>IDEA配置与常用快捷键</title>
-    <url>/2021/01/20/IDEA%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="1-IDEA配置"><a href="#1-IDEA配置" class="headerlink" title="1 IDEA配置"></a>1 IDEA配置</h1><p>1.1 整合maven</p>
-<p>1.2 JDK配置</p>
-<p>1.3 编码设置为UTF8</p>
-<h2 id="1-4-启动时不自动打开上一次的项目"><a href="#1-4-启动时不自动打开上一次的项目" class="headerlink" title="1.4 启动时不自动打开上一次的项目"></a>1.4 启动时不自动打开上一次的项目</h2><p>取消勾选</p>
-<p><img src="/images/2021012001.png" alt="image"></p>
-<h1 id="2-常用快捷键"><a href="#2-常用快捷键" class="headerlink" title="2 常用快捷键"></a>2 常用快捷键</h1><p><strong>快捷键技巧：</strong></p>
-<p>对于Windows：HotKey Explorer，HotKey Commander，快捷键说明</p>
-<p>对于macOS：CheatSheet</p>
-<p><strong>查看快捷键文档：</strong></p>
-<p>Helper–》Keymap Preference</p>
-<h2 id="2-1-代码格式化"><a href="#2-1-代码格式化" class="headerlink" title="2.1 代码格式化"></a>2.1 代码格式化</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="3-常用插件"><a href="#3-常用插件" class="headerlink" title="3 常用插件"></a>3 常用插件</h1><table>
-<thead>
-<tr>
-<th>Plugins</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Maven Helper</td>
-<td>检测maven依赖冲突的问题</td>
-</tr>
-<tr>
-<td>Lombok</td>
-<td>让代码更简洁</td>
-</tr>
-<tr>
-<td>CodeGlance</td>
-<td>代码缩放图</td>
-</tr>
-<tr>
-<td>Alibaba Java Coding</td>
-<td>扫描Java代码潜在的代码隐患，提升代码质量</td>
-</tr>
-<tr>
-<td>Save Actions</td>
-<td>保存自动格式化</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>集成开发环境</category>
-        <category>IDEA</category>
-      </categories>
-      <tags>
-        <tag>IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hadoop集群搭建</title>
     <url>/2020/03/28/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<blockquote>
@@ -1231,6 +1173,64 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Hadoop集群</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IDEA配置与常用快捷键</title>
+    <url>/2021/01/20/IDEA%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-IDEA配置"><a href="#1-IDEA配置" class="headerlink" title="1 IDEA配置"></a>1 IDEA配置</h1><p>1.1 整合maven</p>
+<p>1.2 JDK配置</p>
+<p>1.3 编码设置为UTF8</p>
+<h2 id="1-4-启动时不自动打开上一次的项目"><a href="#1-4-启动时不自动打开上一次的项目" class="headerlink" title="1.4 启动时不自动打开上一次的项目"></a>1.4 启动时不自动打开上一次的项目</h2><p>取消勾选</p>
+<p><img src="/images/2021012001.png" alt="image"></p>
+<h1 id="2-常用快捷键"><a href="#2-常用快捷键" class="headerlink" title="2 常用快捷键"></a>2 常用快捷键</h1><p><strong>快捷键技巧：</strong></p>
+<p>对于Windows：HotKey Explorer，HotKey Commander，快捷键说明</p>
+<p>对于macOS：CheatSheet</p>
+<p><strong>查看快捷键文档：</strong></p>
+<p>Helper–》Keymap Preference</p>
+<h2 id="2-1-代码格式化"><a href="#2-1-代码格式化" class="headerlink" title="2.1 代码格式化"></a>2.1 代码格式化</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">去掉空白： Ctrl + Shift + J</span><br><span class="line">格式化代码： Ctrl + Alt + L</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-常用插件"><a href="#3-常用插件" class="headerlink" title="3 常用插件"></a>3 常用插件</h1><table>
+<thead>
+<tr>
+<th>Plugins</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Maven Helper</td>
+<td>检测maven依赖冲突的问题</td>
+</tr>
+<tr>
+<td>Lombok</td>
+<td>让代码更简洁</td>
+</tr>
+<tr>
+<td>CodeGlance</td>
+<td>代码缩放图</td>
+</tr>
+<tr>
+<td>Alibaba Java Coding</td>
+<td>扫描Java代码潜在的代码隐患，提升代码质量</td>
+</tr>
+<tr>
+<td>Save Actions</td>
+<td>保存自动格式化</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>集成开发环境</category>
+        <category>IDEA</category>
+      </categories>
+      <tags>
+        <tag>IDEA</tag>
       </tags>
   </entry>
   <entry>
@@ -1900,6 +1900,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java并发学习笔记</title>
+    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>并发学习</p>
+<a id="more"></a>
+
+<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>并发/多线程</category>
+      </categories>
+      <tags>
+        <tag>Java并发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java容器详解</title>
     <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<blockquote>
@@ -1934,22 +1950,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>集合</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java并发学习笔记</title>
-    <url>/2020/12/20/Java%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>并发学习</p>
-<a id="more"></a>
-
-<h1 id="1-并发概念"><a href="#1-并发概念" class="headerlink" title="1 并发概念"></a>1 并发概念</h1><h1 id="2-并发基础"><a href="#2-并发基础" class="headerlink" title="2 并发基础"></a>2 并发基础</h1><h1 id="3-项目准备"><a href="#3-项目准备" class="headerlink" title="3 项目准备"></a>3 项目准备</h1><h1 id="4-线程安全性"><a href="#4-线程安全性" class="headerlink" title="4 线程安全性"></a>4 线程安全性</h1><h1 id="5-安全发布对象"><a href="#5-安全发布对象" class="headerlink" title="5 安全发布对象"></a>5 安全发布对象</h1><h1 id="6-线程安全策略"><a href="#6-线程安全策略" class="headerlink" title="6 线程安全策略"></a>6 线程安全策略</h1><h1 id="7-J-U-C之AQS"><a href="#7-J-U-C之AQS" class="headerlink" title="7 J.U.C之AQS"></a>7 J.U.C之AQS</h1><h1 id="8-J-U-C组件扩展"><a href="#8-J-U-C组件扩展" class="headerlink" title="8 J.U.C组件扩展"></a>8 J.U.C组件扩展</h1><h1 id="9-线程调度之线程池"><a href="#9-线程调度之线程池" class="headerlink" title="9 线程调度之线程池"></a>9 线程调度之线程池</h1><h1 id="10-多线程并发扩展"><a href="#10-多线程并发扩展" class="headerlink" title="10 多线程并发扩展"></a>10 多线程并发扩展</h1><h1 id="11-高并发之扩容思路"><a href="#11-高并发之扩容思路" class="headerlink" title="11 高并发之扩容思路"></a>11 高并发之扩容思路</h1><h1 id="12-高并发之缓存思路"><a href="#12-高并发之缓存思路" class="headerlink" title="12 高并发之缓存思路"></a>12 高并发之缓存思路</h1><h1 id="13-高并发之消息队列思路"><a href="#13-高并发之消息队列思路" class="headerlink" title="13 高并发之消息队列思路"></a>13 高并发之消息队列思路</h1><h1 id="14-高并发之应用拆分思路"><a href="#14-高并发之应用拆分思路" class="headerlink" title="14 高并发之应用拆分思路"></a>14 高并发之应用拆分思路</h1><h1 id="15-高并发之应用限流思路"><a href="#15-高并发之应用限流思路" class="headerlink" title="15 高并发之应用限流思路"></a>15 高并发之应用限流思路</h1><h1 id="16-高并发之服务降级与服务熔断思路"><a href="#16-高并发之服务降级与服务熔断思路" class="headerlink" title="16 高并发之服务降级与服务熔断思路"></a>16 高并发之服务降级与服务熔断思路</h1><h1 id="17-高并发之数据库切库分库分表思路"><a href="#17-高并发之数据库切库分库分表思路" class="headerlink" title="17 高并发之数据库切库分库分表思路"></a>17 高并发之数据库切库分库分表思路</h1><h1 id="18-高并发之高可用手段介绍"><a href="#18-高并发之高可用手段介绍" class="headerlink" title="18 高并发之高可用手段介绍"></a>18 高并发之高可用手段介绍</h1>]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>并发/多线程</category>
-      </categories>
-      <tags>
-        <tag>Java并发</tag>
       </tags>
   </entry>
   <entry>
@@ -2386,6 +2386,60 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Linux安装配置大全</title>
+    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
+    <content><![CDATA[<p>Linux各种版本安装配置</p>
+<a id="more"></a>
+
+<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
+<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
+<h1 id="Linux常见操作"><a href="#Linux常见操作" class="headerlink" title="Linux常见操作"></a>Linux常见操作</h1><h2 id="linux磁盘分区扩容"><a href="#linux磁盘分区扩容" class="headerlink" title="linux磁盘分区扩容"></a>linux磁盘分区扩容</h2><p>大概分为以下几步：</p>
+<ol>
+<li>分区<code>fdisk</code></li>
+<li>格式化<code>mkfs</code></li>
+<li>挂载<code>mount</code></li>
+</ol>
+<blockquote>
+<p>详细操作：<a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenmh/p/5096592.html</a></p>
+</blockquote>
+<p><strong>其他操作：</strong></p>
+<p><code>du</code> 查看文件数据占用多少磁盘空间<br><code>swap</code>交换分区 是一种通过在磁盘中预先划分一定的空军，然后就讲把内存中暂时不常用的数据临时存放在磁盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题</p>
+<h2 id="快速查找特定文件"><a href="#快速查找特定文件" class="headerlink" title="快速查找特定文件"></a>快速查找特定文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find 路径 -name &quot;target.java&quot;  :精确查找文件</span><br><span class="line">find 路径 -name &quot;target*&quot;  :模糊查找文件</span><br><span class="line">find 路径 -iname &quot;targe*&quot;  :不区分文件名大小写法去查找文件</span><br><span class="line">man find：更多关于find指令的使用说明</span><br></pre></td></tr></table></figure>
+
+<h2 id="检索文件内容"><a href="#检索文件内容" class="headerlink" title="检索文件内容"></a>检索文件内容</h2><p><code>grep</code> (global search regular expression)：用于查找文件里符合条件的字符串。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep [-abcEFGhHilLnqrsvVwxy][-A&lt;显示行数&gt;][-B&lt;显示列数&gt;][-C&lt;显示列数&gt;][-d&lt;进行动作&gt;][-e&lt;范本样式&gt;][-f&lt;范本文件&gt;][--help][范本样式][文件或目录...]</span><br></pre></td></tr></table></figure>
+
+<p>管道操作符 <code>|</code>  ：可将指令连接起来，前一个指令的输出作为后一个指令的输入</p>
+<blockquote>
+<p><a href="https://www.runoob.com/linux/linux-comm-grep.html" target="_blank" rel="noopener">https://www.runoob.com/linux/linux-comm-grep.html</a></p>
+</blockquote>
+<h2 id="对日志内容做统计"><a href="#对日志内容做统计" class="headerlink" title="对日志内容做统计"></a>对日志内容做统计</h2><p><code>awk</code>：是一种处理文本文件的语言，是一个强大的文本分析工具。</p>
+<ul>
+<li>一次读取一行文本，按输入分隔符进行切片，切成多个组成部分</li>
+<li>将切片直接保存在内建的变量中，$1,$2….($0表示行的全部)</li>
+<li>支持对单个切片的判断</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk [选项参数] <span class="string">'script'</span> var=value file(s)</span><br><span class="line">或</span><br><span class="line">awk [选项参数] -f scriptfile var=value file(s)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a href="https://www.runoob.com/linux/linux-comm-awk.html" target="_blank" rel="noopener">https://www.runoob.com/linux/linux-comm-awk.html</a></p>
+</blockquote>
+<h2 id="批量替换文件内容"><a href="#批量替换文件内容" class="headerlink" title="批量替换文件内容"></a>批量替换文件内容</h2><p><code>sed</code>：利用脚本来处理文本文件。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sed [-hnV][-e&lt;script&gt;][-f&lt;script文件&gt;][文本文件]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a href="https://www.runoob.com/linux/linux-comm-sed.html" target="_blank" rel="noopener">https://www.runoob.com/linux/linux-comm-sed.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+        <category>Linux系统</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux安装MySQL</title>
     <url>/2018/02/01/Linux%E5%AE%89%E8%A3%85MySQL/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -2531,60 +2585,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Linux安装配置大全</title>
-    <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
-    <content><![CDATA[<p>Linux各种版本安装配置</p>
-<a id="more"></a>
-
-<h1 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&mid=2247488461&idx=1&sn=3199f4d7f6854ab450a088135122d2ff&chksm=f9a1c004ced64912098b6e1b1d4406dbcc8858a6fc7b9d9e76196e33f28b613f940dd6d682dc&sessionid=1606460612&scene=126&clicktime=1606460870&enterid=1606460870&ascene=3&devicetype=android-27&version=2700143f&nettype=3gnet&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2F6Xg4qYU%2FwWCE0t8HkjwzY%3D&pass_ticket=Mq6%2FQAWSPqK%2FgoRY6hwN80HcANi%2FWrcs4QkV5e%2BUTRSlviV9nk6vBi1LDmOauhub&wx_header=1" target="_blank" rel="noopener">CentOS 7 安装教程</a></p>
-<h1 id="Ubuntu-20-04"><a href="#Ubuntu-20-04" class="headerlink" title="Ubuntu 20.04"></a>Ubuntu 20.04</h1><p><a href="https://mp.weixin.qq.com/s/vkLZ_3Jp4HdQ8PDIMYsGEw" target="_blank" rel="noopener">Ubuntu安装教程</a></p>
-<h1 id="Linux常见操作"><a href="#Linux常见操作" class="headerlink" title="Linux常见操作"></a>Linux常见操作</h1><h2 id="linux磁盘分区扩容"><a href="#linux磁盘分区扩容" class="headerlink" title="linux磁盘分区扩容"></a>linux磁盘分区扩容</h2><p>大概分为以下几步：</p>
-<ol>
-<li>分区<code>fdisk</code></li>
-<li>格式化<code>mkfs</code></li>
-<li>挂载<code>mount</code></li>
-</ol>
-<blockquote>
-<p>详细操作：<a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenmh/p/5096592.html</a></p>
-</blockquote>
-<p><strong>其他操作：</strong></p>
-<p><code>du</code> 查看文件数据占用多少磁盘空间<br><code>swap</code>交换分区 是一种通过在磁盘中预先划分一定的空军，然后就讲把内存中暂时不常用的数据临时存放在磁盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题</p>
-<h2 id="快速查找特定文件"><a href="#快速查找特定文件" class="headerlink" title="快速查找特定文件"></a>快速查找特定文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find 路径 -name &quot;target.java&quot;  :精确查找文件</span><br><span class="line">find 路径 -name &quot;target*&quot;  :模糊查找文件</span><br><span class="line">find 路径 -iname &quot;targe*&quot;  :不区分文件名大小写法去查找文件</span><br><span class="line">man find：更多关于find指令的使用说明</span><br></pre></td></tr></table></figure>
-
-<h2 id="检索文件内容"><a href="#检索文件内容" class="headerlink" title="检索文件内容"></a>检索文件内容</h2><p><code>grep</code> (global search regular expression)：用于查找文件里符合条件的字符串。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep [-abcEFGhHilLnqrsvVwxy][-A&lt;显示行数&gt;][-B&lt;显示列数&gt;][-C&lt;显示列数&gt;][-d&lt;进行动作&gt;][-e&lt;范本样式&gt;][-f&lt;范本文件&gt;][--help][范本样式][文件或目录...]</span><br></pre></td></tr></table></figure>
-
-<p>管道操作符 <code>|</code>  ：可将指令连接起来，前一个指令的输出作为后一个指令的输入</p>
-<blockquote>
-<p><a href="https://www.runoob.com/linux/linux-comm-grep.html" target="_blank" rel="noopener">https://www.runoob.com/linux/linux-comm-grep.html</a></p>
-</blockquote>
-<h2 id="对日志内容做统计"><a href="#对日志内容做统计" class="headerlink" title="对日志内容做统计"></a>对日志内容做统计</h2><p><code>awk</code>：是一种处理文本文件的语言，是一个强大的文本分析工具。</p>
-<ul>
-<li>一次读取一行文本，按输入分隔符进行切片，切成多个组成部分</li>
-<li>将切片直接保存在内建的变量中，$1,$2….($0表示行的全部)</li>
-<li>支持对单个切片的判断</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk [选项参数] <span class="string">'script'</span> var=value file(s)</span><br><span class="line">或</span><br><span class="line">awk [选项参数] -f scriptfile var=value file(s)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><a href="https://www.runoob.com/linux/linux-comm-awk.html" target="_blank" rel="noopener">https://www.runoob.com/linux/linux-comm-awk.html</a></p>
-</blockquote>
-<h2 id="批量替换文件内容"><a href="#批量替换文件内容" class="headerlink" title="批量替换文件内容"></a>批量替换文件内容</h2><p><code>sed</code>：利用脚本来处理文本文件。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sed [-hnV][-e&lt;script&gt;][-f&lt;script文件&gt;][文本文件]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><a href="https://www.runoob.com/linux/linux-comm-sed.html" target="_blank" rel="noopener">https://www.runoob.com/linux/linux-comm-sed.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-        <category>Linux系统</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Logback配置与使用</title>
     <url>/2018/10/31/Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -2687,6 +2687,28 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>MyBatis二级缓存的一个小细节</title>
+    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    <content><![CDATA[<p>记录一个小细节</p>
+<a id="more"></a>
+
+<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
+<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
+<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>数据库</category>
+        <category>ORM框架</category>
+      </categories>
+      <tags>
+        <tag>MyBatis缓存</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
     <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
@@ -2724,28 +2746,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MyBatis二级缓存的一个小细节</title>
-    <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<p>记录一个小细节</p>
-<a id="more"></a>
-
-<p>​    Mybatis的一级缓存是SqlSession级别的缓存，当在同一个SqlSession中执行两次相同的SQL语句时，会将第一次执行查询的数据存入一级缓存中，第二次查询时会从缓存中获取数据，而不用再去数据库中查询，从而提高了查询性能。</p>
-<p>​    Mybatis的二级缓存是mapper级别的缓存，多个SqlSession共用二级缓存，他们使用的同一个mapper的SQL语句操作数据库，获得的会存放在二级缓存中。</p>
-<p>Mybatis默认没有开启二级缓存，需要在Mybatis的配置文件mybatis-config.xml中开启，配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong><code>settings元素要放在properties元素之后，typeAliases元素之前，否则配置文件会报错。</code></p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>ORM框架</category>
-      </categories>
-      <tags>
-        <tag>MyBatis缓存</tag>
       </tags>
   </entry>
   <entry>
@@ -3578,19 +3578,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
-    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Spring家族</category>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>注解</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PXC方案的一些改进</title>
     <url>/2020/11/09/PXC%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%94%B9%E8%BF%9B/</url>
     <content><![CDATA[<p>之前MySQL集群搭建使用的是PXC方案，最后想想还是有很多地方需要改进：</p>
@@ -4096,49 +4083,16 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Redis应用场景</title>
-    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
-    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
-<a id="more"></a>
-
-<blockquote>
-<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
-</blockquote>
-<blockquote>
-<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
-</blockquote>
-<p>Redis常见场景主要有以下几种:</p>
-<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
-<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
-<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
-<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
-<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
-<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
-<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
-<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>中间件</category>
-        <category>缓存</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot前台页面get不到js,css文件</title>
-    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
-<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
-]]></content>
+    <title>@NotBlank,@NotEmpty,@NotNull三种注解</title>
+    <url>/2020/12/18/NotBlank-NotEmpty-NotNull%E4%B8%89%E7%A7%8D%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@NotBlank 用于 String 判断空格</span><br><span class="line">@NotEmpty 用于集合</span><br><span class="line">@NotNull 用在基本类型上</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>后端</category>
         <category>Spring家族</category>
-        <category>SpringBoot</category>
+        <category>Spring</category>
       </categories>
       <tags>
-        <tag>SpringBoot错误</tag>
+        <tag>注解</tag>
       </tags>
   </entry>
   <entry>
@@ -4182,6 +4136,52 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis应用场景</title>
+    <url>/2019/12/18/Redis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+    <content><![CDATA[<p>Redis以高性能著称，了解与掌握redis常用操作很有必要</p>
+<a id="more"></a>
+
+<blockquote>
+<p>Redis安装：<a href="https://www.runoob.com/docker/docker-install-redis.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+</blockquote>
+<blockquote>
+<p>Redis可视化软件：<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+</blockquote>
+<p>Redis常见场景主要有以下几种:</p>
+<h4 id="1-缓存"><a href="#1-缓存" class="headerlink" title="1.缓存"></a>1.缓存</h4><p>缓存现在几乎是所有中大型网站都在用的必杀技，合理的利用缓存不仅能够提升网站访问速度，还能大大降低数据库的压力。Redis提供了键过期功能，也提供了灵活的键淘汰策略，所以，现在Redis用在缓存的场合非常多。</p>
+<h4 id="2-排行榜"><a href="#2-排行榜" class="headerlink" title="2.排行榜"></a>2.排行榜</h4><p>很多网站都有排行榜应用的，如京东的月度销量榜单、商品按时间的上新排行榜等。Redis提供的有序集合数据类构能实现各种复杂的排行榜应用。</p>
+<h4 id="3-计数器"><a href="#3-计数器" class="headerlink" title="3.计数器"></a>3.计数器</h4><p>什么是计数器，如电商网站商品的浏览量、视频网站视频的播放数等。为了保证数据实时效，每次浏览都得给+1，并发量高时如果每次都请求数据库操作无疑是种挑战和压力。Redis提供的incr命令来实现计数器功能，内存操作，性能非常好，非常适用于这些计数场景。</p>
+<h4 id="4-分布式会话"><a href="#4-分布式会话" class="headerlink" title="4.分布式会话"></a>4.分布式会话</h4><p>集群模式下，在应用不多的情况下一般使用容器自带的session复制功能就能满足，当应用增多相对复杂的系统中，一般都会搭建以Redis等内存数据库为中心的session服务，session不再由容器管理，而是由session服务及内存数据库管理。</p>
+<h4 id="5-分布式锁"><a href="#5-分布式锁" class="headerlink" title="5.分布式锁"></a>5.分布式锁</h4><p>在很多互联网公司中都使用了分布式技术，分布式技术带来的技术挑战是对同一个资源的并发访问，如全局ID、减库存、秒杀等场景，并发量不大的场景可以使用数据库的悲观锁、乐观锁来实现，但在并发量高的场合中，利用数据库锁来控制资源的并发访问是不太理想的，大大影响了数据库的性能。可以利用Redis的setnx功能来编写分布式的锁，如果设置返回1说明获取锁成功，否则获取锁失败，实际应用中要考虑的细节要更多。</p>
+<h4 id="6-社交网络"><a href="#6-社交网络" class="headerlink" title="6. 社交网络"></a>6. 社交网络</h4><p>点赞、踩、关注/被关注、共同好友等是社交网站的基本功能，社交网站的访问量通常来说比较大，而且传统的关系数据库类型不适合存储这种类型的数据，Redis提供的哈希、集合等数据结构能很方便的的实现这些功能。</p>
+<h4 id="7-最新列表"><a href="#7-最新列表" class="headerlink" title="7.最新列表"></a>7.最新列表</h4><p>Redis列表结构，LPUSH可以在列表头部插入一个内容ID作为关键字，LTRIM可用来限制列表的数量，这样列表永远为N个ID，无需查询最新的列表，直接根据ID去到对应的内容页即可。</p>
+<h4 id="8-消息系统"><a href="#8-消息系统" class="headerlink" title="8.消息系统"></a>8.消息系统</h4><p>消息队列是大型网站必用中间件，如ActiveMQ、RabbitMQ、Kafka等流行的消息队列中间件，主要用于业务解耦、流量削峰及异步处理实时性低的业务。Redis提供了发布/订阅及阻塞队列功能，能实现一个简单的消息队列系统。另外，这个不能和专业的消息中间件相比。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>中间件</category>
+        <category>缓存</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot前台页面get不到js,css文件</title>
+    <url>/2020/09/28/SpringBoot%E5%89%8D%E5%8F%B0%E9%A1%B5%E9%9D%A2get%E4%B8%8D%E5%88%B0js%20css%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>今天遇到了一个让我很无语的问题，在导入css,js等静态文件之后，在前台获取不到相应的文件。。。。。为此调试了好几个小时。。。。。<br>没想到重启了idea之后问题就莫名好了。。。。暴风哭泣。。。。</p>
+<p>下次一定要<br><strong>重启idea软件</strong><br><strong>重启idea软件</strong><br><strong>重启idea软件</strong></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Spring家族</category>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -4278,6 +4278,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot项目测试模板</title>
+    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Spring家族</category>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4312,22 +4328,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>分页功能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot项目测试模板</title>
-    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Spring家族</category>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -5604,31 +5604,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>hexo博客高级操作</title>
-    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<blockquote>
-<p>官网文档：<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">http://theme-next.iissnan.com</a></p>
-<p>hexo next高级操作：<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
-</blockquote>
-<a id="more"></a>
-
-<h2 id="修改-的样式"><a href="#修改-的样式" class="headerlink" title="修改``的样式"></a>修改``的样式</h2><p>Next默认的主题样式是灰色的，不太显眼，颜色也不太好看，可以将其设置成自己喜欢的颜色，效果如下：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/19cc2hfD2rBB66CoumStyqbDTRmOCTP72RMvW1ABVYA7ZYyseLUtz2xQtlP5cWd1SAkEzHGLicoNItH1BpPiaMJg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-<p>配置起来也是很简单，只需要在<code>\themes\next\source\css\_custom\custom.styl</code>文件中添加如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Custom styles.</span><br><span class="line">code &#123;</span><br><span class="line">    color: #ff7600;</span><br><span class="line">    background: #fbf7f8;</span><br><span class="line">    margin: 2px;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 大代码块的自定义样式</span><br><span class="line">.highlight, pre &#123;</span><br><span class="line">    margin: 5px 0;</span><br><span class="line">    padding: 5px;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">&#125;</span><br><span class="line">.highlight, code, pre &#123;</span><br><span class="line">    border: 1px solid #d6d6d6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>以上的颜色可以配置自己喜欢的，比如效果图中的颜色是我个人比较喜欢的。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>next</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>k8s学习笔记</title>
     <url>/2021/01/11/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -5672,6 +5647,31 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客高级操作</title>
+    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<blockquote>
+<p>官网文档：<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">http://theme-next.iissnan.com</a></p>
+<p>hexo next高级操作：<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="修改-的样式"><a href="#修改-的样式" class="headerlink" title="修改``的样式"></a>修改``的样式</h2><p>Next默认的主题样式是灰色的，不太显眼，颜色也不太好看，可以将其设置成自己喜欢的颜色，效果如下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/19cc2hfD2rBB66CoumStyqbDTRmOCTP72RMvW1ABVYA7ZYyseLUtz2xQtlP5cWd1SAkEzHGLicoNItH1BpPiaMJg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>配置起来也是很简单，只需要在<code>\themes\next\source\css\_custom\custom.styl</code>文件中添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Custom styles.</span><br><span class="line">code &#123;</span><br><span class="line">    color: #ff7600;</span><br><span class="line">    background: #fbf7f8;</span><br><span class="line">    margin: 2px;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 大代码块的自定义样式</span><br><span class="line">.highlight, pre &#123;</span><br><span class="line">    margin: 5px 0;</span><br><span class="line">    padding: 5px;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">&#125;</span><br><span class="line">.highlight, code, pre &#123;</span><br><span class="line">    border: 1px solid #d6d6d6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>以上的颜色可以配置自己喜欢的，比如效果图中的颜色是我个人比较喜欢的。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
       </tags>
   </entry>
   <entry>
@@ -5723,26 +5723,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>开发工具</tag>
         <tag>Linux系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>人民日报给90后的理财计划</title>
-    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
-    <content><![CDATA[<p>人民日报给90后的理财计划</p>
-<a id="more"></a>
-
-<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="image"></p>
-<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="image"></p>
-<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="image"></p>
-<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="image"></p>
-<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="image"></p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><img src="/images/2020102506.png" alt="image-20201227160018479"></p>
-]]></content>
-      <categories>
-        <category>理财</category>
-      </categories>
-      <tags>
-        <tag>理财</tag>
       </tags>
   </entry>
   <entry>
@@ -5855,6 +5835,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>主从复制</tag>
         <tag>读写分离</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人民日报给90后的理财计划</title>
+    <url>/2020/10/25/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%BB%9990%E5%90%8E%E7%9A%84%E7%90%86%E8%B4%A2%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>人民日报给90后的理财计划</p>
+<a id="more"></a>
+
+<h3 id="1-学会记账"><a href="#1-学会记账" class="headerlink" title="1.学会记账"></a>1.学会记账</h3><p><img src="/images/2020102501.png" alt="image"></p>
+<h3 id="2-控制消费"><a href="#2-控制消费" class="headerlink" title="2.控制消费"></a>2.控制消费</h3><p><img src="/images/2020102502.png" alt="image"></p>
+<h3 id="3-选择投资项目"><a href="#3-选择投资项目" class="headerlink" title="3.选择投资项目"></a>3.选择投资项目</h3><p><img src="/images/2020102503.png" alt="image"></p>
+<h3 id="4-“梦想”消费单"><a href="#4-“梦想”消费单" class="headerlink" title="4.“梦想”消费单"></a>4.“梦想”消费单</h3><p><img src="/images/2020102504.png" alt="image"></p>
+<h3 id="5-投资自己"><a href="#5-投资自己" class="headerlink" title="5.投资自己"></a>5.投资自己</h3><p><img src="/images/2020102505.png" alt="image"></p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><img src="/images/2020102506.png" alt="image-20201227160018479"></p>
+]]></content>
+      <categories>
+        <category>理财</category>
+      </categories>
+      <tags>
+        <tag>理财</tag>
       </tags>
   </entry>
   <entry>
@@ -6529,6 +6529,36 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>服务器软件盘点</title>
+    <url>/2020/12/30/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9B%98%E7%82%B9/</url>
+    <content><![CDATA[<p>静态服务：主要提供静态资源，不同用户访问到的资源相同。本博客就是典型的静态服务（Hexo+Next）<br>动态服务：提供动态服务，不同用户访问到的资源不同，涉及到数据之类的。例如类似<a href="https://github.com/halo-dev/halo" target="_blank" rel="noopener">halo</a> </p>
+<a id="more"></a>
+
+<blockquote>
+<p>服务器软件大盘点！:<a href="https://zhuanlan.zhihu.com/p/122252011" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/122252011</a></p>
+</blockquote>
+<p>服务器软件主要分为以下几类：</p>
+<ul>
+<li>Web服务器:广义上来说，就是响应用户的需求，提供服务，当下所有的服务器软件都可以称之为web服务器软件</li>
+<li>HTTP服务器(静态服务)：使用HTTP协议传输资源，提供服务</li>
+<li>应用服务器(动态服务)：一个特定应用的承载容器</li>
+</ul>
+<p><strong>常见的轻量级服务器软件：</strong><br>    1.Nginx：典型的静态服务器，可做反向代理、负载均衡，一般放在最前面直面用户，和后端Tomcat打配合；纯C写的，性能贼高、内存消耗极少、稳定性也相当好，互联网公司重度使用。<br>    2.Tengine：阿里出品，基于Nginx服务器做的改造(加强和封装)，对大流量场景做了很多高级功能，性能、稳定性优秀。<br>    3.Apache http server：也是静态服务器，但是不如Nginx。</p>
+<p>​    4.IIS：微软开发，不开源，只能用在Windows下，具有应用服务器能力的http服务器。</p>
+<p>​    5.Tomcat：Apache出品，典型的应用服务器软件，符合Servlet标准的应用容器，也可以提供http服务，但一般不会作为http服务器；是Spring Boot框架默认的内置服务器。<br>​    6.Jetty：跟Tomcat是一个性质的东西，符合Servlet标准的应用容器，也是Spring Boot框架支持的服务器，但不是默认的。Jetty比Tomcat要轻量一些，配置也更简单一些而已。<br>​    7.Undertow：红帽出品，跟Tomcat、Jetty一样也是Spring Boot框架支持的服务器，但不是默认的；在并发量不高的情况下 , Undertow与Tomcat、Jetty的性能区别不大 ，但在高并发时性能优于Tomcat、Jetty。<br><strong>几款商用重量级的服务器软件：</strong><br>​    1.JBoss(从8版开始更名为WildFly)：不仅是Servlet应用容器，更是EJB的应用容器，整套JavaEE框架部署的解决方案。<br>​    2.WebLogic：Oracle公司出品，用于部署企业级JavaEE应用，全能型，几乎支持JavaEE所有的应用规范。<br>​    3.WebSphere：IBM公司出品，支持更多JavaEE的应用规范的综合应用服务器。</p>
+<p><strong>对比：</strong></p>
+<blockquote>
+<p>严格意义上Web服务器只负责处理HTTP协议，只能发送静态页面的内容。而JSP，ASP，PHP等动态内容需要通过CGI、FastCGI、ISAPI等接口交给其他程序去处理。这个其他程序就是应用服务器。<br>比如Web服务器包括Nginx，Apache，IIS等。而应用服务器包括WebLogic，JBoss等。应用服务器一般也支持HTTP协议，因此界限没这么清晰。但是应用服务器的HTTP协议部分仅仅是支持，一般不会做特别优化，所以很少有见Tomcat直接暴露给外面，而是和Nginx、Apache等配合，只让Tomcat处理JSP和Servlet部分</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>运维知识</category>
+      </categories>
+      <tags>
+        <tag>服务器软件</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>推荐系统算法整理</title>
     <url>/2020/12/08/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/</url>
     <content><![CDATA[<p>推荐系统算法整理</p>
@@ -6624,63 +6654,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 ]]></content>
   </entry>
   <entry>
-    <title>服务器软件盘点</title>
-    <url>/2020/12/30/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9B%98%E7%82%B9/</url>
-    <content><![CDATA[<p>静态服务：主要提供静态资源，不同用户访问到的资源相同。本博客就是典型的静态服务（Hexo+Next）<br>动态服务：提供动态服务，不同用户访问到的资源不同，涉及到数据之类的。例如类似<a href="https://github.com/halo-dev/halo" target="_blank" rel="noopener">halo</a> </p>
-<a id="more"></a>
-
-<blockquote>
-<p>服务器软件大盘点！:<a href="https://zhuanlan.zhihu.com/p/122252011" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/122252011</a></p>
-</blockquote>
-<p>服务器软件主要分为以下几类：</p>
-<ul>
-<li>Web服务器:广义上来说，就是响应用户的需求，提供服务，当下所有的服务器软件都可以称之为web服务器软件</li>
-<li>HTTP服务器(静态服务)：使用HTTP协议传输资源，提供服务</li>
-<li>应用服务器(动态服务)：一个特定应用的承载容器</li>
-</ul>
-<p><strong>常见的轻量级服务器软件：</strong><br>    1.Nginx：典型的静态服务器，可做反向代理、负载均衡，一般放在最前面直面用户，和后端Tomcat打配合；纯C写的，性能贼高、内存消耗极少、稳定性也相当好，互联网公司重度使用。<br>    2.Tengine：阿里出品，基于Nginx服务器做的改造(加强和封装)，对大流量场景做了很多高级功能，性能、稳定性优秀。<br>    3.Apache http server：也是静态服务器，但是不如Nginx。</p>
-<p>​    4.IIS：微软开发，不开源，只能用在Windows下，具有应用服务器能力的http服务器。</p>
-<p>​    5.Tomcat：Apache出品，典型的应用服务器软件，符合Servlet标准的应用容器，也可以提供http服务，但一般不会作为http服务器；是Spring Boot框架默认的内置服务器。<br>​    6.Jetty：跟Tomcat是一个性质的东西，符合Servlet标准的应用容器，也是Spring Boot框架支持的服务器，但不是默认的。Jetty比Tomcat要轻量一些，配置也更简单一些而已。<br>​    7.Undertow：红帽出品，跟Tomcat、Jetty一样也是Spring Boot框架支持的服务器，但不是默认的；在并发量不高的情况下 , Undertow与Tomcat、Jetty的性能区别不大 ，但在高并发时性能优于Tomcat、Jetty。<br><strong>几款商用重量级的服务器软件：</strong><br>​    1.JBoss(从8版开始更名为WildFly)：不仅是Servlet应用容器，更是EJB的应用容器，整套JavaEE框架部署的解决方案。<br>​    2.WebLogic：Oracle公司出品，用于部署企业级JavaEE应用，全能型，几乎支持JavaEE所有的应用规范。<br>​    3.WebSphere：IBM公司出品，支持更多JavaEE的应用规范的综合应用服务器。</p>
-<p><strong>对比：</strong></p>
-<blockquote>
-<p>严格意义上Web服务器只负责处理HTTP协议，只能发送静态页面的内容。而JSP，ASP，PHP等动态内容需要通过CGI、FastCGI、ISAPI等接口交给其他程序去处理。这个其他程序就是应用服务器。<br>比如Web服务器包括Nginx，Apache，IIS等。而应用服务器包括WebLogic，JBoss等。应用服务器一般也支持HTTP协议，因此界限没这么清晰。但是应用服务器的HTTP协议部分仅仅是支持，一般不会做特别优化，所以很少有见Tomcat直接暴露给外面，而是和Nginx、Apache等配合，只让Tomcat处理JSP和Servlet部分</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>运维知识</category>
-      </categories>
-      <tags>
-        <tag>服务器软件</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>    
-
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<p>操作系统课设</p>
@@ -6764,6 +6737,33 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
