@@ -60,84 +60,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Centos7上安装docker</title>
-    <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
-    <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
-<a id="more"></a>
-
-<h2 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1 安装docker"></a>1 安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
-<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2019121701.png" alt="image-20201217213427007"></p>
-<p>2.使用 <code>root</code> 权限登录 Centos。确保 yum 包更新到最新。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum update</span><br></pre></td></tr></table></figure>
-
-<p>3.卸载旧版本(如果安装过旧版本的话)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum remove docker  docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
-
-<p>4.安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
-
-<p>5.设置yum源</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2019121702.png" alt="image-20201217213649924"></p>
-<p>6.可以查看所有仓库中所有docker版本，并选择特定版本安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
-
-<p>7.安装docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce  #由于repo中默认只开启stable仓库，故这里安装的是最新稳定版</span><br><span class="line"># sudo yum install &lt;FQPN&gt;  # 例如：sudo yum install docker-ce-17.12.0.ce</span><br></pre></td></tr></table></figure>
-
-<p>8.启动docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-
-<p>9.设置开机自启动</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
-
-<p>10.验证安装是否成功(有client和service两部分表示docker安装启动都成功了)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># docker version</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-配置镜像加速"><a href="#2-配置镜像加速" class="headerlink" title="2 配置镜像加速"></a>2 配置镜像加速</h2><blockquote>
-<p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
-</blockquote>
-<p>Docker客户端版本需要大于 1.10.0 </p>
-<p>可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;26udi78a.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
-
-<p>2.卸载旧版本的包</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum erase docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
-
-<p>3.再次安装docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2.yum安装的时候遇到公钥尚未安装的问题解决</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 yum install xxxx 命令之后添加 --nogpgcheck 进行跳过公钥检查安装</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<p>导入密钥重新安装Docker</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>分布式/微服务</category>
-        <category>虚拟化/容器化</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Debug调试学习</title>
     <url>/2021/01/28/Debug%E8%B0%83%E8%AF%95%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -356,6 +278,84 @@
       </categories>
       <tags>
         <tag>Debug</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos7上安装docker</title>
+    <url>/2019/12/17/Centos7%E4%B8%8A%E5%AE%89%E8%A3%85docker/</url>
+    <content><![CDATA[<p>Docker分为社区版CE和企业版EE。CE版完全足够个人使用，选择stable版本即可。</p>
+<a id="more"></a>
+
+<h2 id="1-安装docker"><a href="#1-安装docker" class="headerlink" title="1 安装docker"></a>1 安装docker</h2><p>1.Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
+<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># uname -r</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019121701.png" alt="image-20201217213427007"></p>
+<p>2.使用 <code>root</code> 权限登录 Centos。确保 yum 包更新到最新。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum update</span><br></pre></td></tr></table></figure>
+
+<p>3.卸载旧版本(如果安装过旧版本的话)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum remove docker  docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
+
+<p>4.安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+
+<p>5.设置yum源</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019121702.png" alt="image-20201217213649924"></p>
+<p>6.可以查看所有仓库中所有docker版本，并选择特定版本安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
+
+<p>7.安装docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce  #由于repo中默认只开启stable仓库，故这里安装的是最新稳定版</span><br><span class="line"># sudo yum install &lt;FQPN&gt;  # 例如：sudo yum install docker-ce-17.12.0.ce</span><br></pre></td></tr></table></figure>
+
+<p>8.启动docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<p>9.设置开机自启动</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
+
+<p>10.验证安装是否成功(有client和service两部分表示docker安装启动都成功了)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># docker version</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-配置镜像加速"><a href="#2-配置镜像加速" class="headerlink" title="2 配置镜像加速"></a>2 配置镜像加速</h2><blockquote>
+<p>阿里云界面：<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
+</blockquote>
+<p>Docker客户端版本需要大于 1.10.0 </p>
+<p>可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;26udi78a.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h2><p>1.因为之前已经安装过旧版本的docker，在安装的时候报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction check error:</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;docker-containerd-shim from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br><span class="line">  file &#x2F;usr&#x2F;bin&#x2F;dockerd from install of docker-ce-17.12.0.ce-1.el7.centos.x86_64 conflicts with file from package docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>2.卸载旧版本的包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum erase docker-common-2:1.12.6-68.gitec8512b.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>3.再次安装docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2.yum安装的时候遇到公钥尚未安装的问题解决</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在 yum install xxxx 命令之后添加 --nogpgcheck 进行跳过公钥检查安装</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<p>导入密钥重新安装Docker</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">rpm --<span class="keyword">import</span> http:<span class="comment">//mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>虚拟化/容器化</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -975,6 +975,46 @@
       </tags>
   </entry>
   <entry>
+    <title>ElasticSearch集群搭建</title>
+    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
+<a id="more"></a>
+
+<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
+<li><p>elasticsearch-7.7.1-windows-x86_64</p>
+</li>
+<li><p>elasticsearch-head-5.0.0</p>
+</li>
+</ul>
+<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
+<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
+<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
+<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
+
+<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
+
+<p>另外两个节点更改一下端口即可</p>
+<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
+<p><img src="/images/2020101102.png" alt="node1"></p>
+<p>node2:</p>
+<p><img src="/images/2020101103.png" alt="node2"></p>
+<p>node3:</p>
+<p><img src="/images/2020101104.png" alt="node3"></p>
+<p>总览：</p>
+<p><img src="/images/2020101105.png" alt="nodes"></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>搜索引擎</category>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch集群</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hadoop运行环境搭建</title>
     <url>/2020/03/27/Hadoop%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>Hadoop运行环境搭建</p>
@@ -1043,46 +1083,6 @@
       </categories>
       <tags>
         <tag>Hadoop集群</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch集群搭建</title>
-    <url>/2020/10/11/ElasticSearch%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>ElasticSearch诞生于2010年，它采用的是分布式模式，这也印证了它名字中的“elastic”。谈到分布式，当然离不开集群，这里记录一下自己搭建集群的经验。</p>
-<a id="more"></a>
-
-<h3 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h3><ul>
-<li><p>elasticsearch-7.7.1-windows-x86_64</p>
-</li>
-<li><p>elasticsearch-head-5.0.0</p>
-</li>
-</ul>
-<h3 id="二、搭建"><a href="#二、搭建" class="headerlink" title="二、搭建"></a>二、搭建</h3><p>搭建主要分为三步：解压文件–》修改配置文件–》启动</p>
-<h4 id="1-解压文件"><a href="#1-解压文件" class="headerlink" title="1.解压文件"></a>1.解压文件</h4><p>这里我是将文件解压到一个新的文件夹，注意文件路径名不要带有中文名。</p>
-<p><img src="/images/2020101101.png" alt="image-20201011112800198"></p>
-<h4 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h4><p>修改config文件中的elasticsearch.yml</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================== Elasticsearch Configuration =========================</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> Elasticsearch comes with reasonable defaults for most settings.</span></span><br><span class="line"><span class="comment">#       Before you set out to tweak and tune the configuration, make sure you</span></span><br><span class="line"><span class="comment">#       understand what are you trying to accomplish and the consequences.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The primary way of configuring a node is via this file. This template lists</span></span><br><span class="line"><span class="comment"># the most important settings you may want to configure for a production cluster.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please consult the documentation for further information on configuration options:</span></span><br><span class="line"><span class="comment"># https://www.elastic.co/guide/en/elasticsearch/reference/index.html</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Cluster -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for your cluster:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.name:</span> <span class="string">XXX</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ------------------------------------ Node ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Use a descriptive name for the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Add custom attributes to the node:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#node.attr.rack: r1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Paths ------------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.data: /path/to/data</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#path.logs: /path/to/logs</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ----------------------------------- Memory -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lock the memory on startup:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#bootstrap.memory_lock: true</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Make sure that the heap size is set to about half the memory available</span></span><br><span class="line"><span class="comment"># on the system and that the owner of the process is allowed to use this</span></span><br><span class="line"><span class="comment"># limit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Elasticsearch performs poorly when the system is swapping the memory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Network -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set the bind address to a specific IP (IPv4 or IPv6):</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Set a custom port for HTTP:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集群之间的通信</span></span><br><span class="line"><span class="attr">transport.tcp.port:</span> <span class="number">9300</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#允许前端做跨域访问</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># For more information, consult the network module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># --------------------------------- Discovery ----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Pass an initial list of hosts to perform discovery when this node is started:</span></span><br><span class="line"><span class="comment"># The default list of hosts is ["127.0.0.1", "[::1]"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">discovery.seed_hosts:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Bootstrap the cluster using an initial set of master-eligible nodes:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["127.0.0.1:9300",</span> <span class="string">"127.0.0.1:9301"</span><span class="string">,"127.0.0.1:9302"]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the discovery and cluster formation module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Gateway -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Block initial recovery after a full cluster restart until N nodes are started:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#gateway.recover_after_nodes: 3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For more information, consult the gateway module documentation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ---------------------------------- Various -----------------------------------</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Require explicit names when deleting indices:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#action.destructive_requires_name: true</span></span><br></pre></td></tr></table></figure>
-
-<p>因为是单机搭建集群，这里是做的伪分布式配置，集群的区分主要是通过端口</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#集群名字</span></span><br><span class="line"><span class="string">cluster.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#当前配置所在机器的节点名</span></span><br><span class="line"><span class="string">node.name</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址</span></span><br><span class="line"><span class="string">network.host</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置对外服务的http端口</span></span><br><span class="line"><span class="string">http.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置节点之间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在启动此节点时传递要执行发现的主机的初始列表</span></span><br><span class="line"><span class="string">discovery.seed_hosts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用初始的一组符合主节点条件的节点引导集群</span></span><br><span class="line"><span class="string">cluster.initial_master_nodes</span></span><br></pre></td></tr></table></figure>
-
-<p>另外两个节点更改一下端口即可</p>
-<h4 id="3-启动集群"><a href="#3-启动集群" class="headerlink" title="3.启动集群"></a>3.启动集群</h4><p>node1:</p>
-<p><img src="/images/2020101102.png" alt="node1"></p>
-<p>node2:</p>
-<p><img src="/images/2020101103.png" alt="node2"></p>
-<p>node3:</p>
-<p><img src="/images/2020101104.png" alt="node3"></p>
-<p>总览：</p>
-<p><img src="/images/2020101105.png" alt="nodes"></p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>搜索引擎</category>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch集群</tag>
       </tags>
   </entry>
   <entry>
@@ -1650,6 +1650,43 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java容器详解</title>
+    <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.jianshu.com/p/8ef342da8732" target="_blank" rel="noopener">https://www.jianshu.com/p/8ef342da8732</a></p>
+<p><a href="https://blog.csdn.net/feiyanaffection/article/details/81394745" target="_blank" rel="noopener">https://blog.csdn.net/feiyanaffection/article/details/81394745</a></p>
+</blockquote>
+<h1 id="Java集合框架"><a href="#Java集合框架" class="headerlink" title="Java集合框架"></a>Java集合框架</h1><p><img src="/images/2020122705.png" alt="image"></p>
+<h1 id="面试考点"><a href="#面试考点" class="headerlink" title="面试考点"></a>面试考点</h1><p>数据结构考点：</p>
+<ul>
+<li>数组和链表的区别</li>
+<li>链表的操作，如反转，链表环路检测，双向链表，循环链表相关操作；</li>
+<li>队列，栈的应用</li>
+<li>二叉树的遍历方式及其递归和非递归的实现</li>
+<li>红黑树的旋转</li>
+</ul>
+<p>算法考点：</p>
+<ul>
+<li>内部排序：如递归排序，交换排序（冒泡，快排），选择排序，插入排序；</li>
+<li>外部排序：应掌握如何利用有限的内存配合海量的外部存储来处理超大的数据集，写不出来也要有相关的思路</li>
+</ul>
+<p>考点扩展：</p>
+<ul>
+<li>哪些排序是不稳定的，稳定意味着什么</li>
+<li>不同数据集，各种排序最好或最差的情况</li>
+<li>如何优化算法</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java定时任务调度工具</title>
     <url>/2021/02/02/Java%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -1897,43 +1934,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Timer</tag>
         <tag>Quartz</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java容器详解</title>
-    <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.jianshu.com/p/8ef342da8732" target="_blank" rel="noopener">https://www.jianshu.com/p/8ef342da8732</a></p>
-<p><a href="https://blog.csdn.net/feiyanaffection/article/details/81394745" target="_blank" rel="noopener">https://blog.csdn.net/feiyanaffection/article/details/81394745</a></p>
-</blockquote>
-<h1 id="Java集合框架"><a href="#Java集合框架" class="headerlink" title="Java集合框架"></a>Java集合框架</h1><p><img src="/images/2020122705.png" alt="image"></p>
-<h1 id="面试考点"><a href="#面试考点" class="headerlink" title="面试考点"></a>面试考点</h1><p>数据结构考点：</p>
-<ul>
-<li>数组和链表的区别</li>
-<li>链表的操作，如反转，链表环路检测，双向链表，循环链表相关操作；</li>
-<li>队列，栈的应用</li>
-<li>二叉树的遍历方式及其递归和非递归的实现</li>
-<li>红黑树的旋转</li>
-</ul>
-<p>算法考点：</p>
-<ul>
-<li>内部排序：如递归排序，交换排序（冒泡，快排），选择排序，插入排序；</li>
-<li>外部排序：应掌握如何利用有限的内存配合海量的外部存储来处理超大的数据集，写不出来也要有相关的思路</li>
-</ul>
-<p>考点扩展：</p>
-<ul>
-<li>哪些排序是不稳定的，稳定意味着什么</li>
-<li>不同数据集，各种排序最好或最差的情况</li>
-<li>如何优化算法</li>
-</ul>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -2323,69 +2323,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java面向对象详解</title>
-    <url>/2020/12/27/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>隐藏内部实现细节</p>
-<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><blockquote>
-<p><a href="https://www.cnblogs.com/dolphin0520/p/3803432.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3803432.html</a></p>
-</blockquote>
-<p>继承在一定程度上破坏了父类的封装性，此时要合理运用组合</p>
-<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><blockquote>
-<p><a href="https://www.zhihu.com/question/30082151" target="_blank" rel="noopener">https://www.zhihu.com/question/30082151</a></p>
-<p>面向对象的多态性：<a href="https://liuyangjun.blog.csdn.net/article/details/79788326" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/79788326</a></p>
-<p>理解java的三大特性之多态：<a href="https://www.cnblogs.com/chenssy/p/3372798.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3372798.html</a></p>
-</blockquote>
-<h2 id="什么是多态"><a href="#什么是多态" class="headerlink" title="什么是多态"></a>什么是多态</h2><p>事物在运行过程中存在不同的状态。</p>
-<h2 id="多态的三个前提"><a href="#多态的三个前提" class="headerlink" title="多态的三个前提"></a>多态的三个前提</h2><ul>
-<li>继承</li>
-</ul>
-<ul>
-<li>重写</li>
-</ul>
-<ul>
-<li>父类引用指向子类对象（向上转型）</li>
-</ul>
-<h2 id="多态成员访问的特点"><a href="#多态成员访问的特点" class="headerlink" title="多态成员访问的特点"></a>多态成员访问的特点</h2><ul>
-<li>成员变量<pre><code>编译看左边，运行看左边。</code></pre></li>
-<li>构造方法<pre><code>创建子类对象的时候，访问父类的构造方法，对父类的数据进行初始化。</code></pre></li>
-<li>成员方法<pre><code>编译看左边，运行看右边。</code></pre></li>
-<li>静态方法<pre><code>编译看左边，运行看左边。
-(静态和类相关，算不上重写，所以，访问还是左边的)</code></pre></li>
-</ul>
-<h2 id="多态的优劣"><a href="#多态的优劣" class="headerlink" title="多态的优劣"></a>多态的优劣</h2><p>优点：十分灵活，减少多余对象的创建</p>
-<p>弊端：不能使用子类特有的属性和方法</p>
-<p>例子：</p>
-<p> 比如你是一个酒神，对酒情有独钟。某日回家发现桌上有几个杯子里面都装了白酒，从外面看我们是不可能知道这是些什么酒，只有喝了之后才能够猜出来是何种酒。你一喝，这是剑南春、再喝这是五粮液、再喝这是酒鬼酒….在这里我们可以描述成如下：</p>
-<p>   酒 a = 剑南春</p>
-<p>   酒 b = 五粮液</p>
-<p>   酒 c = 酒鬼酒</p>
-<p>   …</p>
-<p>   这里所表现的的就是多态。剑南春、五粮液、酒鬼酒都是酒的子类，我们只是通过酒这一个父类就能够引用不同的子类，这就是多态——我们只有在运行的时候才会知道引用变量所指向的具体实例对象。</p>
-<p>   诚然，要理解多态我们就必须要明白什么是“向上转型”。在继承中我们简单介绍了向上转型，这里就在啰嗦下：在上面的喝酒例子中，酒（Win）是父类，剑南春（JNC）、五粮液（WLY）、酒鬼酒（JGJ）是子类。我们定义如下代码：</p>
-<p>   JNC a = new JNC();</p>
-<p>   对于这个代码我们非常容易理解无非就是实例化了一个剑南春的对象嘛！但是这样呢？</p>
-<p>   Wine a = new JNC();</p>
-<p>   在这里我们这样理解，这里定义了一个Wine 类型的a，它指向JNC对象实例。由于JNC是继承与Wine，所以JNC可以自动向上转型为Wine，所以a是可以指向JNC实例对象的。这样做存在一个非常大的好处，在继承中我们知道子类是父类的扩展，它可以提供比父类更加强大的功能，如果我们定义了一个指向子类的父类引用类型，那么它除了能够引用父类的共性外，还可以使用子类强大的功能。</p>
-<p>   但是向上转型存在一些缺憾，那就是它必定会导致一些方法和属性的丢失，而导致我们不能够获取它们。所以父类类型的引用可以调用父类中定义的所有属性和方法，对于只存在与子类中的方法和属性它就望尘莫及了。</p>
-<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><blockquote>
-<p><a href="https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html</a></p>
-</blockquote>
-<p>枚举的遍历：<code>values()</code></p>
-<p><img src="/images/2021020801.png" alt="image-20210208105851798"></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux安装MySQL</title>
     <url>/2018/02/01/Linux%E5%AE%89%E8%A3%85MySQL/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -2531,6 +2468,69 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java面向对象详解</title>
+    <url>/2020/12/27/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>隐藏内部实现细节</p>
+<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><blockquote>
+<p><a href="https://www.cnblogs.com/dolphin0520/p/3803432.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3803432.html</a></p>
+</blockquote>
+<p>继承在一定程度上破坏了父类的封装性，此时要合理运用组合</p>
+<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><blockquote>
+<p><a href="https://www.zhihu.com/question/30082151" target="_blank" rel="noopener">https://www.zhihu.com/question/30082151</a></p>
+<p>面向对象的多态性：<a href="https://liuyangjun.blog.csdn.net/article/details/79788326" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/79788326</a></p>
+<p>理解java的三大特性之多态：<a href="https://www.cnblogs.com/chenssy/p/3372798.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3372798.html</a></p>
+</blockquote>
+<h2 id="什么是多态"><a href="#什么是多态" class="headerlink" title="什么是多态"></a>什么是多态</h2><p>事物在运行过程中存在不同的状态。</p>
+<h2 id="多态的三个前提"><a href="#多态的三个前提" class="headerlink" title="多态的三个前提"></a>多态的三个前提</h2><ul>
+<li>继承</li>
+</ul>
+<ul>
+<li>重写</li>
+</ul>
+<ul>
+<li>父类引用指向子类对象（向上转型）</li>
+</ul>
+<h2 id="多态成员访问的特点"><a href="#多态成员访问的特点" class="headerlink" title="多态成员访问的特点"></a>多态成员访问的特点</h2><ul>
+<li>成员变量<pre><code>编译看左边，运行看左边。</code></pre></li>
+<li>构造方法<pre><code>创建子类对象的时候，访问父类的构造方法，对父类的数据进行初始化。</code></pre></li>
+<li>成员方法<pre><code>编译看左边，运行看右边。</code></pre></li>
+<li>静态方法<pre><code>编译看左边，运行看左边。
+(静态和类相关，算不上重写，所以，访问还是左边的)</code></pre></li>
+</ul>
+<h2 id="多态的优劣"><a href="#多态的优劣" class="headerlink" title="多态的优劣"></a>多态的优劣</h2><p>优点：十分灵活，减少多余对象的创建</p>
+<p>弊端：不能使用子类特有的属性和方法</p>
+<p>例子：</p>
+<p> 比如你是一个酒神，对酒情有独钟。某日回家发现桌上有几个杯子里面都装了白酒，从外面看我们是不可能知道这是些什么酒，只有喝了之后才能够猜出来是何种酒。你一喝，这是剑南春、再喝这是五粮液、再喝这是酒鬼酒….在这里我们可以描述成如下：</p>
+<p>   酒 a = 剑南春</p>
+<p>   酒 b = 五粮液</p>
+<p>   酒 c = 酒鬼酒</p>
+<p>   …</p>
+<p>   这里所表现的的就是多态。剑南春、五粮液、酒鬼酒都是酒的子类，我们只是通过酒这一个父类就能够引用不同的子类，这就是多态——我们只有在运行的时候才会知道引用变量所指向的具体实例对象。</p>
+<p>   诚然，要理解多态我们就必须要明白什么是“向上转型”。在继承中我们简单介绍了向上转型，这里就在啰嗦下：在上面的喝酒例子中，酒（Win）是父类，剑南春（JNC）、五粮液（WLY）、酒鬼酒（JGJ）是子类。我们定义如下代码：</p>
+<p>   JNC a = new JNC();</p>
+<p>   对于这个代码我们非常容易理解无非就是实例化了一个剑南春的对象嘛！但是这样呢？</p>
+<p>   Wine a = new JNC();</p>
+<p>   在这里我们这样理解，这里定义了一个Wine 类型的a，它指向JNC对象实例。由于JNC是继承与Wine，所以JNC可以自动向上转型为Wine，所以a是可以指向JNC实例对象的。这样做存在一个非常大的好处，在继承中我们知道子类是父类的扩展，它可以提供比父类更加强大的功能，如果我们定义了一个指向子类的父类引用类型，那么它除了能够引用父类的共性外，还可以使用子类强大的功能。</p>
+<p>   但是向上转型存在一些缺憾，那就是它必定会导致一些方法和属性的丢失，而导致我们不能够获取它们。所以父类类型的引用可以调用父类中定义的所有属性和方法，对于只存在与子类中的方法和属性它就望尘莫及了。</p>
+<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><blockquote>
+<p><a href="https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html</a></p>
+</blockquote>
+<p>枚举的遍历：<code>values()</code></p>
+<p><img src="/images/2021020801.png" alt="image-20210208105851798"></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>面向对象</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux安装配置大全</title>
     <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
     <content><![CDATA[<p>Linux各种版本安装配置</p>
@@ -2582,49 +2582,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Logback配置与使用</title>
-    <url>/2018/10/31/Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h1 id="Logback介绍"><a href="#Logback介绍" class="headerlink" title="Logback介绍"></a>Logback介绍</h1><p>Logback 分为三个模块：</p>
-<ul>
-<li>Core模块是其他两个模块的基础。</li>
-<li>Classic模块扩展了core模块。Classic模块相当于log4j的显著改进版，Logback-classic 直接实现了 SLF4J API。</li>
-<li>Access访问模块与Servlet容器集成提供通过Http来访问日志的功能。</li>
-</ul>
-<p>要引入logback，由于Logback-classic依赖slf4j-api.jar和logback-core.jar，所以要把slf4j-api.jar、logback-core.jar、logback-classic.jar，添加到要引入Logbac日志管理的项目的classpath中。</p>
-<h1 id="配置模板"><a href="#配置模板" class="headerlink" title="配置模板"></a>配置模板</h1><blockquote>
-<p><a href="https://www.cnblogs.com/warking/p/5710303.html" target="_blank" rel="noopener">https://www.cnblogs.com/warking/p/5710303.html</a></p>
-</blockquote>
-<p>在项目中使用的模板</p>
-<p>pom依赖：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>配置介绍</p>
-<ul>
-<li>Logger、appender及layout</li>
-</ul>
-<p>　　Logger作为日志的记录器，把它关联到应用的对应的context上后，主要用于存放日志对象，也可以定义日志类型、级别。<br>　　Appender主要用于指定日志输出的目的地，目的地可以是控制台、文件、远程套接字服务器、 MySQL、PostreSQL、 Oracle和其他数据库、 JMS和远程UNIX Syslog守护进程等。<br>　　Layout 负责把事件转换成字符串，格式化的日志信息的输出。</p>
-<ul>
-<li>logger context</li>
-</ul>
-<p>　　各个logger 都被关联到一个 LoggerContext，LoggerContext负责制造logger，也负责以树结构排列各logger。其他所有logger也通过org.slf4j.LoggerFactory 类的静态方法getLogger取得。 getLogger方法以 logger名称为参数。用同一名字调用LoggerFactory.getLogger 方法所得到的永远都是同一个logger对象的引用。</p>
-<ul>
-<li>有效级别及级别的继承</li>
-</ul>
-<p>　　Logger 可以被分配级别。级别包括：TRACE、DEBUG、INFO、WARN 和 ERROR，定义于ch.qos.logback.classic.Level类。如果 logger没有被分配级别，那么它将从有被分配级别的最近的祖先那里继承级别。root logger 默认级别是 DEBUG。</p>
-<ul>
-<li>打印方法与基本的选择规则</li>
-</ul>
-<p>　　打印方法决定记录请求的级别。例如，如果 L 是一个 logger 实例，那么，语句 L.info(“..”)是一条级别为 INFO的记录语句。记录请求的级别在高于或等于其 logger 的有效级别时被称为被启用，否则，称为被禁用。记录请求级别为 p，其 logger的有效级别为 q，只有则当 p&gt;=q时，该请求才会被执行。<br>该规则是 logback 的核心。</p>
-<p>级别排序为： <code>TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">"true"</span> <span class="attr">scanPeriod</span>=<span class="string">"60 seconds"</span> <span class="attr">debug</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 定义参数常量 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- TRACE&lt;DEBUG&lt;INFO&lt;WARN&lt;ERROR --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- logger.trace("msg") logger.debug... --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.level"</span> <span class="attr">value</span>=<span class="string">"debug"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.maxHistory"</span> <span class="attr">value</span>=<span class="string">"30"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.filePath"</span> <span class="attr">value</span>=<span class="string">"$&#123;catalina.base&#125;/logs/webapps"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.pattern"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">value</span>=<span class="string">"%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n"</span> /&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 控制台设置 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"consoleAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- DEBUG --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"debugAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/debug.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/debug/debug.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>DEBUG<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- INFO --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"infoAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/info.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/info/info.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>INFO<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ERROR --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"errorAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/erorr.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/error/error.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"com.liuurick.o2o"</span> <span class="attr">level</span>=<span class="string">"$&#123;log.level&#125;"</span> <span class="attr">additivity</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"debugAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"infoAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"errorAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"info"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"consoleAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>Logback</tag>
       </tags>
   </entry>
   <entry>
@@ -2687,6 +2644,49 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Logback配置与使用</title>
+    <url>/2018/10/31/Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h1 id="Logback介绍"><a href="#Logback介绍" class="headerlink" title="Logback介绍"></a>Logback介绍</h1><p>Logback 分为三个模块：</p>
+<ul>
+<li>Core模块是其他两个模块的基础。</li>
+<li>Classic模块扩展了core模块。Classic模块相当于log4j的显著改进版，Logback-classic 直接实现了 SLF4J API。</li>
+<li>Access访问模块与Servlet容器集成提供通过Http来访问日志的功能。</li>
+</ul>
+<p>要引入logback，由于Logback-classic依赖slf4j-api.jar和logback-core.jar，所以要把slf4j-api.jar、logback-core.jar、logback-classic.jar，添加到要引入Logbac日志管理的项目的classpath中。</p>
+<h1 id="配置模板"><a href="#配置模板" class="headerlink" title="配置模板"></a>配置模板</h1><blockquote>
+<p><a href="https://www.cnblogs.com/warking/p/5710303.html" target="_blank" rel="noopener">https://www.cnblogs.com/warking/p/5710303.html</a></p>
+</blockquote>
+<p>在项目中使用的模板</p>
+<p>pom依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置介绍</p>
+<ul>
+<li>Logger、appender及layout</li>
+</ul>
+<p>　　Logger作为日志的记录器，把它关联到应用的对应的context上后，主要用于存放日志对象，也可以定义日志类型、级别。<br>　　Appender主要用于指定日志输出的目的地，目的地可以是控制台、文件、远程套接字服务器、 MySQL、PostreSQL、 Oracle和其他数据库、 JMS和远程UNIX Syslog守护进程等。<br>　　Layout 负责把事件转换成字符串，格式化的日志信息的输出。</p>
+<ul>
+<li>logger context</li>
+</ul>
+<p>　　各个logger 都被关联到一个 LoggerContext，LoggerContext负责制造logger，也负责以树结构排列各logger。其他所有logger也通过org.slf4j.LoggerFactory 类的静态方法getLogger取得。 getLogger方法以 logger名称为参数。用同一名字调用LoggerFactory.getLogger 方法所得到的永远都是同一个logger对象的引用。</p>
+<ul>
+<li>有效级别及级别的继承</li>
+</ul>
+<p>　　Logger 可以被分配级别。级别包括：TRACE、DEBUG、INFO、WARN 和 ERROR，定义于ch.qos.logback.classic.Level类。如果 logger没有被分配级别，那么它将从有被分配级别的最近的祖先那里继承级别。root logger 默认级别是 DEBUG。</p>
+<ul>
+<li>打印方法与基本的选择规则</li>
+</ul>
+<p>　　打印方法决定记录请求的级别。例如，如果 L 是一个 logger 实例，那么，语句 L.info(“..”)是一条级别为 INFO的记录语句。记录请求的级别在高于或等于其 logger 的有效级别时被称为被启用，否则，称为被禁用。记录请求级别为 p，其 logger的有效级别为 q，只有则当 p&gt;=q时，该请求才会被执行。<br>该规则是 logback 的核心。</p>
+<p>级别排序为： <code>TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR</code></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">"true"</span> <span class="attr">scanPeriod</span>=<span class="string">"60 seconds"</span> <span class="attr">debug</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 定义参数常量 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- TRACE&lt;DEBUG&lt;INFO&lt;WARN&lt;ERROR --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- logger.trace("msg") logger.debug... --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.level"</span> <span class="attr">value</span>=<span class="string">"debug"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.maxHistory"</span> <span class="attr">value</span>=<span class="string">"30"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.filePath"</span> <span class="attr">value</span>=<span class="string">"$&#123;catalina.base&#125;/logs/webapps"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.pattern"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">value</span>=<span class="string">"%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n"</span> /&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 控制台设置 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"consoleAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- DEBUG --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"debugAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/debug.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/debug/debug.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>DEBUG<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- INFO --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"infoAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/info.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/info/info.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>INFO<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ERROR --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"errorAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/erorr.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/error/error.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"com.liuurick.o2o"</span> <span class="attr">level</span>=<span class="string">"$&#123;log.level&#125;"</span> <span class="attr">additivity</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"debugAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"infoAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"errorAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"info"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"consoleAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>Logback</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MyBatis二级缓存的一个小细节</title>
     <url>/2020/10/23/MyBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
     <content><![CDATA[<p>记录一个小细节</p>
@@ -2706,6 +2706,46 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>MyBatis缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
+    <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
+<a id="more"></a>
+
+<blockquote>
+<p>COUNT(column_name) 函数返回指定列的值的数目（NULL 不计入）</p>
+</blockquote>
+<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是 NULL，累计值就加 1，否则不加。最后返回累计值。</p>
+<p>所以，count(*)、count(1)和count(主键 id) 都表示返回满足条件的结果集的总行数；而 count(字段），则表示返回满足条件的数据行里面，参数“字段”不为 NULL 的总个数。</p>
+<p>至于分析性能差别的时候，记住这么几个原则：</p>
+<ul>
+<li>server 层要什么就给什么；</li>
+<li>InnoDB 只给必要的值；</li>
+<li>现在的优化器只优化了 count(*) 的语义为“取行数”，其他“显而易见”的优化并没有做。</li>
+</ul>
+<p><strong>count(可空字段)</strong></p>
+<p>扫描全表，读到server层，判断字段可空，拿出该字段所有值，判断每一个值是否为空，不为空则累加</p>
+<p><strong>count(非空字段)与count(主键 id)</strong></p>
+<p>扫描全表，读到server层，判断字段不可空，按行累加。</p>
+<p><strong>count(1)</strong></p>
+<p>扫描全表，但不取值，server层收到的每一行都是1，判断不可能是null，按值累加。</p>
+<p><strong>注意：</strong>count(1)执行速度比count(主键 id)快的原因：从引擎返回 id 会涉及到解析数据行，以及拷贝字段值的操作。</p>
+<p><strong>count(*)</strong></p>
+<p>MySQL 执行count(<em>)在优化器做了专门优化。因为count(</em>)返回的行一定不是空。扫描全表，但是不取值，按行累加。</p>
+<blockquote>
+<p>看到这里，你会说优化器就不能自己判断一下吗，主键 id 肯定是非空的，为什么不能按照 count(<em>) 来处理，多么简单的优化。当然 MySQL 专门针对这个语句进行优化也不是不可以。但是这种需要专门优化的情况太多了，而且 MySQL 已经优化过 count(</em>) 了，你直接使用这种语句就可以了。</p>
+</blockquote>
+<p><strong>性能对比结论</strong></p>
+<p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -3046,46 +3086,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
 <p>事务发生结束了之后是不能恢复的–持久性</p>
 <p>事务之前和之后它们的业务逻辑上要保持一致！两人总账额度9000，相互转帐后依然是9000 – 一致性</p>
 <p><strong>对于MySQL索引优化，DCL…等部分，工作之后就会遇到！现在可以不必要学！**</strong>现在学了也不一定会，会了也不一定能用得上，用得上也不一定能记得！**</p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL中count(字段) ，count(主键 id) ，count(1)和count(*)的区别</title>
-    <url>/2020/11/18/MySQL%E4%B8%ADcount-%E5%AD%97%E6%AE%B5-%EF%BC%8Ccount-%E4%B8%BB%E9%94%AE-id-%EF%BC%8Ccount-1-%E5%92%8Ccount-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p><strong>注：下面的讨论和结论是基于 InnoDB 引擎的。</strong></p>
-<a id="more"></a>
-
-<blockquote>
-<p>COUNT(column_name) 函数返回指定列的值的数目（NULL 不计入）</p>
-</blockquote>
-<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是 NULL，累计值就加 1，否则不加。最后返回累计值。</p>
-<p>所以，count(*)、count(1)和count(主键 id) 都表示返回满足条件的结果集的总行数；而 count(字段），则表示返回满足条件的数据行里面，参数“字段”不为 NULL 的总个数。</p>
-<p>至于分析性能差别的时候，记住这么几个原则：</p>
-<ul>
-<li>server 层要什么就给什么；</li>
-<li>InnoDB 只给必要的值；</li>
-<li>现在的优化器只优化了 count(*) 的语义为“取行数”，其他“显而易见”的优化并没有做。</li>
-</ul>
-<p><strong>count(可空字段)</strong></p>
-<p>扫描全表，读到server层，判断字段可空，拿出该字段所有值，判断每一个值是否为空，不为空则累加</p>
-<p><strong>count(非空字段)与count(主键 id)</strong></p>
-<p>扫描全表，读到server层，判断字段不可空，按行累加。</p>
-<p><strong>count(1)</strong></p>
-<p>扫描全表，但不取值，server层收到的每一行都是1，判断不可能是null，按值累加。</p>
-<p><strong>注意：</strong>count(1)执行速度比count(主键 id)快的原因：从引擎返回 id 会涉及到解析数据行，以及拷贝字段值的操作。</p>
-<p><strong>count(*)</strong></p>
-<p>MySQL 执行count(<em>)在优化器做了专门优化。因为count(</em>)返回的行一定不是空。扫描全表，但是不取值，按行累加。</p>
-<blockquote>
-<p>看到这里，你会说优化器就不能自己判断一下吗，主键 id 肯定是非空的，为什么不能按照 count(<em>) 来处理，多么简单的优化。当然 MySQL 专门针对这个语句进行优化也不是不可以。但是这种需要专门优化的情况太多了，而且 MySQL 已经优化过 count(</em>) 了，你直接使用这种语句就可以了。</p>
-</blockquote>
-<p><strong>性能对比结论</strong></p>
-<p><strong>count(可空字段) &lt; count(非空字段) = count(主键 id) &lt; count(1) ≈ count(*)</strong></p>
 ]]></content>
       <categories>
         <category>编程基础</category>
@@ -4185,27 +4185,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot启动时找不到或无法加载主类</title>
-    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
-<blockquote>
-<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
-</blockquote>
-<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是<code>SPRING_BOOT_MAIN_CLASS</code>的value并没有设置正确</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">component</span> <span class="attr">name</span>=<span class="string">"RunManager"</span> <span class="attr">selected</span>=<span class="string">"Spring Boot.DianpingApplication"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">configuration</span> <span class="attr">name</span>=<span class="string">"DianpingApplication"</span> <span class="attr">type</span>=<span class="string">"SpringBootApplicationConfigurationType"</span> <span class="attr">factoryName</span>=<span class="string">"Spring Boot"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">module</span> <span class="attr">name</span>=<span class="string">"dianping"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">option</span> <span class="attr">name</span>=<span class="string">"SPRING_BOOT_MAIN_CLASS"</span> <span class="attr">value</span>=<span class="string">"com.liuurick.dianping.DianpingApplication"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">method</span> <span class="attr">v</span>=<span class="string">"2"</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">option</span> <span class="attr">name</span>=<span class="string">"Make"</span> <span class="attr">enabled</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">method</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Spring家族</category>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot错误</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot实现邮件发送功能</title>
     <url>/2020/08/13/SpringBoot%E5%AE%9E%E7%8E%B0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8A%9F%E8%83%BD/</url>
     <content><![CDATA[<p>SpringBoot实现邮件发送功能</p>
@@ -4246,6 +4225,27 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>邮件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot启动时找不到或无法加载主类</title>
+    <url>/2020/10/06/SpringBoot%E5%90%AF%E5%8A%A8%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E6%88%96%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E4%B8%BB%E7%B1%BB/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<p>在启动SpringBoot项目时，控制台页面突然报出下列错误：</p>
+<blockquote>
+<p>找不到或无法加载主类 com.xxx.xxxx.xxxxApplication</p>
+</blockquote>
+<p>一开始以为是项目打包的问题，于是启动<code>mvn clean install</code>。。。无果<br>只得硬着头皮一步步排查，最后是在workspace.xml文件中找到问题所在,也就是<code>SPRING_BOOT_MAIN_CLASS</code>的value并没有设置正确</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">component</span> <span class="attr">name</span>=<span class="string">"RunManager"</span> <span class="attr">selected</span>=<span class="string">"Spring Boot.DianpingApplication"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">configuration</span> <span class="attr">name</span>=<span class="string">"DianpingApplication"</span> <span class="attr">type</span>=<span class="string">"SpringBootApplicationConfigurationType"</span> <span class="attr">factoryName</span>=<span class="string">"Spring Boot"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">module</span> <span class="attr">name</span>=<span class="string">"dianping"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">option</span> <span class="attr">name</span>=<span class="string">"SPRING_BOOT_MAIN_CLASS"</span> <span class="attr">value</span>=<span class="string">"com.liuurick.dianping.DianpingApplication"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">method</span> <span class="attr">v</span>=<span class="string">"2"</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">option</span> <span class="attr">name</span>=<span class="string">"Make"</span> <span class="attr">enabled</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">method</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Spring家族</category>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot错误</tag>
       </tags>
   </entry>
   <entry>
@@ -5390,6 +5390,36 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>server.xml中docBase和path的关系梳理</title>
+    <url>/2019/02/13/server-xml%E4%B8%ADdocBase%E5%92%8Cpath%E7%9A%84%E5%85%B3%E7%B3%BB%E6%A2%B3%E7%90%86/</url>
+    <content><![CDATA[<p>今天项目遇到这么个问题，想通过第三方存储的方式获取图片，服务器中显示路径为本地路径+数据库中存储的路径。</p>
+<a id="more"></a>
+
+<p>主要有两种方案：</p>
+<ul>
+<li>通过tomcat的server.xml文件配置</li>
+<li>通过IDEA设置虚拟路径</li>
+</ul>
+<p><strong>方案一：</strong></p>
+<p>在tomcat的server.xml文件中加入配置语句</p>
+<p><img src="/images/2019031501.png" alt="image">这样当我们读取到这个/upload时就会转为 D:/upload，之后加上后面的路径凑成完成绝对路径，进行访问</p>
+<p>然后设置idea的tomcat，勾选<code>Deploy applications configured in Tomcat instance</code></p>
+<p><img src="/images/2019031502.png" alt="image"></p>
+<p><strong>方案二：</strong></p>
+<p>直接用idea设置虚拟路径。</p>
+<p>取消勾选<code>Deploy applications configured in Tomcat instance</code></p>
+<p>在<code>Deployment</code>设置虚拟路径—&gt;<code>External Source</code>–&gt;选择替换的路径—&gt;在Application context输入被替换的路径即可</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>服务器软件</category>
+        <category>应用服务器</category>
+      </categories>
+      <tags>
+        <tag>tomcat</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>k8s学习笔记</title>
     <url>/2021/01/11/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -5433,36 +5463,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>server.xml中docBase和path的关系梳理</title>
-    <url>/2019/02/13/server-xml%E4%B8%ADdocBase%E5%92%8Cpath%E7%9A%84%E5%85%B3%E7%B3%BB%E6%A2%B3%E7%90%86/</url>
-    <content><![CDATA[<p>今天项目遇到这么个问题，想通过第三方存储的方式获取图片，服务器中显示路径为本地路径+数据库中存储的路径。</p>
-<a id="more"></a>
-
-<p>主要有两种方案：</p>
-<ul>
-<li>通过tomcat的server.xml文件配置</li>
-<li>通过IDEA设置虚拟路径</li>
-</ul>
-<p><strong>方案一：</strong></p>
-<p>在tomcat的server.xml文件中加入配置语句</p>
-<p><img src="/images/2019031501.png" alt="image">这样当我们读取到这个/upload时就会转为 D:/upload，之后加上后面的路径凑成完成绝对路径，进行访问</p>
-<p>然后设置idea的tomcat，勾选<code>Deploy applications configured in Tomcat instance</code></p>
-<p><img src="/images/2019031502.png" alt="image"></p>
-<p><strong>方案二：</strong></p>
-<p>直接用idea设置虚拟路径。</p>
-<p>取消勾选<code>Deploy applications configured in Tomcat instance</code></p>
-<p>在<code>Deployment</code>设置虚拟路径—&gt;<code>External Source</code>–&gt;选择替换的路径—&gt;在Application context输入被替换的路径即可</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>服务器软件</category>
-        <category>应用服务器</category>
-      </categories>
-      <tags>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -5913,72 +5913,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>快速构建Java Web项目的开发环境</title>
-    <url>/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<p>Idea通过maven快速构建项目</p>
-<a id="more"></a>
-
-<h1 id="1-搭建项目的开发环境"><a href="#1-搭建项目的开发环境" class="headerlink" title="1.搭建项目的开发环境"></a>1.搭建项目的开发环境</h1><ul>
-<li>设置字体</li>
-<li>设置工作区的字符集为utf-8</li>
-<li>设置basePath变量及base标签</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库<img src="/images/2020112001.png" alt="image-20201120175318348"></p>
-<p>打开settings.xml设置本地仓库位置</p>
-<p><img src="/images/2020112002.png" alt=""></p>
-<p>创建Maven web项目</p>
-<p><img src="/images/2020112003.png" alt="image-20201120175508091"></p>
-<p><img src="/images/2020112004.png" alt="image-20201120175542687"></p>
-<p>新创建的Maven项目，目录结构如下：</p>
-<p><img src="/images/2020112005.png" alt="image-20201120175616811"></p>
-<p>将pom.xml中没有用的信息去除掉</p>
-<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
-<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
-<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
-<p><img src="/images/2020112006.png" alt="image-20201120175810912"></p>
-<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
-<p>将我们自己的web.xml模板导入</p>
-<p>通过pom.xml导入我们需要的jar包</p>
-<p>在pom.xml中加入构建资源</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>点击左侧Maven Projects，点击刷新</p>
-<p><img src="/images/2020112007.png" alt="image-20201120180057366"></p>
-<p>在resource路径下引入开发用的配置文件和属性文件</p>
-<ul>
-<li>jdbc.properties（修改数据库名）</li>
-</ul>
-<ul>
-<li><p>log4j.properties</p>
-</li>
-<li><p>mybatis-config.xml</p>
-</li>
-<li><p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
-</li>
-</ul>
-<p>项目文件结构如下：</p>
-<p><img src="/images/2020112008.png" alt="image-20201120180226721"></p>
-<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="/images/2020112009.png" alt="image-20201120180410393"></p>
-<ul>
-<li><p>将项目原型拷贝到webapp目录下</p>
-</li>
-<li><p>启动Tomcat服务器，测试</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Java Web</category>
-      </categories>
-      <tags>
-        <tag>Java Web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>快速构建SSM开发环境</title>
     <url>/2020/12/01/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BASSM%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>记录一下SSM的搭建过程。</p>
@@ -6077,6 +6011,72 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>打新股</tag>
         <tag>打新债</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>快速构建Java Web项目的开发环境</title>
+    <url>/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<p>Idea通过maven快速构建项目</p>
+<a id="more"></a>
+
+<h1 id="1-搭建项目的开发环境"><a href="#1-搭建项目的开发环境" class="headerlink" title="1.搭建项目的开发环境"></a>1.搭建项目的开发环境</h1><ul>
+<li>设置字体</li>
+<li>设置工作区的字符集为utf-8</li>
+<li>设置basePath变量及base标签</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库<img src="/images/2020112001.png" alt="image-20201120175318348"></p>
+<p>打开settings.xml设置本地仓库位置</p>
+<p><img src="/images/2020112002.png" alt=""></p>
+<p>创建Maven web项目</p>
+<p><img src="/images/2020112003.png" alt="image-20201120175508091"></p>
+<p><img src="/images/2020112004.png" alt="image-20201120175542687"></p>
+<p>新创建的Maven项目，目录结构如下：</p>
+<p><img src="/images/2020112005.png" alt="image-20201120175616811"></p>
+<p>将pom.xml中没有用的信息去除掉</p>
+<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
+<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
+<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
+<p><img src="/images/2020112006.png" alt="image-20201120175810912"></p>
+<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
+<p>将我们自己的web.xml模板导入</p>
+<p>通过pom.xml导入我们需要的jar包</p>
+<p>在pom.xml中加入构建资源</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>点击左侧Maven Projects，点击刷新</p>
+<p><img src="/images/2020112007.png" alt="image-20201120180057366"></p>
+<p>在resource路径下引入开发用的配置文件和属性文件</p>
+<ul>
+<li>jdbc.properties（修改数据库名）</li>
+</ul>
+<ul>
+<li><p>log4j.properties</p>
+</li>
+<li><p>mybatis-config.xml</p>
+</li>
+<li><p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
+</li>
+</ul>
+<p>项目文件结构如下：</p>
+<p><img src="/images/2020112008.png" alt="image-20201120180226721"></p>
+<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="/images/2020112009.png" alt="image-20201120180410393"></p>
+<ul>
+<li><p>将项目原型拷贝到webapp目录下</p>
+</li>
+<li><p>启动Tomcat服务器，测试</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Java Web</category>
+      </categories>
+      <tags>
+        <tag>Java Web</tag>
       </tags>
   </entry>
   <entry>
@@ -6415,33 +6415,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>    
-
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<p>操作系统课设</p>
@@ -6528,6 +6501,33 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>看懂四个指标（PE/PB/ROE/股息率）</title>
     <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -6569,26 +6569,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>电脑维修</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自学感悟</title>
-    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
-    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
-<a id="more"></a>
-
-<p><img src="/images/2020122702.png" alt="img"></p>
-<p><strong>附上Java后端学习路线：</strong></p>
-<blockquote>
-<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
-</blockquote>
-<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
-]]></content>
-      <categories>
-        <category>杂谈</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
       </tags>
   </entry>
   <entry>
@@ -6652,6 +6632,26 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>算法与数据结构体系</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学感悟</title>
+    <url>/2020/12/27/%E8%87%AA%E5%AD%A6%E6%84%9F%E6%82%9F/</url>
+    <content><![CDATA[<p>自学Java这么久，总感觉哪里不得劲，明明什么都学了，却感觉啥都不会，哎。。。。希望如达克效应认知曲线所说的一样，自己处于第三阶段？</p>
+<a id="more"></a>
+
+<p><img src="/images/2020122702.png" alt="img"></p>
+<p><strong>附上Java后端学习路线：</strong></p>
+<blockquote>
+<p>Java后端学习路线：<a href="https://juejin.cn/post/6844904093429792775" target="_blank" rel="noopener">https://juejin.cn/post/6844904093429792775</a></p>
+</blockquote>
+<p><img src="/images/2020122701.png" alt="image-20201227155519341"></p>
+]]></content>
+      <categories>
+        <category>杂谈</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
       </tags>
   </entry>
   <entry>
