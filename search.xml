@@ -359,6 +359,35 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker常用命令整理</title>
+    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start docker			#启动    </span><br><span class="line">sudo systemctl daemon-reload	#守护进程重启  </span><br><span class="line">systemctl restart docker		#重启docker服务  </span><br><span class="line">sudo service docker restart		#重启docker服务  </span><br><span class="line">docker service docker stop		#关闭</span><br><span class="line">docker systemctl stop docker	#关闭</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+        <category>虚拟化/容器化</category>
+      </categories>
+      <tags>
+        <tag>Docker命令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker安装RabbitMQ</title>
     <url>/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</url>
     <content><![CDATA[<p> RabbitMQ是基于AMQP的一款消息管理系统。AMQP(Advanced Message Queuing Protocol)，是一个提供消息服务的应用层标准高级消息队列协议，其中RabbitMQ就是基于这种协议的一种实现。</p>
@@ -393,35 +422,6 @@
       <tags>
         <tag>Docker</tag>
         <tag>RabbitMQ</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker常用命令整理</title>
-    <url>/2019/10/01/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start docker			#启动    </span><br><span class="line">sudo systemctl daemon-reload	#守护进程重启  </span><br><span class="line">systemctl restart docker		#重启docker服务  </span><br><span class="line">sudo service docker restart		#重启docker服务  </span><br><span class="line">docker service docker stop		#关闭</span><br><span class="line">docker systemctl stop docker	#关闭</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull $&#123;CONTAINER NAME&#125;                    #拉取镜像</span><br><span class="line">docker images                                    #查看本地所有镜像</span><br><span class="line">docker ps                                        #查看所有正在运行的容器，加-q返回id</span><br><span class="line">docker ps -a                                     #查看所有容器，加-q返回id</span><br><span class="line">docker rmi $&#123;IMAGE NAME&#x2F;ID&#125;                      #删除镜像</span><br><span class="line">docker rm $&#123;CONTAINER NAME&#x2F;ID&#125;                   #删除容器</span><br><span class="line">docker save $&#123;IMAGE NAME&#125; &gt; $&#123;FILE NAME&#125;.tar     #将镜像保存成文件</span><br><span class="line">docker load &lt; $&#123;FILE NAME&#125;.tar                   #从文件加载镜像</span><br><span class="line">docker start $&#123;CONTAINER NAME&#x2F;ID&#125;                #运行一个以前运行过的容器</span><br><span class="line">docker stop $&#123;CONTAINER NAME&#x2F;ID&#125;                 #停止一个正在运行的容器</span><br><span class="line">docker logs $&#123;CONTAINER NAME&#x2F;ID&#125;                 #显示运行容器的日志</span><br><span class="line">docker run...                                    #运行一个容器</span><br><span class="line">    --name $&#123;container name&#125;                          #设置容器名称</span><br><span class="line">    -p $&#123;host port&#125;:$&#123;container port&#125;                 #映射主机和容器内的端口</span><br><span class="line">    -e $&#123;env name&#125;&#x3D;$&#123;env value&#125;                       #添加环境变量</span><br><span class="line">    -d                                                #后台运行</span><br><span class="line">    -v $&#123;host folder path&#125;:$&#123;container folder path&#125;   #将主机目录挂在到容器内</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Advance use </span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot;                                   #显示所有退出的容器</span><br><span class="line">docker ps -a -q                                                #显示所有容器id</span><br><span class="line">docker ps -f &quot;status&#x3D;exited&quot; -q                                #显示所有退出容器的id</span><br><span class="line">docker restart $(docker ps -q)                                 #重启所有正在运行的容器</span><br><span class="line">docker stop $(docker ps -a -q)                                 #停止所有容器</span><br><span class="line">docker rm $(docker ps -a -q)                                   #删除所有容器</span><br><span class="line">docker rm $(docker ps -f &quot;status&#x3D;exited&quot; -q)                   #删除所有退出的容器</span><br><span class="line">docker rm $(docker stop $(docker ps -a -q))                    #停止并删除所有容器</span><br><span class="line">docker start $(docker ps -a -q)                                #启动所有容器</span><br><span class="line">docker rmi $(docker images -a -q)                              #删除所有镜像</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; &#x2F;bin&#x2F;bash                 #进入容器内</span><br><span class="line">docker exec -it $&#123;CONTAINER NAME&#x2F;ID&#125; ping $&#123;CONTAINER NAME&#x2F;ID&#125; #一个容器ping另外一个容器</span><br><span class="line">docker top $&#123;CONTAINER NAME&#x2F;ID&#125;                                #显示一个容器的top信息</span><br><span class="line">docker stats                                                   #显示容器统计信息(正在运行)</span><br><span class="line">    docker stats -a                                            #显示所有容器的统计信息(包括没有运行的)</span><br><span class="line">    docker stats -a --no-stream                                #显示所有容器的统计信息(包括没有运行的) ，只显示一次</span><br><span class="line">    docker stats --no-stream | sort -k8 -h                     #统计容器信息并以使用流量作为倒序</span><br><span class="line">docker system </span><br><span class="line">      docker system df           #显示硬盘占用</span><br><span class="line">      docker system events       #显示容器的实时事件</span><br><span class="line">      docker system info         #显示系统信息</span><br><span class="line">      docker system prune        #清理文件</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/2020110101.png" alt="image-20201101173643142"></p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>分布式/微服务</category>
-        <category>虚拟化/容器化</category>
-      </categories>
-      <tags>
-        <tag>Docker命令</tag>
       </tags>
   </entry>
   <entry>
@@ -1567,6 +1567,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java反射详解</title>
+    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>反射</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java内部类详解</title>
     <url>/2020/12/27/Java%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -1631,59 +1647,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>内部类</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java反射详解</title>
-    <url>/2020/12/27/Java%E5%8F%8D%E5%B0%84%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java容器详解</title>
-    <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://www.jianshu.com/p/8ef342da8732" target="_blank" rel="noopener">https://www.jianshu.com/p/8ef342da8732</a></p>
-<p><a href="https://blog.csdn.net/feiyanaffection/article/details/81394745" target="_blank" rel="noopener">https://blog.csdn.net/feiyanaffection/article/details/81394745</a></p>
-</blockquote>
-<h1 id="Java集合框架"><a href="#Java集合框架" class="headerlink" title="Java集合框架"></a>Java集合框架</h1><p><img src="/images/2020122705.png" alt="image"></p>
-<h1 id="面试考点"><a href="#面试考点" class="headerlink" title="面试考点"></a>面试考点</h1><p>数据结构考点：</p>
-<ul>
-<li>数组和链表的区别</li>
-<li>链表的操作，如反转，链表环路检测，双向链表，循环链表相关操作；</li>
-<li>队列，栈的应用</li>
-<li>二叉树的遍历方式及其递归和非递归的实现</li>
-<li>红黑树的旋转</li>
-</ul>
-<p>算法考点：</p>
-<ul>
-<li>内部排序：如递归排序，交换排序（冒泡，快排），选择排序，插入排序；</li>
-<li>外部排序：应掌握如何利用有限的内存配合海量的外部存储来处理超大的数据集，写不出来也要有相关的思路</li>
-</ul>
-<p>考点扩展：</p>
-<ul>
-<li>哪些排序是不稳定的，稳定意味着什么</li>
-<li>不同数据集，各种排序最好或最差的情况</li>
-<li>如何优化算法</li>
-</ul>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -1934,6 +1897,43 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>Timer</tag>
         <tag>Quartz</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java容器详解</title>
+    <url>/2020/12/27/Java%E5%AE%B9%E5%99%A8%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.jianshu.com/p/8ef342da8732" target="_blank" rel="noopener">https://www.jianshu.com/p/8ef342da8732</a></p>
+<p><a href="https://blog.csdn.net/feiyanaffection/article/details/81394745" target="_blank" rel="noopener">https://blog.csdn.net/feiyanaffection/article/details/81394745</a></p>
+</blockquote>
+<h1 id="Java集合框架"><a href="#Java集合框架" class="headerlink" title="Java集合框架"></a>Java集合框架</h1><p><img src="/images/2020122705.png" alt="image"></p>
+<h1 id="面试考点"><a href="#面试考点" class="headerlink" title="面试考点"></a>面试考点</h1><p>数据结构考点：</p>
+<ul>
+<li>数组和链表的区别</li>
+<li>链表的操作，如反转，链表环路检测，双向链表，循环链表相关操作；</li>
+<li>队列，栈的应用</li>
+<li>二叉树的遍历方式及其递归和非递归的实现</li>
+<li>红黑树的旋转</li>
+</ul>
+<p>算法考点：</p>
+<ul>
+<li>内部排序：如递归排序，交换排序（冒泡，快排），选择排序，插入排序；</li>
+<li>外部排序：应掌握如何利用有限的内存配合海量的外部存储来处理超大的数据集，写不出来也要有相关的思路</li>
+</ul>
+<p>考点扩展：</p>
+<ul>
+<li>哪些排序是不稳定的，稳定意味着什么</li>
+<li>不同数据集，各种排序最好或最差的情况</li>
+<li>如何优化算法</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>集合</tag>
       </tags>
   </entry>
   <entry>
@@ -2323,6 +2323,69 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>Java面向对象详解</title>
+    <url>/2020/12/27/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>隐藏内部实现细节</p>
+<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><blockquote>
+<p><a href="https://www.cnblogs.com/dolphin0520/p/3803432.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3803432.html</a></p>
+</blockquote>
+<p>继承在一定程度上破坏了父类的封装性，此时要合理运用组合</p>
+<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><blockquote>
+<p><a href="https://www.zhihu.com/question/30082151" target="_blank" rel="noopener">https://www.zhihu.com/question/30082151</a></p>
+<p>面向对象的多态性：<a href="https://liuyangjun.blog.csdn.net/article/details/79788326" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/79788326</a></p>
+<p>理解java的三大特性之多态：<a href="https://www.cnblogs.com/chenssy/p/3372798.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3372798.html</a></p>
+</blockquote>
+<h2 id="什么是多态"><a href="#什么是多态" class="headerlink" title="什么是多态"></a>什么是多态</h2><p>事物在运行过程中存在不同的状态。</p>
+<h2 id="多态的三个前提"><a href="#多态的三个前提" class="headerlink" title="多态的三个前提"></a>多态的三个前提</h2><ul>
+<li>继承</li>
+</ul>
+<ul>
+<li>重写</li>
+</ul>
+<ul>
+<li>父类引用指向子类对象（向上转型）</li>
+</ul>
+<h2 id="多态成员访问的特点"><a href="#多态成员访问的特点" class="headerlink" title="多态成员访问的特点"></a>多态成员访问的特点</h2><ul>
+<li>成员变量<pre><code>编译看左边，运行看左边。</code></pre></li>
+<li>构造方法<pre><code>创建子类对象的时候，访问父类的构造方法，对父类的数据进行初始化。</code></pre></li>
+<li>成员方法<pre><code>编译看左边，运行看右边。</code></pre></li>
+<li>静态方法<pre><code>编译看左边，运行看左边。
+(静态和类相关，算不上重写，所以，访问还是左边的)</code></pre></li>
+</ul>
+<h2 id="多态的优劣"><a href="#多态的优劣" class="headerlink" title="多态的优劣"></a>多态的优劣</h2><p>优点：十分灵活，减少多余对象的创建</p>
+<p>弊端：不能使用子类特有的属性和方法</p>
+<p>例子：</p>
+<p> 比如你是一个酒神，对酒情有独钟。某日回家发现桌上有几个杯子里面都装了白酒，从外面看我们是不可能知道这是些什么酒，只有喝了之后才能够猜出来是何种酒。你一喝，这是剑南春、再喝这是五粮液、再喝这是酒鬼酒….在这里我们可以描述成如下：</p>
+<p>   酒 a = 剑南春</p>
+<p>   酒 b = 五粮液</p>
+<p>   酒 c = 酒鬼酒</p>
+<p>   …</p>
+<p>   这里所表现的的就是多态。剑南春、五粮液、酒鬼酒都是酒的子类，我们只是通过酒这一个父类就能够引用不同的子类，这就是多态——我们只有在运行的时候才会知道引用变量所指向的具体实例对象。</p>
+<p>   诚然，要理解多态我们就必须要明白什么是“向上转型”。在继承中我们简单介绍了向上转型，这里就在啰嗦下：在上面的喝酒例子中，酒（Win）是父类，剑南春（JNC）、五粮液（WLY）、酒鬼酒（JGJ）是子类。我们定义如下代码：</p>
+<p>   JNC a = new JNC();</p>
+<p>   对于这个代码我们非常容易理解无非就是实例化了一个剑南春的对象嘛！但是这样呢？</p>
+<p>   Wine a = new JNC();</p>
+<p>   在这里我们这样理解，这里定义了一个Wine 类型的a，它指向JNC对象实例。由于JNC是继承与Wine，所以JNC可以自动向上转型为Wine，所以a是可以指向JNC实例对象的。这样做存在一个非常大的好处，在继承中我们知道子类是父类的扩展，它可以提供比父类更加强大的功能，如果我们定义了一个指向子类的父类引用类型，那么它除了能够引用父类的共性外，还可以使用子类强大的功能。</p>
+<p>   但是向上转型存在一些缺憾，那就是它必定会导致一些方法和属性的丢失，而导致我们不能够获取它们。所以父类类型的引用可以调用父类中定义的所有属性和方法，对于只存在与子类中的方法和属性它就望尘莫及了。</p>
+<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><blockquote>
+<p><a href="https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html</a></p>
+</blockquote>
+<p>枚举的遍历：<code>values()</code></p>
+<p><img src="/images/2021020801.png" alt="image-20210208105851798"></p>
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JavaSE基础</category>
+      </categories>
+      <tags>
+        <tag>面向对象</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux安装MySQL</title>
     <url>/2018/02/01/Linux%E5%AE%89%E8%A3%85MySQL/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -2468,69 +2531,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Java面向对象详解</title>
-    <url>/2020/12/27/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>隐藏内部实现细节</p>
-<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><blockquote>
-<p><a href="https://www.cnblogs.com/dolphin0520/p/3803432.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3803432.html</a></p>
-</blockquote>
-<p>继承在一定程度上破坏了父类的封装性，此时要合理运用组合</p>
-<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><blockquote>
-<p><a href="https://www.zhihu.com/question/30082151" target="_blank" rel="noopener">https://www.zhihu.com/question/30082151</a></p>
-<p>面向对象的多态性：<a href="https://liuyangjun.blog.csdn.net/article/details/79788326" target="_blank" rel="noopener">https://liuyangjun.blog.csdn.net/article/details/79788326</a></p>
-<p>理解java的三大特性之多态：<a href="https://www.cnblogs.com/chenssy/p/3372798.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenssy/p/3372798.html</a></p>
-</blockquote>
-<h2 id="什么是多态"><a href="#什么是多态" class="headerlink" title="什么是多态"></a>什么是多态</h2><p>事物在运行过程中存在不同的状态。</p>
-<h2 id="多态的三个前提"><a href="#多态的三个前提" class="headerlink" title="多态的三个前提"></a>多态的三个前提</h2><ul>
-<li>继承</li>
-</ul>
-<ul>
-<li>重写</li>
-</ul>
-<ul>
-<li>父类引用指向子类对象（向上转型）</li>
-</ul>
-<h2 id="多态成员访问的特点"><a href="#多态成员访问的特点" class="headerlink" title="多态成员访问的特点"></a>多态成员访问的特点</h2><ul>
-<li>成员变量<pre><code>编译看左边，运行看左边。</code></pre></li>
-<li>构造方法<pre><code>创建子类对象的时候，访问父类的构造方法，对父类的数据进行初始化。</code></pre></li>
-<li>成员方法<pre><code>编译看左边，运行看右边。</code></pre></li>
-<li>静态方法<pre><code>编译看左边，运行看左边。
-(静态和类相关，算不上重写，所以，访问还是左边的)</code></pre></li>
-</ul>
-<h2 id="多态的优劣"><a href="#多态的优劣" class="headerlink" title="多态的优劣"></a>多态的优劣</h2><p>优点：十分灵活，减少多余对象的创建</p>
-<p>弊端：不能使用子类特有的属性和方法</p>
-<p>例子：</p>
-<p> 比如你是一个酒神，对酒情有独钟。某日回家发现桌上有几个杯子里面都装了白酒，从外面看我们是不可能知道这是些什么酒，只有喝了之后才能够猜出来是何种酒。你一喝，这是剑南春、再喝这是五粮液、再喝这是酒鬼酒….在这里我们可以描述成如下：</p>
-<p>   酒 a = 剑南春</p>
-<p>   酒 b = 五粮液</p>
-<p>   酒 c = 酒鬼酒</p>
-<p>   …</p>
-<p>   这里所表现的的就是多态。剑南春、五粮液、酒鬼酒都是酒的子类，我们只是通过酒这一个父类就能够引用不同的子类，这就是多态——我们只有在运行的时候才会知道引用变量所指向的具体实例对象。</p>
-<p>   诚然，要理解多态我们就必须要明白什么是“向上转型”。在继承中我们简单介绍了向上转型，这里就在啰嗦下：在上面的喝酒例子中，酒（Win）是父类，剑南春（JNC）、五粮液（WLY）、酒鬼酒（JGJ）是子类。我们定义如下代码：</p>
-<p>   JNC a = new JNC();</p>
-<p>   对于这个代码我们非常容易理解无非就是实例化了一个剑南春的对象嘛！但是这样呢？</p>
-<p>   Wine a = new JNC();</p>
-<p>   在这里我们这样理解，这里定义了一个Wine 类型的a，它指向JNC对象实例。由于JNC是继承与Wine，所以JNC可以自动向上转型为Wine，所以a是可以指向JNC实例对象的。这样做存在一个非常大的好处，在继承中我们知道子类是父类的扩展，它可以提供比父类更加强大的功能，如果我们定义了一个指向子类的父类引用类型，那么它除了能够引用父类的共性外，还可以使用子类强大的功能。</p>
-<p>   但是向上转型存在一些缺憾，那就是它必定会导致一些方法和属性的丢失，而导致我们不能够获取它们。所以父类类型的引用可以调用父类中定义的所有属性和方法，对于只存在与子类中的方法和属性它就望尘莫及了。</p>
-<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><blockquote>
-<p><a href="https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html</a></p>
-</blockquote>
-<p>枚举的遍历：<code>values()</code></p>
-<p><img src="/images/2021020801.png" alt="image-20210208105851798"></p>
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JavaSE基础</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux安装配置大全</title>
     <url>/2020/11/27/Linux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%A7%E5%85%A8/</url>
     <content><![CDATA[<p>Linux各种版本安装配置</p>
@@ -2582,6 +2582,49 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Logback配置与使用</title>
+    <url>/2018/10/31/Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h1 id="Logback介绍"><a href="#Logback介绍" class="headerlink" title="Logback介绍"></a>Logback介绍</h1><p>Logback 分为三个模块：</p>
+<ul>
+<li>Core模块是其他两个模块的基础。</li>
+<li>Classic模块扩展了core模块。Classic模块相当于log4j的显著改进版，Logback-classic 直接实现了 SLF4J API。</li>
+<li>Access访问模块与Servlet容器集成提供通过Http来访问日志的功能。</li>
+</ul>
+<p>要引入logback，由于Logback-classic依赖slf4j-api.jar和logback-core.jar，所以要把slf4j-api.jar、logback-core.jar、logback-classic.jar，添加到要引入Logbac日志管理的项目的classpath中。</p>
+<h1 id="配置模板"><a href="#配置模板" class="headerlink" title="配置模板"></a>配置模板</h1><blockquote>
+<p><a href="https://www.cnblogs.com/warking/p/5710303.html" target="_blank" rel="noopener">https://www.cnblogs.com/warking/p/5710303.html</a></p>
+</blockquote>
+<p>在项目中使用的模板</p>
+<p>pom依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置介绍</p>
+<ul>
+<li>Logger、appender及layout</li>
+</ul>
+<p>　　Logger作为日志的记录器，把它关联到应用的对应的context上后，主要用于存放日志对象，也可以定义日志类型、级别。<br>　　Appender主要用于指定日志输出的目的地，目的地可以是控制台、文件、远程套接字服务器、 MySQL、PostreSQL、 Oracle和其他数据库、 JMS和远程UNIX Syslog守护进程等。<br>　　Layout 负责把事件转换成字符串，格式化的日志信息的输出。</p>
+<ul>
+<li>logger context</li>
+</ul>
+<p>　　各个logger 都被关联到一个 LoggerContext，LoggerContext负责制造logger，也负责以树结构排列各logger。其他所有logger也通过org.slf4j.LoggerFactory 类的静态方法getLogger取得。 getLogger方法以 logger名称为参数。用同一名字调用LoggerFactory.getLogger 方法所得到的永远都是同一个logger对象的引用。</p>
+<ul>
+<li>有效级别及级别的继承</li>
+</ul>
+<p>　　Logger 可以被分配级别。级别包括：TRACE、DEBUG、INFO、WARN 和 ERROR，定义于ch.qos.logback.classic.Level类。如果 logger没有被分配级别，那么它将从有被分配级别的最近的祖先那里继承级别。root logger 默认级别是 DEBUG。</p>
+<ul>
+<li>打印方法与基本的选择规则</li>
+</ul>
+<p>　　打印方法决定记录请求的级别。例如，如果 L 是一个 logger 实例，那么，语句 L.info(“..”)是一条级别为 INFO的记录语句。记录请求的级别在高于或等于其 logger 的有效级别时被称为被启用，否则，称为被禁用。记录请求级别为 p，其 logger的有效级别为 q，只有则当 p&gt;=q时，该请求才会被执行。<br>该规则是 logback 的核心。</p>
+<p>级别排序为： <code>TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR</code></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">"true"</span> <span class="attr">scanPeriod</span>=<span class="string">"60 seconds"</span> <span class="attr">debug</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 定义参数常量 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- TRACE&lt;DEBUG&lt;INFO&lt;WARN&lt;ERROR --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- logger.trace("msg") logger.debug... --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.level"</span> <span class="attr">value</span>=<span class="string">"debug"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.maxHistory"</span> <span class="attr">value</span>=<span class="string">"30"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.filePath"</span> <span class="attr">value</span>=<span class="string">"$&#123;catalina.base&#125;/logs/webapps"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.pattern"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">value</span>=<span class="string">"%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n"</span> /&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 控制台设置 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"consoleAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- DEBUG --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"debugAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/debug.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/debug/debug.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>DEBUG<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- INFO --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"infoAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/info.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/info/info.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>INFO<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ERROR --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"errorAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/erorr.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/error/error.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"com.liuurick.o2o"</span> <span class="attr">level</span>=<span class="string">"$&#123;log.level&#125;"</span> <span class="attr">additivity</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"debugAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"infoAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"errorAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"info"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"consoleAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>Logback</tag>
       </tags>
   </entry>
   <entry>
@@ -2641,49 +2684,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
         <tag>Mybatis-generator</tag>
         <tag>Mybatis-plugin</tag>
         <tag>Mybatis-PageHelper</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Logback配置与使用</title>
-    <url>/2018/10/31/Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h1 id="Logback介绍"><a href="#Logback介绍" class="headerlink" title="Logback介绍"></a>Logback介绍</h1><p>Logback 分为三个模块：</p>
-<ul>
-<li>Core模块是其他两个模块的基础。</li>
-<li>Classic模块扩展了core模块。Classic模块相当于log4j的显著改进版，Logback-classic 直接实现了 SLF4J API。</li>
-<li>Access访问模块与Servlet容器集成提供通过Http来访问日志的功能。</li>
-</ul>
-<p>要引入logback，由于Logback-classic依赖slf4j-api.jar和logback-core.jar，所以要把slf4j-api.jar、logback-core.jar、logback-classic.jar，添加到要引入Logbac日志管理的项目的classpath中。</p>
-<h1 id="配置模板"><a href="#配置模板" class="headerlink" title="配置模板"></a>配置模板</h1><blockquote>
-<p><a href="https://www.cnblogs.com/warking/p/5710303.html" target="_blank" rel="noopener">https://www.cnblogs.com/warking/p/5710303.html</a></p>
-</blockquote>
-<p>在项目中使用的模板</p>
-<p>pom依赖：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>配置介绍</p>
-<ul>
-<li>Logger、appender及layout</li>
-</ul>
-<p>　　Logger作为日志的记录器，把它关联到应用的对应的context上后，主要用于存放日志对象，也可以定义日志类型、级别。<br>　　Appender主要用于指定日志输出的目的地，目的地可以是控制台、文件、远程套接字服务器、 MySQL、PostreSQL、 Oracle和其他数据库、 JMS和远程UNIX Syslog守护进程等。<br>　　Layout 负责把事件转换成字符串，格式化的日志信息的输出。</p>
-<ul>
-<li>logger context</li>
-</ul>
-<p>　　各个logger 都被关联到一个 LoggerContext，LoggerContext负责制造logger，也负责以树结构排列各logger。其他所有logger也通过org.slf4j.LoggerFactory 类的静态方法getLogger取得。 getLogger方法以 logger名称为参数。用同一名字调用LoggerFactory.getLogger 方法所得到的永远都是同一个logger对象的引用。</p>
-<ul>
-<li>有效级别及级别的继承</li>
-</ul>
-<p>　　Logger 可以被分配级别。级别包括：TRACE、DEBUG、INFO、WARN 和 ERROR，定义于ch.qos.logback.classic.Level类。如果 logger没有被分配级别，那么它将从有被分配级别的最近的祖先那里继承级别。root logger 默认级别是 DEBUG。</p>
-<ul>
-<li>打印方法与基本的选择规则</li>
-</ul>
-<p>　　打印方法决定记录请求的级别。例如，如果 L 是一个 logger 实例，那么，语句 L.info(“..”)是一条级别为 INFO的记录语句。记录请求的级别在高于或等于其 logger 的有效级别时被称为被启用，否则，称为被禁用。记录请求级别为 p，其 logger的有效级别为 q，只有则当 p&gt;=q时，该请求才会被执行。<br>该规则是 logback 的核心。</p>
-<p>级别排序为： <code>TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">"true"</span> <span class="attr">scanPeriod</span>=<span class="string">"60 seconds"</span> <span class="attr">debug</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 定义参数常量 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- TRACE&lt;DEBUG&lt;INFO&lt;WARN&lt;ERROR --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- logger.trace("msg") logger.debug... --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.level"</span> <span class="attr">value</span>=<span class="string">"debug"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.maxHistory"</span> <span class="attr">value</span>=<span class="string">"30"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.filePath"</span> <span class="attr">value</span>=<span class="string">"$&#123;catalina.base&#125;/logs/webapps"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.pattern"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">value</span>=<span class="string">"%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n"</span> /&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 控制台设置 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"consoleAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- DEBUG --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"debugAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/debug.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/debug/debug.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>DEBUG<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- INFO --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"infoAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/info.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/info/info.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>INFO<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ERROR --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"errorAppender"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 文件路径 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.filePath&#125;/erorr.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件名称 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.filePath&#125;/error/error.%d&#123;yyyy-MM-dd&#125;.log.gz</span><br><span class="line">			<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 文件最大保存历史数量 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>$&#123;log.maxHistory&#125;<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"com.liuurick.o2o"</span> <span class="attr">level</span>=<span class="string">"$&#123;log.level&#125;"</span> <span class="attr">additivity</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"debugAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"infoAppender"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"errorAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"info"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"consoleAppender"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>Logback</tag>
       </tags>
   </entry>
   <entry>
@@ -3178,88 +3178,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>Nacos服务注册和配置中心</title>
-    <url>/2021/02/04/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>
-
-<p>Nacos（Dynamic Naming and Configuration Service ） 等价于  <code>注册中心</code>+<code>配置中心</code>的组合</p>
-<blockquote>
-<p>官方文档：<a href="https://github.com/alibaba/Nacos" target="_blank" rel="noopener">https://github.com/alibaba/Nacos</a></p>
-<p>下载地址：<a href="https://github.com/alibaba/nacos/releases/tag/1.1.4" target="_blank" rel="noopener">https://github.com/alibaba/nacos/releases/tag/1.1.4</a></p>
-</blockquote>
-<h1 id="1-Docker安装启动Nacos"><a href="#1-Docker安装启动Nacos" class="headerlink" title="1 Docker安装启动Nacos"></a>1 Docker安装启动Nacos</h1><h2 id="1-1-拉取镜像"><a href="#1-1-拉取镜像" class="headerlink" title="1.1 拉取镜像"></a>1.1 拉取镜像</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull nacos&#x2F;nacos-server</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-2-创建本地的映射文件-custom-properties"><a href="#1-2-创建本地的映射文件-custom-properties" class="headerlink" title="1.2 创建本地的映射文件 custom.properties"></a>1.2 创建本地的映射文件 custom.properties</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p &#x2F;root&#x2F;nacos&#x2F;init.d &#x2F;root&#x2F;nacos&#x2F;logs</span><br><span class="line">vim &#x2F;root&#x2F;nacos&#x2F;init.d&#x2F;custom.properties</span><br></pre></td></tr></table></figure>
-
-<p>在文件中写入以下配置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">management.endpoints.web.exposure.include&#x3D;*</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-3-创建容器并启动提供a、b两种方案"><a href="#1-3-创建容器并启动提供a、b两种方案" class="headerlink" title="1.3 创建容器并启动提供a、b两种方案"></a>1.3 创建容器并启动提供a、b两种方案</h2><p>a.创建容器：使用<code>standalone</code>模式并开放<code>8848</code>端口，并映射配置文件和日志目录，数据库默认使用 <code>Derby</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d -p 8848:8848 -e MODE=standalone -e PREFER_HOST_MODE=hostname -v /root/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties -v /root/nacos/logs:/home/nacos/logs --restart always --name nacos nacos/nacos-server</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意</strong>：记得开放端口</p>
-<p><img src="/images/2021020401.png" alt="image-20210204153835750"></p>
-<p> b.使用docker-compose启动 <a href="https://www.cnblogs.com/ZCQ123456/p/11921817.html" target="_blank" rel="noopener">docker-compose安装教程</a></p>
-<p>首先配置docker-compose文件 <code>standalone-derby.yaml</code> </p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nacos:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nacos/nacos-server:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">nacos</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">MODE=standalone</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/root/nacos/logs:/home/nacos/logs</span></span><br><span class="line">    <span class="bullet">-</span>  <span class="string">/root/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"8848:8848"</span></span><br></pre></td></tr></table></figure>
-
-<p>启动、关闭、移除、关闭并移除命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">docker-compose -f standalone-derby.yaml up</span><br><span class="line"><span class="comment">#关闭</span></span><br><span class="line">docker-compose -f standalone-derby.yaml stop</span><br><span class="line"><span class="comment">#移除</span></span><br><span class="line">docker-compose -f standalone-derby.yaml rm</span><br><span class="line"><span class="comment">#关闭并移除</span></span><br><span class="line">docker-compose -f standalone-derby.yaml down</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-4-访问"><a href="#1-4-访问" class="headerlink" title="1.4 访问"></a>1.4 访问</h2><blockquote>
-<p>输入网址：<a href="http://192.168.60.129:8848/nacos" target="_blank" rel="noopener">http://192.168.60.129:8848/nacos</a>  账号默认nacos、密码默认nacos</p>
-</blockquote>
-<p><img src="/images/2021020402.png" alt="image-20210204142942591"></p>
-<p>进入控制台：</p>
-<p><img src="/images/2021020403.png" alt="image-20210204143107879"></p>
-<h1 id="2-Nacos作为服务注册中心"><a href="#2-Nacos作为服务注册中心" class="headerlink" title="2 Nacos作为服务注册中心"></a>2 Nacos作为服务注册中心</h1><p>创建两个服务提供者和一个服务消费者</p>
-<p>创建module主要分为以下几步：</p>
-<ol>
-<li>建module</li>
-<li>pom</li>
-<li>yml</li>
-<li>主启动</li>
-<li>业务类</li>
-</ol>
-<p><img src="/images/2021020404.png" alt="image-20210204154139801"></p>
-<h2 id="服务注册中心对比"><a href="#服务注册中心对比" class="headerlink" title="服务注册中心对比"></a>服务注册中心对比</h2><p>Nacos全景图：</p>
-<p><img src="/images/2021020405.png" alt="image-20210204154903838"></p>
-<p><img src="/images/2021020406.png" alt="img"></p>
-<p><strong>Nacos支持AP和CP模式的切换</strong></p>
-<h1 id="3-Nacos作为服务配置中心"><a href="#3-Nacos作为服务配置中心" class="headerlink" title="3 Nacos作为服务配置中心"></a>3 Nacos作为服务配置中心</h1><h2 id="3-1-Nacos作为配置中心-基础配置"><a href="#3-1-Nacos作为配置中心-基础配置" class="headerlink" title="3.1 Nacos作为配置中心-基础配置"></a>3.1 Nacos作为配置中心-基础配置</h2><p>cloudalibaba-config-nacos-client3377</p>
-<p>自带动态刷新</p>
-<h2 id="3-2-Nacos作为配置中心-分类配置"><a href="#3-2-Nacos作为配置中心-分类配置" class="headerlink" title="3.2 Nacos作为配置中心-分类配置"></a>3.2 Nacos作为配置中心-分类配置</h2><ul>
-<li><p>DataID方案</p>
-</li>
-<li><p>Group方案</p>
-</li>
-<li><p>Namespace方案</p>
-</li>
-</ul>
-<h1 id="4-Nacos集群和持久化配置"><a href="#4-Nacos集群和持久化配置" class="headerlink" title="4 Nacos集群和持久化配置"></a>4 Nacos集群和持久化配置</h1><blockquote>
-<p>Nacos官方文档：<a href="https://nacos.io/zh-cn/docs/deployment.html" target="_blank" rel="noopener">https://nacos.io/zh-cn/docs/deployment.html</a></p>
-</blockquote>
-<h2 id="4-1-Nacos支持三种部署方式"><a href="#4-1-Nacos支持三种部署方式" class="headerlink" title="4.1 Nacos支持三种部署方式"></a>4.1 Nacos支持三种部署方式</h2><ul>
-<li>单机模式：用于测试或单机使用</li>
-<li>集群模式：用于生产环境，确保高可用</li>
-<li>多集群模式：用于多数据中心场景</li>
-</ul>
-<h2 id="4-2-Nacos持久化配置"><a href="#4-2-Nacos持久化配置" class="headerlink" title="4.2 Nacos持久化配置"></a>4.2 Nacos持久化配置</h2><p>Nacos默认自带的是嵌入式数据库<code>derby</code>，derby到mysql切换配置步骤</p>
-<p>启动nacos，可以看到是个全新的空记录界面，以前是记录进derby</p>
-<h2 id="4-3-Linux版Nacos-MySQL生产环境配置"><a href="#4-3-Linux版Nacos-MySQL生产环境配置" class="headerlink" title="4.3 Linux版Nacos+MySQL生产环境配置"></a>4.3 Linux版Nacos+MySQL生产环境配置</h2><blockquote>
-<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html" target="_blank" rel="noopener">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>分布式/微服务</category>
-      </categories>
-      <tags>
-        <tag>SpringCloud Alibaba</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Nginx安装及其配置</title>
     <url>/2020/07/31/Nginx%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -3575,6 +3493,88 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nacos服务注册和配置中心</title>
+    <url>/2021/02/04/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>
+
+<p>Nacos（Dynamic Naming and Configuration Service ） 等价于  <code>注册中心</code>+<code>配置中心</code>的组合</p>
+<blockquote>
+<p>官方文档：<a href="https://github.com/alibaba/Nacos" target="_blank" rel="noopener">https://github.com/alibaba/Nacos</a></p>
+<p>下载地址：<a href="https://github.com/alibaba/nacos/releases/tag/1.1.4" target="_blank" rel="noopener">https://github.com/alibaba/nacos/releases/tag/1.1.4</a></p>
+</blockquote>
+<h1 id="1-Docker安装启动Nacos"><a href="#1-Docker安装启动Nacos" class="headerlink" title="1 Docker安装启动Nacos"></a>1 Docker安装启动Nacos</h1><h2 id="1-1-拉取镜像"><a href="#1-1-拉取镜像" class="headerlink" title="1.1 拉取镜像"></a>1.1 拉取镜像</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull nacos&#x2F;nacos-server</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-创建本地的映射文件-custom-properties"><a href="#1-2-创建本地的映射文件-custom-properties" class="headerlink" title="1.2 创建本地的映射文件 custom.properties"></a>1.2 创建本地的映射文件 custom.properties</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p &#x2F;root&#x2F;nacos&#x2F;init.d &#x2F;root&#x2F;nacos&#x2F;logs</span><br><span class="line">vim &#x2F;root&#x2F;nacos&#x2F;init.d&#x2F;custom.properties</span><br></pre></td></tr></table></figure>
+
+<p>在文件中写入以下配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">management.endpoints.web.exposure.include&#x3D;*</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-创建容器并启动提供a、b两种方案"><a href="#1-3-创建容器并启动提供a、b两种方案" class="headerlink" title="1.3 创建容器并启动提供a、b两种方案"></a>1.3 创建容器并启动提供a、b两种方案</h2><p>a.创建容器：使用<code>standalone</code>模式并开放<code>8848</code>端口，并映射配置文件和日志目录，数据库默认使用 <code>Derby</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d -p 8848:8848 -e MODE=standalone -e PREFER_HOST_MODE=hostname -v /root/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties -v /root/nacos/logs:/home/nacos/logs --restart always --name nacos nacos/nacos-server</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：记得开放端口</p>
+<p><img src="/images/2021020401.png" alt="image-20210204153835750"></p>
+<p> b.使用docker-compose启动 <a href="https://www.cnblogs.com/ZCQ123456/p/11921817.html" target="_blank" rel="noopener">docker-compose安装教程</a></p>
+<p>首先配置docker-compose文件 <code>standalone-derby.yaml</code> </p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nacos:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nacos/nacos-server:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">nacos</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">MODE=standalone</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/root/nacos/logs:/home/nacos/logs</span></span><br><span class="line">    <span class="bullet">-</span>  <span class="string">/root/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"8848:8848"</span></span><br></pre></td></tr></table></figure>
+
+<p>启动、关闭、移除、关闭并移除命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">docker-compose -f standalone-derby.yaml up</span><br><span class="line"><span class="comment">#关闭</span></span><br><span class="line">docker-compose -f standalone-derby.yaml stop</span><br><span class="line"><span class="comment">#移除</span></span><br><span class="line">docker-compose -f standalone-derby.yaml rm</span><br><span class="line"><span class="comment">#关闭并移除</span></span><br><span class="line">docker-compose -f standalone-derby.yaml down</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-4-访问"><a href="#1-4-访问" class="headerlink" title="1.4 访问"></a>1.4 访问</h2><blockquote>
+<p>输入网址：<a href="http://192.168.60.129:8848/nacos" target="_blank" rel="noopener">http://192.168.60.129:8848/nacos</a>  账号默认nacos、密码默认nacos</p>
+</blockquote>
+<p><img src="/images/2021020402.png" alt="image-20210204142942591"></p>
+<p>进入控制台：</p>
+<p><img src="/images/2021020403.png" alt="image-20210204143107879"></p>
+<h1 id="2-Nacos作为服务注册中心"><a href="#2-Nacos作为服务注册中心" class="headerlink" title="2 Nacos作为服务注册中心"></a>2 Nacos作为服务注册中心</h1><p>创建两个服务提供者和一个服务消费者</p>
+<p>创建module主要分为以下几步：</p>
+<ol>
+<li>建module</li>
+<li>pom</li>
+<li>yml</li>
+<li>主启动</li>
+<li>业务类</li>
+</ol>
+<p><img src="/images/2021020404.png" alt="image-20210204154139801"></p>
+<h2 id="服务注册中心对比"><a href="#服务注册中心对比" class="headerlink" title="服务注册中心对比"></a>服务注册中心对比</h2><p>Nacos全景图：</p>
+<p><img src="/images/2021020405.png" alt="image-20210204154903838"></p>
+<p><img src="/images/2021020406.png" alt="img"></p>
+<p><strong>Nacos支持AP和CP模式的切换</strong></p>
+<h1 id="3-Nacos作为服务配置中心"><a href="#3-Nacos作为服务配置中心" class="headerlink" title="3 Nacos作为服务配置中心"></a>3 Nacos作为服务配置中心</h1><h2 id="3-1-Nacos作为配置中心-基础配置"><a href="#3-1-Nacos作为配置中心-基础配置" class="headerlink" title="3.1 Nacos作为配置中心-基础配置"></a>3.1 Nacos作为配置中心-基础配置</h2><p>cloudalibaba-config-nacos-client3377</p>
+<p>自带动态刷新</p>
+<h2 id="3-2-Nacos作为配置中心-分类配置"><a href="#3-2-Nacos作为配置中心-分类配置" class="headerlink" title="3.2 Nacos作为配置中心-分类配置"></a>3.2 Nacos作为配置中心-分类配置</h2><ul>
+<li><p>DataID方案</p>
+</li>
+<li><p>Group方案</p>
+</li>
+<li><p>Namespace方案</p>
+</li>
+</ul>
+<h1 id="4-Nacos集群和持久化配置"><a href="#4-Nacos集群和持久化配置" class="headerlink" title="4 Nacos集群和持久化配置"></a>4 Nacos集群和持久化配置</h1><blockquote>
+<p>Nacos官方文档：<a href="https://nacos.io/zh-cn/docs/deployment.html" target="_blank" rel="noopener">https://nacos.io/zh-cn/docs/deployment.html</a></p>
+</blockquote>
+<h2 id="4-1-Nacos支持三种部署方式"><a href="#4-1-Nacos支持三种部署方式" class="headerlink" title="4.1 Nacos支持三种部署方式"></a>4.1 Nacos支持三种部署方式</h2><ul>
+<li>单机模式：用于测试或单机使用</li>
+<li>集群模式：用于生产环境，确保高可用</li>
+<li>多集群模式：用于多数据中心场景</li>
+</ul>
+<h2 id="4-2-Nacos持久化配置"><a href="#4-2-Nacos持久化配置" class="headerlink" title="4.2 Nacos持久化配置"></a>4.2 Nacos持久化配置</h2><p>Nacos默认自带的是嵌入式数据库<code>derby</code>，derby到mysql切换配置步骤</p>
+<p>启动nacos，可以看到是个全新的空记录界面，以前是记录进derby</p>
+<h2 id="4-3-Linux版Nacos-MySQL生产环境配置"><a href="#4-3-Linux版Nacos-MySQL生产环境配置" class="headerlink" title="4.3 Linux版Nacos+MySQL生产环境配置"></a>4.3 Linux版Nacos+MySQL生产环境配置</h2><blockquote>
+<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html" target="_blank" rel="noopener">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>分布式/微服务</category>
+      </categories>
+      <tags>
+        <tag>SpringCloud Alibaba</tag>
       </tags>
   </entry>
   <entry>
@@ -4278,6 +4278,22 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot项目测试模板</title>
+    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Spring家族</category>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot集成MyBatis的分页插件PageHelper</title>
     <url>/2020/10/25/SpringBoot%E9%9B%86%E6%88%90MyBatis%E7%9A%84%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6PageHelper/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -4312,22 +4328,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>分页功能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot项目测试模板</title>
-    <url>/2020/12/15/SpringBoot%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p>在Application类中写好一个模板，其他测试类继承即可</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">public class XXXApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Spring家族</category>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -5334,6 +5334,31 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>hexo博客高级操作</title>
+    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<blockquote>
+<p>官网文档：<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">http://theme-next.iissnan.com</a></p>
+<p>hexo next高级操作：<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="修改-的样式"><a href="#修改-的样式" class="headerlink" title="修改``的样式"></a>修改``的样式</h2><p>Next默认的主题样式是灰色的，不太显眼，颜色也不太好看，可以将其设置成自己喜欢的颜色，效果如下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/19cc2hfD2rBB66CoumStyqbDTRmOCTP72RMvW1ABVYA7ZYyseLUtz2xQtlP5cWd1SAkEzHGLicoNItH1BpPiaMJg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>配置起来也是很简单，只需要在<code>\themes\next\source\css\_custom\custom.styl</code>文件中添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Custom styles.</span><br><span class="line">code &#123;</span><br><span class="line">    color: #ff7600;</span><br><span class="line">    background: #fbf7f8;</span><br><span class="line">    margin: 2px;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 大代码块的自定义样式</span><br><span class="line">.highlight, pre &#123;</span><br><span class="line">    margin: 5px 0;</span><br><span class="line">    padding: 5px;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">&#125;</span><br><span class="line">.highlight, code, pre &#123;</span><br><span class="line">    border: 1px solid #d6d6d6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>以上的颜色可以配置自己喜欢的，比如效果图中的颜色是我个人比较喜欢的。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git常见错误</title>
     <url>/2019/07/15/git%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</url>
     <content><![CDATA[<p>记录git常见错误</p>
@@ -5362,31 +5387,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>git常见错误</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo博客高级操作</title>
-    <url>/2018/12/25/hexo%E5%8D%9A%E5%AE%A2%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<blockquote>
-<p>官网文档：<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">http://theme-next.iissnan.com</a></p>
-<p>hexo next高级操作：<a href="https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/U7KPp3HsQQCCQz3z8o5q-Q</a></p>
-</blockquote>
-<a id="more"></a>
-
-<h2 id="修改-的样式"><a href="#修改-的样式" class="headerlink" title="修改``的样式"></a>修改``的样式</h2><p>Next默认的主题样式是灰色的，不太显眼，颜色也不太好看，可以将其设置成自己喜欢的颜色，效果如下：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/19cc2hfD2rBB66CoumStyqbDTRmOCTP72RMvW1ABVYA7ZYyseLUtz2xQtlP5cWd1SAkEzHGLicoNItH1BpPiaMJg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-<p>配置起来也是很简单，只需要在<code>\themes\next\source\css\_custom\custom.styl</code>文件中添加如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Custom styles.</span><br><span class="line">code &#123;</span><br><span class="line">    color: #ff7600;</span><br><span class="line">    background: #fbf7f8;</span><br><span class="line">    margin: 2px;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 大代码块的自定义样式</span><br><span class="line">.highlight, pre &#123;</span><br><span class="line">    margin: 5px 0;</span><br><span class="line">    padding: 5px;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">&#125;</span><br><span class="line">.highlight, code, pre &#123;</span><br><span class="line">    border: 1px solid #d6d6d6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>以上的颜色可以配置自己喜欢的，比如效果图中的颜色是我个人比较喜欢的。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>next</tag>
       </tags>
   </entry>
   <entry>
@@ -5643,153 +5643,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>分库分表利器</title>
-    <url>/2021/01/24/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E5%88%A9%E5%99%A8/</url>
-    <content><![CDATA[<p>ShardingSphere</p>
-<ul>
-<li>ShardingSphere-JDBC</li>
-<li>ShardingSphere-Proxy</li>
-<li>ShardingSphere-Sidecar（TODO）</li>
-</ul>
-<a id="more"></a>
-
-<h1 id="1-分库分表概述"><a href="#1-分库分表概述" class="headerlink" title="1 分库分表概述"></a>1 分库分表概述</h1><blockquote>
-<p>阿里巴巴开发手册：单表行数超过 500 万行或者单表容量超过 2GB，才推荐进行分库分表。</p>
-<p><strong>说明</strong>：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。</p>
-</blockquote>
-<h2 id="1-1-什么是分库分表"><a href="#1-1-什么是分库分表" class="headerlink" title="1.1 什么是分库分表"></a>1.1 什么是分库分表</h2><p>​        数据库数据量不可控的，随着时间和业务发展，造成表里面数据越来越多，如果再去对数据库表 curd 操作时候，造成性能问题。</p>
-<p>对于问题的解决有两种方案：</p>
-<ul>
-<li>方案 1：提升硬件条件（成本过高）</li>
-<li>方案 2：分库分表</li>
-</ul>
-<h2 id="1-2-分库分表的方式"><a href="#1-2-分库分表的方式" class="headerlink" title="1.2 分库分表的方式"></a>1.2 分库分表的方式</h2><h3 id="垂直切分"><a href="#垂直切分" class="headerlink" title="垂直切分"></a>垂直切分</h3><p>垂直切分有垂直分表和垂直分库</p>
-<p>对于<strong>垂直分表</strong>：</p>
-<p>操作数据库中某张表，把这张表中一部分字段数据存到一张新表里面，再把这张表另一部分字段数据存到另外一张表里面。</p>
-<p><img src="/images/2021012401.png" alt="image-20210124203050289"></p>
-<p>对于<strong>垂直分库</strong>：把单一数据库按照业务进行划分，专库专表。</p>
-<p><img src="/images/2021012402.png" alt="image-20210124203110120"></p>
-<h3 id="水平切分"><a href="#水平切分" class="headerlink" title="水平切分"></a>水平切分</h3><p>水平切分有水平分表和水平分库</p>
-<p>对于<strong>水平分库</strong>：创建相同结构的数据库</p>
-<p>数据的插入可以根据<code>id</code>来插入。</p>
-<p><img src="/images/2021012403.png" alt="image-20210124204155143"></p>
-<p>对于<strong>水平分表</strong>：可以把一个表的数据(按数据行)分到多个同一个数据库的多张表中，每个表只有这个表的部分数据，这样做能小幅提升性能，它仅仅作为水平分库的一个补充优化。</p>
-<p><img src="/images/2021012404.png" alt="image-20210128115212666"></p>
-<p><strong>总结</strong>：</p>
-<ul>
-<li>垂直拆分，水平复制</li>
-<li>一般来说，在系统设计阶段就应该根据业务耦合松紧来确定垂直分库，垂直分表方案，在数据量及访问压力不是特别大的情况，首先考虑缓存、读写分离、索引技术等方案。若数据量极大，且持续增长，再考虑水平分库水平分表方案。</li>
-</ul>
-<h2 id="1-3-分库分表应用和问题"><a href="#1-3-分库分表应用和问题" class="headerlink" title="1.3 分库分表应用和问题"></a>1.3 分库分表应用和问题</h2><p>1.应用</p>
-<ul>
-<li><p>在数据库设计时候考虑垂直分库和垂直分表</p>
-</li>
-<li><p>随着数据库数据量增加，不要马上考虑做水平切分，首先考虑缓存处理，读写分离，使用索引等等方式，如果这些方式不能根本解决问题了，再考虑做水平分库和水平分表</p>
-</li>
-</ul>
-<p>2.分库分表问题</p>
-<ul>
-<li><p>跨节点连接查询问题（分页、排序）</p>
-</li>
-<li><p>多数据源管理问题</p>
-</li>
-</ul>
-<h1 id="2-ShardingSphere概述"><a href="#2-ShardingSphere概述" class="headerlink" title="2 ShardingSphere概述"></a>2 ShardingSphere概述</h1><p>​        Apache ShardingSphere 是一款<strong>关系型数据库中间件</strong>，旨在充分合理地在<strong>分布式</strong>的场景下利用关系型数据库的计算和存储能力，而<strong>并非</strong>实现一个全新的关系型数据库。</p>
-<p>​        ShardingSphere 有三个产品：ShardingSphere-JDBC，ShardingSphere-Proxy和ShardingSphere-Sidecar（TODO）</p>
-<blockquote>
-<p>官方文档：<a href="https://shardingsphere.apache.org/document/current/cn/overview/" target="_blank" rel="noopener">https://shardingsphere.apache.org/document/current/cn/overview/</a></p>
-</blockquote>
-<h1 id="3-ShardingSphere入门"><a href="#3-ShardingSphere入门" class="headerlink" title="3 ShardingSphere入门"></a>3 ShardingSphere入门</h1><h2 id="3-1-sharding-jdbc"><a href="#3-1-sharding-jdbc" class="headerlink" title="3.1 sharding-jdbc"></a>3.1 sharding-jdbc</h2><h3 id="3-1-1-概述"><a href="#3-1-1-概述" class="headerlink" title="3.1.1 概述"></a>3.1.1 概述</h3><p>​        一个轻量级的Java 框架，在 Java 的 JDBC 层提供的额外服务。 它使用客户端直连数据库，以 jar 包形式提供服务，无需额外部署和依赖，可理解为增强版的 JDBC 驱动，完全兼容 JDBC 和各种 ORM 框架。</p>
-<p><strong>主要功能</strong>：数据分片和读写分离</p>
-<p><strong>主要目的</strong>：简化对分库分表之后数据相关操作</p>
-<h3 id="3-1-2-环境搭建"><a href="#3-1-2-环境搭建" class="headerlink" title="3.1.2 环境搭建"></a>3.1.2 环境搭建</h3><p>（1）SpringBoot+MyBatisPlus+Sharding-JDBC+Druid连接池 搭建环境</p>
-<p>（2）创建SpringBoot项目</p>
-<p>（3）引入pom依赖</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.1.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span> <span class="comment">&lt;!-- lookup parent from repository --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.liuurick<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shardingjdbcdemo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>shardingjdbcdemo<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>Demo project for Spring Boot<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mybatis-plus-boot-starter.version</span>&gt;</span>3.3.1<span class="tag">&lt;/<span class="name">mybatis-plus-boot-starter.version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sharding-jdbc.version</span>&gt;</span>4.0.0-RC1<span class="tag">&lt;/<span class="name">sharding-jdbc.version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">druid.version</span>&gt;</span>1.1.20<span class="tag">&lt;/<span class="name">druid.version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mysql-connector.version</span>&gt;</span>5.1.49<span class="tag">&lt;/<span class="name">mysql-connector.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shardingsphere<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>sharding-jdbc-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;sharding-jdbc.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;druid.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;mysql-connector.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">       </span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.baomidou<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;mybatis-plus-boot-starter.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>（4）建表</p>
-<p>​    按照<strong>水平分表</strong>的方式，创建数据库和数据库表</p>
-<ol>
-<li><p>创建数据库 course_db</p>
-</li>
-<li><p>在数据库创建两张表 course_1 和 course_2</p>
-</li>
-<li><p>约定规则：如果添加课程 id 是偶数把数据添加 course_1，如果奇数添加到 course_2</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> course_db;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> course_db;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> course_1 (</span><br><span class="line">    cid <span class="built_in">bigint</span>(<span class="number">20</span>) primary <span class="keyword">key</span> ,</span><br><span class="line">    cname <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">    user_id <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span> ,</span><br><span class="line">    <span class="keyword">status</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">) <span class="keyword">engine</span> = <span class="keyword">InnoDB</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> course_2 (</span><br><span class="line">    cid <span class="built_in">bigint</span>(<span class="number">20</span>) primary <span class="keyword">key</span> ,</span><br><span class="line">    cname <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">    user_id <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span> ,</span><br><span class="line">    <span class="keyword">status</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">) <span class="keyword">engine</span> = <span class="keyword">InnoDB</span>;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>（5）编写代码实现对分库分表后数据的操作</p>
-<h3 id="3-1-3-Sharding-JDBC实现水平分表"><a href="#3-1-3-Sharding-JDBC实现水平分表" class="headerlink" title="3.1.3  Sharding-JDBC实现水平分表"></a>3.1.3  <strong>Sharding-JDBC</strong>实现水平分表</h3><blockquote>
-<p>官方文档：<a href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-jdbc/usage/sharding/spring-boot-starter/" target="_blank" rel="noopener">https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-jdbc/usage/sharding/spring-boot-starter/</a></p>
-</blockquote>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sharding-jdbc 水平分表策略</span></span><br><span class="line"><span class="comment"># 配置数据源，给数据源起别名</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.names</span>=<span class="string">m1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一个实体类对应两张表，覆盖</span></span><br><span class="line"><span class="meta">spring.main.allow-bean-definition-overriding</span>=<span class="string">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置数据源的具体内容，包含连接池，驱动，地址，用户名，密码</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.driver-class-name</span>=<span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.url</span>=<span class="string">jdbc:mysql://localhost:3306/course_db</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.password</span>=<span class="string">123456</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定course表分布的情况，配置表在哪个数据库里，表的名称都是什么 m1.course_1,m1.course_2</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.actual-data-nodes</span>=<span class="string">m1.course_$-&gt;&#123;1..2&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定 course 表里面主键 cid 的生成策略 SNOWFLAKE</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.key-generator.column</span>=<span class="string">cid</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.key-generator.type</span>=<span class="string">SNOWFLAKE</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置分表策略    约定 cid 值偶数添加到 course_1 表，如果 cid 是奇数添加到 course_2 表</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.table-strategy.inline.sharding-column</span>=<span class="string">cid</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.table-strategy.inline.algorithm-expression</span>=<span class="string">course_$-&gt;&#123;cid % 2 + 1&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开 sql 输出日志</span></span><br><span class="line"><span class="meta">spring.shardingsphere.props.sql.show</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-1-4-Sharding-JDBC-实现水平分库"><a href="#3-1-4-Sharding-JDBC-实现水平分库" class="headerlink" title="3.1.4 Sharding-JDBC 实现水平分库"></a>3.1.4 Sharding-JDBC 实现水平分库</h3><p>1.需求分析</p>
-<p><img src="/images/2021012405.png" alt="image-20210125122459274"></p>
-<p>2.sql</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> edu_db_1;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> edu_db_2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> edu_db_1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> course_1 (</span><br><span class="line">   <span class="string">`cid`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) primary <span class="keyword">key</span>,</span><br><span class="line">   <span class="string">`cname`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`user_id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`status`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> course_2 (</span><br><span class="line">   <span class="string">`cid`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) primary <span class="keyword">key</span>,</span><br><span class="line">   <span class="string">`cname`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`user_id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`status`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> edu_db_2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> course_1 (</span><br><span class="line">   <span class="string">`cid`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) primary <span class="keyword">key</span>,</span><br><span class="line">   <span class="string">`cname`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`user_id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`status`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> course_2 (</span><br><span class="line">   <span class="string">`cid`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) primary <span class="keyword">key</span>,</span><br><span class="line">   <span class="string">`cname`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`user_id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`status`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<p>3.在 SpringBoot 配置文件配置数据库分片规则</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sharding-jdbc 水平分库分表策略</span></span><br><span class="line"><span class="comment"># 配置数据源，给数据源起别名</span></span><br><span class="line"><span class="comment"># 水平分库需要配置多个数据库</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.names</span>=<span class="string">m1,m2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一个实体类对应两张表，覆盖</span></span><br><span class="line"><span class="meta">spring.main.allow-bean-definition-overriding</span>=<span class="string">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置第一个数据源的具体内容，包含连接池，驱动，地址，用户名，密码</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.url</span>=<span class="string">jdbc:mysql://localhost:3306/edu_db_1?serverTimezone=GMT%2B8</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.password</span>=<span class="string">123456</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置第二个数据源的具体内容，包含连接池，驱动，地址，用户名，密码</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.url</span>=<span class="string">jdbc:mysql://localhost:3306/edu_db_2?serverTimezone=GMT%2B8</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.password</span>=<span class="string">123456</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定数据库分布的情况和数据表分布的情况</span></span><br><span class="line"><span class="comment"># m1 m2   course_1 course_2</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.actual-data-nodes</span>=<span class="string">m$-&gt;&#123;1..2&#125;.course_$-&gt;&#123;1..2&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定 course 表里面主键 cid 的生成策略 SNOWFLAKE</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.key-generator.column</span>=<span class="string">cid</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.key-generator.type</span>=<span class="string">SNOWFLAKE</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定分库策略    约定 user_id 值偶数添加到 m1 库，如果 user_id 是奇数添加到 m2 库</span></span><br><span class="line"><span class="comment"># 默认写法（所有的表的user_id）</span></span><br><span class="line"><span class="comment">#spring.shardingsphere.sharding.default-database-strategy.inline.sharding-column=user_id</span></span><br><span class="line"><span class="comment">#spring.shardingsphere.sharding.default-database-strategy.inline.algorithm-expression=m$-&gt;&#123;user_id % 2 + 1&#125;</span></span><br><span class="line"><span class="comment"># 指定只有course表的user_id</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.database-strategy.inline.sharding-column</span>=<span class="string">user_id</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.database-strategy.inline.algorithm-expression</span>=<span class="string">m$-&gt;&#123;user_id % 2 + 1&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定分表策略    约定 cid 值偶数添加到 course_1 表，如果 cid 是奇数添加到 course_2 表</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.table-strategy.inline.sharding-column</span>=<span class="string">cid</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.course.table-strategy.inline.algorithm-expression</span>=<span class="string">course_$-&gt;&#123;cid % 2 + 1&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开 sql 输出日志</span></span><br><span class="line"><span class="meta">spring.shardingsphere.props.sql.show</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="3-1-5-Sharding-JDBC-实现垂直分库"><a href="#3-1-5-Sharding-JDBC-实现垂直分库" class="headerlink" title="3.1.5 Sharding-JDBC 实现垂直分库"></a>3.1.5 Sharding-JDBC 实现垂直分库</h3><p>1.需求分析</p>
-<p><img src="/images/2021012406.png" alt="image-20210125124001781"></p>
-<p>2.sql</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">create database user_db;</span><br><span class="line"></span><br><span class="line">use user_db;</span><br><span class="line"></span><br><span class="line">create table t_user(</span><br><span class="line">   &#96;user_id&#96; bigint(20) primary key,</span><br><span class="line">   &#96;username&#96; varchar(100) not null,</span><br><span class="line">   &#96;status&#96; varchar(50) not null</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<p>3.配置垂直分库策略</p>
-<p>在 application.properties 进行配置</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment"># shardingjdbc 垂直分库策略</span></span><br><span class="line"><span class="comment"># 配置数据源，给数据源起名称,</span></span><br><span class="line"><span class="comment"># 水平分库，配置两个数据源</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.names</span>=<span class="string">m1,m2,m0 </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一个实体类对应两张表，覆盖</span></span><br><span class="line"><span class="meta">spring.main.allow-bean-definition-overriding</span>=<span class="string">true #配置第一个数据源具体内容，包含连接池，驱动，地址，用户名和密码</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.url</span>=<span class="string">jdbc:mysql://localhost:3306/edu_db_1?s</span></span><br><span class="line"><span class="attr">erverTimezone</span>=<span class="string">GMT%2B8 </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.username</span>=<span class="string">root </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m1.password</span>=<span class="string">root #配置第二个数据源具体内容，包含连接池，驱动，地址，用户名和密码</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.url</span>=<span class="string">jdbc:mysql://localhost:3306/edu_db_2?s</span></span><br><span class="line"><span class="attr">erverTimezone</span>=<span class="string">GMT%2B8 </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.username</span>=<span class="string">root </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m2.password</span>=<span class="string">root </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置第三个数据源具体内容，包含连接池，驱动，地址，用户名和密码</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m0.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m0.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m0.url</span>=<span class="string">jdbc:mysql://localhost:3306/user_db?se</span></span><br><span class="line"><span class="attr">rverTimezone</span>=<span class="string">GMT%2B8 </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m0.username</span>=<span class="string">root </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.m0.password</span>=<span class="string">root </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 user_db 数据库里面 t_user 专库专表</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.t_user.actual-data-nodes</span>=<span class="string">m$-&gt;&#123;0&#125;.t_user </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定 course 表里面主键 cid 生成策略 SNOWFLAKE</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.t_user.key-generator.column</span>=<span class="string">user_id </span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.t_user.key-generator.type</span>=<span class="string">SNOWFLAKE </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定表分片策略 约定 cid 值偶数添加到 course_1 表，如果 cid 是奇数添加到</span></span><br><span class="line"><span class="attr">course_2</span> <span class="string">表</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.t_user.table-strategy.inline.shardingcolumn</span>=<span class="string">user_id </span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.t_user.table-strategy.inline.algorithmexpression</span>=<span class="string">t_user</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-1-6-Sharding-JDBC-公共表"><a href="#3-1-6-Sharding-JDBC-公共表" class="headerlink" title="3.1.6 Sharding-JDBC 公共表"></a>3.1.6 Sharding-JDBC 公共表</h3><p>1.公共表</p>
-<p>（1）存储固定数据的表，表数据很少发生变化，查询时候经常进行关联</p>
-<p>（2）在每个数据库中创建出相同结构公共表</p>
-<p>2.在多个数据库都创建相同结构公共表</p>
-<p><img src="/images/2021012407.png" alt="image-20210125124645278"></p>
-<p>3.在项目配置文件 application.properties 进行公共表配置</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置公共表</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.broadcast-tables</span>=<span class="string">t_udict </span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.t_udict.key-generator.column</span>=<span class="string">dictid </span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.t_udict.key-generator.type</span>=<span class="string">SNOWFLAKE</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="3-1-7-Sharding-JDBC-实现读写分离"><a href="#3-1-7-Sharding-JDBC-实现读写分离" class="headerlink" title="3.1.7 Sharding-JDBC 实现读写分离"></a>3.1.7 Sharding-JDBC 实现读写分离</h3><p>在业务场景中，数据库的读操作远远大于增，删，改操作，此时CRUD操作的分离是非常有必要的。</p>
-<p><strong>主从复制</strong>：当主服务器有写入（insert/update/delete）语句时候，从服务器自动获取。</p>
-<p><strong>读写分离</strong>：insert/update/delete语句操作一台服务器，select操作另一台服务器。</p>
-<p>Sharding-JDBC 通过 sql 语句语义分析，实现读写分离过程，不会做数据同步。</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment"># user_db 从服务器</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.s0.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.s0.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.s0.url</span>=<span class="string">jdbc:mysql://localhost:3307/user_db?se</span></span><br><span class="line"><span class="attr">rverTimezone</span>=<span class="string">GMT%2B8 </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.s0.username</span>=<span class="string">root </span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.s0.password</span>=<span class="string">root </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 主库从库逻辑数据源定义 ds0 为 user_db</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.master-slave-rules.ds0.master-data-sourcename</span>=<span class="string">m0 </span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.master-slave-rules.ds0.slave-data-sourcenames</span>=<span class="string">s0 </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 user_db 数据库里面 t_user 专库专表</span></span><br><span class="line"><span class="comment">#spring.shardingsphere.sharding.tables.t_user.actual-data-nodes=m$-&gt;&#123;0&#125;.t_user</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># t_user 分表策略，固定分配至 ds0 的 t_user 真实表</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.t_user.actual-data-nodes</span>=<span class="string">ds0.t_user</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="3-2-sharding-proxy"><a href="#3-2-sharding-proxy" class="headerlink" title="3.2 sharding-proxy"></a>3.2 sharding-proxy</h2><p>3.2.1 概述</p>
-<ul>
-<li><p>sharding-proxy<strong>定位为透明的数据库代理端</strong></p>
-</li>
-<li><p><strong>Sharding-Proxy</strong> <strong>独立应用，需要安装服务，进行分库分表或者读写分离配置，启动</strong></p>
-<p><strong>使用</strong></p>
-</li>
-</ul>
-<blockquote>
-<p>官方文档：<a href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/" target="_blank" rel="noopener">https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/</a></p>
-</blockquote>
-<p>3.2.2 安装与配置</p>
-<blockquote>
-<p><a href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/" target="_blank" rel="noopener">https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/</a></p>
-</blockquote>
-<h2 id="3-3-sharding-sidercar"><a href="#3-3-sharding-sidercar" class="headerlink" title="3.3 sharding-sidercar"></a>3.3 sharding-sidercar</h2><p>ShardingSphere-Sidecar 是 ShardingSphere 的第三个产品，目前仍然在<code>规划中</code>。</p>
-<p>ShardingSphere-Sidecar 的优势在于对 Kubernetes 和 Mesos 的云原生支持。</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>数据库</category>
-        <category>分库分表</category>
-      </categories>
-      <tags>
-        <tag>ShardingSphere</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>单例模式详解</title>
     <url>/2021/01/28/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -5913,6 +5766,72 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>快速构建Java Web项目的开发环境</title>
+    <url>/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<p>Idea通过maven快速构建项目</p>
+<a id="more"></a>
+
+<h1 id="1-搭建项目的开发环境"><a href="#1-搭建项目的开发环境" class="headerlink" title="1.搭建项目的开发环境"></a>1.搭建项目的开发环境</h1><ul>
+<li>设置字体</li>
+<li>设置工作区的字符集为utf-8</li>
+<li>设置basePath变量及base标签</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库<img src="/images/2020112001.png" alt="image-20201120175318348"></p>
+<p>打开settings.xml设置本地仓库位置</p>
+<p><img src="/images/2020112002.png" alt=""></p>
+<p>创建Maven web项目</p>
+<p><img src="/images/2020112003.png" alt="image-20201120175508091"></p>
+<p><img src="/images/2020112004.png" alt="image-20201120175542687"></p>
+<p>新创建的Maven项目，目录结构如下：</p>
+<p><img src="/images/2020112005.png" alt="image-20201120175616811"></p>
+<p>将pom.xml中没有用的信息去除掉</p>
+<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
+<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
+<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
+<p><img src="/images/2020112006.png" alt="image-20201120175810912"></p>
+<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
+<p>将我们自己的web.xml模板导入</p>
+<p>通过pom.xml导入我们需要的jar包</p>
+<p>在pom.xml中加入构建资源</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>点击左侧Maven Projects，点击刷新</p>
+<p><img src="/images/2020112007.png" alt="image-20201120180057366"></p>
+<p>在resource路径下引入开发用的配置文件和属性文件</p>
+<ul>
+<li>jdbc.properties（修改数据库名）</li>
+</ul>
+<ul>
+<li><p>log4j.properties</p>
+</li>
+<li><p>mybatis-config.xml</p>
+</li>
+<li><p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
+</li>
+</ul>
+<p>项目文件结构如下：</p>
+<p><img src="/images/2020112008.png" alt="image-20201120180226721"></p>
+<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="/images/2020112009.png" alt="image-20201120180410393"></p>
+<ul>
+<li><p>将项目原型拷贝到webapp目录下</p>
+</li>
+<li><p>启动Tomcat服务器，测试</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Java Web</category>
+      </categories>
+      <tags>
+        <tag>Java Web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>快速构建SSM开发环境</title>
     <url>/2020/12/01/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BASSM%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>记录一下SSM的搭建过程。</p>
@@ -6011,72 +5930,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       <tags>
         <tag>打新股</tag>
         <tag>打新债</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>快速构建Java Web项目的开发环境</title>
-    <url>/2020/11/20/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAJava-Web%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<p>Idea通过maven快速构建项目</p>
-<a id="more"></a>
-
-<h1 id="1-搭建项目的开发环境"><a href="#1-搭建项目的开发环境" class="headerlink" title="1.搭建项目的开发环境"></a>1.搭建项目的开发环境</h1><ul>
-<li>设置字体</li>
-<li>设置工作区的字符集为utf-8</li>
-<li>设置basePath变量及base标签</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag"><span class="attr">String</span> <span class="attr">basePath</span> = <span class="string">request.getScheme()</span> + "<span class="attr">:</span>//" + <span class="attr">request.getServerName</span>() + "<span class="attr">:</span>" +   <span class="attr">request.getServerPort</span>() + <span class="attr">request.getContextPath</span>() + "/";</span></span><br><span class="line"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"&lt;%=basePath%&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-创建Maven项目前的准备工作"><a href="#2-创建Maven项目前的准备工作" class="headerlink" title="2.创建Maven项目前的准备工作"></a>2.创建Maven项目前的准备工作</h1><p>使用settings引入本地仓库<img src="/images/2020112001.png" alt="image-20201120175318348"></p>
-<p>打开settings.xml设置本地仓库位置</p>
-<p><img src="/images/2020112002.png" alt=""></p>
-<p>创建Maven web项目</p>
-<p><img src="/images/2020112003.png" alt="image-20201120175508091"></p>
-<p><img src="/images/2020112004.png" alt="image-20201120175542687"></p>
-<p>新创建的Maven项目，目录结构如下：</p>
-<p><img src="/images/2020112005.png" alt="image-20201120175616811"></p>
-<p>将pom.xml中没有用的信息去除掉</p>
-<p><strong>在main文件夹下建立java文件夹和resources文件夹</strong></p>
-<p><strong>与main文件夹平级创建一个test文件夹</strong></p>
-<p><strong>test文件夹下创建java文件夹和resources文件夹</strong></p>
-<p><img src="/images/2020112006.png" alt="image-20201120175810912"></p>
-<p><strong>注意：为文件夹赋予功能（颜色）后，文件夹才会生效</strong></p>
-<p>将我们自己的web.xml模板导入</p>
-<p>通过pom.xml导入我们需要的jar包</p>
-<p>在pom.xml中加入构建资源</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span><span class="comment">&lt;!--所在的目录--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span><span class="comment">&lt;!--包括目录下的.properties,.xml文件都会扫描到--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>点击左侧Maven Projects，点击刷新</p>
-<p><img src="/images/2020112007.png" alt="image-20201120180057366"></p>
-<p>在resource路径下引入开发用的配置文件和属性文件</p>
-<ul>
-<li>jdbc.properties（修改数据库名）</li>
-</ul>
-<ul>
-<li><p>log4j.properties</p>
-</li>
-<li><p>mybatis-config.xml</p>
-</li>
-<li><p>SqlMapper.xml（建立后台包结构后加入该文件）</p>
-</li>
-</ul>
-<p>项目文件结构如下：</p>
-<p><img src="/images/2020112008.png" alt="image-20201120180226721"></p>
-<h1 id="3-创建一个数据库"><a href="#3-创建一个数据库" class="headerlink" title="3.创建一个数据库"></a>3.创建一个数据库</h1><p><img src="/images/2020112009.png" alt="image-20201120180410393"></p>
-<ul>
-<li><p>将项目原型拷贝到webapp目录下</p>
-</li>
-<li><p>启动Tomcat服务器，测试</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Java Web</category>
-      </categories>
-      <tags>
-        <tag>Java Web</tag>
       </tags>
   </entry>
   <entry>
@@ -6415,6 +6268,33 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
+    <title>浅析Java平台无关性的实现</title>
+    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<a id="more"></a>    
+
+<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
+<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
+<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>反编译之后：</p>
+<p>可以看到JVM帮我们做了很多事情</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>编程基础</category>
+        <category>Java语言</category>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>添加系统调用</title>
     <url>/2019/08/18/%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<p>操作系统课设</p>
@@ -6501,33 +6381,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </tags>
   </entry>
   <entry>
-    <title>浅析Java平台无关性的实现</title>
-    <url>/2020/10/22/%E6%B5%85%E6%9E%90Java%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<a id="more"></a>    
-
-<p>​    平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处执行（Write Once ,Run Anywhere）。</p>
-<p>​    简而言之，Java是通过<code>javac</code>将java代码编译成字节码文件，这也是java跨平台的基础，接着虚拟机将class文件翻译成机器可识别的机器码。这也就实现了java的跨平台性。</p>
-<h3 id="通过代码来理解"><a href="#通过代码来理解" class="headerlink" title="通过代码来理解"></a>通过代码来理解</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>,j=<span class="number">1</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(<span class="string">"i="</span>+i+<span class="string">"-----j="</span>+j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>反编译之后：</p>
-<p>可以看到JVM帮我们做了很多事情</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bytecode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">bytecode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] var0)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> var1 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span> var2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var3 = var1 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> var4 = var2 + <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">"i="</span> + var3 + <span class="string">"-----j="</span> + var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>编程基础</category>
-        <category>Java语言</category>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>看懂四个指标（PE/PB/ROE/股息率）</title>
     <url>/2021/01/07/%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E6%8C%87%E6%A0%87%EF%BC%88PE-PB-ROE-%E8%82%A1%E6%81%AF%E7%8E%87%EF%BC%89/</url>
     <content><![CDATA[<p>[TOC]</p>
@@ -6550,25 +6403,6 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>理财</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>笔记本换电池防坑记</title>
-    <url>/2020/10/20/%E7%AC%94%E8%AE%B0%E6%9C%AC%E6%8D%A2%E7%94%B5%E6%B1%A0%E9%98%B2%E5%9D%91%E8%AE%B0/</url>
-    <content><![CDATA[<p>​        电脑近几天在启动的时候总是弹出电量不足的警告，想必是电池的使用周期已经到了。。。随即淘宝购置一块，说实话，心里还是有点警觉的，因为电脑型号已经停产，能买到原装的几率很小，只能硬着头皮上了，哈哈</p>
-<a id="more"></a>        
-
-<p>​        拆卸电脑装完电池之后，没想到运行良好，，，太感谢淘宝的卖家了！！！</p>
-<p>为了防止买到劣质/二手的电池，可以通过cmd命令检查。。。</p>
-<p><strong>常用电池检查指令：</strong></p>
-<p>Windows Power shell（管理员）—–》<code>Powercfg /batteryreport</code>  —–》生成电池使用报告</p>
-<p><img src="/images/2020102002.png" alt="img"></p>
-]]></content>
-      <categories>
-        <category>电脑维修</category>
-      </categories>
-      <tags>
-        <tag>电脑维修</tag>
       </tags>
   </entry>
   <entry>
@@ -6632,6 +6466,25 @@ hdfs dfs -ls /</code><br><img src="https://img-blog.csdnimg.cn/20200327151905501
       </categories>
       <tags>
         <tag>算法与数据结构体系</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>笔记本换电池防坑记</title>
+    <url>/2020/10/20/%E7%AC%94%E8%AE%B0%E6%9C%AC%E6%8D%A2%E7%94%B5%E6%B1%A0%E9%98%B2%E5%9D%91%E8%AE%B0/</url>
+    <content><![CDATA[<p>​        电脑近几天在启动的时候总是弹出电量不足的警告，想必是电池的使用周期已经到了。。。随即淘宝购置一块，说实话，心里还是有点警觉的，因为电脑型号已经停产，能买到原装的几率很小，只能硬着头皮上了，哈哈</p>
+<a id="more"></a>        
+
+<p>​        拆卸电脑装完电池之后，没想到运行良好，，，太感谢淘宝的卖家了！！！</p>
+<p>为了防止买到劣质/二手的电池，可以通过cmd命令检查。。。</p>
+<p><strong>常用电池检查指令：</strong></p>
+<p>Windows Power shell（管理员）—–》<code>Powercfg /batteryreport</code>  —–》生成电池使用报告</p>
+<p><img src="/images/2020102002.png" alt="img"></p>
+]]></content>
+      <categories>
+        <category>电脑维修</category>
+      </categories>
+      <tags>
+        <tag>电脑维修</tag>
       </tags>
   </entry>
   <entry>
