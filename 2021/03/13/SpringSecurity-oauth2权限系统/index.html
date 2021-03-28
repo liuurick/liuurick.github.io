@@ -143,7 +143,7 @@
 <meta property="og:image" content="http://yoursite.com/images/2021031312.png">
 <meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210327180908660.png">
 <meta property="article:published_time" content="2021-03-13T04:15:05.000Z">
-<meta property="article:modified_time" content="2021-03-28T05:44:37.323Z">
+<meta property="article:modified_time" content="2021-03-28T09:12:05.730Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="SpringSecurity">
 <meta name="twitter:card" content="summary">
@@ -1135,10 +1135,6 @@
 <li><p>在 <code>AuthenticationProperties</code> 添加以下属性, 在类上加了 <code>@Data</code> 注解, 把 <code>setter / getter</code> 方法全部删除</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthenticationProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String loginPage = <span class="string">"/login/page"</span>;</span><br><span class="line">    <span class="keyword">private</span> String loginProcessingUrl = <span class="string">"/login/form"</span>;</span><br><span class="line">    <span class="keyword">private</span> String usernameParameter = <span class="string">"name"</span>;</span><br><span class="line">    <span class="keyword">private</span> String passwordParameter = <span class="string">"pwd"</span>;</span><br><span class="line">    <span class="keyword">private</span> String[] staticPaths = &#123;<span class="string">"/dist/**"</span>, <span class="string">"/modules/**"</span>, <span class="string">"/plugins/**"</span>&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 登录成功后响应 JSON , 还是重定向</span></span><br><span class="line"><span class="comment">     * 如果application.yml 中没有配置，则取此初始值 REDIRECT</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">private</span> LoginResponseType loginType = LoginResponseType.REDIRECT;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LoginResponseType <span class="title">getLoginType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> loginType;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLoginType</span><span class="params">(LoginResponseType loginType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.loginType = loginType;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取图形验证码 url</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String imageCodeUrl = <span class="string">"/code/image"</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 发送手机验证码 url</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String mobileCodeUrl = <span class="string">"/code/mobile"</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 前往手机登录页面地址</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String mobilePage = <span class="string">"/mobile/page"</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 记住我有效时长</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer tokenValiditySeconds = <span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>*<span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
 </li>
 </ol>
 <h1 id="7-Session-会话管理与Redis搭建Session集群"><a href="#7-Session-会话管理与Redis搭建Session集群" class="headerlink" title="7 Session 会话管理与Redis搭建Session集群"></a>7 Session 会话管理与Redis搭建Session集群</h1><h1 id="8-Spring-Security-授权管理及方法级别权限控制"><a href="#8-Spring-Security-授权管理及方法级别权限控制" class="headerlink" title="8 Spring Security 授权管理及方法级别权限控制"></a>8 Spring Security 授权管理及方法级别权限控制</h1><p>课时54视频整合系统管理模板页面到项目中18:04</p>
@@ -1357,7 +1353,7 @@
               
                 <a href="/archives/%7C%7C%20fa%20fa-archive">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1379,7 +1375,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">93</span>
+                  <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
