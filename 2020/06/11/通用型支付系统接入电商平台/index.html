@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统 主要分为以下5个模块  用户模块 分类模块 购物车模块 收货地址模块 订单模块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通用型支付系统接入电商平台">
+<meta property="og:url" content="http://yoursite.com/2020/06/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统 主要分为以下5个模块  用户模块 分类模块 购物车模块 收货地址模块 订单模块">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-11T07:18:43.000Z">
+<meta property="article:modified_time" content="2021-05-22T09:53:14.633Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="电商平台">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/06/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>通用型支付系统接入电商平台 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/11/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通用型支付系统接入电商平台
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-11 15:18:43" itemprop="dateCreated datePublished" datetime="2020-06-11T15:18:43+08:00">2020-06-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">项目开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一个典型的电商平台，简要记录一下，，，主要是为了测试支付系统</p>
+<p>主要分为以下5个模块</p>
+<ol>
+<li>用户模块</li>
+<li>分类模块</li>
+<li>购物车模块</li>
+<li>收货地址模块</li>
+<li>订单模块</li>
+</ol>
+<a id="more"></a>
+
+<blockquote>
+<p>项目地址：<a href="https://github.com/liuurick/mall-pay/tree/master/mall" target="_blank" rel="noopener">https://github.com/liuurick/mall-pay/tree/master/mall</a></p>
+</blockquote>
+<h1 id="用户模块"><a href="#用户模块" class="headerlink" title="用户模块"></a>用户模块</h1><p>用户模块开发中的几点总结：</p>
+<h2 id="1-MD5加密的方法"><a href="#1-MD5加密的方法" class="headerlink" title="1.MD5加密的方法"></a>1.MD5加密的方法</h2><p>MD5摘要算法(Spring自带)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">user.setPassword(DigestUtils.md5DigestAsHex(</span><br><span class="line">        user.getPassword().getBytes(StandardCharsets.UTF_8)</span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-单元测试：service层"><a href="#2-单元测试：service层" class="headerlink" title="2.单元测试：service层"></a>2.单元测试：service层</h2><p>单元测试的时候一般只需要测试service层，可以在idea中直接右键<code>goto Test</code>—&gt;<code>create new Test</code></p>
+<p>对于系统项目的开发，开发步骤一般为dao–&gt;service–&gt;controller，所以没有必要测试其他两层。</p>
+<h2 id="3-Mybatis打印SQL语句"><a href="#3-Mybatis打印SQL语句" class="headerlink" title="3.Mybatis打印SQL语句"></a>3.Mybatis打印SQL语句</h2><p>控制台配置 Mybatis打印SQL语句</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mybatis:</span></span><br><span class="line">  <span class="attr">configuration:</span></span><br><span class="line">    <span class="attr">log-impl:</span> <span class="string">org.apache.ibatis.logging.stdout.StdOutImpl</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-错误状态码使用枚举"><a href="#4-错误状态码使用枚举" class="headerlink" title="4.错误状态码使用枚举"></a>4.错误状态码使用枚举</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ResponseEnum &#123;</span><br><span class="line"></span><br><span class="line">	ERROR(-<span class="number">1</span>, <span class="string">"服务端错误"</span>),</span><br><span class="line"></span><br><span class="line">	SUCCESS(<span class="number">0</span>, <span class="string">"成功"</span>),</span><br><span class="line"></span><br><span class="line">	PASSWORD_ERROR(<span class="number">1</span>,<span class="string">"密码错误"</span>),</span><br><span class="line"></span><br><span class="line">	USERNAME_EXIST(<span class="number">2</span>, <span class="string">"用户名已存在"</span>),</span><br><span class="line"></span><br><span class="line">	PARAM_ERROR(<span class="number">3</span>, <span class="string">"参数错误"</span>),</span><br><span class="line"></span><br><span class="line">	EMAIL_EXIST(<span class="number">4</span>, <span class="string">"邮箱已存在"</span>),</span><br><span class="line"></span><br><span class="line">	NEED_LOGIN(<span class="number">10</span>, <span class="string">"用户未登录, 请先登录"</span>),</span><br><span class="line"></span><br><span class="line">	USERNAME_OR_PASSWORD_ERROR(<span class="number">11</span>, <span class="string">"用户名或密码错误"</span>),</span><br><span class="line"></span><br><span class="line">	PRODUCT_OFF_SALE_OR_DELETE(<span class="number">12</span>, <span class="string">"商品下架或删除"</span>),</span><br><span class="line"></span><br><span class="line">	PRODUCT_NOT_EXIST(<span class="number">13</span>, <span class="string">"商品不存在"</span>),</span><br><span class="line"></span><br><span class="line">	PROODUCT_STOCK_ERROR(<span class="number">14</span>, <span class="string">"库存不正确"</span>),</span><br><span class="line"></span><br><span class="line">	CART_PRODUCT_NOT_EXIST(<span class="number">15</span>, <span class="string">"购物车里无此商品"</span>),</span><br><span class="line"></span><br><span class="line">	DELETE_SHIPPING_FAIL(<span class="number">16</span>, <span class="string">"删除收货地址失败"</span>),</span><br><span class="line"></span><br><span class="line">	SHIPPING_NOT_EXIST(<span class="number">17</span>, <span class="string">"收货地址不存在"</span>),</span><br><span class="line"></span><br><span class="line">	CART_SELECTED_IS_EMPTY(<span class="number">18</span>, <span class="string">"请选择商品后下单"</span>),</span><br><span class="line"></span><br><span class="line">	ORDER_NOT_EXIST(<span class="number">19</span>, <span class="string">"订单不存在"</span>),</span><br><span class="line"></span><br><span class="line">	ORDER_STATUS_ERROR(<span class="number">20</span>, <span class="string">"订单状态有误"</span>),</span><br><span class="line"></span><br><span class="line">	;</span><br><span class="line"></span><br><span class="line">	Integer code;</span><br><span class="line"></span><br><span class="line">	String desc;</span><br><span class="line"></span><br><span class="line">	ResponseEnum(Integer code, String desc) &#123;</span><br><span class="line">		<span class="keyword">this</span>.code = code;</span><br><span class="line">		<span class="keyword">this</span>.desc = desc;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-session和cookie"><a href="#5-session和cookie" class="headerlink" title="5.session和cookie"></a>5.session和cookie</h2><blockquote>
+<p>彻底弄懂session，cookie，token:<a href="https://segmentfault.com/a/1190000017831088" target="_blank" rel="noopener">https://segmentfault.com/a/1190000017831088</a></p>
+</blockquote>
+<p>对于cookie与session，第一印象就是session是服务器端技术，cookie是客户端技术。一般情况下，由于cookie具备安全性问题和很多游览器禁用cookie，我们平时使用session更广泛一些。但是其实session与cookie不分家，<code>sessionId</code>存储在cookie中。</p>
+<p>另外还有一个重点，就是cookie跨域问题，localhost与127.0.0.1就是跨域</p>
+<blockquote>
+<p>解决cookie跨域访问:<a href="https://www.cnblogs.com/hujunzheng/p/5744755.html" target="_blank" rel="noopener">https://www.cnblogs.com/hujunzheng/p/5744755.html</a></p>
+</blockquote>
+<h2 id="6-统一判断登录状态-拦截器"><a href="#6-统一判断登录状态-拦截器" class="headerlink" title="6.统一判断登录状态-拦截器"></a>6.统一判断登录状态-拦截器</h2><blockquote>
+<p>过滤器+监听器+拦截器+AOP 比较:<a href="https://segmentfault.com/a/1190000021823564" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021823564</a></p>
+</blockquote>
+<p>对于拦截器，主要有两种技术：</p>
+<blockquote>
+<p>Interceptor 基于http的url 比较简单</p>
+<p>AOP 基于包名 ，功能比较强大</p>
+</blockquote>
+<p>这里使用Interceptor实现:</p>
+<p><strong>InterceptorConfig:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InterceptorConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">		registry.addInterceptor(<span class="keyword">new</span> UserLoginInterceptor())</span><br><span class="line">				.addPathPatterns(<span class="string">"/**"</span>)</span><br><span class="line">				.excludePathPatterns(<span class="string">"/error"</span>, <span class="string">"/user/login"</span>, <span class="string">"/user/register"</span>, <span class="string">"/categories"</span>, <span class="string">"/products"</span>, <span class="string">"/products/*"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>UserLoginInterceptor:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserLoginInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * true表示继续流程，false表示中断</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> handler</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">    * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">      log.info(<span class="string">"preHandle..."</span>);</span><br><span class="line">      User user = (User) request.getSession().getAttribute(MallConst.CURRENT_USER);</span><br><span class="line">      <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">         log.info(<span class="string">"user=null"</span>);</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> UserLoginException();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="分类模块"><a href="#分类模块" class="headerlink" title="分类模块"></a>分类模块</h1><p>完成分类管理模块功能的开发，并使用递归分类，支持分类无限层级树状结构。按照dao-&gt;service-&gt;api的顺序开发</p>
+<blockquote>
+<p>对于商品分类的遍历有两种方法：</p>
+<p>1.先查出1级目录–》查其子目录，一直查到的是null</p>
+<p>2.查出目录–》查父目录，一直查到parent_id=0</p>
+</blockquote>
+<p>这里使用的是第1种</p>
+<p>categoryVo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CategoryVo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Integer id;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Integer parentId;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Integer sortOrder;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> List&lt;CategoryVo&gt; subCategories;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ResponseVo&lt;List&lt;CategoryVo&gt;&gt; selectAll() &#123;</span><br><span class="line">    List&lt;Category&gt; categories = categoryMapper.selectAll();</span><br><span class="line"></span><br><span class="line">    List&lt;CategoryVo&gt; categoryVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">//查出parent_id=0</span></span><br><span class="line">    <span class="keyword">for</span> (Category category: categories) &#123;</span><br><span class="line">        <span class="keyword">if</span> (categories.equals(ROOT_PARENT_ID))&#123;</span><br><span class="line">            CategoryVo categoryVo = <span class="keyword">new</span> CategoryVo();</span><br><span class="line">            BeanUtils.copyProperties(category,categoryVo);</span><br><span class="line">            categoryVoList.add(categoryVo);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">  <span class="comment">//查询子目录</span></span><br><span class="line">  findSubCategory(categoryVoList, categories);</span><br><span class="line">  <span class="keyword">return</span> ResponseVo.success(categoryVoList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遍历子分类，用到了递归思想</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">findSubCategory</span><span class="params">(List&lt;CategoryVo&gt; categoryVoList, List&lt;Category&gt; categories)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (CategoryVo categoryVo : categoryVoList) &#123;</span><br><span class="line">        List&lt;CategoryVo&gt; subCategoryVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Category category : categories) &#123;</span><br><span class="line">            <span class="comment">//如果查到内容，设置subCategory, 继续往下查</span></span><br><span class="line">            <span class="keyword">if</span> (categoryVo.getId().equals(category.getParentId())) &#123;</span><br><span class="line">                CategoryVo subCategoryVo = category2CategoryVo(category);</span><br><span class="line">                subCategoryVoList.add(subCategoryVo);</span><br><span class="line">            &#125;</span><br><span class="line">			<span class="comment">//排序</span></span><br><span class="line">            subCategoryVoList.sort(Comparator.comparing(CategoryVo::getSortOrder).reversed());</span><br><span class="line">            categoryVo.setSubCategories(subCategoryVoList);</span><br><span class="line"></span><br><span class="line">            findSubCategory(subCategoryVoList, categories);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findSubCategoryId</span><span class="params">(Integer id, Set&lt;Integer&gt; resultSet)</span> </span>&#123;</span><br><span class="line">        List&lt;Category&gt; categories = categoryMapper.selectAll();</span><br><span class="line">        findSubCategoryId(id, resultSet, categories);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">findSubCategoryId</span><span class="params">(Integer id, Set&lt;Integer&gt; resultSet, List&lt;Category&gt; categories)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Category category : categories) &#123;</span><br><span class="line">            <span class="keyword">if</span> (category.getParentId().equals(id)) &#123;</span><br><span class="line">                resultSet.add(category.getId());</span><br><span class="line">                findSubCategoryId(category.getId(), resultSet, categories);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> CategoryVo <span class="title">category2CategoryVo</span><span class="params">(Category category)</span> </span>&#123;</span><br><span class="line">        CategoryVo categoryVo = <span class="keyword">new</span> CategoryVo();</span><br><span class="line">        BeanUtils.copyProperties(category, categoryVo);</span><br><span class="line">        <span class="keyword">return</span> categoryVo;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>使用lambda + stream对代码进行优化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ResponseVo&lt;List&lt;CategoryVo&gt;&gt; selectAll() &#123;</span><br><span class="line">        List&lt;Category&gt; categories = categoryMapper.selectAll();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//lambda + stream</span></span><br><span class="line">        List&lt;CategoryVo&gt; categoryVoList = categories.stream()</span><br><span class="line">                .filter(e -&gt; e.getParentId().equals(ROOT_PARENT_ID))</span><br><span class="line">                .map(<span class="keyword">this</span>::category2CategoryVo)</span><br><span class="line">                .sorted(Comparator.comparing(CategoryVo::getSortOrder).reversed())</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//查询子目录</span></span><br><span class="line">        findSubCategory(categoryVoList, categories);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success(categoryVoList);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="商品模块"><a href="#商品模块" class="headerlink" title="商品模块"></a>商品模块</h1><p>完成商品列表、详情页、分页的开发</p>
+<h2 id="1-商品列表"><a href="#1-商品列表" class="headerlink" title="1.商品列表"></a>1.商品列表</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseVo&lt;PageInfo&gt; <span class="title">list</span><span class="params">(Integer categoryId, Integer pageNum, Integer pageSize)</span> </span>&#123;</span><br><span class="line">        Set&lt;Integer&gt; categoryIdSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (categoryId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            categoryService.findSubCategoryId(categoryId, categoryIdSet);</span><br><span class="line">            categoryIdSet.add(categoryId);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//分页功能</span></span><br><span class="line">        PageHelper.startPage(pageNum, pageSize);</span><br><span class="line">        List&lt;Product&gt; productList = productMapper.selectByCategoryIdSet(categoryIdSet);</span><br><span class="line">        List&lt;ProductVo&gt; productVoList = productList.stream()</span><br><span class="line">                .map(e -&gt; &#123;</span><br><span class="line">                    ProductVo productVo = <span class="keyword">new</span> ProductVo();</span><br><span class="line">                    BeanUtils.copyProperties(e, productVo);</span><br><span class="line">                    <span class="keyword">return</span> productVo;</span><br><span class="line">                &#125;)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">        PageInfo pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(productList);</span><br><span class="line">        pageInfo.setList(productVoList);</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success(pageInfo);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-商品详情页"><a href="#2-商品详情页" class="headerlink" title="2.商品详情页"></a>2.商品详情页</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseVo&lt;ProductDetailVo&gt; <span class="title">detail</span><span class="params">(Integer productId)</span> </span>&#123;</span><br><span class="line">        Product product = productMapper.selectByPrimaryKey(productId);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//只对确定性条件判断</span></span><br><span class="line">        <span class="keyword">if</span> (product.getStatus().equals(OFF_SALE.getCode())</span><br><span class="line">                || product.getStatus().equals(DELETE.getCode())) &#123;</span><br><span class="line">            <span class="keyword">return</span> ResponseVo.error(PRODUCT_OFF_SALE_OR_DELETE);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ProductDetailVo productDetailVo = <span class="keyword">new</span> ProductDetailVo();</span><br><span class="line">        BeanUtils.copyProperties(product, productDetailVo);</span><br><span class="line">        <span class="comment">//敏感数据处理</span></span><br><span class="line">        productDetailVo.setStock(product.getStock() &gt; <span class="number">100</span> ? <span class="number">100</span> : product.getStock());</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success(productDetailVo);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-分页功能"><a href="#3-分页功能" class="headerlink" title="3.分页功能"></a>3.分页功能</h2><p>基于SpringBoot集成的mybatis-pagehelper进行分页实践。</p>
+<p>POJO、BO、VO的关系与解决思路</p>
+<h1 id="购物车模块"><a href="#购物车模块" class="headerlink" title="购物车模块"></a>购物车模块</h1><p>对于购物车模块</p>
+<ul>
+<li>Redis（高性能）</li>
+<li>MongoDB（海量数据）</li>
+<li>ElasticSearch/HBase（大数据）</li>
+</ul>
+<p>这里我选用Redis完成购物车开发，首先基于传统的String结构完成购物车开发，然后，进行优化重构，基于Hashset数据结构替换，最终实现高性能购物车</p>
+<p>CartVo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CartVo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> List&lt;CartProductVo&gt; cartProductVoList;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Boolean selectedAll;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> BigDecimal cartTotalPrice;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Integer cartTotalQuantity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>CartProductVo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CartProductVo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Integer productId;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Integer quantity;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> String productName;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> String productSubtitle;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> String productMainImage;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> BigDecimal productPrice;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Integer productStatus;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 等于 quantity * productPrice</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> BigDecimal productTotalPrice;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Integer productStock;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 商品是否选中</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> Boolean productSelected;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CartProductVo</span><span class="params">(Integer productId, Integer quantity, String productName, String productSubtitle, String productMainImage, BigDecimal productPrice, Integer productStatus, BigDecimal productTotalPrice, Integer productStock, Boolean productSelected)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.productId = productId;</span><br><span class="line">		<span class="keyword">this</span>.quantity = quantity;</span><br><span class="line">		<span class="keyword">this</span>.productName = productName;</span><br><span class="line">		<span class="keyword">this</span>.productSubtitle = productSubtitle;</span><br><span class="line">		<span class="keyword">this</span>.productMainImage = productMainImage;</span><br><span class="line">		<span class="keyword">this</span>.productPrice = productPrice;</span><br><span class="line">		<span class="keyword">this</span>.productStatus = productStatus;</span><br><span class="line">		<span class="keyword">this</span>.productTotalPrice = productTotalPrice;</span><br><span class="line">		<span class="keyword">this</span>.productStock = productStock;</span><br><span class="line">		<span class="keyword">this</span>.productSelected = productSelected;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品添加"><a href="#商品添加" class="headerlink" title="商品添加"></a>商品添加</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">add</span><span class="params">(Integer uid, CartAddForm form)</span> </span>&#123;</span><br><span class="line">    Integer quantity = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    Product product = productMapper.selectByPrimaryKey(form.getProductId());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品是否存在</span></span><br><span class="line">    <span class="keyword">if</span> (product == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品是否正常在售</span></span><br><span class="line">    <span class="keyword">if</span> (!product.getStatus().equals(ProductStatusEnum.ON_SALE.getCode())) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PRODUCT_OFF_SALE_OR_DELETE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//商品库存是否充足</span></span><br><span class="line">    <span class="keyword">if</span> (product.getStock() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.PROODUCT_STOCK_ERROR);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//写入到redis</span></span><br><span class="line">    <span class="comment">//key: cart_1</span></span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    Cart cart;</span><br><span class="line">    String value = opsForHash.get(redisKey, String.valueOf(product.getId()));</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        <span class="comment">//没有该商品, 新增</span></span><br><span class="line">        cart = <span class="keyword">new</span> Cart(product.getId(), quantity, form.getSelected());</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//已经有了，数量+1</span></span><br><span class="line">        cart = gson.fromJson(value, Cart<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        cart.setQuantity(cart.getQuantity() + quantity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.put(redisKey,</span><br><span class="line">            String.valueOf(product.getId()),</span><br><span class="line">            gson.toJson(cart));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品遍历"><a href="#商品遍历" class="headerlink" title="商品遍历"></a>商品遍历</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">list</span><span class="params">(Integer uid)</span> </span>&#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line">    Map&lt;String, String&gt; entries = opsForHash.entries(redisKey);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> selectAll = <span class="keyword">true</span>;</span><br><span class="line">    Integer cartTotalQuantity = <span class="number">0</span>;</span><br><span class="line">    BigDecimal cartTotalPrice = BigDecimal.ZERO;</span><br><span class="line">    CartVo cartVo = <span class="keyword">new</span> CartVo();</span><br><span class="line">    List&lt;CartProductVo&gt; cartProductVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Map.Entry&lt;String, String&gt; entry : entries.entrySet()) &#123;</span><br><span class="line">        Integer productId = Integer.valueOf(entry.getKey());</span><br><span class="line">        Cart cart = gson.fromJson(entry.getValue(), Cart<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//TODO 需要优化，使用mysql里的in</span></span><br><span class="line">        Product product = productMapper.selectByPrimaryKey(productId);</span><br><span class="line">        <span class="keyword">if</span> (product != <span class="keyword">null</span>) &#123;</span><br><span class="line">            CartProductVo cartProductVo = <span class="keyword">new</span> CartProductVo(productId,</span><br><span class="line">                    cart.getQuantity(),</span><br><span class="line">                    product.getName(),</span><br><span class="line">                    product.getSubtitle(),</span><br><span class="line">                    product.getMainImage(),</span><br><span class="line">                    product.getPrice(),</span><br><span class="line">                    product.getStatus(),</span><br><span class="line">                    product.getPrice().multiply(BigDecimal.valueOf(cart.getQuantity())),</span><br><span class="line">                    product.getStock(),</span><br><span class="line">                    cart.getProductSelected()</span><br><span class="line">            );</span><br><span class="line">            cartProductVoList.add(cartProductVo);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!cart.getProductSelected()) &#123;</span><br><span class="line">                selectAll = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//计算总价(只计算选中的)</span></span><br><span class="line">            <span class="keyword">if</span> (cart.getProductSelected()) &#123;</span><br><span class="line">                cartTotalPrice = cartTotalPrice.add(cartProductVo.getProductTotalPrice());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cartTotalQuantity += cart.getQuantity();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//有一个没有选中，就不叫全选</span></span><br><span class="line">    cartVo.setSelectedAll(selectAll);</span><br><span class="line">    cartVo.setCartTotalQuantity(cartTotalQuantity);</span><br><span class="line">    cartVo.setCartTotalPrice(cartTotalPrice);</span><br><span class="line">    cartVo.setCartProductVoList(cartProductVoList);</span><br><span class="line">    <span class="keyword">return</span> ResponseVo.success(cartVo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品更新"><a href="#商品更新" class="headerlink" title="商品更新"></a>商品更新</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">update</span><span class="params">(Integer uid, Integer productId, CartUpdateForm form)</span> </span>&#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    String value = opsForHash.get(redisKey, String.valueOf(productId));</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        <span class="comment">//没有该商品, 报错</span></span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.CART_PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//已经有了，修改内容</span></span><br><span class="line">    Cart cart = gson.fromJson(value, Cart<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    <span class="keyword">if</span> (form.getQuantity() != <span class="keyword">null</span></span><br><span class="line">            &amp;&amp; form.getQuantity() &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        cart.setQuantity(form.getQuantity());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (form.getSelected() != <span class="keyword">null</span>) &#123;</span><br><span class="line">        cart.setProductSelected(form.getSelected());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.put(redisKey, String.valueOf(productId), gson.toJson(cart));</span><br><span class="line">    <span class="keyword">return</span> list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品删除"><a href="#商品删除" class="headerlink" title="商品删除"></a>商品删除</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">delete</span><span class="params">(Integer uid, Integer productId)</span> </span>&#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    String value = opsForHash.get(redisKey, String.valueOf(productId));</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">        <span class="comment">//没有该商品, 报错</span></span><br><span class="line">        <span class="keyword">return</span> ResponseVo.error(ResponseEnum.CART_PRODUCT_NOT_EXIST);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    opsForHash.delete(redisKey, String.valueOf(productId));</span><br><span class="line">    <span class="keyword">return</span> list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="商品的选择"><a href="#商品的选择" class="headerlink" title="商品的选择"></a>商品的选择</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">selectAll</span><span class="params">(Integer uid)</span> </span>&#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Cart cart : listForCart(uid)) &#123;</span><br><span class="line">        cart.setProductSelected(<span class="keyword">true</span>);</span><br><span class="line">        opsForHash.put(redisKey,</span><br><span class="line">                String.valueOf(cart.getProductId()),</span><br><span class="line">                gson.toJson(cart));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> list(uid);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseVo&lt;CartVo&gt; <span class="title">unSelectAll</span><span class="params">(Integer uid)</span> </span>&#123;</span><br><span class="line">    HashOperations&lt;String, String, String&gt; opsForHash = redisTemplate.opsForHash();</span><br><span class="line">    String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Cart cart : listForCart(uid)) &#123;</span><br><span class="line">        cart.setProductSelected(<span class="keyword">false</span>);</span><br><span class="line">        opsForHash.put(redisKey,</span><br><span class="line">                String.valueOf(cart.getProductId()),</span><br><span class="line">                gson.toJson(cart));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> list(uid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="收货地址模块"><a href="#收货地址模块" class="headerlink" title="收货地址模块"></a>收货地址模块</h1><p>Spring数据绑定中的对象绑定。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ResponseVo&lt;Map&lt;String, Integer&gt;&gt; add(Integer uid, ShippingForm form) &#123;</span><br><span class="line">        Shipping shipping = <span class="keyword">new</span> Shipping();</span><br><span class="line">        BeanUtils.copyProperties(form, shipping);</span><br><span class="line">        shipping.setUserId(uid);</span><br><span class="line">        <span class="keyword">int</span> row = shippingMapper.insertSelective(shipping);</span><br><span class="line">        <span class="keyword">if</span> (row == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> ResponseVo.error(ResponseEnum.ERROR);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map&lt;String, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"shippingId"</span>, shipping.getId());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success(map);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseVo <span class="title">delete</span><span class="params">(Integer uid, Integer shippingId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> row = shippingMapper.deleteByIdAndUid(uid, shippingId);</span><br><span class="line">        <span class="keyword">if</span> (row == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> ResponseVo.error(ResponseEnum.DELETE_SHIPPING_FAIL);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseVo <span class="title">update</span><span class="params">(Integer uid, Integer shippingId, ShippingForm form)</span> </span>&#123;</span><br><span class="line">        Shipping shipping = <span class="keyword">new</span> Shipping();</span><br><span class="line">        BeanUtils.copyProperties(form, shipping);</span><br><span class="line">        shipping.setUserId(uid);</span><br><span class="line">        shipping.setId(shippingId);</span><br><span class="line">        <span class="keyword">int</span> row = shippingMapper.updateByPrimaryKeySelective(shipping);</span><br><span class="line">        <span class="keyword">if</span> (row == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> ResponseVo.error(ResponseEnum.ERROR);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseVo&lt;PageInfo&gt; <span class="title">list</span><span class="params">(Integer uid, Integer pageNum, Integer pageSize)</span> </span>&#123;</span><br><span class="line">        PageHelper.startPage(pageNum, pageSize);</span><br><span class="line">        List&lt;Shipping&gt; shippings = shippingMapper.selectByUid(uid);</span><br><span class="line">        PageInfo pageInfo = <span class="keyword">new</span> PageInfo(shippings);</span><br><span class="line">        <span class="keyword">return</span> ResponseVo.success(pageInfo);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="订单模块"><a href="#订单模块" class="headerlink" title="订单模块"></a>订单模块</h1><p>订单模块接收支付发送的MQ消息，MQ在业务解耦</p>
+<p><strong>如何为支付预留扩展性</strong></p>
+<blockquote>
+<p>docker安装rabbitmq：<a href="https://liuurick.github.io/2020/07/27/Docker安装RabbitMQ/" target="_blank" rel="noopener">https://liuurick.github.io/2020/07/27/Docker%E5%AE%89%E8%A3%85RabbitMQ/</a></p>
+</blockquote>
+<h2 id="RabbitMQ的引入"><a href="#RabbitMQ的引入" class="headerlink" title="RabbitMQ的引入"></a>RabbitMQ的引入</h2><p>1.引入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-amqp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.编写配置文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">    <span class="attr">rabbitmq:</span></span><br><span class="line">        <span class="attr">addresses:</span> <span class="number">192.168</span><span class="number">.60</span><span class="number">.129</span></span><br><span class="line">        <span class="attr">port:</span> <span class="number">5672</span></span><br><span class="line">        <span class="attr">username:</span> <span class="string">guest</span></span><br><span class="line">        <span class="attr">password:</span> <span class="string">guest</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>在支付系统中添加</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AmqpTemplate amqpTemplate;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String QUEUE_PAY_NOTIFY = <span class="string">"payNotify"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//TODO pay发送MQ消息，mall接受MQ消息</span></span><br><span class="line">amqpTemplate.convertAndSend(QUEUE_PAY_NOTIFY, <span class="keyword">new</span> Gson().toJson(payInfo));</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在商城系统中添加listener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@RabbitListener</span>(queues = <span class="string">"payNotify"</span>)</span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PayMsgListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IOrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RabbitHandler</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"【接收到消息】=&gt; &#123;&#125;"</span>, msg);</span><br><span class="line"></span><br><span class="line">        PayInfo payInfo = <span class="keyword">new</span> Gson().fromJson(msg, PayInfo<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        <span class="keyword">if</span> (payInfo.getPlatformStatus().equals(<span class="string">"SUCCESS"</span>)) &#123;</span><br><span class="line">            <span class="comment">//修改订单里的状态</span></span><br><span class="line">            orderService.paid(payInfo.getOrderNo());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/" rel="tag"><i class="fa fa-tag"></i> 电商平台</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/01/%E9%80%9A%E7%94%A8%E5%9E%8B%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F/" rel="prev" title="通用型支付系统">
+      <i class="fa fa-chevron-left"></i> 通用型支付系统
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/25/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F5%E5%A4%A7%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/" rel="next" title="面向对象设计模式5大基本原则">
+      面向对象设计模式5大基本原则 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#用户模块"><span class="nav-text">用户模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MD5加密的方法"><span class="nav-text">1.MD5加密的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-单元测试：service层"><span class="nav-text">2.单元测试：service层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Mybatis打印SQL语句"><span class="nav-text">3.Mybatis打印SQL语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-错误状态码使用枚举"><span class="nav-text">4.错误状态码使用枚举</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-session和cookie"><span class="nav-text">5.session和cookie</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-统一判断登录状态-拦截器"><span class="nav-text">6.统一判断登录状态-拦截器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分类模块"><span class="nav-text">分类模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#商品模块"><span class="nav-text">商品模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-商品列表"><span class="nav-text">1.商品列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-商品详情页"><span class="nav-text">2.商品详情页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-分页功能"><span class="nav-text">3.分页功能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#购物车模块"><span class="nav-text">购物车模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#商品添加"><span class="nav-text">商品添加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#商品遍历"><span class="nav-text">商品遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#商品更新"><span class="nav-text">商品更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#商品删除"><span class="nav-text">商品删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#商品的选择"><span class="nav-text">商品的选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#收货地址模块"><span class="nav-text">收货地址模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#订单模块"><span class="nav-text">订单模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ的引入"><span class="nav-text">RabbitMQ的引入</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

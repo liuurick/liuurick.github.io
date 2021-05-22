@@ -27,16 +27,15 @@
 <meta property="og:site_name" content="lb Blog">
 <meta property="og:description" content="es准时性索引的构建">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121201.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121202.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121203.png">
+<meta property="og:image" content="http://yoursite.com/images/2020121201.png">
+<meta property="og:image" content="http://yoursite.com/images/2020121202.png">
+<meta property="og:image" content="http://yoursite.com/images/2020121203.png">
 <meta property="article:published_time" content="2020-12-09T07:05:40.000Z">
-<meta property="article:modified_time" content="2020-12-17T07:33:18.491Z">
+<meta property="article:modified_time" content="2021-05-22T10:05:32.942Z">
 <meta property="article:author" content="liubin">
-<meta property="article:tag" content="ElasticSearch7">
 <meta property="article:tag" content="canal">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121201.png">
+<meta name="twitter:image" content="http://yoursite.com/images/2020121201.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/09/canal%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
@@ -224,15 +223,6 @@
 
               <time title="创建时间：2020-12-09 15:05:40" itemprop="dateCreated datePublished" datetime="2020-12-09T15:05:40+08:00">2020-12-09</time>
             </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/canal/" itemprop="url" rel="index"><span itemprop="name">canal</span></a>
-                </span>
-            </span>
 
           
 
@@ -263,8 +253,8 @@
 <li>target 为其他存储，比如 ElasticSearch；</li>
 <li>Canal 借鉴了MySQL主从复制的原理，伪装成一个 MySQL 主库的备库，感知 MySQL 中 binlog 的变化，并同步出来一个结构化的数据，交给 Canal 管道的消费端；</li>
 </ul>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121201.png" alt="img"></p>
-<h1 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h1><h2 id="MySQL主备复制原理"><a href="#MySQL主备复制原理" class="headerlink" title="MySQL主备复制原理"></a>MySQL主备复制原理</h2><p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121202.png" alt="img"></p>
+<p><img src="/images/2020121201.png" alt="img"></p>
+<h1 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h1><h2 id="MySQL主备复制原理"><a href="#MySQL主备复制原理" class="headerlink" title="MySQL主备复制原理"></a>MySQL主备复制原理</h2><p><img src="/images/2020121202.png" alt="img"></p>
 <ul>
 <li>MySQL master 将数据变更写入二进制日志( binary log, 其中记录叫做二进制日志事件binary log events，可以通过 show binlog events 进行查看)</li>
 <li>MySQL slave 将 master 的 binary log events 拷贝到它的中继日志(relay log)</li>
@@ -290,7 +280,7 @@
 
 
 
-<h6 id="创建复制用户"><a href="#创建复制用户" class="headerlink" title="创建复制用户"></a>创建复制用户</h6><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create user <span class="string">'canal'</span>@<span class="string">'%'</span> identified <span class="keyword">by</span> <span class="string">'canal'</span>;</span><br><span class="line"></span><br><span class="line">grant replication slave <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant replication client <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">grant <span class="keyword">select</span> <span class="keyword">on</span> *.* to <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<h6 id="创建复制用户"><a href="#创建复制用户" class="headerlink" title="创建复制用户"></a>创建复制用户</h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="string">'canal'</span>@<span class="string">'%'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'canal'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">replication</span> <span class="keyword">slave</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">replication</span> <span class="keyword">client</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'canal'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -303,10 +293,10 @@
 <h6 id="修改-instance-properties"><a href="#修改-instance-properties" class="headerlink" title="修改 instance.properties"></a>修改 instance.properties</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">位置：&#x2F;canal&#x2F;1.1.3&#x2F;canal.deployer-1.1.3&#x2F;conf&#x2F;example&#x2F;instance.properties；</span><br></pre></td></tr></table></figure>
 
 <p>修改如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">canal.instance.mysql.slaveId&#x3D;8</span><br><span class="line"></span><br><span class="line">canal.instance.dbUsername&#x3D;canal</span><br><span class="line">canal.instance.dbPassword&#x3D;canal</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">canal.instance.mysql.slaveId</span>=<span class="string">8</span></span><br><span class="line"></span><br><span class="line"><span class="meta">canal.instance.dbUsername</span>=<span class="string">canal</span></span><br><span class="line"><span class="meta">canal.instance.dbPassword</span>=<span class="string">canal</span></span><br></pre></td></tr></table></figure>
 
 <h6 id="启动-canal"><a href="#启动-canal" class="headerlink" title="启动 canal"></a>启动 canal</h6><p>JDK 换成 8 才启动起来；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;startup.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/startup.sh</span><br></pre></td></tr></table></figure>
 
 <h2 id="canal-adapter-1-1-4"><a href="#canal-adapter-1-1-4" class="headerlink" title="canal.adapter | 1.1.4"></a>canal.adapter | 1.1.4</h2><h6 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在 IDEA 中打开 client-adapter module；</span><br><span class="line"></span><br><span class="line">修改 &#x2F;canal-canal-1.1.4&#x2F;client-adapter&#x2F;elasticsearch&#x2F;pom.xml&#96; 中的 ElasticSearch 的依赖版本，改成 7.3.0；</span><br></pre></td></tr></table></figure>
 
@@ -356,7 +346,7 @@
 </ul>
 <h1 id="Windows下安装canal"><a href="#Windows下安装canal" class="headerlink" title="Windows下安装canal"></a>Windows下安装canal</h1><h2 id="开启-MySQL-的-binglog-1"><a href="#开启-MySQL-的-binglog-1" class="headerlink" title="开启 MySQL 的 binglog"></a>开启 MySQL 的 binglog</h2><p>1.查看mysql的<code>log_bin</code>是否开启。</p>
 <p>因为canal是通过<code>log_bin</code>监听更新的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &#39;%log_bin%&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like <span class="string">'%log_bin%'</span></span><br></pre></td></tr></table></figure>
 
 <p>如果value为off需要修改my.ini文件</p>
 <p><strong>注意</strong>：可能会出现MySQL目录下找不到 my.ini 的问题</p>
@@ -365,33 +355,31 @@
 
 
 <p>2.修改my.ini文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server_id&#x3D;1 ###代表集群模式第一台机器</span><br><span class="line">binlog_format&#x3D;ROW ###行模式</span><br><span class="line">log_bin&#x3D;mysql_bin.log ###binlog的文件名称</span><br><span class="line">expire-logs-days&#x3D;14 ###失效日期为14天（可不配置）</span><br><span class="line">max-binlog-size&#x3D;500M ###最大存储500MB（可不配置）</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server_id</span>=<span class="number">1</span> <span class="comment">###代表集群模式第一台机器</span></span><br><span class="line"><span class="attr">binlog_format</span>=ROW <span class="comment">###行模式</span></span><br><span class="line"><span class="attr">log_bin</span>=mysql_bin.log <span class="comment">###binlog的文件名称</span></span><br><span class="line"><span class="attr">expire-logs-days</span>=<span class="number">14</span> <span class="comment">###失效日期为14天（可不配置）</span></span><br><span class="line"><span class="attr">max-binlog-size</span>=<span class="number">500</span>M <span class="comment">###最大存储500MB（可不配置）</span></span><br></pre></td></tr></table></figure>
 
 
 
 <p>重启MySQL之后再次查询：</p>
-<p><img src="C:%5CUsers%5Cadmin%5CDesktop%5Cblog%5Csource%5Cimages%5C2020121203.png" alt="image-20201212190859514"></p>
+<p><img src="/images/2020121203.png" alt="image-20201212190859514"></p>
 <h2 id="编译canal-adapter"><a href="#编译canal-adapter" class="headerlink" title="编译canal-adapter"></a>编译canal-adapter</h2><p>因为canal的es默认版本并不匹配,所以需要重新编译</p>
 <p><strong>ESAdapter类中的类型错误</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">long rowCount &#x3D; response.getHits().getTotalHits().value;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> rowCount = response.getHits().getTotalHits().value;</span><br></pre></td></tr></table></figure>
 
 <p><strong>ESConnection</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public BulkResponse bulk() &#123;</span><br><span class="line">            if (mode &#x3D;&#x3D; ESClientMode.TRANSPORT) &#123;</span><br><span class="line">                return bulkRequestBuilder.execute().actionGet();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    return restHighLevelClient.bulk(bulkRequest,RequestOptions.DEFAULT);</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    throw new RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> BulkResponse <span class="title">bulk</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (mode == ESClientMode.TRANSPORT) &#123;</span><br><span class="line">                <span class="keyword">return</span> bulkRequestBuilder.execute().actionGet();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span> restHighLevelClient.bulk(bulkRequest,RequestOptions.DEFAULT);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 
 
 
 <h2 id="安装canal-adapter"><a href="#安装canal-adapter" class="headerlink" title="安装canal-adapter"></a>安装canal-adapter</h2><p>1.修改conf文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">srcDataSources:</span><br><span class="line">    defaultDS:</span><br><span class="line">    url: jdbc:mysql:&#x2F;&#x2F;127.0.0.1:3306&#x2F;dianpingdb?useUnicode&#x3D;true</span><br><span class="line">    username: root</span><br><span class="line">    password: 123456</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">srcDataSources:</span></span><br><span class="line">    <span class="attr">defaultDS:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql://127.0.0.1:3306/dianpingdb?useUnicode=true</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
 
 
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- name: es</span><br><span class="line">        hosts: 127.0.0.1:9300 # 127.0.0.1:9200 for rest mode</span><br><span class="line">        properties:</span><br><span class="line">          mode: transport # or rest</span><br><span class="line">          # security.auth: test:123456 #  only used for rest mode</span><br><span class="line">          cluster.name: elasticsearch</span><br></pre></td></tr></table></figure>
-
-
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">es</span></span><br><span class="line">        <span class="attr">hosts:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:9300</span> <span class="comment"># 127.0.0.1:9200 for rest mode</span></span><br><span class="line">        <span class="attr">properties:</span></span><br><span class="line">          <span class="attr">mode:</span> <span class="string">transport</span> <span class="comment"># or rest</span></span><br><span class="line">          <span class="comment"># security.auth: test:123456 #  only used for rest mode</span></span><br><span class="line">          <span class="attr">cluster.name:</span> <span class="string">elasticsearch</span></span><br></pre></td></tr></table></figure>
 
 <p>2.修改es目录下的文件</p>
 <p>创建shop.yml文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dataSourceKey: defaultDS</span><br><span class="line">destination: example</span><br><span class="line">groupId: </span><br><span class="line">esMapping:</span><br><span class="line">  _index: shop</span><br><span class="line">  _type: _doc</span><br><span class="line">  _id: id</span><br><span class="line">  upsert: true</span><br><span class="line">  sql: &quot;select a.id,a.name,a.tags,concat(a.latitude,&#39;,&#39;,a.longitude) as location,a.remark_score,a.price_per_man,a.category_id,b.name as category_name,a.seller_id,c.remark_score as seller_remark_score,c.disabled_flag as seller_disabled_flag from shop a inner join category b on a.category_id &#x3D; b.id inner join seller c on c.id &#x3D; a.seller_id&quot;</span><br><span class="line">  commitBatch: 3000</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dataSourceKey:</span> <span class="string">defaultDS</span></span><br><span class="line"><span class="attr">destination:</span> <span class="string">example</span></span><br><span class="line"><span class="attr">groupId:</span> </span><br><span class="line"><span class="attr">esMapping:</span></span><br><span class="line">  <span class="attr">_index:</span> <span class="string">shop</span></span><br><span class="line">  <span class="attr">_type:</span> <span class="string">_doc</span></span><br><span class="line">  <span class="attr">_id:</span> <span class="string">id</span></span><br><span class="line">  <span class="attr">upsert:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">sql:</span> <span class="string">"select a.id,a.name,a.tags,concat(a.latitude,',',a.longitude) as location,a.remark_score,a.price_per_man,a.category_id,b.name as category_name,a.seller_id,c.remark_score as seller_remark_score,c.disabled_flag as seller_disabled_flag from shop a inner join category b on a.category_id = b.id inner join seller c on c.id = a.seller_id"</span></span><br><span class="line">  <span class="attr">commitBatch:</span> <span class="number">3000</span></span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -402,7 +390,6 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/ElasticSearch7/" rel="tag"><i class="fa fa-tag"></i> ElasticSearch7</a>
               <a href="/tags/canal/" rel="tag"><i class="fa fa-tag"></i> canal</a>
           </div>
 
@@ -493,20 +480,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">103</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">63</span>
+        <span class="site-state-item-count">59</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-count">91</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
