@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="[TOC]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多种文件格式转换为PDF">
+<meta property="og:url" content="http://yoursite.com/2021/05/29/%E5%A4%9A%E7%A7%8D%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E4%B8%BAPDF/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="[TOC]">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-29T11:54:04.000Z">
+<meta property="article:modified_time" content="2021-05-29T11:55:41.377Z">
+<meta property="article:author" content="liubin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/29/%E5%A4%9A%E7%A7%8D%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E4%B8%BAPDF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>多种文件格式转换为PDF | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/29/%E5%A4%9A%E7%A7%8D%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E4%B8%BAPDF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多种文件格式转换为PDF
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-29 19:54:04" itemprop="dateCreated datePublished" datetime="2021-05-29T19:54:04+08:00">2021-05-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="ImgUtil"><a href="#ImgUtil" class="headerlink" title="ImgUtil"></a>ImgUtil</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">@Slf4j</span><br><span class="line">public class ImgUtils &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        img2PDF(&quot;d:&#x2F;&#x2F;test2.png&quot;,&quot;d:&#x2F;&#x2F;test3.pdf&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 图片转PDF</span><br><span class="line">     * @param imgFilePath</span><br><span class="line">     * @param pdfFilePath</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public static boolean img2PDF(String imgFilePath, String pdfFilePath)&#123;</span><br><span class="line">        File file &#x3D; new File(imgFilePath);</span><br><span class="line">        if (file.exists()) &#123;</span><br><span class="line">            com.lowagie.text.Document document &#x3D; new com.lowagie.text.Document();</span><br><span class="line">            FileOutputStream fos &#x3D; null;</span><br><span class="line">            try &#123;</span><br><span class="line">                fos &#x3D; new FileOutputStream(pdfFilePath);</span><br><span class="line">                com.lowagie.text.pdf.PdfWriter.getInstance(document, fos);</span><br><span class="line"></span><br><span class="line">                &#x2F;&#x2F; 添加PDF文档的某些信息，比如作者，主题等等</span><br><span class="line">                document.addAuthor(&quot;newprint&quot;);</span><br><span class="line">                document.addSubject(&quot;test pdf.&quot;);</span><br><span class="line">                &#x2F;&#x2F; 设置文档的大小</span><br><span class="line">                document.setPageSize(PageSize.A4);</span><br><span class="line">                &#x2F;&#x2F; 打开文档</span><br><span class="line">                document.open();</span><br><span class="line">                &#x2F;&#x2F; 写入一段文字</span><br><span class="line">                &#x2F;&#x2F; document.add(new Paragraph(&quot;JUST TEST ...&quot;));</span><br><span class="line"></span><br><span class="line">                &#x2F;&#x2F; 读取一个图片</span><br><span class="line">                com.lowagie.text.Image image &#x3D; com.lowagie.text.Image.getInstance(imgFilePath);</span><br><span class="line">                float imageHeight &#x3D; image.getScaledHeight();</span><br><span class="line">                float imageWidth &#x3D; image.getScaledWidth();</span><br><span class="line">                int i &#x3D; 0;</span><br><span class="line">                while (imageHeight &gt; 500 || imageWidth &gt; 500) &#123;</span><br><span class="line">                    image.scalePercent(100 - i);</span><br><span class="line">                    i++;</span><br><span class="line">                    imageHeight &#x3D; image.getScaledHeight();</span><br><span class="line">                    imageWidth &#x3D; image.getScaledWidth();</span><br><span class="line">                    System.out.println(&quot;imageHeight-&gt;&quot; + imageHeight);</span><br><span class="line">                    System.out.println(&quot;imageWidth-&gt;&quot; + imageWidth);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                image.setAlignment(com.lowagie.text.Image.ALIGN_CENTER);</span><br><span class="line">                &#x2F;&#x2F; &#x2F;&#x2F;设置图片的绝对位置</span><br><span class="line">                &#x2F;&#x2F; image.setAbsolutePosition(0, 0);</span><br><span class="line">                &#x2F;&#x2F; image.scaleAbsolute(500, 400);</span><br><span class="line"></span><br><span class="line">                &#x2F;&#x2F; 插入一个图片</span><br><span class="line">                document.add(image);</span><br><span class="line">            &#125; catch (com.lowagie.text.DocumentException de) &#123;</span><br><span class="line">                System.out.println(de.getMessage());</span><br><span class="line">            &#125; catch (IOException ioe) &#123;</span><br><span class="line">                System.out.println(ioe.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">            document.close();</span><br><span class="line">            try &#123;</span><br><span class="line">                fos.flush();</span><br><span class="line">                fos.close();</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            return true;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="PptxUtils"><a href="#PptxUtils" class="headerlink" title="PptxUtils"></a>PptxUtils</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PptxUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//toImage("d:test.pptx","d:2.pdf");</span></span><br><span class="line">        <span class="comment">//createPdf("d://2.pdf1.jpg","d://2.pdf1.pdf");</span></span><br><span class="line">        ImgUtils.img2PDF(<span class="string">"d://2.pdf1.jpg"</span>,<span class="string">"d://2.pdf1.pdf"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将pptx转换成pdf</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">toImage</span><span class="params">(String str,String local)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        FileInputStream is = <span class="keyword">new</span> FileInputStream(str);</span><br><span class="line">        XMLSlideShow ppt = <span class="keyword">new</span> XMLSlideShow(is);</span><br><span class="line">        is.close();</span><br><span class="line">        Dimension pgsize = ppt.getPageSize();</span><br><span class="line">        System.out.println(pgsize.width + <span class="string">"--"</span> + pgsize.height);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ppt.getSlides().size(); i++) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">for</span> (XSLFShape shape : ppt.getSlides().get(i).getShapes()) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (shape <span class="keyword">instanceof</span> XSLFTextShape) &#123;</span><br><span class="line">                        XSLFTextShape tsh = (XSLFTextShape) shape;</span><br><span class="line">                        <span class="keyword">for</span> (XSLFTextParagraph p : tsh) &#123;</span><br><span class="line">                            <span class="keyword">for</span> (XSLFTextRun r : p) &#123;</span><br><span class="line">                                r.setFontFamily(<span class="string">"图片转换"</span>);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                BufferedImage img = <span class="keyword">new</span> BufferedImage(pgsize.width, pgsize.height, BufferedImage.TYPE_INT_RGB);</span><br><span class="line">                Graphics2D graphics = img.createGraphics();</span><br><span class="line">                <span class="comment">// clear the drawing area</span></span><br><span class="line">                graphics.setPaint(Color.white);</span><br><span class="line">                graphics.fill(<span class="keyword">new</span> Rectangle2D.Float(<span class="number">0</span>, <span class="number">0</span>, pgsize.width, pgsize.height));</span><br><span class="line">                <span class="comment">// render</span></span><br><span class="line">                ppt.getSlides().get(i).draw(graphics);</span><br><span class="line">                <span class="comment">// save the output</span></span><br><span class="line">                String filename = local + (i + <span class="number">1</span>) + <span class="string">".jpg"</span>;</span><br><span class="line">                System.out.println(filename);</span><br><span class="line">                FileOutputStream out = <span class="keyword">new</span> FileOutputStream(filename);</span><br><span class="line">                javax.imageio.ImageIO.write(img, <span class="string">"png"</span>, out);</span><br><span class="line">                out.close();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                log.info(<span class="string">"图片"</span> + i + <span class="string">"pptx文件名"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"success"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">createPdf</span><span class="params">(String imageFolderPath, String pdfPath)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Document doc = <span class="keyword">new</span> Document();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            PdfWriter.getInstance(doc, <span class="keyword">new</span> FileOutputStream(pdfPath));</span><br><span class="line">            doc.open();</span><br><span class="line">            File file = <span class="keyword">new</span> File(imageFolderPath);</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (files != <span class="keyword">null</span> &amp;&amp; files.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> (File file1 : files) &#123;</span><br><span class="line">                    File file2 = <span class="keyword">new</span> File(imageFolderPath + <span class="string">"/"</span> + file1.getName());</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (file2.exists()) &#123;</span><br><span class="line">                        Image img = Image.getInstance(imageFolderPath + <span class="string">"/"</span> + file1.getName());</span><br><span class="line">                        Float height = img.getHeight();</span><br><span class="line">                        Float width = img.getWidth();</span><br><span class="line">                        Integer percent = getPercent(height, width);</span><br><span class="line">                        img.setAlignment(Image.MIDDLE);</span><br><span class="line">                        img.scalePercent(percent);</span><br><span class="line">                        <span class="comment">//img.scalePercent(50, 100);</span></span><br><span class="line">                        doc.add(img);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            doc.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (DocumentException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">getPercent</span><span class="params">(Float h, Float w)</span> </span>&#123;</span><br><span class="line">        Integer p = <span class="number">0</span>;</span><br><span class="line">        Float p2 = <span class="number">0.0f</span>;</span><br><span class="line">        p2 = <span class="number">530</span> / w * <span class="number">100</span>;</span><br><span class="line">        System.out.println(<span class="string">"--"</span> + p2);</span><br><span class="line">        p = Math.round(p2);</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Excel2PDF"><a href="#Excel2PDF" class="headerlink" title="Excel2PDF"></a>Excel2PDF</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestForExcel2PDF</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        String sourceFilePath=<span class="string">"d:/1.xlsx"</span>;</span><br><span class="line">        String desFilePath=<span class="string">"d:/1.pdf"</span>;</span><br><span class="line"></span><br><span class="line">        excel2pdf(sourceFilePath, desFilePath);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取license 去除水印</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">getLicense</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            InputStream is = TestForExcel2PDF.class.getClassLoader().getResourceAsStream("\\license.xml");</span><br><span class="line">            License aposeLic = <span class="keyword">new</span> License();</span><br><span class="line">            aposeLic.setLicense(is);</span><br><span class="line">            result = <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * excel 转为pdf 输出。</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sourceFilePath  excel文件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> desFilePathd  pad 输出文件目录</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">excel2pdf</span><span class="params">(String sourceFilePath, String desFilePathd )</span></span>&#123;</span><br><span class="line">        <span class="comment">// 验证License 若不验证则转化出的pdf文档会有水印产生</span></span><br><span class="line">        <span class="keyword">if</span> (!getLicense()) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 原始excel路径</span></span><br><span class="line">            Workbook wb = <span class="keyword">new</span> Workbook(sourceFilePath);</span><br><span class="line"></span><br><span class="line">            FileOutputStream fileOS = <span class="keyword">new</span> FileOutputStream(desFilePathd);</span><br><span class="line">            PdfSaveOptions pdfSaveOptions = <span class="keyword">new</span> PdfSaveOptions();</span><br><span class="line">            pdfSaveOptions.setOnePagePerSheet(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span>[] autoDrawSheets=&#123;<span class="number">3</span>&#125;;</span><br><span class="line">            <span class="comment">//当excel中对应的sheet页宽度太大时，在PDF中会拆断并分页。此处等比缩放。</span></span><br><span class="line">            <span class="comment">//autoDraw(wb,autoDrawSheets);</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span>[] showSheets=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">            <span class="comment">//隐藏workbook中不需要的sheet页。</span></span><br><span class="line">            printSheetPage(wb,showSheets);</span><br><span class="line">            wb.save(fileOS, pdfSaveOptions);</span><br><span class="line">            fileOS.flush();</span><br><span class="line">            fileOS.close();</span><br><span class="line">            System.out.println(<span class="string">"完毕"</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置打印的sheet 自动拉伸比例</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> wb</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> page 自动拉伸的页的sheet数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">autoDraw</span><span class="params">(Workbook wb,<span class="keyword">int</span>[] page)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">null</span>!=page&amp;&amp;page.length&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; page.length; i++) &#123;</span><br><span class="line">                wb.getWorksheets().get(i).getHorizontalPageBreaks().clear();</span><br><span class="line">                wb.getWorksheets().get(i).getVerticalPageBreaks().clear();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 隐藏workbook中不需要的sheet页。</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> wb</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> page 显示页的sheet数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printSheetPage</span><span class="params">(Workbook wb,<span class="keyword">int</span>[] page)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i= <span class="number">1</span>; i &lt; wb.getWorksheets().getCount(); i++)  &#123;</span><br><span class="line">            wb.getWorksheets().get(i).setVisible(<span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">null</span>==page||page.length==<span class="number">0</span>)&#123;</span><br><span class="line">            wb.getWorksheets().get(<span class="number">0</span>).setVisible(<span class="keyword">true</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; page.length; i++) &#123;</span><br><span class="line">                wb.getWorksheets().get(i).setVisible(<span class="keyword">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="WordUtils"><a href="#WordUtils" class="headerlink" title="WordUtils"></a>WordUtils</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordUtils</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		WordUtils.convertDocxToPdf(<span class="string">"d://123.docx"</span>,<span class="string">"d://123.pdf"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * docx文档转换为PDF</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> pdfPath PDF文档存储路径</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception 可能为Docx4JException, FileNotFoundException, IOException等</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">convertDocxToPdf</span><span class="params">(String docxPath, String pdfPath)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		FileOutputStream fileOutputStream = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			File file = <span class="keyword">new</span> File(docxPath);</span><br><span class="line">			fileOutputStream = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(pdfPath));</span><br><span class="line">			WordprocessingMLPackage mlPackage = WordprocessingMLPackage.load(file);</span><br><span class="line">			log.info(<span class="string">"docx转换:"</span> + mlPackage);</span><br><span class="line">			setFontMapper(mlPackage);</span><br><span class="line">			Docx4J.toPDF(mlPackage, fileOutputStream);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			log.error(<span class="string">"docx文档转换为PDF失败"</span>);</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				fileOutputStream.flush();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			IOUtils.closeQuietly(fileOutputStream);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setFontMapper</span><span class="params">(WordprocessingMLPackage mlPackage)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		Mapper fontMapper = <span class="keyword">new</span> IdentityPlusMapper();</span><br><span class="line">		fontMapper.put(<span class="string">"隶书"</span>, PhysicalFonts.get(<span class="string">"LiSu"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"宋体"</span>, PhysicalFonts.get(<span class="string">"SimSun"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"微软雅黑"</span>, PhysicalFonts.get(<span class="string">"Microsoft Yahei"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"黑体"</span>, PhysicalFonts.get(<span class="string">"SimHei"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"楷体"</span>, PhysicalFonts.get(<span class="string">"KaiTi"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"新宋体"</span>, PhysicalFonts.get(<span class="string">"NSimSun"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文行楷"</span>, PhysicalFonts.get(<span class="string">"STXingkai"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文仿宋"</span>, PhysicalFonts.get(<span class="string">"STFangsong"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"宋体扩展"</span>, PhysicalFonts.get(<span class="string">"simsun-extB"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"仿宋"</span>, PhysicalFonts.get(<span class="string">"FangSong"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"仿宋_GB2312"</span>, PhysicalFonts.get(<span class="string">"FangSong_GB2312"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"幼圆"</span>, PhysicalFonts.get(<span class="string">"YouYuan"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文宋体"</span>, PhysicalFonts.get(<span class="string">"STSong"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文中宋"</span>, PhysicalFonts.get(<span class="string">"STZhongsong"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"等线"</span>, PhysicalFonts.get(<span class="string">"SimSun"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"等线 Light"</span>, PhysicalFonts.get(<span class="string">"SimSun"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文琥珀"</span>, PhysicalFonts.get(<span class="string">"STHupo"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文隶书"</span>, PhysicalFonts.get(<span class="string">"STLiti"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文新魏"</span>, PhysicalFonts.get(<span class="string">"STXinwei"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文彩云"</span>, PhysicalFonts.get(<span class="string">"STCaiyun"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"方正姚体"</span>, PhysicalFonts.get(<span class="string">"FZYaoti"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"方正舒体"</span>, PhysicalFonts.get(<span class="string">"FZShuTi"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"华文细黑"</span>, PhysicalFonts.get(<span class="string">"STXihei"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"宋体扩展"</span>,PhysicalFonts.get(<span class="string">"simsun-extB"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"仿宋_GB2312"</span>,PhysicalFonts.get(<span class="string">"FangSong_GB2312"</span>));</span><br><span class="line">		fontMapper.put(<span class="string">"新細明體"</span>,PhysicalFonts.get(<span class="string">"SimSun"</span>));</span><br><span class="line">		<span class="comment">//解决宋体（正文）和宋体（标题）的乱码问题</span></span><br><span class="line">		PhysicalFonts.put(<span class="string">"PMingLiU"</span>, PhysicalFonts.get(<span class="string">"SimSun"</span>));</span><br><span class="line">		PhysicalFonts.put(<span class="string">"新細明體"</span>, PhysicalFonts.get(<span class="string">"SimSun"</span>));</span><br><span class="line">		mlPackage.setFontMapper(fontMapper);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="ZipUtil"><a href="#ZipUtil" class="headerlink" title="ZipUtil"></a>ZipUtil</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ZipUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        createZip(<span class="string">"d://test3.pdf"</span>,<span class="string">"d://test.zip"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建ZIP文件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sourcePath 文件或文件夹路径</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> zipPath 生成的zip文件存在路径（包括文件名）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">createZip</span><span class="params">(String sourcePath, String zipPath)</span> </span>&#123;</span><br><span class="line">        FileOutputStream fos = <span class="keyword">null</span>;</span><br><span class="line">        ZipOutputStream zos = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            fos = <span class="keyword">new</span> FileOutputStream(zipPath);</span><br><span class="line">            zos = <span class="keyword">new</span> ZipOutputStream(fos);</span><br><span class="line">            <span class="comment">//此处修改字节码方式</span></span><br><span class="line">            <span class="comment">//zos.setEncoding("UTF-8");</span></span><br><span class="line">            writeZip(<span class="keyword">new</span> File(sourcePath), <span class="string">""</span>, zos);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            log.error(<span class="string">"创建ZIP文件失败"</span>,e);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (zos != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    zos.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                log.error(<span class="string">"创建ZIP文件失败"</span>,e);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeZip</span><span class="params">(File file, String parentPath, ZipOutputStream zos)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(file.exists())&#123;</span><br><span class="line">            <span class="comment">//处理文件夹</span></span><br><span class="line">            <span class="keyword">if</span>(file.isDirectory())&#123;</span><br><span class="line">                parentPath+=file.getName()+File.separator;</span><br><span class="line">                File [] files=file.listFiles();</span><br><span class="line">                <span class="keyword">if</span>(files.length != <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">for</span>(File f:files)&#123;</span><br><span class="line">                        writeZip(f, parentPath, zos);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="comment">//空目录则创建当前目录</span></span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        zos.putNextEntry(<span class="keyword">new</span> ZipEntry(parentPath));</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                FileInputStream fis=<span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    fis=<span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">                    ZipEntry ze = <span class="keyword">new</span> ZipEntry(parentPath + file.getName());</span><br><span class="line">                    zos.putNextEntry(ze);</span><br><span class="line">                    <span class="keyword">byte</span> [] content=<span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">                    <span class="keyword">int</span> len;</span><br><span class="line">                    <span class="keyword">while</span>((len=fis.read(content))!=-<span class="number">1</span>)&#123;</span><br><span class="line">                        zos.write(content,<span class="number">0</span>,len);</span><br><span class="line">                        zos.flush();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">                    log.error(<span class="string">"创建ZIP文件失败"</span>,e);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    log.error(<span class="string">"创建ZIP文件失败"</span>,e);</span><br><span class="line">                &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        <span class="keyword">if</span>(fis!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                            fis.close();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">                        log.error(<span class="string">"创建ZIP文件失败"</span>,e);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/25/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8A%9F%E8%83%BD/" rel="prev" title="文件上传功能">
+      <i class="fa fa-chevron-left"></i> 文件上传功能
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ImgUtil"><span class="nav-text">ImgUtil</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PptxUtils"><span class="nav-text">PptxUtils</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Excel2PDF"><span class="nav-text">Excel2PDF</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WordUtils"><span class="nav-text">WordUtils</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZipUtil"><span class="nav-text">ZipUtil</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
