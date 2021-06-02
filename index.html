@@ -226,84 +226,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="方案-1：提前-return，去除不必要的-else"><a href="#方案-1：提前-return，去除不必要的-else" class="headerlink" title="方案 1：提前 return，去除不必要的 else"></a>方案 1：提前 return，去除不必要的 else</h1><p>如果 if-else 代码块包含 return 语句，可以考虑通过提前 return，把多余 else 干掉，使代码更加优雅。</p>
-<p>优化前：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(condition)&#123; </span><br><span class="line"> 	&#x2F;&#x2F;doSomething </span><br><span class="line"> &#125;else&#123; </span><br><span class="line"> 	return ; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>优化后：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if（!condition）&#123; </span><br><span class="line"> return ; </span><br><span class="line">&#125; </span><br><span class="line">&#x2F;&#x2F;doSomething</span><br></pre></td></tr></table></figure>
-
-<h1 id="方案-2：使用条件三目运算符"><a href="#方案-2：使用条件三目运算符" class="headerlink" title="方案 2：使用条件三目运算符"></a>方案 2：使用条件三目运算符</h1><p>使用条件三目运算符可以简化某些 if-else，使代码更加简洁，更具有可读性。</p>
-<p>优化前：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int price ; </span><br><span class="line">if(condition)&#123; </span><br><span class="line"> price &#x3D; 80; </span><br><span class="line">&#125;else&#123; </span><br><span class="line"> price &#x3D; 100; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>优化后：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int price &#x3D; condition ? 80 : 100;</span><br></pre></td></tr></table></figure>
-
-<h1 id="方案-3：使用枚举"><a href="#方案-3：使用枚举" class="headerlink" title="方案 3：使用枚举"></a>方案 3：使用枚举</h1><p>在某些时候，使用枚举也可以优化 if-else 逻辑分支，按个人理解，它也可以看作一种表驱动方法。</p>
-<p>优化前：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String OrderStatusDes; </span><br><span class="line">if(orderStatus&#x3D;&#x3D;0)&#123; </span><br><span class="line"> OrderStatusDes &#x3D;&quot;订单未支付&quot;; </span><br><span class="line">&#125;else if(OrderStatus&#x3D;&#x3D;1)&#123; </span><br><span class="line"> OrderStatusDes &#x3D;&quot;订单已支付&quot;; </span><br><span class="line">&#125;else if(OrderStatus&#x3D;&#x3D;2)&#123; </span><br><span class="line"> OrderStatusDes &#x3D;&quot;已发货&quot;; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>优化后：（先定义一个枚举）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public enum OrderStatusEnum &#123; </span><br><span class="line"> UN_PAID(0,&quot;订单未支付&quot;),PAIDED(1,&quot;订单已支付&quot;),SENDED(2,&quot;已发货&quot;),; </span><br><span class="line"> private int index; </span><br><span class="line"> private String desc; </span><br><span class="line"> public int getIndex() &#123; </span><br><span class="line">  return index; </span><br><span class="line"> &#125; </span><br><span class="line"> public String getDesc() &#123; </span><br><span class="line">  return desc; </span><br><span class="line"> &#125; </span><br><span class="line"> OrderStatusEnum(int index, String desc)&#123; </span><br><span class="line">  this.index &#x3D; index; </span><br><span class="line">  this.desc &#x3D;desc; </span><br><span class="line"> &#125; </span><br><span class="line"> OrderStatusEnum of(int orderStatus) &#123; </span><br><span class="line">  for (OrderStatusEnum temp : OrderStatusEnum.values()) &#123; </span><br><span class="line">   if (temp.getIndex() &#x3D;&#x3D; orderStatus) &#123; </span><br><span class="line">    return temp; </span><br><span class="line">   &#125; </span><br><span class="line">  &#125; </span><br><span class="line">  return null; </span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>有了枚举之后，以上 if-else 逻辑分支，可以优化为一行代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String OrderStatusDes &#x3D; OrderStatusEnum.0f(orderStatus).getDesc();</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="方案-4：合并条件表达式"><a href="#方案-4：合并条件表达式" class="headerlink" title="方案 4：合并条件表达式"></a>方案 4：合并条件表达式</h1><p>如果有一系列条件返回一样的结果，可以将它们合并为一个条件表达式，让逻辑更加清晰。</p>
-<p>优化前：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">double getVipDiscount() &#123; </span><br><span class="line">  if(age&lt;18)&#123; </span><br><span class="line">   return 0.8; </span><br><span class="line">  &#125; </span><br><span class="line">  if(&quot;深圳&quot;.equals(city))&#123; </span><br><span class="line">   return 0.8; </span><br><span class="line">  &#125; </span><br><span class="line">  if(isStudent)&#123; </span><br><span class="line">   return 0.8; </span><br><span class="line">  &#125; </span><br><span class="line">  &#x2F;&#x2F;do somethig </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<p>优化后：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">double getVipDiscount()&#123; </span><br><span class="line">  if(age&lt;18|| &quot;深圳&quot;.equals(city)||isStudent)&#123; </span><br><span class="line">   return 0.8; </span><br><span class="line">  &#125; </span><br><span class="line">  &#x2F;&#x2F;doSomthing </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="方案-5：使用-Optional"><a href="#方案-5：使用-Optional" class="headerlink" title="方案 5：使用 Optional"></a>方案 5：使用 Optional</h1><p>有时候 if-else 比较多，是因为非空判断导致的，这时候你可以使用 java8 的 Optional 进行优化。</p>
-<p>优化前：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String str &#x3D; &quot;jay@huaxiao&quot;; </span><br><span class="line">if (str !&#x3D; null) &#123; </span><br><span class="line"> System.out.println(str); </span><br><span class="line">&#125; else &#123; </span><br><span class="line"> System.out.println(&quot;Null&quot;); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>优化后：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;String&gt; strOptional &#x3D; Optional.of(&quot;jay@huaxiao&quot;); </span><br><span class="line">strOptional.ifPresentOrElse(System.out::println, () -&gt; System.out.println(&quot;Null&quot;));</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="方案-6：表驱动法"><a href="#方案-6：表驱动法" class="headerlink" title="方案 6：表驱动法"></a>方案 6：表驱动法</h1><p>表驱动法，又称之为表驱动、表驱动方法。表驱动方法是一种使你可以在表中查找信息，而不必用很多的逻辑语句（if 或 case）来把它们找出来的方法。</p>
-<p>以下的 demo，把 map 抽象成表，在 map 中查找信息，而省去不必要的逻辑语句。</p>
-<p>优化前：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if (param.equals(value1)) &#123; </span><br><span class="line"> doAction1(someParams); </span><br><span class="line">&#125; else if (param.equals(value2)) &#123; </span><br><span class="line"> doAction2(someParams); </span><br><span class="line">&#125; else if (param.equals(value3)) &#123; </span><br><span class="line"> doAction3(someParams); </span><br><span class="line">&#125; </span><br><span class="line">&#x2F;&#x2F; ...</span><br></pre></td></tr></table></figure>
-
-<p>优化后：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;?, Function&lt;?&gt; action&gt; actionMappings &#x3D; new HashMap&lt;&gt;(); &#x2F;&#x2F; 这里泛型 ? 是为方便演示，实际可替换为你需要的类型 </span><br><span class="line">&#x2F;&#x2F; 初始化 </span><br><span class="line">actionMappings.put(value1, (someParams) -&gt; &#123; doAction1(someParams)&#125;); </span><br><span class="line">actionMappings.put(value2, (someParams) -&gt; &#123; doAction2(someParams)&#125;); </span><br><span class="line">actionMappings.put(value3, (someParams) -&gt; &#123; doAction3(someParams)&#125;); </span><br><span class="line">&#x2F;&#x2F; 省略多余逻辑语句 </span><br><span class="line">actionMappings.get(param).apply(someParams);</span><br></pre></td></tr></table></figure>
-
-<h1 id="方案-7：优化逻辑结构，让正常流程走主干"><a href="#方案-7：优化逻辑结构，让正常流程走主干" class="headerlink" title="方案 7：优化逻辑结构，让正常流程走主干"></a>方案 7：优化逻辑结构，让正常流程走主干</h1><p>优化前：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public double getAdjustedCapital()&#123; </span><br><span class="line"> if(_capital &lt;&#x3D; 0.0 )&#123; </span><br><span class="line">  return 0.0; </span><br><span class="line"> &#125; </span><br><span class="line"> if(_intRate &gt; 0 &amp;&amp; _duration &gt;0)&#123; </span><br><span class="line">  return (_income &#x2F; _duration) *ADJ_FACTOR; </span><br><span class="line"> &#125; </span><br><span class="line"> return 0.0; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>优化后：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public double getAdjustedCapital()&#123; </span><br><span class="line"> if(_capital &lt;&#x3D; 0.0 )&#123; </span><br><span class="line">  return 0.0; </span><br><span class="line"> &#125; </span><br><span class="line"> if(_intRate &lt;&#x3D; 0 || _duration &lt;&#x3D; 0)&#123; </span><br><span class="line">  return 0.0; </span><br><span class="line"> &#125; </span><br><span class="line"> return (_income &#x2F; _duration) *ADJ_FACTOR; </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>将条件反转使异常情况先退出，让正常流程维持在主干流程，可以让代码结构更加清晰。</p>
-<h1 id="方案-8：策略模式-工厂方法消除-if-else"><a href="#方案-8：策略模式-工厂方法消除-if-else" class="headerlink" title="方案 8：策略模式+工厂方法消除 if else"></a>方案 8：策略模式+工厂方法消除 if else</h1><p>假设需求为，根据不同勋章类型，处理相对应的勋章服务，优化前有以下代码：</p>
-<p>首先，我们把每个条件逻辑代码块，抽象成一个公共的接口，可以得到以下代码：</p>
-<p>我们根据每个逻辑条件，定义相对应的策略实现类，可得以下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;守护勋章策略实现类 </span><br><span class="line">public class GuardMedalServiceImpl implements IMedalService &#123; </span><br><span class="line"> @Override </span><br><span class="line"> public void showMedal() &#123; </span><br><span class="line">  System.out.println(&quot;展示守护勋章&quot;); </span><br><span class="line"> &#125; </span><br><span class="line">&#125; </span><br><span class="line">&#x2F;&#x2F;嘉宾勋章策略实现类 </span><br><span class="line">public class GuestMedalServiceImpl implements IMedalService &#123; </span><br><span class="line"> @Override </span><br><span class="line"> public void showMedal() &#123; </span><br><span class="line">  System.out.println(&quot;嘉宾勋章&quot;); </span><br><span class="line"> &#125; </span><br><span class="line">&#125; </span><br><span class="line">&#x2F;&#x2F;VIP勋章策略实现类 </span><br><span class="line">public class VipMedalServiceImpl implements IMedalService &#123; </span><br><span class="line"> @Override </span><br><span class="line"> public void showMedal() &#123; </span><br><span class="line">  System.out.println(&quot;会员勋章&quot;); </span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>接下来，我们再定义策略工厂类，用来管理这些勋章实现策略类，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;勋章服务工产类 </span><br><span class="line">public class MedalServicesFactory &#123; </span><br><span class="line"> private static final Map&lt;String, IMedalService&gt; map &#x3D; new HashMap&lt;&gt;(); </span><br><span class="line"> static &#123; </span><br><span class="line">  map.put(&quot;guard&quot;, new GuardMedalServiceImpl()); </span><br><span class="line">  map.put(&quot;vip&quot;, new VipMedalServiceImpl()); </span><br><span class="line">  map.put(&quot;guest&quot;, new GuestMedalServiceImpl()); </span><br><span class="line"> &#125; </span><br><span class="line"> public static IMedalService getMedalService(String medalType) &#123; </span><br><span class="line">  return map.get(medalType); </span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>使用了策略+工厂模式之后，代码变得简洁多了，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123; </span><br><span class="line"> public static void main(String[] args) &#123; </span><br><span class="line">  String medalType &#x3D; &quot;guest&quot;; </span><br><span class="line">  IMedalService medalService &#x3D; MedalServicesFactory.getMedalService(medalType); </span><br><span class="line">  medalService.showMedal(); </span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="方案9：规则引擎Drools"><a href="#方案9：规则引擎Drools" class="headerlink" title="方案9：规则引擎Drools"></a>方案9：规则引擎Drools</h1><blockquote>
-<p><a href="https://tech.meituan.com/2017/06/09/maze-framework.html" target="_blank" rel="noopener">https://tech.meituan.com/2017/06/09/maze-framework.html</a></p>
-</blockquote>
-
+          <p>[TOC]</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/30/%E6%B6%88%E7%81%ADif-else%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%A1%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
