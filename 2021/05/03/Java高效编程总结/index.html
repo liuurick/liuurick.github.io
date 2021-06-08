@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="[TOC]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java高效编程总结">
+<meta property="og:url" content="http://yoursite.com/2021/05/03/Java%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="[TOC]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/1214202/1619749492738-a922d6de-f917-40cf-9d5d-283b53c40e3b.png">
+<meta property="og:image" content="http://yoursite.com/images/2020042401.png">
+<meta property="og:image" content="http://yoursite.com/images/2020042402.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210506214821951.png">
+<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210506214839961.png">
+<meta property="og:image" content="http://img1.sycdn.imooc.com/5d9f49df0001fcfc07070586.png">
+<meta property="article:published_time" content="2021-05-03T08:22:20.000Z">
+<meta property="article:modified_time" content="2021-06-08T13:28:53.429Z">
+<meta property="article:author" content="liubin">
+<meta property="article:tag" content="高效编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2021/png/1214202/1619749492738-a922d6de-f917-40cf-9d5d-283b53c40e3b.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/03/Java%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java高效编程总结 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/03/Java%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java高效编程总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-03 16:22:20" itemprop="dateCreated datePublished" datetime="2021-05-03T16:22:20+08:00">2021-05-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">高效编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-函数式编程"><a href="#1-函数式编程" class="headerlink" title="1 函数式编程"></a>1 函数式编程</h1><p>你是否见过“撸”代码也可以像撸串儿一样？那么我们从函数式编程说起，通过学习本单元，使小伙伴们了解Lambda出现的意义和价值；会灵活使用；知晓使用时应注意的问题；明白其内部实现原理。使小伙伴们从“监听方法地狱”中解放出来。…</p>
+<p>收起列表</p>
+<ul>
+<li><em>视频：</em>2-1 撸串式编程开场白 (02:30)</li>
+<li><em>视频：</em>2-2 实战：购物车案例 (13:27)</li>
+<li><em>视频：</em>2-3 实战：硬编码业务逻辑 (07:26)</li>
+<li><em>视频：</em>2-4 实战：单一维度条件参数化 (04:25)</li>
+<li><em>视频：</em>2-5 实战：多维度条件参数化 (09:10)</li>
+<li><em>视频：</em>2-6 实战：判断逻辑参数化-实体类 (12:42)</li>
+<li><em>视频：</em>2-7 实战：判断逻辑参数化-匿名类 (02:48)</li>
+<li><em>视频：</em>2-8 实战：判断逻辑参数化-Lambda表达式 (03:10)</li>
+<li><em>视频：</em>2-9 Lambda表达式 (06:23)</li>
+<li><em>视频：</em>2-10 实战：自定义函数式接口 (10:38)</li>
+<li><em>视频：</em>2-11 常用函数接口与方法引用 (06:36)</li>
+<li><em>视频：</em>2-12 总结乃成功她亲爹 (03:50)<strong>试看</strong></li>
+<li><em>视频：</em>2-13 方法引用精讲 (22:55)</li>
+</ul>
+<h1 id="2-流式编程"><a href="#2-流式编程" class="headerlink" title="2 流式编程"></a>2 流式编程</h1><p>代码简洁之道</p>
+<p>  你是否也曾听过成熟的大牛们自诩“代码洁癖”，本章让你体验什么是【大道至简】？本章重点讲解Stream的三类操作，Stream的并行执行的特性和一些需要注意的问题点。通过学习本单元，使小伙伴能够利用Stream【化繁为简】，简化集合的繁琐操作。…</p>
+<p>  收起列表</p>
+<ul>
+<li><em>视频：</em>3-1 流式编程开场与案例场景概述 (01:05)</li>
+<li><em>视频：</em>3-2 实战：传统方式处理业务逻辑 (12:16)</li>
+<li><em>视频：</em>3-3 实战：利用Lambda+Stream处理业务逻辑 (07:58)</li>
+<li><em>视频：</em>3-4 实战案例归纳总结 (00:32)</li>
+<li><em>视频：</em>3-5 流的初体验 (05:41)</li>
+<li><em>视频：</em>3-6 流操作分类 (02:29)</li>
+<li><em>视频：</em>3-7 实战：常用中间操作演示之过滤/映射/扁平化 (08:48)</li>
+<li><em>视频：</em>3-8 实战：常用中间操作演示之遍历/排序 (06:11)</li>
+<li><em>视频：</em>3-9 实战：常用中间操作演示之去重/跳过/截断 (05:03)</li>
+<li><em>视频：</em>3-10 实战：常用中间操作总结 (03:09)</li>
+<li><em>视频：</em>3-11 实战：常用终端操作演示之匹配 (06:50)</li>
+<li><em>视频：</em>3-12 实战：常用终端操作演示之查找 (03:53)</li>
+<li><em>视频：</em>3-13 实战：常用终端操作演示之最大/最小/计数 (03:42)</li>
+<li><em>视频：</em>3-14 常用操作总结与流构建描述 (00:51)</li>
+<li><em>视频：</em>3-15 实战：流的构建四种形式 (08:31)</li>
+<li><em>视频：</em>3-16 收集器与预定义收集器概述 (01:51)</li>
+<li><em>视频：</em>3-17 实战案例预定义收集器 (08:21)</li>
+<li><em>视频：</em>3-18 总结乃成功她祖奶奶 (04:26)</li>
+<li><em>图文：</em>3-19 补充教辅文档_使用SQL检索集合数据</li>
+<li><em>视频：</em>3-20 归约操作原理讲解 (04:43)</li>
+<li><em>视频：</em>3-21 归约操作实战案例 (16:26)</li>
+<li><em>视频：</em>3-22 汇总操作原理讲解 (02:40)</li>
+<li><em>视频：</em>3-23 汇总操作实战案例 (12:27)</li>
+<li><em>视频：</em>3-24 收集器接口讲解 (04:23)</li>
+<li><em>视频：</em>3-25 实战案例一：查找 (12:31)</li>
+<li><em>视频：</em>3-26 实战案例二：去重 (07:04)</li>
+<li><em>视频：</em>3-27 实战案例三：扁平化 (06:49)</li>
+<li><em>视频：</em>3-28 实战案例四：分组 (07:52)</li>
+<li><em>视频：</em>3-29 实战案例五：排序 (10:40)</li>
+<li><em>视频：</em>3-30 实战案例后会有期 (00:21)</li>
+</ul>
+<h1 id="3-资源关闭"><a href="#3-资源关闭" class="headerlink" title="3 资源关闭"></a>3 资源关闭</h1><p>  对比JDK7之前关闭资源和使用JDK7特性try-with-resource关闭资源，凸显处理资源关闭上便捷性；介绍相关技术点，如AutoCloseable；分析TWS的实现原理；利用这一特性，实现扩展功能。通过学习本单元，使小伙伴们能够利用此特性优雅的关闭资源。…</p>
+<p>  收起列表</p>
+<ul>
+<li><em>视频：</em>4-1 普通码农与风骚码农的资源关闭PK (04:28)</li>
+<li><em>视频：</em>4-2 垃圾回收与物理资源释放 (02:20)</li>
+<li><em>视频：</em>4-3 实战：传统方式关闭流资源 (09:09)</li>
+<li><em>视频：</em>4-4 实战：TWR方式关闭流资源 (06:13)</li>
+<li><em>视频：</em>4-5 实战：TWR进阶与特殊情况 (06:25)</li>
+<li><em>视频：</em>4-6 总结乃成功她亲孙子 (03:19)</li>
+</ul>
+<h2 id="3-1-垃圾回收（GC）的特点"><a href="#3-1-垃圾回收（GC）的特点" class="headerlink" title="3.1 垃圾回收（GC）的特点"></a>3.1 垃圾回收（GC）的特点</h2><ul>
+<li><p>垃圾回收机制只负责回收堆内存资源，不会回收任何物理资源</p>
+</li>
+<li><p>程序无法精确控制垃圾回收动作的具体发生时间</p>
+</li>
+<li><p>在垃圾回收之前，总会先调用它的finalize方法</p>
+</li>
+</ul>
+<h2 id="3-2-常见需手动释放的物理资源"><a href="#3-2-常见需手动释放的物理资源" class="headerlink" title="3.2 常见需手动释放的物理资源"></a>3.2 常见需手动释放的物理资源</h2><ul>
+<li><p>文件/流资源</p>
+</li>
+<li><p>套接字资源</p>
+</li>
+<li><p>数据库连接资源</p>
+</li>
+</ul>
+<h2 id="3-3-物理资源可以不手动释放吗？"><a href="#3-3-物理资源可以不手动释放吗？" class="headerlink" title="3.3 物理资源可以不手动释放吗？"></a>3.3 物理资源可以不手动释放吗？</h2><ul>
+<li><p>资源被长时间无效占用</p>
+</li>
+<li><p>超过最大限制后，将无资源可用</p>
+</li>
+<li><p>导致系统无法正常运行</p>
+</li>
+</ul>
+<h2 id="3-4-传统方式关闭流资源"><a href="#3-4-传统方式关闭流资源" class="headerlink" title="3.4 传统方式关闭流资源"></a>3.4 传统方式关闭流资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * JDK7之前的文件拷贝功能</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class FileCopyTest &#123;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void copyFile() &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 1. 创建输入&#x2F;输出流</span><br><span class="line">         * 2. 执行文件拷贝，读取文件内容，写入到另一个文件中</span><br><span class="line">         * 3. **关闭文件流资源**</span><br><span class="line">         *&#x2F;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 定义输入路径和输出路径</span><br><span class="line">        String originalUrl &#x3D; &quot;lib&#x2F;FileCopyTest.java&quot;;</span><br><span class="line">        String targetUrl &#x3D; &quot;targetTest&#x2F;target.txt&quot;;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 声明文件输入流，文件输出流</span><br><span class="line">        FileInputStream originalFileInputStream &#x3D; null;</span><br><span class="line">        FileOutputStream targetFileOutputStream &#x3D; null;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            &#x2F;&#x2F; 实例化文件流对象</span><br><span class="line">            originalFileInputStream &#x3D;</span><br><span class="line">                    new FileInputStream(originalUrl);</span><br><span class="line"></span><br><span class="line">            targetFileOutputStream &#x3D;</span><br><span class="line">                    new FileOutputStream(targetUrl);</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 读取的字节信息</span><br><span class="line">            int content;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 迭代，读取&#x2F;写入字节</span><br><span class="line">            while ((content &#x3D; originalFileInputStream.read()) !&#x3D; -1) &#123;</span><br><span class="line">                targetFileOutputStream.write(content);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 关闭流资源</span><br><span class="line">            if (targetFileOutputStream !&#x3D; null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    targetFileOutputStream.close();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (originalFileInputStream !&#x3D; null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    originalFileInputStream.close();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-5-TWR方式关闭流资源"><a href="#3-5-TWR方式关闭流资源" class="headerlink" title="3.5 TWR方式关闭流资源"></a>3.5 TWR方式关闭流资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public class NewFileCopyTest &#123;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void copyFile() &#123;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 先定义输入&#x2F;输出路径</span><br><span class="line">        String originalUrl &#x3D; &quot;lib&#x2F;NewFileCopyTest.java&quot;;</span><br><span class="line">        String targetUrl &#x3D; &quot;targetTest&#x2F;new.txt&quot;;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 初始化输入&#x2F;输出流对象</span><br><span class="line">        try (</span><br><span class="line">                FileInputStream originalFileInputStream &#x3D;</span><br><span class="line">                        new FileInputStream(originalUrl);</span><br><span class="line"></span><br><span class="line">                FileOutputStream targetFileOutputStream &#x3D;</span><br><span class="line">                        new FileOutputStream(targetUrl);</span><br><span class="line">        ) &#123;</span><br><span class="line"></span><br><span class="line">            int content;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 迭代，拷贝数据</span><br><span class="line">            while ((content &#x3D; originalFileInputStream.read()) !&#x3D; -1) &#123;</span><br><span class="line">                targetFileOutputStream.write(content);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-6-TWR简介"><a href="#3-6-TWR简介" class="headerlink" title="3.6 TWR简介"></a>3.6 TWR简介</h2><p>try-with-resource</p>
+<ul>
+<li><p>Java7引入新特性</p>
+</li>
+<li><p>优雅关闭资源</p>
+</li>
+<li><p>一种java语法糖</p>
+</li>
+</ul>
+<h2 id="3-7-TWR使用"><a href="#3-7-TWR使用" class="headerlink" title="3.7 TWR使用"></a>3.7 TWR使用</h2><ul>
+<li><p>多资源自动关闭</p>
+</li>
+<li><p>实现AutoCloseable接口</p>
+</li>
+<li><p>避免异常屏蔽</p>
+</li>
+</ul>
+<h2 id="3-8-资源关闭顺序问题"><a href="#3-8-资源关闭顺序问题" class="headerlink" title="3.8 资源关闭顺序问题"></a>3.8 资源关闭顺序问题</h2><ul>
+<li><p>先开后关原则</p>
+</li>
+<li><p>从外到内原则</p>
+</li>
+<li><p>底层资源原则声明</p>
+</li>
+</ul>
+<h2 id="3-9-资源关闭特殊情况"><a href="#3-9-资源关闭特殊情况" class="headerlink" title="3.9 资源关闭特殊情况"></a>3.9 资源关闭特殊情况</h2><ul>
+<li><p>资源对象被return的情况，由调用方关闭</p>
+</li>
+<li><p>ByteArrayInputStream等不需要检查关闭的资源对象</p>
+</li>
+<li><p>使用Socket获取InputStream和OutputStream对象不需要关闭</p>
+</li>
+</ul>
+<h1 id="4-工具集"><a href="#4-工具集" class="headerlink" title="4 工具集"></a>4 工具集</h1><p>背靠Google好乘凉<br>  Guava源于Google，不止出身高贵，更是效能神器。本章介绍Google的Guava工具包，重点讲解具类的使用方法及实现原理。通过学习本单元，让小伙伴们能够对Guava所能提供的支持有全面了解，在日常开发过程中能灵活运用此工具包，提升开发效率。…</p>
+<p>  收起列表</p>
+<ul>
+<li><em>视频：</em>5-1 Guava开场 (02:23)</li>
+<li><em>视频：</em>5-2 实战：Optional使用 (13:44)</li>
+<li><em>视频：</em>5-3 不可变集合 (09:50)</li>
+<li><em>视频：</em>5-4 新集合类型 (04:58)</li>
+<li><em>视频：</em>5-5 实战：新集合类型 (06:31)</li>
+<li><em>视频：</em>5-6 集合工具类 (19:15)</li>
+<li><em>视频：</em>5-7 实战：IO流 (08:25)</li>
+<li><em>视频：</em>5-8 总结乃成功她祖爷爷 (07:21)</li>
+<li><em>图文：</em>5-9 布隆过滤器</li>
+<li><em>视频：</em>5-10 布隆过滤器 (26:50)</li>
+</ul>
+<h2 id="4-1-Guava简介"><a href="#4-1-Guava简介" class="headerlink" title="4.1 Guava简介"></a>4.1 Guava简介</h2><p>Guava工程包含了若干被Google的Java项目广泛依赖的核心库，例如：集合，缓存，原生类型支持，并发库，通用注解，字符串处理，I/O等等。</p>
+<p>所有这些工具每天都在被Google的工程师应用在产品中。</p>
+<h2 id="4-2-使用和避免null"><a href="#4-2-使用和避免null" class="headerlink" title="4.2 使用和避免null"></a>4.2 使用和避免null</h2><p>大多数情况下，使用null表明的是某种缺失情况。</p>
+<p>Guava引入Optional<T>表明可能为null的T类型引用。Optional实例可能包含非null的引用（引用存在），也可能什么也不包括（引用缺失）。</p>
+<p>正是受到Guava的启发，Java8将Optional类作为一个新特性引入到Java8的类库。</p>
+<h2 id="4-3-实战案例：Java8新特性Optional"><a href="#4-3-实战案例：Java8新特性Optional" class="headerlink" title="4.3 实战案例：Java8新特性Optional"></a>4.3 实战案例：Java8新特性Optional</h2><h2 id="4-4-不可变集合"><a href="#4-4-不可变集合" class="headerlink" title="4.4 不可变集合"></a>4.4 不可变集合</h2><p>创建对象的不可变拷贝是一项很好的防御性编程技巧</p>
+<p>Guava为所有的JDK标准集合类型和Guava新集合类型都提供了简单易用的不可变版本。</p>
+<p>不可变对象的优点</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1214202/1619749492738-a922d6de-f917-40cf-9d5d-283b53c40e3b.png" alt="img"></p>
+<h2 id="4-5-新集合类型"><a href="#4-5-新集合类型" class="headerlink" title="4.5 新集合类型"></a>4.5 新集合类型</h2><h2 id="4-6-实战：新集合类型使用"><a href="#4-6-实战：新集合类型使用" class="headerlink" title="4.6 实战：新集合类型使用"></a>4.6 实战：新集合类型使用</h2><h2 id="4-7-集合工具类"><a href="#4-7-集合工具类" class="headerlink" title="4.7 集合工具类"></a>4.7 集合工具类</h2><h2 id="4-8-实战：IO流工具类的使用"><a href="#4-8-实战：IO流工具类的使用" class="headerlink" title="4.8 实战：IO流工具类的使用"></a>4.8 实战：IO流工具类的使用</h2><h2 id="4-9-总结"><a href="#4-9-总结" class="headerlink" title="4.9 总结"></a>4.9 总结</h2><h1 id="5-线程池"><a href="#5-线程池" class="headerlink" title="5 线程池"></a>5 线程池</h1><p>站在巨人肩上告别重造轮子</p>
+<p>我就问问你：想不想站在巨人肩上，看得更远？本章通过分析手动创建线程出现的问题，引出Executor线程池框架，带领小伙伴们动手设计一个Executor框架，进而分析Executor框架实现原理，此问题也是面试中常考的问题。</p>
+<p>收起列表</p>
+<ul>
+<li><em>视频：</em>6-1 线程池之普通码农VS风骚码农 (11:39)</li>
+<li><em>视频：</em>6-2 线程池概述 (02:08)</li>
+<li><em>视频：</em>6-3 简单线程池的设计 (05:58)</li>
+<li><em>视频：</em>6-4 线程池参数与处理流程 (04:00)</li>
+<li><em>视频：</em>6-5 线程池可选择的阻塞队列 (14:09)</li>
+<li><em>视频：</em>6-6 线程池可选择的饱和策略 (03:57)</li>
+<li><em>视频：</em>6-7 线程池的执行示意图 (01:27)</li>
+<li><em>视频：</em>6-8 替换6-8~9 线程池可选饱和策略与执行示意图 (07:55)</li>
+<li><em>视频：</em>6-9 常用线程池 (02:38)</li>
+<li><em>视频：</em>6-10 向线程池提交任务 (08:41)</li>
+<li><em>视频：</em>6-11 线程池的状态 (02:20)</li>
+<li><em>视频：</em>6-12 总结乃成功她丈母娘 (03:34)</li>
+<li><em>视频：</em>6-13 线程池饱和策略之终止策略 (18:43)</li>
+<li><em>视频：</em>6-14 线程池饱和策略之其他三种饱和策略 (10:47)</li>
+</ul>
+<h1 id="6-实用工具"><a href="#6-实用工具" class="headerlink" title="6 实用工具"></a>6 实用工具</h1><p>告别无脑编程</p>
+<p>  通过对比两个Bean的代码量，讲解Lombok对提高开发效率和代码整洁度的贡献；详细介绍Lombok各注解的用途；对注解相关知识进行讲解；介绍Lombok的实现原理。通过学习本单元，使学员在编写代码时能合理利用Lombok节省代码量，提高开发效率。…</p>
+<p>  收起列表</p>
+<ul>
+<li><em>视频：</em>7-1 向无脑编程Say拜拜之普通码农VS风骚码农mp4 (01:30)</li>
+<li><em>视频：</em>7-2 Lombok的那些事儿 (05:31)</li>
+<li><em>视频：</em>7-3 注解的解析时机 (01:10)</li>
+<li><em>视频：</em>7-4 实战：插件安装 (04:00)</li>
+<li><em>视频：</em>7-5 实战：Jar包引入 (02:36)</li>
+<li><em>视频：</em>7-6 实战：@Getter注解详解 (06:08)</li>
+<li><em>视频：</em>7-7 实战：@Setter注解详解 (03:05)</li>
+<li><em>视频：</em>7-8 实战：@ToString注解详解 (09:42)</li>
+<li><em>视频：</em>7-9 实战：@EqualsAndHashCode注解详解 (03:35)</li>
+<li><em>视频：</em>7-10 实战：@Data注解详解 (02:13)</li>
+<li><em>视频：</em>7-11 实战：@Val注解详解 (02:34)</li>
+<li><em>视频：</em>7-12 实战：@NonNull注解详解 (02:12)</li>
+<li><em>视频：</em>7-13 实战：@Constructor注解详解 (03:19)</li>
+<li><em>视频：</em>7-14 实战：@Cleanup注解详解 (03:32)</li>
+<li><em>视频：</em>7-15 Lombok优缺点 (01:33)</li>
+<li><em>视频：</em>7-16 日志体系介绍 (04:53)</li>
+<li><em>视频：</em>7-17 实战：@Slf4j日志注解 (04:36)</li>
+<li><em>视频：</em>7-18 实战：@Builder建造者注解 (16:02)</li>
+</ul>
+<h2 id="6-1-Lombok简介"><a href="#6-1-Lombok简介" class="headerlink" title="6.1 Lombok简介"></a>6.1 Lombok简介</h2><p>Project Lombok是一个Java库，可以自动插入编辑器并构建工具，为您的Java增添色彩。永远不要再写另一个getter或equals方法，使用一个注释，您的类具有一个功能齐全的构建器，自动化您的日志记录变量。–Lombok官网</p>
+<h2 id="6-2-Lombok实现原理"><a href="#6-2-Lombok实现原理" class="headerlink" title="6.2 Lombok实现原理"></a>6.2 Lombok实现原理</h2><p>注解的两种解析方式</p>
+<ul>
+<li>运行时解析—类似于反射</li>
+<li>编译时解析—Lombok</li>
+</ul>
+<p>编译时解析的两种机制</p>
+<ul>
+<li>Annotation Processing Tool（注解处理器）—-JDK1.8去除</li>
+<li>Pluggable Annotation Processing API（JSR269插入式注解处理器）</li>
+</ul>
+<p><img src="/images/2020042401.png" alt="image"></p>
+<h2 id="6-3-Lombok插件安装"><a href="#6-3-Lombok插件安装" class="headerlink" title="6.3 Lombok插件安装"></a>6.3 Lombok插件安装</h2><blockquote>
+<p>IDEA–&gt;setting–&gt;plugins–&gt;搜索lombok安装即可</p>
+</blockquote>
+<h2 id="6-4-Lombok常用注解使用"><a href="#6-4-Lombok常用注解使用" class="headerlink" title="6.4 Lombok常用注解使用"></a>6.4 Lombok常用注解使用</h2><blockquote>
+<p>实战：演示Lombok注解使用方式，并通过查看编译后class文件，理解其工作原理</p>
+<p><a href="https://www.cnblogs.com/ooo0/p/12448096.html" target="_blank" rel="noopener">https://www.cnblogs.com/ooo0/p/12448096.html</a></p>
+<p><a href="https://www.cnblogs.com/muxi0407/p/11611885.html" target="_blank" rel="noopener">https://www.cnblogs.com/muxi0407/p/11611885.html</a></p>
+</blockquote>
+<p><img src="/images/2020042402.png" alt="image"></p>
+<p>1.@Data注解</p>
+<p>一种大而全的注解：包含@Getter，@Setter，@ToString，@EqualsAndHashCode，@NoArgsConstructor</p>
+<p>2.@Val注解</p>
+<p>弱语言变量，作用范围是本地方法</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/cauchy6317/article/details/102851120" target="_blank" rel="noopener">https://blog.csdn.net/cauchy6317/article/details/102851120</a></p>
+</blockquote>
+<p>3.@NotNull注解：生成非空的检查</p>
+<p>4.@Builder注解：简化对象创建过程</p>
+<p>5.@Singular注解：配合@Builder注解，简化集合类型操作</p>
+<h2 id="6-5-Lombok优缺点"><a href="#6-5-Lombok优缺点" class="headerlink" title="6.5 Lombok优缺点"></a>6.5 Lombok优缺点</h2><p>lombok虽然可以极大的提高我们的开发效率，但却降低了源代码的可读性和完整性，也加大了对问题排查的难度</p>
+<h1 id="7-验证框架"><a href="#7-验证框架" class="headerlink" title="7 验证框架"></a>7 验证框架</h1><p>告别亡羊补牢<br>一个成熟的大牛，应该能提前预测风险，规避事后诸葛。本章宗旨让你告别亡羊补牢，首先申明JSR标准；用web项目介绍Validator使用；深入源码，讲解Hibernate Validator的实现原理。使小伙伴灵活使用Validator框架，做Web端参数校验等工作。…</p>
+<p>分层验证与JavaBean验证</p>
+<p>分层验证模型</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210506214821951.png" alt="image-20210506214821951"></p>
+<p>JavaBean验证</p>
+<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210506214839961.png" alt="image-20210506214839961"></p>
+<p>Bean Validation简介</p>
+<blockquote>
+<p>Bean Validation为JavaBean验证定义了相应的元数据模型和API</p>
+</blockquote>
+<p>JCP，JSR简介</p>
+<blockquote>
+<p>JCP(Java Community Process)成立于1998年，是使有兴趣的各方参与定义Java的特性和未来版本的正式过程</p>
+<p>JCP使用JSR（Java规范请求，Java Specification Requests）作为正式规范文档，描述被提议加入到Java体系中的规范和技术。</p>
+</blockquote>
+<p>JSR303,Bean Validation 1.0</p>
+<p>JSR349,Bean Validation 1.1</p>
+<p>JSR380,Bean Validation 2.0</p>
+<p>Bean Validation与Hibernate Validator</p>
+<p>Bean Validation 1.0参考实现：Hibernate Validator 4.3.1.Final</p>
+<p>Bean Validation 1.1参考实现：Hibernate Validator 5.1.1.Final</p>
+<p>Bean Validation 2.0参考实现：Hibernate Validator 6.0.1.Final</p>
+<p>常用约束注解</p>
+<ul>
+<li>空值校验类：@Null，@NotNull，@NotEmpty，@NotBlank等</li>
+<li>范围校验类：@Min，@Size，@Digits，@Future，@Negative等</li>
+<li>其他校验类：@Email，@URL，@AssertTrue，@Pattern等</li>
+</ul>
+<p><strong>@NotBlank 用于 String 判断空格</strong><br><strong>@NotEmpty 用于集合</strong><br><strong>@NotNull 用在基本类型上</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>注解</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@AssertFalse</td>
+<td>被注释的元素必须为 false</td>
+</tr>
+<tr>
+<td>@AssertTrue</td>
+<td>同@AssertFalse</td>
+</tr>
+<tr>
+<td>@DecimalMax</td>
+<td>被注释的元素必须是一个数字，其值必须小于等于指定的最大值</td>
+</tr>
+<tr>
+<td>@DecimalMin</td>
+<td>同DecimalMax</td>
+</tr>
+<tr>
+<td>@Digits</td>
+<td>被注释的元素是数字</td>
+</tr>
+<tr>
+<td>@Future</td>
+<td>将来的日期</td>
+</tr>
+<tr>
+<td>@Max</td>
+<td>被注释的元素必须是一个数字，其值必须小于等于指定的最大值</td>
+</tr>
+<tr>
+<td>@Min</td>
+<td>被注释的元素必须是一个数字，其值必须大于等于指定的最小值</td>
+</tr>
+<tr>
+<td>@NotNull</td>
+<td>不能是Null</td>
+</tr>
+<tr>
+<td>@Null</td>
+<td>元素是Null</td>
+</tr>
+<tr>
+<td>@Past</td>
+<td>被注释的元素必须是一个过去的日期</td>
+</tr>
+<tr>
+<td>@Pattern</td>
+<td>被注释的元素必须符合指定的正则表达式</td>
+</tr>
+<tr>
+<td>@Szie</td>
+<td>被注释的元素必须在指定长度内</td>
+</tr>
+<tr>
+<td>@Email</td>
+<td>元素必须是格式良好的电子邮箱地址</td>
+</tr>
+<tr>
+<td>@Length</td>
+<td>字符串的大小必须在指定的范围内，有min和max参数</td>
+</tr>
+<tr>
+<td>@NotEmpty</td>
+<td>字符串的不能是空</td>
+</tr>
+<tr>
+<td>@NotBlank</td>
+<td>字符串不能使空，但是与@NotEmpty不同的是尾随的空白被忽略</td>
+</tr>
+<tr>
+<td>@URL</td>
+<td>字符串必须是一个URL</td>
+</tr>
+</tbody></table>
+<p> 8-5 案例演示框架搭建 (05:13)</p>
+<p>引入pom</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Validation 相关依赖 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.validation<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>validation-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.1.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-validator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.0.16.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.el<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.el-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.glassfish.web<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.el<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>简单的使用，还是以Person实体类为例（大家在尝试时最好在web项目上，毕竟这个功能基本也都在web上才用得到。非web项目可能会出现一些错误，这时候就要引入el依赖）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="meta">@NotNull</span>(message = <span class="string">"用户名不能为空"</span>)</span><br><span class="line">    <span class="meta">@Size</span>(min = <span class="number">2</span>,max = <span class="number">15</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="meta">@NotNull</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="meta">@NotNull</span>(message = <span class="string">"性别不能为空"</span>)</span><br><span class="line">    <span class="keyword">private</span> String gender;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Validator validator=Validation.buildDefaultValidatorFactory().getValidator();<span class="comment">//初始化验证器</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Person person=<span class="keyword">new</span> Person(<span class="string">""</span>,<span class="number">15</span>,<span class="string">"男"</span>);<span class="comment">//新建一个数据</span></span><br><span class="line">    Set&lt;ConstraintViolation&lt;Person&gt;&gt; validate = validator.validate(person);<span class="comment">//进行验证</span></span><br><span class="line">    validate.forEach(item -&gt;System.out.println(item.getMessage()));<span class="comment">//对验证结果进行输出，就是输出注解后面的message。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>完成验证的步骤</p>
+<ul>
+<li>约束注解的定义</li>
+<li>约束验证规则（结束验证器）</li>
+<li>约束注解的声明</li>
+<li>约束验证流程</li>
+</ul>
+<h1 id="8-常用工具"><a href="#8-常用工具" class="headerlink" title="8 常用工具"></a>8 常用工具</h1><blockquote>
+<p>开发常用工具总结：<a href="https://liuurick.github.io/2021/04/18/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">https://liuurick.github.io/2021/04/18/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/</a></p>
+</blockquote>
+<h2 id="8-1-开发工具"><a href="#8-1-开发工具" class="headerlink" title="8.1 开发工具"></a>8.1 开发工具</h2><p>欲先攻必利其器</p>
+<p>  介绍开发“神器”Idea；对常用快捷键进行介绍，演示；对常用的Idea插件使用讲解和演示。通过学习本单元，使学员可以熟练使用开发工具及各种方便的插件，极大提高开发效率。</p>
+<p>  收起列表</p>
+<ul>
+<li><em>视频：</em>9-1 章节介绍 (01:51)</li>
+<li><em>视频：</em>9-2 IDEA界面介绍 (07:05)</li>
+<li><em>视频：</em>9-3 单文件编辑快捷方式 (12:21)</li>
+<li><em>视频：</em>9-4 多文件编辑快捷方式 (06:02)</li>
+<li><em>视频：</em>9-5 断点调试 (07:40)</li>
+<li><em>视频：</em>9-6 版本管理 (02:12)</li>
+<li><em>视频：</em>9-7 代码优化 (11:28)</li>
+<li><em>视频：</em>9-8 IDEA插件介绍 (02:17)</li>
+<li><em>视频：</em>9-9 Stream调试工具；快捷键提示插件；Mybatis工具；Maven辅助神器 (11:04)</li>
+<li><em>视频：</em>9-10 单元测试生成工具；JSON转领域对象工具 (05:10)</li>
+<li><em>视频：</em>9-11 领域对象转JSON；序列化ID生成器；驼峰转换；Set方法生成；Log生成 (08:17)</li>
+</ul>
+<h2 id="8-2-自测工具"><a href="#8-2-自测工具" class="headerlink" title="8.2 自测工具"></a>8.2 自测工具</h2><p>  针对需要做前后端联调的同学，介绍Postman的基础使用及高阶使用。通过本单元学习，使学员能够掌握使用Postman完成前端数据伪造，后端HTTP接口快速调试的能力。</p>
+<p>  收起列表</p>
+<ul>
+<li><em>视频：</em>10-1 Postman介绍 (11:05)</li>
+<li><em>视频：</em>10-2 后台功能介绍 (09:04)</li>
+<li><em>视频：</em>10-3 发送查询和添加请求 (12:02)</li>
+<li><em>视频：</em>10-4 发送修改和删除请求 (08:39)</li>
+<li><em>视频：</em>10-5 身份认证和前置脚本的使用 (11:13)</li>
+<li><em>视频：</em>10-6 管理集合 (06:47)</li>
+<li><em>视频：</em>10-7 管理变量 (05:06)</li>
+<li><em>视频：</em>10-8 文档 (04:59)</li>
+<li><em>视频：</em>10-9 模拟 (03:35)</li>
+<li><em>视频：</em>10-10 监控 (05:01)</li>
+</ul>
+<h2 id="8-3-检查工具"><a href="#8-3-检查工具" class="headerlink" title="8.3 检查工具"></a>8.3 检查工具</h2><p>  对静态代码检查工具FindBugs介绍，使学员掌握使用方法，减少系统出现低级Bug的概率。</p>
+<p>  收起列表</p>
+<ul>
+<li><em>视频：</em>11-1 检查工具介绍 (05:11)</li>
+<li><em>视频：</em>11-2 IDEA相关插件及使用方式 (11:01)</li>
+<li><em>视频：</em>11-3 SonarQube介绍 (14:33)</li>
+</ul>
+<h1 id="9-综合实战项目"><a href="#9-综合实战项目" class="headerlink" title="9 综合实战项目"></a>9 综合实战项目</h1><p>  整合全课核心技能，打造高效通用型基础组件【该组件是可复用，可插拔，可带走的造轮子工程】，该框架适用于所有基于SpringBoot开发的项目，为效率而生，为所有开发基于SpringBoot的项目提供基础组件支撑。</p>
+<ul>
+<li>集成MyBatis-plus实现数据持久化</li>
+<li>集成CaffeineCache（GuavaCache替代品）实现本地缓存</li>
+<li>集成Lombok注解</li>
+<li>集成校验框架实现自动/手动数据校验</li>
+<li>实现统一异常处理</li>
+<li>集成Guava令牌桶实现全局限流器</li>
+<li>使用线程池实现任务异步处理</li>
+<li>使用TWR实现文件关闭</li>
+<li>集成EasyExcel实现Excel异步导出</li>
+<li>实现VO/DTO/DO实现代码分层</li>
+<li>使用Stream实现集合操作</li>
+<li>集成Swagger2实现接口文档自动生成</li>
+<li>使用TraceId实现系统请求追踪</li>
+</ul>
+<p>引入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Swagger2支持 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- EasyExcel相关支持 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>easyexcel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.ow2.asm<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>asm-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Guava支持 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>28.0-jre<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context-support<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Caffeine Cache支持 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.ben-manes.caffeine<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>caffeine<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Mybatis Plus集成 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- MySql驱动 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- mybatis支持 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- mybatis plus支持 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.baomidou<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-devtools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-configuration-processor<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.junit.vintage<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit-vintage-engine<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="集成Mybatis-Plus步骤"><a href="#集成Mybatis-Plus步骤" class="headerlink" title="集成Mybatis Plus步骤"></a>集成Mybatis Plus步骤</h2><ol>
+<li>在pom.xml文件引入相关的jar包依赖</li>
+<li>实现XxxMapper接口。通过此接口来操作数据持久化</li>
+<li>对XxxDO实体进行注解的定义，如：数据库表名，字段的定义</li>
+<li>如需修改Plus默认配置，需实现MybatisPlusConfig类</li>
+<li>如需要自定义一个方法，需实现XxxMapper.xml，来定义自定义SQL</li>
+</ol>
+<h2 id="实现VO-DTO-DO实现代码分层"><a href="#实现VO-DTO-DO实现代码分层" class="headerlink" title="实现VO/DTO/DO实现代码分层"></a>实现VO/DTO/DO实现代码分层</h2><blockquote>
+<p>领域模型转换那些事儿:<a href="http://www.imooc.com/article/293314" target="_blank" rel="noopener">http://www.imooc.com/article/293314</a></p>
+</blockquote>
+<p><img src="http://img1.sycdn.imooc.com/5d9f49df0001fcfc07070586.png" alt="图片描述"></p>
+<h2 id="自动更新系统级字段"><a href="#自动更新系统级字段" class="headerlink" title="自动更新系统级字段"></a>自动更新系统级字段</h2><ol>
+<li>公共元数据处理器</li>
+<li>为XxxDO配置注解</li>
+</ol>
+<h2 id="集成验证框架步骤"><a href="#集成验证框架步骤" class="headerlink" title="集成验证框架步骤"></a>集成验证框架步骤</h2><ol>
+<li>在pom.xml引入相关的jar包支持</li>
+<li>在待验证的实体里面添加相应的注解</li>
+<li>在Controller中添加相应的注解</li>
+<li>做参数校验工具类，完成service层的参数校验</li>
+</ol>
+<h2 id="实现统一异常处理功能"><a href="#实现统一异常处理功能" class="headerlink" title="实现统一异常处理功能"></a>实现统一异常处理功能</h2><ol>
+<li>实现一个异常处理的类，并且用@ControllerAdvice修饰</li>
+</ol>
+<h2 id="集成CaffeineCache缓存功能"><a href="#集成CaffeineCache缓存功能" class="headerlink" title="集成CaffeineCache缓存功能"></a>集成CaffeineCache缓存功能</h2><ol>
+<li>@Cacheable : 缓存数据，一般用在查询方法上。将查询到的数据进行缓存 @CachePut : 更新方法上，将数据从缓存中进行更新 @CacheEvict : 删除缓存</li>
+<li>pom.xml cache相关的jar包支持</li>
+<li>CacheManager Bean</li>
+<li>使用注解，标识我们的方法哪些需要缓存</li>
+</ol>
+<h2 id="集成Guava令牌桶实现全局限流功能"><a href="#集成Guava令牌桶实现全局限流功能" class="headerlink" title="集成Guava令牌桶实现全局限流功能"></a>集成Guava令牌桶实现全局限流功能</h2><ol>
+<li>先pom.xml引入Guava工具包的支持</li>
+<li>定义一个拦截器，实现令牌的发放和获取</li>
+<li>将拦截器配置到web系统中</li>
+</ol>
+<h2 id="使用TraceId实现日志跟踪"><a href="#使用TraceId实现日志跟踪" class="headerlink" title="使用TraceId实现日志跟踪"></a>使用TraceId实现日志跟踪</h2><ol>
+<li>建立一个过滤器，在过滤器中给线程设置TraceId</li>
+<li>将日志配置文件进行修改，把TraceId打印到日志中</li>
+</ol>
+<h2 id="文件上传下载"><a href="#文件上传下载" class="headerlink" title="文件上传下载"></a>文件上传下载</h2><ol>
+<li>文件上传的Controller，负责处理文件上传</li>
+<li>文件上传的服务接口，通过接口的形式来定义出文件上传的功能</li>
+<li>实现文件上传业务逻辑</li>
+<li>文件下载，采用静态路径映射的方式实现</li>
+</ol>
+<h2 id="数据导出功能"><a href="#数据导出功能" class="headerlink" title="数据导出功能"></a>数据导出功能</h2><ol>
+<li>pom.xml把相关的jar配置好</li>
+<li>UserController新增加数据导出的方法</li>
+<li>要实现数据导出的功能<ul>
+<li>定义导出实体</li>
+<li>分批加载数据，分批使用EasyExcel导出</li>
+<li>将导出的文件上传</li>
+</ul>
+</li>
+</ol>
+<h2 id="导出功能异步化"><a href="#导出功能异步化" class="headerlink" title="导出功能异步化"></a>导出功能异步化</h2><ol>
+<li>先创建线程池</li>
+<li>将导出方法使用@Aync注解标记为异步执行</li>
+</ol>
+<h2 id="使用Swagger2帮助我们生成API文档"><a href="#使用Swagger2帮助我们生成API文档" class="headerlink" title="使用Swagger2帮助我们生成API文档"></a>使用Swagger2帮助我们生成API文档</h2><ol>
+<li>pom.xml引入jar包</li>
+<li>配置Swagger2的配置类</li>
+<li>Controller及相关的实体中写对应的注解</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 高效编程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/28/Activiti7%E6%94%AF%E6%8C%81%E8%BE%BE%E6%A2%A6%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="prev" title="Activiti7支持达梦数据库">
+      <i class="fa fa-chevron-left"></i> Activiti7支持达梦数据库
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/03/MySQL%E4%BD%BF%E7%94%A8utf8mb4%E5%BF%83%E5%BE%97/" rel="next" title="MySQL使用utf8mb4心得">
+      MySQL使用utf8mb4心得 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-函数式编程"><span class="nav-text">1 函数式编程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-流式编程"><span class="nav-text">2 流式编程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-资源关闭"><span class="nav-text">3 资源关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-垃圾回收（GC）的特点"><span class="nav-text">3.1 垃圾回收（GC）的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-常见需手动释放的物理资源"><span class="nav-text">3.2 常见需手动释放的物理资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-物理资源可以不手动释放吗？"><span class="nav-text">3.3 物理资源可以不手动释放吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-传统方式关闭流资源"><span class="nav-text">3.4 传统方式关闭流资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-TWR方式关闭流资源"><span class="nav-text">3.5 TWR方式关闭流资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-TWR简介"><span class="nav-text">3.6 TWR简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-TWR使用"><span class="nav-text">3.7 TWR使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-资源关闭顺序问题"><span class="nav-text">3.8 资源关闭顺序问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-9-资源关闭特殊情况"><span class="nav-text">3.9 资源关闭特殊情况</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-工具集"><span class="nav-text">4 工具集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Guava简介"><span class="nav-text">4.1 Guava简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-使用和避免null"><span class="nav-text">4.2 使用和避免null</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-实战案例：Java8新特性Optional"><span class="nav-text">4.3 实战案例：Java8新特性Optional</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-不可变集合"><span class="nav-text">4.4 不可变集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-新集合类型"><span class="nav-text">4.5 新集合类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-实战：新集合类型使用"><span class="nav-text">4.6 实战：新集合类型使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-集合工具类"><span class="nav-text">4.7 集合工具类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-8-实战：IO流工具类的使用"><span class="nav-text">4.8 实战：IO流工具类的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-9-总结"><span class="nav-text">4.9 总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-线程池"><span class="nav-text">5 线程池</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-实用工具"><span class="nav-text">6 实用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-Lombok简介"><span class="nav-text">6.1 Lombok简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-Lombok实现原理"><span class="nav-text">6.2 Lombok实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-Lombok插件安装"><span class="nav-text">6.3 Lombok插件安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-Lombok常用注解使用"><span class="nav-text">6.4 Lombok常用注解使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-Lombok优缺点"><span class="nav-text">6.5 Lombok优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-验证框架"><span class="nav-text">7 验证框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-常用工具"><span class="nav-text">8 常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-开发工具"><span class="nav-text">8.1 开发工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-自测工具"><span class="nav-text">8.2 自测工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-检查工具"><span class="nav-text">8.3 检查工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-综合实战项目"><span class="nav-text">9 综合实战项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#集成Mybatis-Plus步骤"><span class="nav-text">集成Mybatis Plus步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现VO-DTO-DO实现代码分层"><span class="nav-text">实现VO&#x2F;DTO&#x2F;DO实现代码分层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动更新系统级字段"><span class="nav-text">自动更新系统级字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成验证框架步骤"><span class="nav-text">集成验证框架步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现统一异常处理功能"><span class="nav-text">实现统一异常处理功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成CaffeineCache缓存功能"><span class="nav-text">集成CaffeineCache缓存功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成Guava令牌桶实现全局限流功能"><span class="nav-text">集成Guava令牌桶实现全局限流功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用TraceId实现日志跟踪"><span class="nav-text">使用TraceId实现日志跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件上传下载"><span class="nav-text">文件上传下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据导出功能"><span class="nav-text">数据导出功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出功能异步化"><span class="nav-text">导出功能异步化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Swagger2帮助我们生成API文档"><span class="nav-text">使用Swagger2帮助我们生成API文档</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">93</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

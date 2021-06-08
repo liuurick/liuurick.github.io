@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="[TOC]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开发常用工具总结">
+<meta property="og:url" content="http://yoursite.com/2021/04/18/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="lb Blog">
+<meta property="og:description" content="[TOC]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/2021040801.png">
+<meta property="og:image" content="http://yoursite.com/images/2021040802.png">
+<meta property="og:image" content="http://yoursite.com/images/2021012001.png">
+<meta property="og:image" content="http://yoursite.com/images/2021041901.png">
+<meta property="article:published_time" content="2021-04-18T13:49:50.000Z">
+<meta property="article:modified_time" content="2021-05-22T11:06:56.000Z">
+<meta property="article:author" content="liubin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/2021040801.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/04/18/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>开发常用工具总结 | lb Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lb Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/18/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="liubin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lb Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          开发常用工具总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-18 21:49:50" itemprop="dateCreated datePublished" datetime="2021-04-18T21:49:50+08:00">2021-04-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="1-开发工具"><a href="#1-开发工具" class="headerlink" title="1 开发工具"></a>1 开发工具</h1><p>当前主流的开发工具非Intellij IDEA莫属了，这里总结一下Idea的实用操作。</p>
+<blockquote>
+<p>使用大全：<a href="https://github.com/judasn/IntelliJ-IDEA-Tutorial" target="_blank" rel="noopener">https://github.com/judasn/IntelliJ-IDEA-Tutorial</a></p>
+</blockquote>
+<p>单文件编辑快捷方式</p>
+<ul>
+<li>导包</li>
+<li>递进选择</li>
+<li>复杂行</li>
+<li>删除行</li>
+<li>大小写切换</li>
+<li>展开/折叠</li>
+<li>批量操作</li>
+</ul>
+<p>多文件编辑快捷方式</p>
+<p>断点调试</p>
+<p>版本管理</p>
+<p>代码优化</p>
+<p>IDEA插件</p>
+<p>Stream调试工具；快捷键提示插件；Mybatis工具；Mavne辅助神器</p>
+<p>单元测试生成工具；JSON转领域对象工具</p>
+<p>领域对象转JSON；序列化ID生成器；驼峰转换；Set方法生成；Log生成</p>
+<h2 id="IDEA实用配置"><a href="#IDEA实用配置" class="headerlink" title="IDEA实用配置"></a>IDEA实用配置</h2><h3 id="JDK配置"><a href="#JDK配置" class="headerlink" title="JDK配置"></a>JDK配置</h3><p>1.全局设置JDK</p>
+<p><img src="/images/2021040801.png" alt="image-20210408200026894"></p>
+<p>2.选择安装路径进行配置</p>
+<p><img src="/images/2021040802.png" alt="image-20210408200147520"></p>
+<h3 id="启动时不自动打开上一次的项目"><a href="#启动时不自动打开上一次的项目" class="headerlink" title="启动时不自动打开上一次的项目"></a>启动时不自动打开上一次的项目</h3><p>取消勾选</p>
+<p><img src="/images/2021012001.png" alt="image"></p>
+<h3 id="显示工具条"><a href="#显示工具条" class="headerlink" title="显示工具条"></a>显示工具条</h3><blockquote>
+<p>设置方法：View -–&gt; Appearance –&gt; Toolbar</p>
+</blockquote>
+<h3 id="设置鼠标悬浮提示"><a href="#设置鼠标悬浮提示" class="headerlink" title="设置鼠标悬浮提示"></a>设置鼠标悬浮提示</h3><h3 id="显示方法分隔符"><a href="#显示方法分隔符" class="headerlink" title="显示方法分隔符"></a>显示方法分隔符</h3><blockquote>
+<p>设置方法：File–&gt;settings–&gt;Editor–&gt;Appearance–&gt;勾选show method separators</p>
+</blockquote>
+<h3 id="忽略大小写提示"><a href="#忽略大小写提示" class="headerlink" title="忽略大小写提示"></a>忽略大小写提示</h3><h1 id="2-自测工具"><a href="#2-自测工具" class="headerlink" title="2 自测工具"></a>2 自测工具</h1><h2 id="1-Postman简介"><a href="#1-Postman简介" class="headerlink" title="1.Postman简介"></a>1.Postman简介</h2><blockquote>
+<p>Postman是一款功能强大的网页调试与发送网页HTTP请求的工具。能够发送任何类型的HTTP请求（GET,HEAD,POST,PUT…），附带任何数量的参数和HTTP headers。支持不同的认证机制（basic，digest，OAuth），接收到的响应语法高亮（HTML，JSON或XML)。</p>
+</blockquote>
+<h2 id="2-Postman基础使用"><a href="#2-Postman基础使用" class="headerlink" title="2.Postman基础使用"></a>2.Postman基础使用</h2><h2 id="3-Postman高阶使用"><a href="#3-Postman高阶使用" class="headerlink" title="3.Postman高阶使用"></a>3.Postman高阶使用</h2><h1 id="3-检查工具"><a href="#3-检查工具" class="headerlink" title="3 检查工具"></a>3 检查工具</h1><blockquote>
+<p>静态代码分析：静态代码分析是指无需运行被测代码，仅通过分析或检查源程序的语法、结构、过程、接口等来检查程序的正确性，找出代码隐藏的错误和缺陷，如参数不匹配，有歧义的嵌套语句，错误的递归，非法计算，可能出现的空指针引用等等。</p>
+</blockquote>
+<p>静态代码分析就是帮我们在不允许代码的情况下找bug</p>
+<p>目前业界主流的Java静态代码分析工具主要有以下几个：</p>
+<ul>
+<li><p>CheckStyle</p>
+<blockquote>
+<p>CheckStyle是SourceForge的开源项目，通过检查对代码编码格式，命名约定，Javadoc，类设计等方面进行代码规范和风格的检查，从而有效约束开发人员更好地遵循代码编写规范。</p>
+</blockquote>
+</li>
+<li><p>FindBugs</p>
+<blockquote>
+<p>FindBugs是由马里兰大学提供的一款开源Java静态代码分析工具。FindBugs通过检查类文件或JAR文件，将字节码与一组缺陷模式进行对比从而发现代码缺陷，完成静态代码分析。</p>
+</blockquote>
+</li>
+<li><p>PMD</p>
+<blockquote>
+<p>PMD是由DARPA在SourceForge上发布的开源Java代码静态分析工具。PMD通过其内置的编码规则对Java代码进行静态检查，主要包括对潜在的bug，未使用的代码，重复的代码，循环体创建新对象等问题的检验。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="1-三种方式的特点"><a href="#1-三种方式的特点" class="headerlink" title="1.三种方式的特点"></a>1.三种方式的特点</h2><ul>
+<li>CheckStyle：检查源文件，主要关注格式</li>
+<li>FindBugs：基于Bug Patterns概念，检查.class文件中的潜在Bug</li>
+<li>PMD：基于静态规则集，检查源文件中的潜在问题</li>
+</ul>
+<h2 id="2-IDEA相关插件及使用方式"><a href="#2-IDEA相关插件及使用方式" class="headerlink" title="2.IDEA相关插件及使用方式"></a>2.IDEA相关插件及使用方式</h2><ul>
+<li>QAPlug-CheckStyle</li>
+<li>QAPlug-FindBugs</li>
+<li>QAPlug-PMD</li>
+</ul>
+<h2 id="3-SonarQube介绍"><a href="#3-SonarQube介绍" class="headerlink" title="3.SonarQube介绍"></a>3.SonarQube介绍</h2><blockquote>
+<p>SonarQube是一个用于代码质量管理的开源平台，用于管理源代码的质量。支持七个维度，二十几种编程语言。通过自动代码审查工具，可检查代码中的错误，漏洞和代码异味。可以与您现有的工作流程集成，以实现跨项目分支和请求的连续代码检查。</p>
+</blockquote>
+<h3 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h3><ul>
+<li>通过插件机制，可以集成不同测试/分析/集成工具</li>
+<li>通过量化的方式度量代码质量的变化，从而进行代码质量管理</li>
+<li>提供接口支持，可以方便的在持续集成中使用</li>
+</ul>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p><img src="/images/2021041901.png" alt="image-20210418222715759"></p>
+<h3 id="服务搭建及使用"><a href="#服务搭建及使用" class="headerlink" title="服务搭建及使用"></a>服务搭建及使用</h3><blockquote>
+<p><a href="https://liuurick.github.io/2021/04/18/Ubuntu1804安装SonarQube/" target="_blank" rel="noopener">https://liuurick.github.io/2021/04/18/Ubuntu1804%E5%AE%89%E8%A3%85SonarQube/</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/04/Win%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%B8%8E%E6%93%8D%E4%BD%9C/" rel="prev" title="Win常用快捷键与操作">
+      <i class="fa fa-chevron-left"></i> Win常用快捷键与操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/18/Ubuntu1804%E5%AE%89%E8%A3%85SonarQube/" rel="next" title="Ubuntu1804安装SonarQube">
+      Ubuntu1804安装SonarQube <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-开发工具"><span class="nav-text">1 开发工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IDEA实用配置"><span class="nav-text">IDEA实用配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK配置"><span class="nav-text">JDK配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动时不自动打开上一次的项目"><span class="nav-text">启动时不自动打开上一次的项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示工具条"><span class="nav-text">显示工具条</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置鼠标悬浮提示"><span class="nav-text">设置鼠标悬浮提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示方法分隔符"><span class="nav-text">显示方法分隔符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忽略大小写提示"><span class="nav-text">忽略大小写提示</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-自测工具"><span class="nav-text">2 自测工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Postman简介"><span class="nav-text">1.Postman简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Postman基础使用"><span class="nav-text">2.Postman基础使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Postman高阶使用"><span class="nav-text">3.Postman高阶使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-检查工具"><span class="nav-text">3 检查工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-三种方式的特点"><span class="nav-text">1.三种方式的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-IDEA相关插件及使用方式"><span class="nav-text">2.IDEA相关插件及使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-SonarQube介绍"><span class="nav-text">3.SonarQube介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要功能"><span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作原理"><span class="nav-text">工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务搭建及使用"><span class="nav-text">服务搭建及使用</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">liubin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">93</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liuurick" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuurick@gmail.com" title="E-Mail → mailto:liuurick@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/liuurick" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/liuurick" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;liuurick" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
