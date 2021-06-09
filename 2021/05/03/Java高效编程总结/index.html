@@ -30,11 +30,11 @@
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/1214202/1619749492738-a922d6de-f917-40cf-9d5d-283b53c40e3b.png">
 <meta property="og:image" content="http://yoursite.com/images/2020042401.png">
 <meta property="og:image" content="http://yoursite.com/images/2020042402.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210506214821951.png">
-<meta property="og:image" content="c:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210506214839961.png">
+<meta property="og:image" content="http://yoursite.com/images/2021060901.png">
+<meta property="og:image" content="http://yoursite.com/images/2021060902.png">
 <meta property="og:image" content="http://img1.sycdn.imooc.com/5d9f49df0001fcfc07070586.png">
 <meta property="article:published_time" content="2021-05-03T08:22:20.000Z">
-<meta property="article:modified_time" content="2021-06-08T13:28:53.429Z">
+<meta property="article:modified_time" content="2021-06-09T02:54:40.483Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="高效编程">
 <meta name="twitter:card" content="summary">
@@ -336,7 +336,7 @@
 <li><p>导致系统无法正常运行</p>
 </li>
 </ul>
-<h2 id="3-4-传统方式关闭流资源"><a href="#3-4-传统方式关闭流资源" class="headerlink" title="3.4 传统方式关闭流资源"></a>3.4 传统方式关闭流资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * JDK7之前的文件拷贝功能</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class FileCopyTest &#123;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void copyFile() &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 1. 创建输入&#x2F;输出流</span><br><span class="line">         * 2. 执行文件拷贝，读取文件内容，写入到另一个文件中</span><br><span class="line">         * 3. **关闭文件流资源**</span><br><span class="line">         *&#x2F;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 定义输入路径和输出路径</span><br><span class="line">        String originalUrl &#x3D; &quot;lib&#x2F;FileCopyTest.java&quot;;</span><br><span class="line">        String targetUrl &#x3D; &quot;targetTest&#x2F;target.txt&quot;;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 声明文件输入流，文件输出流</span><br><span class="line">        FileInputStream originalFileInputStream &#x3D; null;</span><br><span class="line">        FileOutputStream targetFileOutputStream &#x3D; null;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            &#x2F;&#x2F; 实例化文件流对象</span><br><span class="line">            originalFileInputStream &#x3D;</span><br><span class="line">                    new FileInputStream(originalUrl);</span><br><span class="line"></span><br><span class="line">            targetFileOutputStream &#x3D;</span><br><span class="line">                    new FileOutputStream(targetUrl);</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 读取的字节信息</span><br><span class="line">            int content;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 迭代，读取&#x2F;写入字节</span><br><span class="line">            while ((content &#x3D; originalFileInputStream.read()) !&#x3D; -1) &#123;</span><br><span class="line">                targetFileOutputStream.write(content);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 关闭流资源</span><br><span class="line">            if (targetFileOutputStream !&#x3D; null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    targetFileOutputStream.close();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (originalFileInputStream !&#x3D; null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    originalFileInputStream.close();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-4-传统方式关闭流资源"><a href="#3-4-传统方式关闭流资源" class="headerlink" title="3.4 传统方式关闭流资源"></a>3.4 传统方式关闭流资源</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * JDK7之前的文件拷贝功能</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileCopyTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">copyFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 1. 创建输入/输出流</span></span><br><span class="line"><span class="comment">         * 2. 执行文件拷贝，读取文件内容，写入到另一个文件中</span></span><br><span class="line"><span class="comment">         * 3. **关闭文件流资源**</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 定义输入路径和输出路径</span></span><br><span class="line">        String originalUrl = <span class="string">"lib/FileCopyTest.java"</span>;</span><br><span class="line">        String targetUrl = <span class="string">"targetTest/target.txt"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 声明文件输入流，文件输出流</span></span><br><span class="line">        FileInputStream originalFileInputStream = <span class="keyword">null</span>;</span><br><span class="line">        FileOutputStream targetFileOutputStream = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 实例化文件流对象</span></span><br><span class="line">            originalFileInputStream =</span><br><span class="line">                    <span class="keyword">new</span> FileInputStream(originalUrl);</span><br><span class="line"></span><br><span class="line">            targetFileOutputStream =</span><br><span class="line">                    <span class="keyword">new</span> FileOutputStream(targetUrl);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 读取的字节信息</span></span><br><span class="line">            <span class="keyword">int</span> content;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 迭代，读取/写入字节</span></span><br><span class="line">            <span class="keyword">while</span> ((content = originalFileInputStream.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">                targetFileOutputStream.write(content);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 关闭流资源</span></span><br><span class="line">            <span class="keyword">if</span> (targetFileOutputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    targetFileOutputStream.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (originalFileInputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    originalFileInputStream.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="3-5-TWR方式关闭流资源"><a href="#3-5-TWR方式关闭流资源" class="headerlink" title="3.5 TWR方式关闭流资源"></a>3.5 TWR方式关闭流资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public class NewFileCopyTest &#123;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void copyFile() &#123;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 先定义输入&#x2F;输出路径</span><br><span class="line">        String originalUrl &#x3D; &quot;lib&#x2F;NewFileCopyTest.java&quot;;</span><br><span class="line">        String targetUrl &#x3D; &quot;targetTest&#x2F;new.txt&quot;;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 初始化输入&#x2F;输出流对象</span><br><span class="line">        try (</span><br><span class="line">                FileInputStream originalFileInputStream &#x3D;</span><br><span class="line">                        new FileInputStream(originalUrl);</span><br><span class="line"></span><br><span class="line">                FileOutputStream targetFileOutputStream &#x3D;</span><br><span class="line">                        new FileOutputStream(targetUrl);</span><br><span class="line">        ) &#123;</span><br><span class="line"></span><br><span class="line">            int content;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 迭代，拷贝数据</span><br><span class="line">            while ((content &#x3D; originalFileInputStream.read()) !&#x3D; -1) &#123;</span><br><span class="line">                targetFileOutputStream.write(content);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -373,72 +373,38 @@
 <li><p>使用Socket获取InputStream和OutputStream对象不需要关闭</p>
 </li>
 </ul>
-<h1 id="4-工具集"><a href="#4-工具集" class="headerlink" title="4 工具集"></a>4 工具集</h1><p>背靠Google好乘凉<br>  Guava源于Google，不止出身高贵，更是效能神器。本章介绍Google的Guava工具包，重点讲解具类的使用方法及实现原理。通过学习本单元，让小伙伴们能够对Guava所能提供的支持有全面了解，在日常开发过程中能灵活运用此工具包，提升开发效率。…</p>
-<p>  收起列表</p>
-<ul>
-<li><em>视频：</em>5-1 Guava开场 (02:23)</li>
-<li><em>视频：</em>5-2 实战：Optional使用 (13:44)</li>
-<li><em>视频：</em>5-3 不可变集合 (09:50)</li>
-<li><em>视频：</em>5-4 新集合类型 (04:58)</li>
-<li><em>视频：</em>5-5 实战：新集合类型 (06:31)</li>
-<li><em>视频：</em>5-6 集合工具类 (19:15)</li>
-<li><em>视频：</em>5-7 实战：IO流 (08:25)</li>
-<li><em>视频：</em>5-8 总结乃成功她祖爷爷 (07:21)</li>
-<li><em>图文：</em>5-9 布隆过滤器</li>
-<li><em>视频：</em>5-10 布隆过滤器 (26:50)</li>
-</ul>
-<h2 id="4-1-Guava简介"><a href="#4-1-Guava简介" class="headerlink" title="4.1 Guava简介"></a>4.1 Guava简介</h2><p>Guava工程包含了若干被Google的Java项目广泛依赖的核心库，例如：集合，缓存，原生类型支持，并发库，通用注解，字符串处理，I/O等等。</p>
+<h1 id="4-工具集"><a href="#4-工具集" class="headerlink" title="4 工具集"></a>4 工具集</h1><h2 id="4-1-Guava简介"><a href="#4-1-Guava简介" class="headerlink" title="4.1 Guava简介"></a>4.1 Guava简介</h2><p>背靠Google好乘凉，Guava工程包含了若干被Google的Java项目广泛依赖的核心库，例如：集合，缓存，原生类型支持，并发库，通用注解，字符串处理，I/O等等。</p>
 <p>所有这些工具每天都在被Google的工程师应用在产品中。</p>
 <h2 id="4-2-使用和避免null"><a href="#4-2-使用和避免null" class="headerlink" title="4.2 使用和避免null"></a>4.2 使用和避免null</h2><p>大多数情况下，使用null表明的是某种缺失情况。</p>
-<p>Guava引入Optional<T>表明可能为null的T类型引用。Optional实例可能包含非null的引用（引用存在），也可能什么也不包括（引用缺失）。</p>
+<p>Guava引入<code>Optional&lt;T&gt;</code>表明可能为null的T类型引用。Optional实例可能包含非null的引用（引用存在），也可能什么也不包括（引用缺失）。</p>
 <p>正是受到Guava的启发，Java8将Optional类作为一个新特性引入到Java8的类库。</p>
 <h2 id="4-3-实战案例：Java8新特性Optional"><a href="#4-3-实战案例：Java8新特性Optional" class="headerlink" title="4.3 实战案例：Java8新特性Optional"></a>4.3 实战案例：Java8新特性Optional</h2><h2 id="4-4-不可变集合"><a href="#4-4-不可变集合" class="headerlink" title="4.4 不可变集合"></a>4.4 不可变集合</h2><p>创建对象的不可变拷贝是一项很好的防御性编程技巧</p>
 <p>Guava为所有的JDK标准集合类型和Guava新集合类型都提供了简单易用的不可变版本。</p>
 <p>不可变对象的优点</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2021/png/1214202/1619749492738-a922d6de-f917-40cf-9d5d-283b53c40e3b.png" alt="img"></p>
-<h2 id="4-5-新集合类型"><a href="#4-5-新集合类型" class="headerlink" title="4.5 新集合类型"></a>4.5 新集合类型</h2><h2 id="4-6-实战：新集合类型使用"><a href="#4-6-实战：新集合类型使用" class="headerlink" title="4.6 实战：新集合类型使用"></a>4.6 实战：新集合类型使用</h2><h2 id="4-7-集合工具类"><a href="#4-7-集合工具类" class="headerlink" title="4.7 集合工具类"></a>4.7 集合工具类</h2><h2 id="4-8-实战：IO流工具类的使用"><a href="#4-8-实战：IO流工具类的使用" class="headerlink" title="4.8 实战：IO流工具类的使用"></a>4.8 实战：IO流工具类的使用</h2><h2 id="4-9-总结"><a href="#4-9-总结" class="headerlink" title="4.9 总结"></a>4.9 总结</h2><h1 id="5-线程池"><a href="#5-线程池" class="headerlink" title="5 线程池"></a>5 线程池</h1><p>站在巨人肩上告别重造轮子</p>
-<p>我就问问你：想不想站在巨人肩上，看得更远？本章通过分析手动创建线程出现的问题，引出Executor线程池框架，带领小伙伴们动手设计一个Executor框架，进而分析Executor框架实现原理，此问题也是面试中常考的问题。</p>
-<p>收起列表</p>
+<h2 id="4-5-新集合类型"><a href="#4-5-新集合类型" class="headerlink" title="4.5 新集合类型"></a>4.5 新集合类型</h2><h2 id="4-6-实战：新集合类型使用"><a href="#4-6-实战：新集合类型使用" class="headerlink" title="4.6 实战：新集合类型使用"></a>4.6 实战：新集合类型使用</h2><h2 id="4-7-集合工具类"><a href="#4-7-集合工具类" class="headerlink" title="4.7 集合工具类"></a>4.7 集合工具类</h2><h2 id="4-8-实战：IO流工具类的使用"><a href="#4-8-实战：IO流工具类的使用" class="headerlink" title="4.8 实战：IO流工具类的使用"></a>4.8 实战：IO流工具类的使用</h2><h2 id="4-9-总结"><a href="#4-9-总结" class="headerlink" title="4.9 总结"></a>4.9 总结</h2><h1 id="5-线程池"><a href="#5-线程池" class="headerlink" title="5 线程池"></a>5 线程池</h1><h2 id="5-1-线程池简介"><a href="#5-1-线程池简介" class="headerlink" title="5.1 线程池简介"></a>5.1 线程池简介</h2><p>线程池顾名思义就是事先创建若干个可执行的线程放入一个池（容器）中，需要的时候从池中获取线程不用自行创建，使用完毕不需要销毁线程而是放回池中，从而减少创建和销毁线程对象的开销。</p>
+<p>优点：</p>
 <ul>
-<li><em>视频：</em>6-1 线程池之普通码农VS风骚码农 (11:39)</li>
-<li><em>视频：</em>6-2 线程池概述 (02:08)</li>
-<li><em>视频：</em>6-3 简单线程池的设计 (05:58)</li>
-<li><em>视频：</em>6-4 线程池参数与处理流程 (04:00)</li>
-<li><em>视频：</em>6-5 线程池可选择的阻塞队列 (14:09)</li>
-<li><em>视频：</em>6-6 线程池可选择的饱和策略 (03:57)</li>
-<li><em>视频：</em>6-7 线程池的执行示意图 (01:27)</li>
-<li><em>视频：</em>6-8 替换6-8~9 线程池可选饱和策略与执行示意图 (07:55)</li>
-<li><em>视频：</em>6-9 常用线程池 (02:38)</li>
-<li><em>视频：</em>6-10 向线程池提交任务 (08:41)</li>
-<li><em>视频：</em>6-11 线程池的状态 (02:20)</li>
-<li><em>视频：</em>6-12 总结乃成功她丈母娘 (03:34)</li>
-<li><em>视频：</em>6-13 线程池饱和策略之终止策略 (18:43)</li>
-<li><em>视频：</em>6-14 线程池饱和策略之其他三种饱和策略 (10:47)</li>
+<li>降低资源消耗</li>
+<li>提高响应速度</li>
+<li>提高线程的可管理性</li>
 </ul>
-<h1 id="6-实用工具"><a href="#6-实用工具" class="headerlink" title="6 实用工具"></a>6 实用工具</h1><p>告别无脑编程</p>
-<p>  通过对比两个Bean的代码量，讲解Lombok对提高开发效率和代码整洁度的贡献；详细介绍Lombok各注解的用途；对注解相关知识进行讲解；介绍Lombok的实现原理。通过学习本单元，使学员在编写代码时能合理利用Lombok节省代码量，提高开发效率。…</p>
-<p>  收起列表</p>
-<ul>
-<li><em>视频：</em>7-1 向无脑编程Say拜拜之普通码农VS风骚码农mp4 (01:30)</li>
-<li><em>视频：</em>7-2 Lombok的那些事儿 (05:31)</li>
-<li><em>视频：</em>7-3 注解的解析时机 (01:10)</li>
-<li><em>视频：</em>7-4 实战：插件安装 (04:00)</li>
-<li><em>视频：</em>7-5 实战：Jar包引入 (02:36)</li>
-<li><em>视频：</em>7-6 实战：@Getter注解详解 (06:08)</li>
-<li><em>视频：</em>7-7 实战：@Setter注解详解 (03:05)</li>
-<li><em>视频：</em>7-8 实战：@ToString注解详解 (09:42)</li>
-<li><em>视频：</em>7-9 实战：@EqualsAndHashCode注解详解 (03:35)</li>
-<li><em>视频：</em>7-10 实战：@Data注解详解 (02:13)</li>
-<li><em>视频：</em>7-11 实战：@Val注解详解 (02:34)</li>
-<li><em>视频：</em>7-12 实战：@NonNull注解详解 (02:12)</li>
-<li><em>视频：</em>7-13 实战：@Constructor注解详解 (03:19)</li>
-<li><em>视频：</em>7-14 实战：@Cleanup注解详解 (03:32)</li>
-<li><em>视频：</em>7-15 Lombok优缺点 (01:33)</li>
-<li><em>视频：</em>7-16 日志体系介绍 (04:53)</li>
-<li><em>视频：</em>7-17 实战：@Slf4j日志注解 (04:36)</li>
-<li><em>视频：</em>7-18 实战：@Builder建造者注解 (16:02)</li>
-</ul>
-<h2 id="6-1-Lombok简介"><a href="#6-1-Lombok简介" class="headerlink" title="6.1 Lombok简介"></a>6.1 Lombok简介</h2><p>Project Lombok是一个Java库，可以自动插入编辑器并构建工具，为您的Java增添色彩。永远不要再写另一个getter或equals方法，使用一个注释，您的类具有一个功能齐全的构建器，自动化您的日志记录变量。–Lombok官网</p>
+<p>5.2 简单线程池的设计 (05:58)</p>
+<p><em>视频：</em>6-4 线程池参数与处理流程 (04:00)</p>
+<p><em>视频：</em>6-5 线程池可选择的阻塞队列 (14:09)</p>
+<p><em>视频：</em>6-6 线程池可选择的饱和策略 (03:57)</p>
+<p><em>视频：</em>6-7 线程池的执行示意图 (01:27)</p>
+<p><em>视频：</em>6-8 替换6-8~9 线程池可选饱和策略与执行示意图 (07:55)</p>
+<p><em>视频：</em>6-9 常用线程池 (02:38)</p>
+<p><em>视频：</em>6-10 向线程池提交任务 (08:41)</p>
+<p><em>视频：</em>6-11 线程池的状态 (02:20)</p>
+<p><em>视频：</em>6-12 总结乃成功她丈母娘 (03:34)</p>
+<p><em>视频：</em>6-13 线程池饱和策略之终止策略 (18:43)</p>
+<p><em>视频：</em>6-14 线程池饱和策略之其他三种饱和策略 (10:47)</p>
+<h1 id="6-实用工具"><a href="#6-实用工具" class="headerlink" title="6 实用工具"></a>6 实用工具</h1><h2 id="6-1-Lombok简介"><a href="#6-1-Lombok简介" class="headerlink" title="6.1 Lombok简介"></a>6.1 Lombok简介</h2><blockquote>
+<p><code>Project Lombok</code>是一个Java库，可以自动插入编辑器并构建工具，为Java增添色彩。永远不要再写另一个getter或equals方法，使用一个注释，您的类具有一个功能齐全的构建器，自动化您的日志记录变量。</p>
+<p>​                                                                                                                                                                                                            –Lombok官网</p>
+</blockquote>
 <h2 id="6-2-Lombok实现原理"><a href="#6-2-Lombok实现原理" class="headerlink" title="6.2 Lombok实现原理"></a>6.2 Lombok实现原理</h2><p>注解的两种解析方式</p>
 <ul>
 <li>运行时解析—类似于反射</li>
@@ -470,12 +436,8 @@
 <p>4.@Builder注解：简化对象创建过程</p>
 <p>5.@Singular注解：配合@Builder注解，简化集合类型操作</p>
 <h2 id="6-5-Lombok优缺点"><a href="#6-5-Lombok优缺点" class="headerlink" title="6.5 Lombok优缺点"></a>6.5 Lombok优缺点</h2><p>lombok虽然可以极大的提高我们的开发效率，但却降低了源代码的可读性和完整性，也加大了对问题排查的难度</p>
-<h1 id="7-验证框架"><a href="#7-验证框架" class="headerlink" title="7 验证框架"></a>7 验证框架</h1><p>告别亡羊补牢<br>一个成熟的大牛，应该能提前预测风险，规避事后诸葛。本章宗旨让你告别亡羊补牢，首先申明JSR标准；用web项目介绍Validator使用；深入源码，讲解Hibernate Validator的实现原理。使小伙伴灵活使用Validator框架，做Web端参数校验等工作。…</p>
-<p>分层验证与JavaBean验证</p>
-<p>分层验证模型</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210506214821951.png" alt="image-20210506214821951"></p>
-<p>JavaBean验证</p>
-<p><img src="C:%5CUsers%5Cadmin%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210506214839961.png" alt="image-20210506214839961"></p>
+<h1 id="7-验证框架"><a href="#7-验证框架" class="headerlink" title="7 验证框架"></a>7 验证框架</h1><h2 id="7-1-分层验证与JavaBean验证"><a href="#7-1-分层验证与JavaBean验证" class="headerlink" title="7.1 分层验证与JavaBean验证"></a>7.1 分层验证与JavaBean验证</h2><h3 id="分层验证模型"><a href="#分层验证模型" class="headerlink" title="分层验证模型"></a>分层验证模型</h3><p><img src="/images/2021060901.png" alt="image-20210506214821951"></p>
+<h3 id="JavaBean验证"><a href="#JavaBean验证" class="headerlink" title="JavaBean验证"></a>JavaBean验证</h3><p><img src="/images/2021060902.png" alt="image-20210506214839961"></p>
 <p>Bean Validation简介</p>
 <blockquote>
 <p>Bean Validation为JavaBean验证定义了相应的元数据模型和API</p>
@@ -594,54 +556,23 @@
 
 
 
-<p>完成验证的步骤</p>
-<ul>
+<h2 id="7-2-完成验证的步骤"><a href="#7-2-完成验证的步骤" class="headerlink" title="7.2 完成验证的步骤"></a>7.2 完成验证的步骤</h2><ul>
 <li>约束注解的定义</li>
 <li>约束验证规则（结束验证器）</li>
 <li>约束注解的声明</li>
 <li>约束验证流程</li>
 </ul>
+<h2 id="7-3-测试案例"><a href="#7-3-测试案例" class="headerlink" title="7.3 测试案例"></a>7.3 测试案例</h2><p>自定义手机号约束注解</p>
+<ul>
+<li>定义@interface Phone注解</li>
+<li>实现约束验证器PhoneValidator.java</li>
+<li>声明@Phone约束验证</li>
+<li>执行手机号约束验证流程</li>
+</ul>
 <h1 id="8-常用工具"><a href="#8-常用工具" class="headerlink" title="8 常用工具"></a>8 常用工具</h1><blockquote>
 <p>开发常用工具总结：<a href="https://liuurick.github.io/2021/04/18/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">https://liuurick.github.io/2021/04/18/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/</a></p>
 </blockquote>
-<h2 id="8-1-开发工具"><a href="#8-1-开发工具" class="headerlink" title="8.1 开发工具"></a>8.1 开发工具</h2><p>欲先攻必利其器</p>
-<p>  介绍开发“神器”Idea；对常用快捷键进行介绍，演示；对常用的Idea插件使用讲解和演示。通过学习本单元，使学员可以熟练使用开发工具及各种方便的插件，极大提高开发效率。</p>
-<p>  收起列表</p>
-<ul>
-<li><em>视频：</em>9-1 章节介绍 (01:51)</li>
-<li><em>视频：</em>9-2 IDEA界面介绍 (07:05)</li>
-<li><em>视频：</em>9-3 单文件编辑快捷方式 (12:21)</li>
-<li><em>视频：</em>9-4 多文件编辑快捷方式 (06:02)</li>
-<li><em>视频：</em>9-5 断点调试 (07:40)</li>
-<li><em>视频：</em>9-6 版本管理 (02:12)</li>
-<li><em>视频：</em>9-7 代码优化 (11:28)</li>
-<li><em>视频：</em>9-8 IDEA插件介绍 (02:17)</li>
-<li><em>视频：</em>9-9 Stream调试工具；快捷键提示插件；Mybatis工具；Maven辅助神器 (11:04)</li>
-<li><em>视频：</em>9-10 单元测试生成工具；JSON转领域对象工具 (05:10)</li>
-<li><em>视频：</em>9-11 领域对象转JSON；序列化ID生成器；驼峰转换；Set方法生成；Log生成 (08:17)</li>
-</ul>
-<h2 id="8-2-自测工具"><a href="#8-2-自测工具" class="headerlink" title="8.2 自测工具"></a>8.2 自测工具</h2><p>  针对需要做前后端联调的同学，介绍Postman的基础使用及高阶使用。通过本单元学习，使学员能够掌握使用Postman完成前端数据伪造，后端HTTP接口快速调试的能力。</p>
-<p>  收起列表</p>
-<ul>
-<li><em>视频：</em>10-1 Postman介绍 (11:05)</li>
-<li><em>视频：</em>10-2 后台功能介绍 (09:04)</li>
-<li><em>视频：</em>10-3 发送查询和添加请求 (12:02)</li>
-<li><em>视频：</em>10-4 发送修改和删除请求 (08:39)</li>
-<li><em>视频：</em>10-5 身份认证和前置脚本的使用 (11:13)</li>
-<li><em>视频：</em>10-6 管理集合 (06:47)</li>
-<li><em>视频：</em>10-7 管理变量 (05:06)</li>
-<li><em>视频：</em>10-8 文档 (04:59)</li>
-<li><em>视频：</em>10-9 模拟 (03:35)</li>
-<li><em>视频：</em>10-10 监控 (05:01)</li>
-</ul>
-<h2 id="8-3-检查工具"><a href="#8-3-检查工具" class="headerlink" title="8.3 检查工具"></a>8.3 检查工具</h2><p>  对静态代码检查工具FindBugs介绍，使学员掌握使用方法，减少系统出现低级Bug的概率。</p>
-<p>  收起列表</p>
-<ul>
-<li><em>视频：</em>11-1 检查工具介绍 (05:11)</li>
-<li><em>视频：</em>11-2 IDEA相关插件及使用方式 (11:01)</li>
-<li><em>视频：</em>11-3 SonarQube介绍 (14:33)</li>
-</ul>
-<h1 id="9-综合实战项目"><a href="#9-综合实战项目" class="headerlink" title="9 综合实战项目"></a>9 综合实战项目</h1><p>  整合全课核心技能，打造高效通用型基础组件【该组件是可复用，可插拔，可带走的造轮子工程】，该框架适用于所有基于SpringBoot开发的项目，为效率而生，为所有开发基于SpringBoot的项目提供基础组件支撑。</p>
+<h2 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h2><h2 id="自测工具"><a href="#自测工具" class="headerlink" title="自测工具"></a>自测工具</h2><h2 id="检查工具"><a href="#检查工具" class="headerlink" title="检查工具"></a>检查工具</h2><h1 id="9-综合实战"><a href="#9-综合实战" class="headerlink" title="9 综合实战"></a>9 综合实战</h1><p>整合一下，搭建通用型基础组件</p>
 <ul>
 <li>集成MyBatis-plus实现数据持久化</li>
 <li>集成CaffeineCache（GuavaCache替代品）实现本地缓存</li>
@@ -811,7 +742,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-函数式编程"><span class="nav-text">1 函数式编程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-流式编程"><span class="nav-text">2 流式编程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-资源关闭"><span class="nav-text">3 资源关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-垃圾回收（GC）的特点"><span class="nav-text">3.1 垃圾回收（GC）的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-常见需手动释放的物理资源"><span class="nav-text">3.2 常见需手动释放的物理资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-物理资源可以不手动释放吗？"><span class="nav-text">3.3 物理资源可以不手动释放吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-传统方式关闭流资源"><span class="nav-text">3.4 传统方式关闭流资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-TWR方式关闭流资源"><span class="nav-text">3.5 TWR方式关闭流资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-TWR简介"><span class="nav-text">3.6 TWR简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-TWR使用"><span class="nav-text">3.7 TWR使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-资源关闭顺序问题"><span class="nav-text">3.8 资源关闭顺序问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-9-资源关闭特殊情况"><span class="nav-text">3.9 资源关闭特殊情况</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-工具集"><span class="nav-text">4 工具集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Guava简介"><span class="nav-text">4.1 Guava简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-使用和避免null"><span class="nav-text">4.2 使用和避免null</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-实战案例：Java8新特性Optional"><span class="nav-text">4.3 实战案例：Java8新特性Optional</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-不可变集合"><span class="nav-text">4.4 不可变集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-新集合类型"><span class="nav-text">4.5 新集合类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-实战：新集合类型使用"><span class="nav-text">4.6 实战：新集合类型使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-集合工具类"><span class="nav-text">4.7 集合工具类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-8-实战：IO流工具类的使用"><span class="nav-text">4.8 实战：IO流工具类的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-9-总结"><span class="nav-text">4.9 总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-线程池"><span class="nav-text">5 线程池</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-实用工具"><span class="nav-text">6 实用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-Lombok简介"><span class="nav-text">6.1 Lombok简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-Lombok实现原理"><span class="nav-text">6.2 Lombok实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-Lombok插件安装"><span class="nav-text">6.3 Lombok插件安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-Lombok常用注解使用"><span class="nav-text">6.4 Lombok常用注解使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-Lombok优缺点"><span class="nav-text">6.5 Lombok优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-验证框架"><span class="nav-text">7 验证框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-常用工具"><span class="nav-text">8 常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-开发工具"><span class="nav-text">8.1 开发工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-自测工具"><span class="nav-text">8.2 自测工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-检查工具"><span class="nav-text">8.3 检查工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-综合实战项目"><span class="nav-text">9 综合实战项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#集成Mybatis-Plus步骤"><span class="nav-text">集成Mybatis Plus步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现VO-DTO-DO实现代码分层"><span class="nav-text">实现VO&#x2F;DTO&#x2F;DO实现代码分层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动更新系统级字段"><span class="nav-text">自动更新系统级字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成验证框架步骤"><span class="nav-text">集成验证框架步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现统一异常处理功能"><span class="nav-text">实现统一异常处理功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成CaffeineCache缓存功能"><span class="nav-text">集成CaffeineCache缓存功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成Guava令牌桶实现全局限流功能"><span class="nav-text">集成Guava令牌桶实现全局限流功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用TraceId实现日志跟踪"><span class="nav-text">使用TraceId实现日志跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件上传下载"><span class="nav-text">文件上传下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据导出功能"><span class="nav-text">数据导出功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出功能异步化"><span class="nav-text">导出功能异步化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Swagger2帮助我们生成API文档"><span class="nav-text">使用Swagger2帮助我们生成API文档</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-函数式编程"><span class="nav-text">1 函数式编程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-流式编程"><span class="nav-text">2 流式编程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-资源关闭"><span class="nav-text">3 资源关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-垃圾回收（GC）的特点"><span class="nav-text">3.1 垃圾回收（GC）的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-常见需手动释放的物理资源"><span class="nav-text">3.2 常见需手动释放的物理资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-物理资源可以不手动释放吗？"><span class="nav-text">3.3 物理资源可以不手动释放吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-传统方式关闭流资源"><span class="nav-text">3.4 传统方式关闭流资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-TWR方式关闭流资源"><span class="nav-text">3.5 TWR方式关闭流资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-TWR简介"><span class="nav-text">3.6 TWR简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-TWR使用"><span class="nav-text">3.7 TWR使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-资源关闭顺序问题"><span class="nav-text">3.8 资源关闭顺序问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-9-资源关闭特殊情况"><span class="nav-text">3.9 资源关闭特殊情况</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-工具集"><span class="nav-text">4 工具集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Guava简介"><span class="nav-text">4.1 Guava简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-使用和避免null"><span class="nav-text">4.2 使用和避免null</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-实战案例：Java8新特性Optional"><span class="nav-text">4.3 实战案例：Java8新特性Optional</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-不可变集合"><span class="nav-text">4.4 不可变集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-新集合类型"><span class="nav-text">4.5 新集合类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-实战：新集合类型使用"><span class="nav-text">4.6 实战：新集合类型使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-集合工具类"><span class="nav-text">4.7 集合工具类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-8-实战：IO流工具类的使用"><span class="nav-text">4.8 实战：IO流工具类的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-9-总结"><span class="nav-text">4.9 总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-线程池"><span class="nav-text">5 线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-线程池简介"><span class="nav-text">5.1 线程池简介</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-实用工具"><span class="nav-text">6 实用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-Lombok简介"><span class="nav-text">6.1 Lombok简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-Lombok实现原理"><span class="nav-text">6.2 Lombok实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-Lombok插件安装"><span class="nav-text">6.3 Lombok插件安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-Lombok常用注解使用"><span class="nav-text">6.4 Lombok常用注解使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-Lombok优缺点"><span class="nav-text">6.5 Lombok优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-验证框架"><span class="nav-text">7 验证框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-分层验证与JavaBean验证"><span class="nav-text">7.1 分层验证与JavaBean验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分层验证模型"><span class="nav-text">分层验证模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaBean验证"><span class="nav-text">JavaBean验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-完成验证的步骤"><span class="nav-text">7.2 完成验证的步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-测试案例"><span class="nav-text">7.3 测试案例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-常用工具"><span class="nav-text">8 常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开发工具"><span class="nav-text">开发工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自测工具"><span class="nav-text">自测工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查工具"><span class="nav-text">检查工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-综合实战"><span class="nav-text">9 综合实战</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#集成Mybatis-Plus步骤"><span class="nav-text">集成Mybatis Plus步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现VO-DTO-DO实现代码分层"><span class="nav-text">实现VO&#x2F;DTO&#x2F;DO实现代码分层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动更新系统级字段"><span class="nav-text">自动更新系统级字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成验证框架步骤"><span class="nav-text">集成验证框架步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现统一异常处理功能"><span class="nav-text">实现统一异常处理功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成CaffeineCache缓存功能"><span class="nav-text">集成CaffeineCache缓存功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成Guava令牌桶实现全局限流功能"><span class="nav-text">集成Guava令牌桶实现全局限流功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用TraceId实现日志跟踪"><span class="nav-text">使用TraceId实现日志跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件上传下载"><span class="nav-text">文件上传下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据导出功能"><span class="nav-text">数据导出功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出功能异步化"><span class="nav-text">导出功能异步化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Swagger2帮助我们生成API文档"><span class="nav-text">使用Swagger2帮助我们生成API文档</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -827,20 +758,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-count">65</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-count">96</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
