@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://yoursite.com/images/2021020405.png">
 <meta property="og:image" content="http://yoursite.com/images/2021020406.png">
 <meta property="article:published_time" content="2021-02-04T03:33:25.000Z">
-<meta property="article:modified_time" content="2021-03-04T11:33:54.045Z">
+<meta property="article:modified_time" content="2021-06-12T11:25:20.468Z">
 <meta property="article:author" content="liubin">
 <meta property="article:tag" content="SpringCloud Alibaba">
 <meta name="twitter:card" content="summary">
@@ -258,13 +258,14 @@
 <blockquote>
 <p>官方文档：<a href="https://github.com/alibaba/Nacos" target="_blank" rel="noopener">https://github.com/alibaba/Nacos</a></p>
 <p>下载地址：<a href="https://github.com/alibaba/nacos/releases/tag/1.1.4" target="_blank" rel="noopener">https://github.com/alibaba/nacos/releases/tag/1.1.4</a></p>
+<p>学习地址：<a href="https://www.fangzhipeng.com/springcloud/2019/05/30/sc-nacos-discovery.html" target="_blank" rel="noopener">https://www.fangzhipeng.com/springcloud/2019/05/30/sc-nacos-discovery.html</a></p>
 </blockquote>
-<h1 id="1-Docker安装启动Nacos"><a href="#1-Docker安装启动Nacos" class="headerlink" title="1 Docker安装启动Nacos"></a>1 Docker安装启动Nacos</h1><h2 id="1-1-拉取镜像"><a href="#1-1-拉取镜像" class="headerlink" title="1.1 拉取镜像"></a>1.1 拉取镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nacos&#x2F;nacos-server</span><br></pre></td></tr></table></figure>
+<h1 id="1-Docker安装启动Nacos"><a href="#1-Docker安装启动Nacos" class="headerlink" title="1 Docker安装启动Nacos"></a>1 Docker安装启动Nacos</h1><h2 id="1-1-拉取镜像"><a href="#1-1-拉取镜像" class="headerlink" title="1.1 拉取镜像"></a>1.1 拉取镜像</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nacos/nacos-server</span><br></pre></td></tr></table></figure>
 
-<h2 id="1-2-创建本地的映射文件-custom-properties"><a href="#1-2-创建本地的映射文件-custom-properties" class="headerlink" title="1.2 创建本地的映射文件 custom.properties"></a>1.2 创建本地的映射文件 custom.properties</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p &#x2F;root&#x2F;nacos&#x2F;init.d &#x2F;root&#x2F;nacos&#x2F;logs</span><br><span class="line">vim &#x2F;root&#x2F;nacos&#x2F;init.d&#x2F;custom.properties</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-创建本地的映射文件-custom-properties"><a href="#1-2-创建本地的映射文件-custom-properties" class="headerlink" title="1.2 创建本地的映射文件 custom.properties"></a>1.2 创建本地的映射文件 custom.properties</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /root/nacos/init.d /root/nacos/logs</span><br><span class="line">vim /root/nacos/init.d/custom.properties</span><br></pre></td></tr></table></figure>
 
 <p>在文件中写入以下配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">management.endpoints.web.exposure.include&#x3D;*</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">management.endpoints.web.exposure.include=*</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-3-创建容器并启动提供a、b两种方案"><a href="#1-3-创建容器并启动提供a、b两种方案" class="headerlink" title="1.3 创建容器并启动提供a、b两种方案"></a>1.3 创建容器并启动提供a、b两种方案</h2><p>a.创建容器：使用<code>standalone</code>模式并开放<code>8848</code>端口，并映射配置文件和日志目录，数据库默认使用 <code>Derby</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8848:8848 -e MODE=standalone -e PREFER_HOST_MODE=hostname -v /root/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties -v /root/nacos/logs:/home/nacos/logs --restart always --name nacos nacos/nacos-server</span><br></pre></td></tr></table></figure>
